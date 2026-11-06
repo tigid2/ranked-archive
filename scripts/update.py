@@ -8,6 +8,7 @@
   전체 기록 페이지(docs/index.html), 기록 데이터(docs/data/*.json)를 만들어요.
 """
 
+import gzip
 import html
 import json
 import os
@@ -25,10 +26,14 @@ GAMES_DIR = os.path.join(DOCS, "games")
 GAMES_JSON = os.path.join(DATA, "games.json")
 RANK_JSON = os.path.join(DATA, "rank_history.json")
 LIVE_DIR = os.path.join(ROOT, "live")  # 내 컴퓨터의 게임 중 기록 프로그램이 올리는 파일
+RAW_DIR = os.path.join(ROOT, "raw")    # 라이엇 원본 데이터 (경기 상세 + 타임라인, 압축) - 피드백할 때 직접 분석용
+RAW_BACKFILL = 5                       # 한 번 갱신할 때 원본이 없는 예전 경기를 최대 몇 판까지 채울지
 
 REGIONAL = "asia"   # 계정, 경기 기록
 PLATFORM = "kr"     # 랭크 정보
 SOLO_QUEUE = 420
+QUEUE_KO = {420: "솔로랭크", 440: "자유랭크", 400: "일반", 430: "일반", 490: "빠른 대전", 450: "칼바람",
+            830: "AI 대전", 840: "AI 대전", 850: "AI 대전", 870: "AI 대전", 880: "AI 대전", 890: "AI 대전"}
 FIRST_RUN_LIMIT = 3  # 처음 실행할 때는 최근 3판만 받아요.
 KST = timezone(timedelta(hours=9))
 
@@ -214,6 +219,30 @@ def get_solo_rank(key, puuid):
     return {k: solo.get(k) for k in ("tier", "rank", "leaguePoints", "wins", "losses")}
 
 
+# ---------------------------------------------------------------- 원본 저장
+
+def raw_path(mid):
+    return os.path.join(RAW_DIR, f"{mid}.json.gz")
+
+
+def save_raw(mid, match, timeline):
+    os.makedirs(RAW_DIR, exist_ok=True)
+    with gzip.open(raw_path(mid), "wt", encoding="utf-8") as f:
+        json.dump({"match": match, "timeline": timeline}, f, ensure_ascii=False, separators=(",", ":"))
+
+
+def backfill_raw(key, games):
+    """원본이 없는 예전 경기의 원본을 받아서 저장해요."""
+    missing = [g["matchId"] for g in games if not os.path.exists(raw_path(g["matchId"]))][:RAW_BACKFILL]
+    for mid in missing:
+        try:
+            save_raw(mid, api_get(f"/lol/match/v5/matches/{mid}", key),
+                     api_get(f"/lol/match/v5/matches/{mid}/timeline", key))
+            print(f"  예전 경기 {mid}의 원본을 저장했어요.")
+        except ApiError as e:
+            print(f"  예전 경기 {mid}의 원본을 받지 못했어요. ({e})")
+
+
 # ---------------------------------------------------------------- 게임 중 기록
 
 def load_live_logs():
@@ -222,10 +251,24 @@ def load_live_logs():
         for name in os.listdir(LIVE_DIR):
             if name.endswith(".json"):
                 try:
-                    logs.append(read_json(os.path.join(LIVE_DIR, name), None))
+                    l = read_json(os.path.join(LIVE_DIR, name), None)
+                    if l:
+                        l["_file"] = name
+                        logs.append(l)
                 except Exception:
                     pass
-    return [l for l in logs if l]
+    return logs
+
+
+def clean_live_logs(games, hours=3):
+    """솔로랭크 경기와 짝지어지지 않은 게임 중 기록(일반 게임 등)은 3시간이 지나면 지워요.
+    기록 프로그램은 게임 중에 랭크인지 일반인지 알 수 없어서 일단 올리기 때문이에요."""
+    used = {g.get("liveFile") for g in games}
+    now_ms = datetime.now(timezone.utc).timestamp() * 1000
+    for l in load_live_logs():
+        if l["_file"] not in used and now_ms - l.get("startEpochMs", now_ms) > hours * 3600 * 1000:
+            os.remove(os.path.join(LIVE_DIR, l["_file"]))
+            print(f"  솔로랭크가 아닌 게임의 게임 중 기록을 지웠어요: {l['_file']}")
 
 
 def find_live_log(match, puuid, logs):
@@ -341,6 +384,8 @@ def build_report(match, timeline, puuid, live=None):
         "visionScore": me["visionScore"],
         "durationSec": duration_s,
         "liveLog": bool(live),
+        "liveFile": (live or {}).get("_file"),
+        "queue": info.get("queueId"),
     }
     live_deaths = list((live or {}).get("deaths") or [])
     if live and live.get("spellCheck"):
@@ -575,7 +620,7 @@ def build_index(games, rank_hist, riot_id):
     def esc(s):
         return html.escape(str(s))
 
-    recent = games[:10]
+    recent = [g for g in games if g.get("queue", SOLO_QUEUE) == SOLO_QUEUE][:10]
     stats = ""
     if recent:
         wins = sum(g["win"] for g in recent)
@@ -600,7 +645,8 @@ def build_index(games, rank_hist, riot_id):
         g15 = signed(g["goldDiff15"]) if g.get("goldDiff15") is not None else "-"
         rows.append(
             f'<tr class="{"win" if g["win"] else "loss"}">'
-            f'<td>{d:%m.%d %H:%M}</td>'
+            f'<td>{d:%m.%d %H:%M}'
+            f'{"<small>" + esc(QUEUE_KO.get(g.get("queue"), "기타")) + "</small>" if g.get("queue", SOLO_QUEUE) != SOLO_QUEUE else ""}</td>'
             f'<td>{"승" if g["win"] else "패"}</td>'
             f'<td><a href="games/{esc(g["matchId"])}.html">{esc(g["champion"])}</a>'
             f'<small>{esc(g["position"])}{" vs " + esc(g["opponent"]) if g.get("opponent") else ""}</small></td>'
@@ -676,6 +722,16 @@ def main():
         raise
     puuid = acct["puuid"]
 
+    os.makedirs(LIVE_DIR, exist_ok=True)
+    if not os.path.exists(os.path.join(LIVE_DIR, "README.md")):
+        with open(os.path.join(LIVE_DIR, "README.md"), "w", encoding="utf-8") as f:
+            f.write("내 컴퓨터의 게임 중 기록 프로그램이 올리는 파일이에요. 솔로랭크 경기와 짝지어지지 않은 기록은 3시간 뒤에 지워져요.\n")
+    os.makedirs(RAW_DIR, exist_ok=True)
+    readme = os.path.join(RAW_DIR, "README.md")
+    if not os.path.exists(readme):
+        with open(readme, "w", encoding="utf-8") as f:
+            f.write("라이엇 API 원본 데이터(경기 상세 + 타임라인)를 경기마다 압축해서 저장하는 폴더예요. 피드백할 때 직접 분석하는 데 써요.\n")
+
     games = read_json(GAMES_JSON, [])
     known = {g["matchId"] for g in games}
     skipped = set(read_json(os.path.join(DATA, "skipped.json"), []))
@@ -693,6 +749,8 @@ def main():
             time.sleep(60)
     if not new_ids:
         print("새 솔로랭크 게임이 없어요.")
+        backfill_raw(key, games)
+        clean_live_logs(games)
         if not os.path.exists(os.path.join(DOCS, "index.html")):
             with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
                 f.write(build_index(games, read_json(RANK_JSON, []), riot_id))
@@ -719,6 +777,7 @@ def main():
             print("  다시하기(5분 미만) 게임이라 기록하지 않을게요.")
             skipped.add(mid)
             continue
+        save_raw(mid, match, timeline)
         live = find_live_log(match, puuid, live_logs)
         if live:
             print("  게임 중 기록을 찾아서 같이 정리할게요.")
@@ -732,14 +791,14 @@ def main():
     lp_change = None
     if entry:
         prev = next((r["entry"] for r in reversed(rank_hist) if r.get("entry")), None)
-        if prev and len(added) == 1:
+        if prev and len(added) == 1 and added[-1][1].get("queue", SOLO_QUEUE) == SOLO_QUEUE:
             lp_change = rank_score(entry) - rank_score(prev)
         rank_hist.append({"time": datetime.now(KST).isoformat(), "entry": entry, "matchId": added[-1][0]})
 
     for i, (mid, summary, md) in enumerate(added):
         is_newest = i == len(added) - 1
         rank_line = ""
-        if is_newest and entry:
+        if is_newest and entry and summary.get("queue", SOLO_QUEUE) == SOLO_QUEUE:
             summary["rankAfter"] = rank_text(entry)
             summary["lpChange"] = lp_change
             rank_line = f"- 이 판 이후 랭크: {rank_text(entry)}" + (f" ({signed(lp_change)}LP)" if lp_change is not None else "")
@@ -751,6 +810,8 @@ def main():
                 f.write(page(md, "최근 판 리포트", "./", rank_line))
 
     games = sorted([s for _, s, _ in added] + games, key=lambda g: g["start"], reverse=True)
+    backfill_raw(key, games)
+    clean_live_logs(games)
     write_json(GAMES_JSON, games)
     write_json(RANK_JSON, rank_hist)
     write_json(os.path.join(DATA, "skipped.json"), sorted(skipped))
