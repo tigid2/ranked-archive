@@ -268,6 +268,10 @@ def live_death_lines(ld):
             texts.append(f"{name}: 죽기 직전에 사용")
         elif v == "already_down":
             texts.append(f"{name}: 이미 쿨타임")
+        elif v == "uncertain":
+            texts.append(f"{name}: 판단 보류(화면은 봤지만 근거가 부족)")
+        elif v in ("not_visible", "unknown"):
+            texts.append(f"{name}: 확인 못 함(화면이 안 보임)")
     if texts:
         lines.append("  - 스펠: " + " / ".join(texts))
     return lines
