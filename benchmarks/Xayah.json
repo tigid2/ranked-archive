@@ -8,7 +8,7 @@
   "EMERALD",
   "DIAMOND"
  ],
- "updatedAt": "2026-11-08 00:30",
+ "updatedAt": "2026-11-08 04:17",
  "games": 138,
  "winRate": 55.8,
  "minN": {
@@ -60,6 +60,23 @@
    "median": 5847.0,
    "p75": 6501.8
   },
+  "goldDiff15": {
+   "n": 138,
+   "mean": 105.6,
+   "p25": -1387.2,
+   "median": -7.0,
+   "p75": 1330.5
+  },
+  "csDiff15": {
+   "n": 138,
+   "mean": -0.83,
+   "p25": -19.0,
+   "median": -2.0,
+   "p75": 17.5
+  },
+  "xpDiff15": {
+   "n": 0
+  },
   "dmg15": {
    "n": 138,
    "mean": 8242.2,
@@ -81,20 +98,6 @@
    "median": 0.71,
    "p75": 0.96
   },
-  "goldDiff15": {
-   "n": 138,
-   "mean": 105.6,
-   "p25": -1387.2,
-   "median": -7.0,
-   "p75": 1330.5
-  },
-  "csDiff15": {
-   "n": 138,
-   "mean": -0.83,
-   "p25": -19.0,
-   "median": -2.0,
-   "p75": 17.5
-  },
   "core1Time": {
    "n": 138,
    "mean": 655.0,
@@ -108,6 +111,97 @@
    "p25": 912.8,
    "median": 1016.5,
    "p75": 1105.5
+  },
+  "gpm": {
+   "n": 0
+  },
+  "kp": {
+   "n": 0
+  },
+  "deaths": {
+   "n": 0
+  },
+  "d14": {
+   "n": 0
+  },
+  "solo": {
+   "n": 0
+  },
+  "takenPm": {
+   "n": 0
+  },
+  "ccTime": {
+   "n": 0
+  },
+  "wardsPm": {
+   "n": 0
+  },
+  "wardsKilledPm": {
+   "n": 0
+  },
+  "ctrl": {
+   "n": 0
+  },
+  "ward1": {
+   "n": 0
+  },
+  "wards14": {
+   "n": 0
+  },
+  "plates": {
+   "n": 0
+  },
+  "back1": {
+   "n": 0
+  },
+  "back1Gold": {
+   "n": 0
+  }
+ },
+ "lengthWin": [
+  {
+   "from": 0,
+   "to": 25,
+   "n": 50,
+   "winRate": 48.0
+  },
+  {
+   "from": 25,
+   "to": 30,
+   "n": 39,
+   "winRate": 66.7
+  },
+  {
+   "from": 30,
+   "to": 35,
+   "n": 34,
+   "winRate": 52.9
+  },
+  {
+   "from": 35,
+   "to": 99,
+   "n": 15,
+   "winRate": 60.0
+  }
+ ],
+ "objectives": {
+  "fb": {
+   "n": 0,
+   "share": null,
+   "winWith": null,
+   "winWithout": null
+  },
+  "ft": {
+   "n": 0,
+   "share": null,
+   "winWith": null,
+   "winWithout": null
+  },
+  "fd": {
+   "n": 0,
+   "share": null,
+   "winWith": null,
+   "winWithout": null
   }
  },
  "support": {
@@ -233,42 +327,158 @@
     "name": "윤 탈 야생화살",
     "n": 89,
     "share": 64.5,
-    "winRate": 56.2
+    "winRate": 56.2,
+    "time": 644.0
    },
    {
     "key": 3508,
     "name": "정수 약탈자",
     "n": 31,
     "share": 22.5,
-    "winRate": 61.3
+    "winRate": 61.3,
+    "time": 675.0
    },
    {
     "key": 6676,
     "name": "징수의 총",
     "n": 14,
     "share": 10.1,
-    "winRate": 35.7
+    "winRate": 35.7,
+    "time": 651.0
    },
    {
     "key": 2523,
     "name": "마법광학 장치 C44",
     "n": 2,
     "share": 1.4,
-    "winRate": 50.0
+    "winRate": 50.0,
+    "time": 509.0
    },
    {
     "key": 3095,
     "name": "폭풍갈퀴",
     "n": 1,
     "share": 0.7,
-    "winRate": 100.0
+    "winRate": 100.0,
+    "time": 565.0
    },
    {
     "key": 6697,
     "name": "오만",
     "n": 1,
     "share": 0.7,
-    "winRate": 100.0
+    "winRate": 100.0,
+    "time": 446.0
+   }
+  ],
+  "core2": [
+   {
+    "key": 6675,
+    "name": "나보리 명멸검",
+    "n": 122,
+    "share": 88.4,
+    "winRate": 56.6,
+    "time": 1018.0
+   },
+   {
+    "key": 3031,
+    "name": "무한의 대검",
+    "n": 3,
+    "share": 2.2,
+    "winRate": 100.0,
+    "time": 910.0
+   },
+   {
+    "key": 6676,
+    "name": "징수의 총",
+    "n": 1,
+    "share": 0.7,
+    "winRate": 100.0,
+    "time": 902.0
+   }
+  ],
+  "core3": [
+   {
+    "key": 3031,
+    "name": "무한의 대검",
+    "n": 77,
+    "share": 55.8,
+    "winRate": 59.7,
+    "time": 1352.0
+   },
+   {
+    "key": 3036,
+    "name": "도미닉 경의 인사",
+    "n": 9,
+    "share": 6.5,
+    "winRate": 55.6,
+    "time": 1398.0
+   },
+   {
+    "key": 3033,
+    "name": "필멸자의 운명",
+    "n": 5,
+    "share": 3.6,
+    "winRate": 80.0,
+    "time": 1409.0
+   },
+   {
+    "key": 6675,
+    "name": "나보리 명멸검",
+    "n": 2,
+    "share": 1.4,
+    "winRate": 100.0,
+    "time": 1309.0
+   },
+   {
+    "key": 6673,
+    "name": "불멸의 철갑궁",
+    "n": 1,
+    "share": 0.7,
+    "winRate": 100.0,
+    "time": 1310.0
+   }
+  ],
+  "spells": [
+   {
+    "key": [
+     4,
+     21
+    ],
+    "name": "점멸 + 방어막",
+    "n": 59,
+    "share": 42.8,
+    "winRate": 50.8
+   },
+   {
+    "key": [
+     3,
+     4
+    ],
+    "name": "탈진 + 점멸",
+    "n": 52,
+    "share": 37.7,
+    "winRate": 57.7
+   },
+   {
+    "key": [
+     1,
+     4
+    ],
+    "name": "정화 + 점멸",
+    "n": 16,
+    "share": 11.6,
+    "winRate": 56.2
+   },
+   {
+    "key": [
+     4,
+     6
+    ],
+    "name": "점멸 + 유체화",
+    "n": 11,
+    "share": 8.0,
+    "winRate": 72.7
    }
   ],
   "core12": [

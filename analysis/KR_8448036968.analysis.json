@@ -1515,7 +1515,9 @@
     "n": 138,
     "vsMedian": -22.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 5
    },
    {
     "key": "gold10",
@@ -1527,7 +1529,9 @@
     "n": 138,
     "vsMedian": -67.5,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 46
    },
    {
     "key": "xp10",
@@ -1539,7 +1543,9 @@
     "n": 138,
     "vsMedian": 322.5,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 74
    },
    {
     "key": "cs15",
@@ -1551,7 +1557,9 @@
     "n": 138,
     "vsMedian": -23.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 12
    },
    {
     "key": "gold15",
@@ -1563,7 +1571,9 @@
     "n": 138,
     "vsMedian": -320.5,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 41
    },
    {
     "key": "xp15",
@@ -1575,7 +1585,9 @@
     "n": 138,
     "vsMedian": 461.0,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 72
    },
    {
     "key": "goldDiff15",
@@ -1587,7 +1599,9 @@
     "n": 138,
     "vsMedian": 1252.0,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 73
    },
    {
     "key": "csDiff15",
@@ -1599,7 +1613,9 @@
     "n": 138,
     "vsMedian": -18.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 22
    },
    {
     "key": "dmg15",
@@ -1611,7 +1627,9 @@
     "n": 138,
     "vsMedian": -435.0,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 38
    },
    {
     "key": "dpm",
@@ -1623,7 +1641,9 @@
     "n": 138,
     "vsMedian": -2.6,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 48
    },
    {
     "key": "vspm",
@@ -1635,7 +1655,9 @@
     "n": 138,
     "vsMedian": -0.11,
     "band": "중간 50%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 37
    },
    {
     "key": "core1Time",
@@ -1647,7 +1669,9 @@
     "n": 138,
     "vsMedian": 40.0,
     "band": "중간 50%",
-    "lowerIsBetter": true
+    "lowerIsBetter": true,
+    "dir": -1,
+    "pct": 35
    },
    {
     "key": "core2Time",
@@ -1659,8 +1683,29 @@
     "n": 126,
     "vsMedian": 53.5,
     "band": "중간 50%",
-    "lowerIsBetter": true
+    "lowerIsBetter": true,
+    "dir": -1,
+    "pct": 33
    }
+  ],
+  "missing": [
+   "xpDiff15",
+   "gpm",
+   "kp",
+   "deaths",
+   "d14",
+   "solo",
+   "takenPm",
+   "ccTime",
+   "wardsPm",
+   "wardsKilledPm",
+   "ctrl",
+   "ward1",
+   "wards14",
+   "plates",
+   "botPlates",
+   "back1",
+   "back1Gold"
   ],
   "build": {
    "mine": "정수 약탈자 → 나보리 명멸검",
@@ -1692,15 +1737,143 @@
     {
      "name": "치명적 속도 + 영감",
      "share": 58.7,
-     "n": 81
+     "n": 81,
+     "winRate": 60.5
     },
     {
      "name": "정복자 + 영감",
      "share": 38.4,
-     "n": 53
+     "n": 53,
+     "winRate": 49.1
     }
    ]
   },
+  "slots": [
+   {
+    "mine": {
+     "name": "정수 약탈자",
+     "id": 3508,
+     "time": 689
+    },
+    "rank": 2,
+    "top": [
+     {
+      "name": "윤 탈 야생화살",
+      "id": 3032,
+      "share": 64.5,
+      "winRate": 56.2,
+      "n": 89,
+      "time": 644.0
+     },
+     {
+      "name": "정수 약탈자",
+      "id": 3508,
+      "share": 22.5,
+      "winRate": 61.3,
+      "n": 31,
+      "time": 675.0
+     },
+     {
+      "name": "징수의 총",
+      "id": 6676,
+      "share": 10.1,
+      "winRate": 35.7,
+      "n": 14,
+      "time": 651.0
+     }
+    ]
+   },
+   {
+    "mine": {
+     "name": "나보리 명멸검",
+     "id": 6675,
+     "time": 1070
+    },
+    "rank": 1,
+    "top": [
+     {
+      "name": "나보리 명멸검",
+      "id": 6675,
+      "share": 88.4,
+      "winRate": 56.6,
+      "n": 122,
+      "time": 1018.0
+     }
+    ]
+   },
+   {
+    "mine": {
+     "name": "무한의 대검",
+     "id": 3031,
+     "time": 1439
+    },
+    "rank": 1,
+    "top": [
+     {
+      "name": "무한의 대검",
+      "id": 3031,
+      "share": 55.8,
+      "winRate": 59.7,
+      "n": 77,
+      "time": 1352.0
+     }
+    ]
+   }
+  ],
+  "spells": {
+   "rank": 1,
+   "top": [
+    {
+     "name": "점멸 + 방어막",
+     "share": 42.8,
+     "winRate": 50.8,
+     "n": 59
+    },
+    {
+     "name": "탈진 + 점멸",
+     "share": 37.7,
+     "winRate": 57.7,
+     "n": 52
+    },
+    {
+     "name": "정화 + 점멸",
+     "share": 11.6,
+     "winRate": 56.2,
+     "n": 16
+    }
+   ]
+  },
+  "lengthWin": [
+   {
+    "from": 0,
+    "to": 25,
+    "n": 50,
+    "winRate": 48.0,
+    "here": false
+   },
+   {
+    "from": 25,
+    "to": 30,
+    "n": 39,
+    "winRate": 66.7,
+    "here": false
+   },
+   {
+    "from": 30,
+    "to": 35,
+    "n": 34,
+    "winRate": 52.9,
+    "here": false
+   },
+   {
+    "from": 35,
+    "to": 99,
+    "n": 15,
+    "winRate": 60.0,
+    "here": true
+   }
+  ],
+  "objectives": {},
   "support": {
    "mineAtBotShare": 0.42,
    "medianAtBotShare": 0.5,

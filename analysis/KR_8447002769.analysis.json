@@ -1631,7 +1631,9 @@
     "n": 101,
     "vsMedian": -32.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 2
    },
    {
     "key": "gold10",
@@ -1643,7 +1645,9 @@
     "n": 101,
     "vsMedian": -1315.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 1
    },
    {
     "key": "xp10",
@@ -1655,7 +1659,9 @@
     "n": 101,
     "vsMedian": -811.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 3
    },
    {
     "key": "cs15",
@@ -1667,7 +1673,9 @@
     "n": 101,
     "vsMedian": -49.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 1
    },
    {
     "key": "gold15",
@@ -1679,7 +1687,9 @@
     "n": 101,
     "vsMedian": -2046.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 1
    },
    {
     "key": "xp15",
@@ -1691,7 +1701,9 @@
     "n": 101,
     "vsMedian": -815.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 12
    },
    {
     "key": "goldDiff15",
@@ -1703,7 +1715,9 @@
     "n": 101,
     "vsMedian": -5947.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 2
    },
    {
     "key": "csDiff15",
@@ -1715,7 +1729,9 @@
     "n": 101,
     "vsMedian": -65.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 2
    },
    {
     "key": "dmg15",
@@ -1727,7 +1743,9 @@
     "n": 101,
     "vsMedian": -3349.0,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 8
    },
    {
     "key": "dpm",
@@ -1739,7 +1757,9 @@
     "n": 101,
     "vsMedian": -468.6,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 3
    },
    {
     "key": "vspm",
@@ -1751,7 +1771,9 @@
     "n": 101,
     "vsMedian": -0.25,
     "band": "하위 25%",
-    "lowerIsBetter": false
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 6
    },
    {
     "key": "core1Time",
@@ -1763,7 +1785,9 @@
     "n": 99,
     "vsMedian": 100.0,
     "band": "하위 25%",
-    "lowerIsBetter": true
+    "lowerIsBetter": true,
+    "dir": -1,
+    "pct": 23
    },
    {
     "key": "core2Time",
@@ -1775,8 +1799,29 @@
     "n": 93,
     "vsMedian": 405.0,
     "band": "하위 25%",
-    "lowerIsBetter": true
+    "lowerIsBetter": true,
+    "dir": -1,
+    "pct": 0
    }
+  ],
+  "missing": [
+   "xpDiff15",
+   "gpm",
+   "kp",
+   "deaths",
+   "d14",
+   "solo",
+   "takenPm",
+   "ccTime",
+   "wardsPm",
+   "wardsKilledPm",
+   "ctrl",
+   "ward1",
+   "wards14",
+   "plates",
+   "botPlates",
+   "back1",
+   "back1Gold"
   ],
   "build": {
    "mine": "마법광학 장치 C44 → 루난의 허리케인",
@@ -1808,15 +1853,147 @@
     {
      "name": "치명적 속도 + 영감",
      "share": 82.2,
-     "n": 83
+     "n": 83,
+     "winRate": 57.8
     },
     {
      "name": "치명적 속도 + 마법",
      "share": 14.9,
-     "n": 15
+     "n": 15,
+     "winRate": 53.3
     }
    ]
   },
+  "slots": [
+   {
+    "mine": {
+     "name": "마법광학 장치 C44",
+     "id": 2523,
+     "time": 798
+    },
+    "rank": 1,
+    "top": [
+     {
+      "name": "마법광학 장치 C44",
+      "id": 2523,
+      "share": 71.3,
+      "winRate": 54.2,
+      "n": 72,
+      "time": 700.5
+     },
+     {
+      "name": "윤 탈 야생화살",
+      "id": 3032,
+      "share": 14.9,
+      "winRate": 80.0,
+      "n": 15,
+      "time": 664.0
+     }
+    ]
+   },
+   {
+    "mine": {
+     "name": "루난의 허리케인",
+     "id": 3085,
+     "time": 1440
+    },
+    "rank": 1,
+    "top": [
+     {
+      "name": "루난의 허리케인",
+      "id": 3085,
+      "share": 65.3,
+      "winRate": 60.6,
+      "n": 66,
+      "time": 1034.0
+     },
+     {
+      "name": "유령 무희",
+      "id": 3046,
+      "share": 20.8,
+      "winRate": 47.6,
+      "n": 21,
+      "time": 1054.0
+     }
+    ]
+   },
+   {
+    "mine": null,
+    "rank": null,
+    "top": [
+     {
+      "name": "무한의 대검",
+      "id": 3031,
+      "share": 53.5,
+      "winRate": 66.7,
+      "n": 54,
+      "time": 1388.5
+     },
+     {
+      "name": "도미닉 경의 인사",
+      "id": 3036,
+      "share": 11.9,
+      "winRate": 58.3,
+      "n": 12,
+      "time": 1417.5
+     }
+    ]
+   }
+  ],
+  "spells": {
+   "rank": 1,
+   "top": [
+    {
+     "name": "점멸 + 방어막",
+     "share": 55.4,
+     "winRate": 51.8,
+     "n": 56
+    },
+    {
+     "name": "정화 + 점멸",
+     "share": 16.8,
+     "winRate": 47.1,
+     "n": 17
+    },
+    {
+     "name": "탈진 + 점멸",
+     "share": 16.8,
+     "winRate": 76.5,
+     "n": 17
+    }
+   ]
+  },
+  "lengthWin": [
+   {
+    "from": 0,
+    "to": 25,
+    "n": 34,
+    "winRate": 52.9,
+    "here": false
+   },
+   {
+    "from": 25,
+    "to": 30,
+    "n": 33,
+    "winRate": 57.6,
+    "here": true
+   },
+   {
+    "from": 30,
+    "to": 35,
+    "n": 22,
+    "winRate": 63.6,
+    "here": false
+   },
+   {
+    "from": 35,
+    "to": 99,
+    "n": 12,
+    "winRate": 41.7,
+    "here": false
+   }
+  ],
+  "objectives": {},
   "support": {
    "mineAtBotShare": 0.17,
    "medianAtBotShare": 0.5,

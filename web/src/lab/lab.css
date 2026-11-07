@@ -1,0 +1,89 @@
+/* 실험 페이지 전용. 색과 간격은 report.css 변수를 그대로 써요. */
+.lab-intro { margin: var(--s-5) 0; padding: var(--s-4) var(--s-5); background: var(--dark); color: var(--on-dark); }
+.lab-intro b { font-size: 16px; }
+.lab-intro p { margin-top: 6px; color: var(--on-dark-2); font-size: 14px; }
+.lab-intro .lab-src { margin: 0 2px; }
+
+.lab-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+.lab-card.is-wide { grid-column: 1 / -1; }
+@media (max-width: 860px) { .lab-grid { grid-template-columns: 1fr; } }
+.lab-head { display: flex; align-items: center; gap: var(--s-2); }
+.lab-head h3 { font-size: 15px; font-weight: 800; }
+.lab-id { display: inline-flex; align-items: center; height: 22px; padding: 0 7px; background: var(--ink); color: var(--on-dark); font-size: 12px; font-weight: 700; }
+.lab-meta { margin: 6px 0 var(--s-4); font-size: 12px; color: var(--text-3); display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap; }
+.lab-src { display: inline-flex; align-items: center; height: 20px; padding: 0 6px; font-size: 11px; font-weight: 700; border: 1px solid var(--line); color: var(--text-2); background: var(--panel); }
+.lab-src.src-bench { background: var(--mint-soft); border-color: var(--mint-soft); color: var(--ink); }
+.lab-src.src-none { background: var(--bg); color: var(--text-3); border-style: dashed; }
+.lab-note { margin-top: var(--s-3); font-size: 13px; color: var(--text-3); }
+.lab-empty { padding: var(--s-4); background: var(--bg); color: var(--text-3); font-size: 14px; }
+.lab-tbl td, .lab-tbl th { padding: 8px 10px; }
+.lab-tbl tr.is-opp td { color: var(--opp); }
+.lab-tbl tr.is-me td { background: var(--mint-soft); color: var(--ink); }
+.lab-tbl tr.lab-split td { padding: 0; border-bottom: 2px solid var(--line); }
+.neg-dark { color: var(--ink); font-weight: 700; }
+.lab-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--s-4); }
+.lab-facts > div { display: flex; flex-direction: column; }
+.lab-facts b { font-size: 20px; font-family: var(--font-num); }
+
+/* 플레이 스타일 그래프 */
+.lab-radar-wrap { display: grid; grid-template-columns: 300px 1fr; gap: var(--s-4); align-items: center; }
+@media (max-width: 640px) { .lab-radar-wrap { grid-template-columns: 1fr; } }
+.lab-radar { width: 100%; max-width: 300px; overflow: visible; }
+.rd-ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.rd-mid { fill: none; stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 3 3; }
+.rd-me { fill: var(--mint); fill-opacity: 0.35; stroke: var(--mint-ink); stroke-width: 2; }
+.rd-dot { fill: var(--mint-ink); }
+.rd-axis { font: 700 13px var(--font-sans); fill: var(--ink); }
+.rd-val { font: 700 12px var(--font-num); fill: var(--mint-ink); }
+.rd-label.is-none .rd-axis, .rd-label.is-none .rd-val { fill: var(--text-3); font-weight: 400; }
+.rd-parts { display: grid; gap: 6px; font-size: 14px; }
+
+/* 백분위 막대, 기준 범위 */
+.pct-list { display: grid; gap: 8px; }
+.pct-row, .rg-row { display: grid; grid-template-columns: 170px 1fr 150px; gap: var(--s-3); align-items: center; font-size: 13px; }
+@media (max-width: 640px) { .pct-row, .rg-row { grid-template-columns: 1fr 1fr; } .pct-track, .rg-track { grid-column: 1 / -1; grid-row: 2; } }
+.pct-track { position: relative; height: 10px; background: var(--bg); }
+.pct-track i { position: absolute; top: -2px; bottom: -2px; width: 1px; background: var(--line); }
+.pct-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--line); }
+.is-good .pct-fill { background: var(--mint); }
+.is-bad .pct-fill { background: var(--dark); }
+.pct-text { text-align: right; font-weight: 700; }
+.is-good .pct-text { color: var(--mint-ink); }
+.rg-track { position: relative; height: 16px; border-bottom: 1px solid var(--line); }
+.rg-box { position: absolute; top: 3px; height: 10px; background: var(--opp-soft); border: 1px solid var(--line); }
+.rg-med { position: absolute; top: 0; height: 16px; width: 2px; background: var(--text-3); }
+.rg-me { position: absolute; top: 3px; width: 10px; height: 10px; margin-left: -5px; background: var(--ink); }
+.rg-row.is-good .rg-me { background: var(--mint-ink); }
+.rg-nums { text-align: right; }
+
+/* 차이 그래프 */
+.lab-tabs { display: flex; gap: 0; margin-bottom: var(--s-3); flex-wrap: wrap; }
+.lab-tabs button { font: 700 13px var(--font-sans); padding: 6px 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text-2); cursor: pointer; margin-right: -1px; }
+.lab-tabs button.on { background: var(--ink); color: var(--on-dark); border-color: var(--ink); }
+.lab-diff { width: 100%; height: auto; }
+.dc-up { fill: var(--mint-soft); }
+.dc-dn { fill: var(--opp-soft); }
+.dc-zero { stroke: var(--line); }
+.dc-line { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.dc-ax { font-size: 13px; fill: var(--text-3); }
+
+/* 귀환, 피해 구성, 코어 칸, 길이별 승률 */
+.back-row { display: flex; align-items: center; gap: var(--s-2); padding: 8px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+.back-items { display: inline-flex; gap: 2px; }
+.mix-row { display: grid; grid-template-columns: 60px 1fr; gap: 6px var(--s-3); align-items: center; margin-bottom: var(--s-3); }
+.mix-row > .small { grid-column: 2; color: var(--text-2); }
+.mix-bar { display: flex; height: 14px; }
+.mix-bar.is-ours .mx-0 { background: var(--mint-ink); } .mix-bar.is-ours .mx-1 { background: var(--mint); } .mix-bar.is-ours .mx-2 { background: var(--mint-soft); }
+.mix-bar.is-theirs .mx-0 { background: var(--text-2); } .mix-bar.is-theirs .mx-1 { background: var(--opp); } .mix-bar.is-theirs .mx-2 { background: var(--line); }
+.slot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); }
+@media (max-width: 760px) { .slot-grid { grid-template-columns: 1fr; } }
+.slot-mine { display: flex; align-items: center; gap: 6px; margin: 6px 0; flex-wrap: wrap; }
+.slot-top { margin: 6px 0 var(--s-3); padding-left: 18px; font-size: 13px; display: grid; gap: 4px; }
+.len-bars { display: flex; gap: var(--s-3); align-items: flex-end; height: 150px; }
+.len { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px; }
+.len-bar { width: 100%; background: var(--opp-soft); }
+.len.is-here .len-bar { background: var(--ink); }
+.len-v { font-weight: 700; font-size: 13px; }
+.memo-skel { display: grid; gap: var(--s-2); }
+.memo-skel > div { display: grid; grid-template-columns: 60px 1fr; align-items: center; gap: var(--s-3); }
+.skel { height: 14px; background: var(--bg); border: 1px dashed var(--line); }

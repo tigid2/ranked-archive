@@ -122,7 +122,7 @@ def api_get(path, key, params=None, host="asia"):
 
 # ---------------------------------------------------------------- 게임 데이터(아이템·챔피언 이름)
 
-DD = {"item": {}, "champ": {}, "rune": {}, "style": {}, "version": None}
+DD = {"item": {}, "champ": {}, "rune": {}, "style": {}, "spell": {}, "version": None}
 
 
 def load_dd():
@@ -130,7 +130,7 @@ def load_dd():
     try:
         ver = http_json("https://ddragon.leagueoflegends.com/api/versions.json")[0]
         base = f"https://ddragon.leagueoflegends.com/cdn/{ver}/data/ko_KR"
-        item, champ, runes = (http_json(f"{base}/{n}.json") for n in ("item", "champion", "runesReforged"))
+        item, champ, runes, summ = (http_json(f"{base}/{n}.json") for n in ("item", "champion", "runesReforged", "summoner"))
         DD["version"] = ver
     except Exception as e:  # noqa: BLE001
         print(f"  Data Dragon을 못 받아서 저장소 파일을 써요: {e}")
@@ -138,9 +138,11 @@ def load_dd():
         item = json.load(open(os.path.join(d, "dd_item.json"), encoding="utf-8"))
         champ = json.load(open(os.path.join(d, "dd_champion.json"), encoding="utf-8"))
         runes = json.load(open(os.path.join(d, "dd_runesReforged.json"), encoding="utf-8"))
+        summ = json.load(open(os.path.join(d, "dd_summoner.json"), encoding="utf-8"))
         DD["version"] = item.get("version")
     DD["item"] = {int(k): v for k, v in item["data"].items()}
     DD["champ"] = {k: v["name"] for k, v in champ["data"].items()}
+    DD["spell"] = {int(v["key"]): v["name"] for v in summ["data"].values()}
     for st in runes:
         DD["style"][st["id"]] = st["name"]
         for slot in st["slots"]:
@@ -166,6 +168,73 @@ def patch_of(version):
 
 def bot(pos):  # analyze.py의 BOT과 같은 기준 (1분 위치라 대략적)
     return pos["x"] > 9000 and pos["y"] < 6000
+
+
+ROW_VERSION = 2  # 2: 생존·전투·시야·방패·귀환·오브젝트 숫자(x 칸)를 같이 저장
+
+
+def extra_stats(match, timeline, pid):
+    """v2에서 늘린 숫자들. lab(실험 페이지)도 이 함수로 이 판 숫자를 계산해요."""
+    info = match["info"]
+    frames = timeline["info"]["frames"]
+    me = next(p for p in info["participants"] if p["participantId"] == pid)
+    ch = me.get("challenges", {})
+    mins = info["gameDuration"] / 60
+    team = next((t for t in info.get("teams", []) if t["teamId"] == me["teamId"]), {})
+    ob = team.get("objectives", {})
+    dmg = max(me["totalDamageDealtToChampions"], 1)
+    x = {"k": me["kills"], "d": me["deaths"], "a": me["assists"],
+         "kp": round(ch.get("killParticipation", 0) * 100, 1), "solo": ch.get("soloKills", 0),
+         "spree": me.get("largestKillingSpree", 0), "gpm": round(me["goldEarned"] / mins, 1),
+         "taken": me["totalDamageTaken"], "mitig": me["damageSelfMitigated"], "heal": me["totalHeal"],
+         "cc": me.get("timeCCingOthers", 0),
+         "phys": round(me["physicalDamageDealtToChampions"] / dmg, 3),
+         "magic": round(me["magicDamageDealtToChampions"] / dmg, 3),
+         "true": round(me["trueDamageDealtToChampions"] / dmg, 3),
+         "wards": me["wardsPlaced"], "wardsKilled": me["wardsKilled"], "ctrl": me.get("visionWardsBoughtInGame", 0),
+         "fb": ob.get("champion", {}).get("first"), "ft": ob.get("tower", {}).get("first"),
+         "fd": ob.get("dragon", {}).get("first")}
+    d14, ward1, wards14, back1, deaths = 0, None, 0, None, []
+
+    def spent(m):  # m분~m+1분 사이에 쓴 골드. 퀘스트로 받는 공짜 아이템은 0이라 귀환 찾기에서 걸러져요.
+        if m + 1 >= len(frames):
+            return 0
+        a, b = frames[m]["participantFrames"][str(pid)], frames[m + 1]["participantFrames"][str(pid)]
+        return (b["totalGold"] - a["totalGold"]) - (b["currentGold"] - a["currentGold"])
+    plates, bot_taken, bot_lost = 0, 0, 0
+    for f in frames:
+        for e in f["events"]:
+            ts = e.get("timestamp", 0)
+            if e["type"] == "CHAMPION_KILL" and e.get("victimId") == pid:
+                deaths.append(ts)
+                d14 += ts < 14 * 60000
+            elif e["type"] == "WARD_PLACED" and e.get("creatorId") == pid and e.get("wardType") != "UNDEFINED":
+                ward1 = ts if ward1 is None else ward1
+                wards14 += ts < 14 * 60000
+            elif e["type"] == "TURRET_PLATE_DESTROYED":
+                # teamId는 방패를 잃은 쪽이에요. killerId 0은 미니언이 깬 것.
+                plates += e.get("killerId") == pid
+                if e.get("laneType") == "BOT_LANE":
+                    bot_taken += e.get("teamId") != me["teamId"]
+                    bot_lost += e.get("teamId") == me["teamId"]
+            elif e["type"] == "ITEM_PURCHASED" and e.get("participantId") == pid and ts > 90000 and back1 is None \
+                    and spent(ts // 60000) >= 200:
+                # 귀환 이벤트가 없어서, 시작 아이템 뒤 골드를 실제로 쓴 첫 구매를 첫 귀환으로 봐요(죽어서 산 것도 포함).
+                back1 = ts
+    x["d14"] = d14
+    x["plates"], x["botPlates"], x["botPlatesLost"] = plates, bot_taken, bot_lost
+    x["ward1"] = ward1 // 1000 if ward1 is not None else None
+    x["wards14"] = wards14
+    if back1 is not None:
+        m = min(back1 // 60000, len(frames) - 2)
+        f0 = frames[m]["participantFrames"][str(pid)]
+        f1 = frames[m + 1]["participantFrames"][str(pid)]
+        frac = (back1 - m * 60000) / 60000
+        # 1분 기록 사이를 이어서 짐작한 값이라 대략적이에요.
+        x["back1"] = back1 // 1000
+        x["back1Gold"] = int(round((f0["currentGold"] + (f1["totalGold"] - f0["totalGold"]) * frac) / 10) * 10)
+        x["back1Death"] = any(t < back1 for t in deaths)
+    return x
 
 
 def extract_row(match, timeline, pid, tier=None):
@@ -202,6 +271,7 @@ def extract_row(match, timeline, pid, tier=None):
         row["opp"] = opp["championName"]
         row["oppGold15"] = pf(15, opp["participantId"])["totalGold"]
         row["oppCs15"] = cs(15, opp["participantId"])
+        row["oppXp15"] = pf(15, opp["participantId"])["xp"]
 
     # 완성 아이템 순서 (구매 취소는 빼요)
     bought = []
@@ -239,7 +309,62 @@ def extract_row(match, timeline, pid, tier=None):
             t["min"] += 1
             t["cs"] += cs(m + 1, pid) - cs(m, pid)
         row["sup"] = {"withMin": w["min"], "withCs": w["cs"], "withoutMin": wo["min"], "withoutCs": wo["cs"]}
+    row["v"] = ROW_VERSION
+    row["x"] = extra_stats(match, timeline, pid)
     return row
+
+
+# ---------------------------------------------------------------- 지표 목록
+# (키, 이름, 방향: 1 = 높을수록 좋음, -1 = 낮을수록 좋음, 0 = 좋고 나쁨 없음, 한 줄에서 값 꺼내기)
+# 요약(summarize)과 analyze.py의 "기준 대비"가 모두 이 목록을 써요.
+def _x(k):
+    return lambda r: r.get("x", {}).get(k)
+
+
+def _per_min(k):
+    return lambda r: round(r["x"][k] / (r["dur"] / 60), 2) if "x" in r else None
+
+
+def _diff(a, b, t="t15"):
+    return lambda r: r[t][a] - r[b] if b in r else None
+
+
+METRICS = [
+    ("cs10", "10분 CS", 1, lambda r: r["t10"]["cs"]),
+    ("gold10", "10분 골드", 1, lambda r: r["t10"]["gold"]),
+    ("xp10", "10분 경험치", 1, lambda r: r["t10"]["xp"]),
+    ("cs15", "15분 CS", 1, lambda r: r["t15"]["cs"]),
+    ("gold15", "15분 골드", 1, lambda r: r["t15"]["gold"]),
+    ("xp15", "15분 경험치", 1, lambda r: r["t15"]["xp"]),
+    ("goldDiff15", "15분 맞라인 골드 차이", 1, _diff("gold", "oppGold15")),
+    ("csDiff15", "15분 맞라인 CS 차이", 1, _diff("cs", "oppCs15")),
+    ("xpDiff15", "15분 맞라인 경험치 차이", 1, _diff("xp", "oppXp15")),
+    ("dmg15", "15분까지 챔피언 피해", 1, lambda r: r["t15"]["dmg"]),
+    ("dpm", "분당 챔피언 피해", 1, lambda r: r["dpm"]),
+    ("vspm", "분당 시야 점수", 1, lambda r: r["vspm"]),
+    ("core1Time", "첫 코어 완성", -1, lambda r: r["items"][0][1] if len(r["items"]) >= 1 else None),
+    ("core2Time", "두 번째 코어 완성", -1, lambda r: r["items"][1][1] if len(r["items"]) >= 2 else None),
+    ("gpm", "분당 골드", 1, _x("gpm")),
+    ("kp", "킬 관여율(%)", 1, _x("kp")),
+    ("deaths", "죽음", -1, _x("d")),
+    ("d14", "14분 전 죽음", -1, _x("d14")),
+    ("solo", "솔로 킬", 1, _x("solo")),
+    ("takenPm", "분당 받은 피해", 0, _per_min("taken")),
+    ("ccTime", "CC 건 시간(초)", 1, _x("cc")),
+    ("wardsPm", "분당 와드 설치", 1, _per_min("wards")),
+    ("wardsKilledPm", "분당 와드 제거", 1, _per_min("wardsKilled")),
+    ("ctrl", "제어 와드 구매", 1, _x("ctrl")),
+    ("ward1", "첫 와드 시간", -1, _x("ward1")),
+    ("wards14", "14분 전 와드 설치", 1, _x("wards14")),
+    ("plates", "내가 깬 포탑 방패", 1, _x("plates")),
+    ("botPlates", "바텀에서 깬 방패(팀)", 1, _x("botPlates")),
+    ("back1", "첫 귀환 시간", 0, _x("back1")),
+    ("back1Gold", "첫 귀환 때 골드", 1, _x("back1Gold")),
+]
+
+
+def metric_values(row):
+    return {k: f(row) for k, _, _, f in METRICS}
 
 
 def usable(match, timeline=None):
@@ -297,18 +422,24 @@ def summarize(champ, rows):
          "tiers": TIERS, "updatedAt": datetime.now(KST).strftime("%Y-%m-%d %H:%M"), "games": len(rows),
          "winRate": win_rate(rows), "minN": MIN_N,
          "note": "기준 티어는 판을 찾은 참가자의 티어예요. 같은 판의 원딜 티어는 조금 다를 수 있어요."}
-    m = {}
-    for t in ("t10", "t15"):
-        for k in ("cs", "gold", "xp"):
-            m[f"{k}{t[1:]}"] = stat([r[t][k] for r in rows])
-    m["dmg15"] = stat([r["t15"]["dmg"] for r in rows])
-    m["dpm"] = stat([r["dpm"] for r in rows])
-    m["vspm"] = stat([r["vspm"] for r in rows])
-    m["goldDiff15"] = stat([r["t15"]["gold"] - r["oppGold15"] for r in rows if "oppGold15" in r])
-    m["csDiff15"] = stat([r["t15"]["cs"] - r["oppCs15"] for r in rows if "oppCs15" in r])
-    m["core1Time"] = stat([r["items"][0][1] for r in rows if len(r["items"]) >= 1])
-    m["core2Time"] = stat([r["items"][1][1] for r in rows if len(r["items"]) >= 2])
-    s["metrics"] = m
+    vals = [metric_values(r) for r in rows]
+    s["metrics"] = {k: stat([v[k] for v in vals]) for k, _, _, _ in METRICS}
+
+    # 게임 길이별 승률
+    buckets = [(0, 25), (25, 30), (30, 35), (35, 99)]
+    s["lengthWin"] = []
+    for lo, hi in buckets:
+        b = [r for r in rows if lo * 60 <= r["dur"] < hi * 60]
+        s["lengthWin"].append({"from": lo, "to": hi, "n": len(b), "winRate": win_rate(b)})
+
+    # 첫 킬·첫 포탑·첫 용을 우리 팀이 가져간 비율과 그때 승률 (v2 줄만)
+    v2 = [r for r in rows if "x" in r]
+    s["objectives"] = {}
+    for k in ("fb", "ft", "fd"):
+        got = [r for r in v2 if r["x"].get(k)]
+        lost = [r for r in v2 if r["x"].get(k) is False]
+        s["objectives"][k] = {"n": len(v2), "share": round(100 * len(got) / len(v2), 1) if v2 else None,
+                              "winWith": win_rate(got), "winWithout": win_rate(lost)}
 
     # 서폿이 바텀에 있던 비율, 서폿 있을 때/없을 때 분당 CS
     sr = [r["sup"] for r in rows if "sup" in r]
@@ -329,7 +460,7 @@ def summarize(champ, rows):
          for o, v in by_opp.items() if len(v) >= 3], key=lambda x: -x["n"])
 
     # 빌드: 첫 코어, 첫 두 코어 순서, 핵심 룬
-    def ranking(keyf, namef, top):
+    def ranking(keyf, namef, top, timef=None):
         g = collections.defaultdict(list)
         for r in rows:
             k = keyf(r)
@@ -337,9 +468,21 @@ def summarize(champ, rows):
                 g[k].append(r)
         out = [{"key": list(k) if isinstance(k, tuple) else k, "name": namef(k), "n": len(v),
                 "share": round(100 * len(v) / len(rows), 1), "winRate": win_rate(v)} for k, v in g.items()]
+        if timef:
+            for o in out:
+                o["time"] = stat([timef(r) for r in g[tuple(o["key"]) if isinstance(o["key"], list) else o["key"]]])["median"]
         return sorted(out, key=lambda x: -x["n"])[:top]
+
+    def slot(i):
+        return lambda r: r["items"][i][0] if len(r["items"]) > i else None
+
+    def slot_t(i):
+        return lambda r: r["items"][i][1] if len(r["items"]) > i else None
     s["builds"] = {
-        "core1": ranking(lambda r: r["items"][0][0] if r["items"] else None, item_name, 6),
+        "core1": ranking(slot(0), item_name, 6, slot_t(0)),
+        "core2": ranking(slot(1), item_name, 6, slot_t(1)),
+        "core3": ranking(slot(2), item_name, 6, slot_t(2)),
+        "spells": ranking(lambda r: tuple(r["spells"]), lambda k: " + ".join(DD["spell"].get(i, str(i)) for i in k), 4),
         "core12": ranking(lambda r: tuple(i for i, _ in r["items"][:2]) if len(r["items"]) >= 2 else None,
                           lambda k: " → ".join(item_name(i) for i in k), 8),
         "keystone": ranking(lambda r: (r["keystone"], r["styles"][1]),
@@ -358,7 +501,13 @@ def load_rows(champ):
     p = rows_path(champ)
     if not os.path.exists(p):
         return []
-    return [json.loads(line) for line in open(p, encoding="utf-8") if line.strip()]
+    # 같은 판이 두 번 있으면(예전 줄을 v2로 다시 받은 경우) 나중 줄을 써요.
+    by = {}
+    for line in open(p, encoding="utf-8"):
+        if line.strip():
+            r = json.loads(line)
+            by[r["mid"]] = r
+    return list(by.values())
 
 
 def append_row(champ, row):
@@ -391,9 +540,11 @@ def collect():
     start_time = int((datetime.now(timezone.utc) - timedelta(days=DAYS)).timestamp())
 
     existing = {c: load_rows(c) for c in CHAMPS}
-    done_mids = {r["mid"] for rows in existing.values() for r in rows}
-    count = {c: sum(1 for r in existing[c] if patch is None or r["patch"] == patch) for c in CHAMPS}
-    per_player = collections.Counter((c, r["ph"]) for c in CHAMPS for r in existing[c])
+    # 예전(v1) 줄은 새 숫자가 없어서, 다시 만나면 받아서 v2로 바꿔요. 목표 판 수도 v2 줄만 세요.
+    cur = {c: [r for r in existing[c] if r.get("v", 1) >= ROW_VERSION] for c in CHAMPS}
+    done_mids = {r["mid"] for rows in cur.values() for r in rows}
+    count = {c: sum(1 for r in cur[c] if patch is None or r["patch"] == patch) for c in CHAMPS}
+    per_player = collections.Counter((c, r["ph"]) for c in CHAMPS for r in cur[c])
     print("  이미 있는 판:", ", ".join(f"{c} {count[c]}" for c in CHAMPS))
 
     # 1) 참가자 목록

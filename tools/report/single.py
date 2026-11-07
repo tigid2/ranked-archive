@@ -63,7 +63,7 @@ def font_faces(text):
     return "".join(faces)
 
 
-def main(mid, out=None):
+def main(mid, out=None, lab=False):
     if not os.path.exists(APP):
         sys.exit("web/dist-single/index.html이 없어요. 먼저 (cd web && npm run build:single) 을 실행해 주세요.")
     app = open(APP, encoding="utf-8").read()
@@ -71,15 +71,20 @@ def main(mid, out=None):
     assets = {r: u for r in sorted(refs(data, set())) if (u := fetch(r))}
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     js = ("<script>window.__REPORT__=" + blob.replace("</", "<\\/") + ";window.__ASSETS__="
-          + json.dumps(assets, separators=(",", ":")) + ";</script>")
+          + json.dumps(assets, separators=(",", ":")) + (";window.__LAB__=true" if lab else "") + ";</script>")
     title = f'{data["me"]["n"]} {"승리" if data["hero"]["win"] else "패배"} 리포트'
     html = app.replace("<title>경기 리포트</title>", f"<title>{title}</title>")
     html = html.replace("/*FONTS*/", font_faces(app + blob))
     html = html.replace('<div id="root"></div>', '<div id="root"></div>' + js, 1)
-    out = out or os.path.join(HERE, mid + "_single.html")
+    if lab:
+        title = "실험 · " + title
+        html = html.replace(f"<title>{title[5:]}</title>", f"<title>{title}</title>")
+    out = out or os.path.join(HERE, mid + ("_lab" if lab else "") + "_single.html")
     open(out, "w", encoding="utf-8").write(html)
     print(f"{os.path.relpath(out, ROOT)}: 아이콘 {len(assets)}개, {len(html) // 1024} KB")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None)
+    # python3 tools/report/single.py <경기ID> [저장할 곳] [--lab]   --lab: 실험 페이지로
+    a = [x for x in sys.argv[1:] if x != "--lab"]
+    main(a[0], a[1] if len(a) > 1 else None, lab="--lab" in sys.argv)

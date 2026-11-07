@@ -50,6 +50,9 @@ POS_KO = {"TOP": "탑", "JUNGLE": "정글", "MIDDLE": "미드", "BOTTOM": "원�
 # ---------- 아이콘 주소 ----------
 # 주소는 Data Dragon CDN(https://ddragon.leagueoflegends.com/cdn/) 기준 경로로만 적어요.
 # 화면은 이 앞에 CDN 주소를 붙이고, artifact용 한 파일은 이 경로로 그림을 받아 파일 안에 넣어요.
+from lab_data import build_lab  # noqa: E402
+
+
 def champ(key, name=None):
     if not key:
         n = name or "?"
@@ -373,6 +376,8 @@ def build(mid, champ_id=None):
         "me": champ(CHAMP), "opp": champ(OPP["championName"]), "oppWith": josa(champ(OPP["championName"])["n"]),
         "hero": hero, "flow": flow_out, "lane": lane, "deaths": deaths, "team": teams, "build": build_out,
         "feedback": FB,
+        # 실험 페이지(?lab=1)용. 기존 리포트 화면은 읽지 않아요.
+        "lab": build_lab(raw, A, ME, OPP, item, champ),
     }
 
 

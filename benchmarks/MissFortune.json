@@ -8,7 +8,7 @@
   "EMERALD",
   "DIAMOND"
  ],
- "updatedAt": "2026-11-08 00:30",
+ "updatedAt": "2026-11-08 04:17",
  "games": 71,
  "winRate": 47.9,
  "minN": {
@@ -60,6 +60,23 @@
    "median": 5661.0,
    "p75": 6316.5
   },
+  "goldDiff15": {
+   "n": 71,
+   "mean": 243.2,
+   "p25": -1041.0,
+   "median": 0.0,
+   "p75": 1424.0
+  },
+  "csDiff15": {
+   "n": 71,
+   "mean": 4.55,
+   "p25": -15.0,
+   "median": 3.0,
+   "p75": 24.0
+  },
+  "xpDiff15": {
+   "n": 0
+  },
   "dmg15": {
    "n": 71,
    "mean": 8667.5,
@@ -81,20 +98,6 @@
    "median": 0.69,
    "p75": 0.85
   },
-  "goldDiff15": {
-   "n": 71,
-   "mean": 243.2,
-   "p25": -1041.0,
-   "median": 0.0,
-   "p75": 1424.0
-  },
-  "csDiff15": {
-   "n": 71,
-   "mean": 4.55,
-   "p25": -15.0,
-   "median": 3.0,
-   "p75": 24.0
-  },
   "core1Time": {
    "n": 71,
    "mean": 681.6,
@@ -108,6 +111,97 @@
    "p25": 932.0,
    "median": 1034.0,
    "p75": 1154.0
+  },
+  "gpm": {
+   "n": 0
+  },
+  "kp": {
+   "n": 0
+  },
+  "deaths": {
+   "n": 0
+  },
+  "d14": {
+   "n": 0
+  },
+  "solo": {
+   "n": 0
+  },
+  "takenPm": {
+   "n": 0
+  },
+  "ccTime": {
+   "n": 0
+  },
+  "wardsPm": {
+   "n": 0
+  },
+  "wardsKilledPm": {
+   "n": 0
+  },
+  "ctrl": {
+   "n": 0
+  },
+  "ward1": {
+   "n": 0
+  },
+  "wards14": {
+   "n": 0
+  },
+  "plates": {
+   "n": 0
+  },
+  "back1": {
+   "n": 0
+  },
+  "back1Gold": {
+   "n": 0
+  }
+ },
+ "lengthWin": [
+  {
+   "from": 0,
+   "to": 25,
+   "n": 20,
+   "winRate": 55.0
+  },
+  {
+   "from": 25,
+   "to": 30,
+   "n": 24,
+   "winRate": 37.5
+  },
+  {
+   "from": 30,
+   "to": 35,
+   "n": 15,
+   "winRate": 46.7
+  },
+  {
+   "from": 35,
+   "to": 99,
+   "n": 12,
+   "winRate": 58.3
+  }
+ ],
+ "objectives": {
+  "fb": {
+   "n": 0,
+   "share": null,
+   "winWith": null,
+   "winWithout": null
+  },
+  "ft": {
+   "n": 0,
+   "share": null,
+   "winWith": null,
+   "winWithout": null
+  },
+  "fd": {
+   "n": 0,
+   "share": null,
+   "winWith": null,
+   "winWithout": null
   }
  },
  "support": {
@@ -212,42 +306,180 @@
     "name": "피바라기",
     "n": 41,
     "share": 57.7,
-    "winRate": 53.7
+    "winRate": 53.7,
+    "time": 719.0
    },
    {
     "key": 3142,
     "name": "요우무의 유령검",
     "n": 12,
     "share": 16.9,
-    "winRate": 75.0
+    "winRate": 75.0,
+    "time": 576.5
    },
    {
     "key": 6697,
     "name": "오만",
     "n": 10,
     "share": 14.1,
-    "winRate": 20.0
+    "winRate": 20.0,
+    "time": 627.5
    },
    {
     "key": 6676,
     "name": "징수의 총",
     "n": 5,
     "share": 7.0,
-    "winRate": 0.0
+    "winRate": 0.0,
+    "time": 693.0
    },
    {
     "key": 3508,
     "name": "정수 약탈자",
     "n": 1,
     "share": 1.4,
-    "winRate": 0.0
+    "winRate": 0.0,
+    "time": 914.0
    },
    {
     "key": 6695,
     "name": "독사의 송곳니",
     "n": 1,
     "share": 1.4,
-    "winRate": 100.0
+    "winRate": 100.0,
+    "time": 532.0
+   }
+  ],
+  "core2": [
+   {
+    "key": 6676,
+    "name": "징수의 총",
+    "n": 51,
+    "share": 71.8,
+    "winRate": 51.0,
+    "time": 1026.0
+   },
+   {
+    "key": 3814,
+    "name": "밤의 끝자락",
+    "n": 4,
+    "share": 5.6,
+    "winRate": 50.0,
+    "time": 1030.0
+   },
+   {
+    "key": 3031,
+    "name": "무한의 대검",
+    "n": 3,
+    "share": 4.2,
+    "winRate": 0.0,
+    "time": 1154.0
+   },
+   {
+    "key": 6697,
+    "name": "오만",
+    "n": 2,
+    "share": 2.8,
+    "winRate": 0.0,
+    "time": 1148.0
+   },
+   {
+    "key": 3072,
+    "name": "피바라기",
+    "n": 2,
+    "share": 2.8,
+    "winRate": 50.0,
+    "time": 1162.0
+   },
+   {
+    "key": 3004,
+    "name": "마나무네",
+    "n": 1,
+    "share": 1.4,
+    "winRate": 100.0,
+    "time": 879.0
+   }
+  ],
+  "core3": [
+   {
+    "key": 3031,
+    "name": "무한의 대검",
+    "n": 32,
+    "share": 45.1,
+    "winRate": 53.1,
+    "time": 1359.5
+   },
+   {
+    "key": 3036,
+    "name": "도미닉 경의 인사",
+    "n": 9,
+    "share": 12.7,
+    "winRate": 66.7,
+    "time": 1288.0
+   },
+   {
+    "key": 3094,
+    "name": "고속 연사포",
+    "n": 1,
+    "share": 1.4,
+    "winRate": 100.0,
+    "time": 1394.0
+   },
+   {
+    "key": 3814,
+    "name": "밤의 끝자락",
+    "n": 1,
+    "share": 1.4,
+    "winRate": 0.0,
+    "time": 1306.0
+   },
+   {
+    "key": 6676,
+    "name": "징수의 총",
+    "n": 1,
+    "share": 1.4,
+    "winRate": 100.0,
+    "time": 1033.0
+   },
+   {
+    "key": 3026,
+    "name": "수호 천사",
+    "n": 1,
+    "share": 1.4,
+    "winRate": 0.0,
+    "time": 1589.0
+   }
+  ],
+  "spells": [
+   {
+    "key": [
+     4,
+     21
+    ],
+    "name": "점멸 + 방어막",
+    "n": 50,
+    "share": 70.4,
+    "winRate": 48.0
+   },
+   {
+    "key": [
+     3,
+     4
+    ],
+    "name": "탈진 + 점멸",
+    "n": 14,
+    "share": 19.7,
+    "winRate": 50.0
+   },
+   {
+    "key": [
+     1,
+     4
+    ],
+    "name": "정화 + 점멸",
+    "n": 7,
+    "share": 9.9,
+    "winRate": 42.9
    }
   ],
   "core12": [

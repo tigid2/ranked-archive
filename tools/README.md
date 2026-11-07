@@ -10,7 +10,7 @@
 | `feedback/` | 판별 피드백 글(`<경기ID>.json`) |
 | `data/` | Data Dragon 데이터(`dd_*.json`), 흑백 지도(`map11_gray.png`) |
 | `tools/report/` | 리포트 데이터 만들기 `report_data.py`, artifact용 한 파일 `single.py`, 스타일 `report.css`(React 화면도 이 파일을 그대로 써요), 예전 생성기 `build2.py` |
-| `web/` | React 리포트 화면(Vite). 빌드하면 `docs/report/`에 저장돼요. |
+| `web/` | React 리포트 화면(Vite). 빌드하면 `docs/report/`에 저장돼요. 실험 페이지(`?lab=1`)는 `web/src/lab/`, 데이터는 `tools/report/lab_data.py`. |
 | `docs/report-data/` | 판별 리포트 데이터(`<경기ID>.json`, 닉네임 없음)와 목록 `index.json`. 화면이 열릴 때 읽어요. |
 | `tools/index/` | 기록 목록(첫 페이지) 시안 |
 | `tools/fonts/` | 리포트에 넣는 글꼴 2개(Pretendard, Archivo, 둘 다 OFL) |
@@ -42,6 +42,7 @@ python3 tools/report/report_data.py KR_8448036968        # 한 판만
 cd web && npm ci && npm run build && cd ..                # GitHub Pages용 → docs/report/
 cd web && npm run build:single && cd ..                   # artifact용 틀 → web/dist-single/
 python3 tools/report/single.py KR_8448036968              # artifact에 올릴 한 파일 → tools/report/KR_8448036968_single.html
+python3 tools/report/single.py KR_8448036968 --lab        # 실험 페이지 한 파일 → tools/report/KR_8448036968_lab_single.html
 
 # 기준 데이터: 저장소 원본 경기로 뽑기 시험(키 필요 없음) / 쌓인 줄로 요약만 다시 만들기
 python3 scripts/benchmarks.py test
