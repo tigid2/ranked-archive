@@ -1494,7 +1494,220 @@
   }
  },
  "benchmark": {
-  "available": false,
-  "reason": "이 챔피언의 기준 데이터가 아직 없어요."
+  "available": true,
+  "games": 138,
+  "patches": [
+   "16.22"
+  ],
+  "tiers": [
+   "EMERALD",
+   "DIAMOND"
+  ],
+  "samePatch": true,
+  "metrics": [
+   {
+    "key": "cs10",
+    "label": "10분 CS",
+    "mine": 56,
+    "median": 78.0,
+    "p25": 69.2,
+    "p75": 83.0,
+    "n": 138,
+    "vsMedian": -22.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "gold10",
+    "label": "10분 골드",
+    "mine": 3755,
+    "median": 3822.5,
+    "p25": 3390.2,
+    "p75": 4243.5,
+    "n": 138,
+    "vsMedian": -67.5,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "xp10",
+    "label": "10분 경험치",
+    "mine": 3829,
+    "median": 3506.5,
+    "p25": 3199.5,
+    "p75": 3832.0,
+    "n": 138,
+    "vsMedian": 322.5,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "cs15",
+    "label": "15분 CS",
+    "mine": 98,
+    "median": 121.0,
+    "p25": 108.0,
+    "p75": 130.0,
+    "n": 138,
+    "vsMedian": -23.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "gold15",
+    "label": "15분 골드",
+    "mine": 6210,
+    "median": 6530.5,
+    "p25": 5805.0,
+    "p75": 7368.2,
+    "n": 138,
+    "vsMedian": -320.5,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "xp15",
+    "label": "15분 경험치",
+    "mine": 6308,
+    "median": 5847.0,
+    "p25": 5267.8,
+    "p75": 6501.8,
+    "n": 138,
+    "vsMedian": 461.0,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "goldDiff15",
+    "label": "15분 맞라인 골드 차이",
+    "mine": 1245,
+    "median": -7.0,
+    "p25": -1387.2,
+    "p75": 1330.5,
+    "n": 138,
+    "vsMedian": 1252.0,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "csDiff15",
+    "label": "15분 맞라인 CS 차이",
+    "mine": -20,
+    "median": -2.0,
+    "p25": -19.0,
+    "p75": 17.5,
+    "n": 138,
+    "vsMedian": -18.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "dmg15",
+    "label": "15분까지 챔피언 피해",
+    "mine": 7542,
+    "median": 7977.0,
+    "p25": 6543.2,
+    "p75": 9841.8,
+    "n": 138,
+    "vsMedian": -435.0,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "dpm",
+    "label": "분당 챔피언 피해",
+    "mine": 782.2,
+    "median": 784.8,
+    "p25": 595.9,
+    "p75": 1071.6,
+    "n": 138,
+    "vsMedian": -2.6,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "vspm",
+    "label": "분당 시야 점수",
+    "mine": 0.602,
+    "median": 0.71,
+    "p25": 0.54,
+    "p75": 0.96,
+    "n": 138,
+    "vsMedian": -0.11,
+    "band": "중간 50%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "core1Time",
+    "label": "첫 코어 완성",
+    "mine": 689,
+    "median": 649.0,
+    "p25": 586.0,
+    "p75": 729.8,
+    "n": 138,
+    "vsMedian": 40.0,
+    "band": "중간 50%",
+    "lowerIsBetter": true
+   },
+   {
+    "key": "core2Time",
+    "label": "두 번째 코어 완성",
+    "mine": 1070,
+    "median": 1016.5,
+    "p25": 912.8,
+    "p75": 1105.5,
+    "n": 126,
+    "vsMedian": 53.5,
+    "band": "중간 50%",
+    "lowerIsBetter": true
+   }
+  ],
+  "build": {
+   "mine": "정수 약탈자 → 나보리 명멸검",
+   "rank": 2,
+   "top": [
+    {
+     "name": "윤 탈 야생화살 → 나보리 명멸검",
+     "share": 60.1,
+     "winRate": 56.6,
+     "n": 83
+    },
+    {
+     "name": "정수 약탈자 → 나보리 명멸검",
+     "share": 18.8,
+     "winRate": 65.4,
+     "n": 26
+    },
+    {
+     "name": "징수의 총 → 나보리 명멸검",
+     "share": 7.2,
+     "winRate": 30.0,
+     "n": 10
+    }
+   ]
+  },
+  "keystone": {
+   "rank": 1,
+   "top": [
+    {
+     "name": "치명적 속도 + 영감",
+     "share": 58.7,
+     "n": 81
+    },
+    {
+     "name": "정복자 + 영감",
+     "share": 38.4,
+     "n": 53
+    }
+   ]
+  },
+  "support": {
+   "mineAtBotShare": 0.42,
+   "medianAtBotShare": 0.5,
+   "mineCsPerMinWith": 8.2,
+   "medianCsPerMinWith": 8.67,
+   "mineCsPerMinWithout": 5.86,
+   "medianCsPerMinWithout": 8.0
+  }
  }
 }

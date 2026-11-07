@@ -14,6 +14,7 @@ KR 솔로 랭크 에메랄드~다이아 경기에서 원딜 챔피언(기본: �
   BM_CHAMPS(Jinx,Ashe,MissFortune,Xayah), BM_TIERS(EMERALD,DIAMOND), BM_PATCH(auto = 최신 패치만, any = 전부)
 """
 import collections
+import http.client
 import glob
 import gzip
 import hashlib
@@ -113,7 +114,8 @@ def api_get(path, key, params=None, host="asia"):
             if e.code in (401, 403):
                 raise KeyExpired(path)
             raise ApiError(e.code, path)
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException, ValueError):
+            # 연결이 끊기거나 응답이 중간에 잘려서(JSON이 깨짐) 오는 경우가 있어요(11-07 첫 실행이 이걸로 멈춤). 다시 받아요.
             time.sleep(3)
     raise ApiError(503, path)
 
@@ -414,9 +416,10 @@ def collect():
         find_games(key, seeds, patch, start_time, deadline, count, per_player, done_mids, stats)
     except KeyExpired:
         print("  도중에 API 키가 만료돼서 여기까지 모은 걸로 요약할게요.")
-    print(f"끝: {stats['checked']}판 확인, {stats['kept']}판 저장, 요청 {LIMIT.count}번")
-    print("  패치별 판 수:", ", ".join(f"{c} {count[c]}" for c in CHAMPS))
-    write_summaries()
+    finally:  # 도중에 다른 오류로 멈춰도 모은 데까지는 요약해요
+        print(f"끝: {stats['checked']}판 확인, {stats['kept']}판 저장, 요청 {LIMIT.count}번")
+        print("  패치별 판 수:", ", ".join(f"{c} {count[c]}" for c in CHAMPS))
+        write_summaries()
 
 
 def find_games(key, seeds, patch, start_time, deadline, count, per_player, done_mids, stats):
@@ -459,7 +462,11 @@ def find_games(key, seeds, patch, start_time, deadline, count, per_player, done_
                 continue
             for p in cand:
                 c = p["championName"]
-                row = extract_row(m, t, p["participantId"], tier)
+                try:
+                    row = extract_row(m, t, p["participantId"], tier)
+                except Exception as e:  # 이상한 판 하나 때문에 전체가 멈추지 않게 건너뛰어요
+                    print(f"  {mid} 숫자 뽑기 실패, 건너뜀: {type(e).__name__} {e}")
+                    continue
                 append_row(c, row)
                 count[c] += 1
                 per_player[(c, row["ph"])] += 1

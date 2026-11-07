@@ -1610,7 +1610,220 @@
   }
  },
  "benchmark": {
-  "available": false,
-  "reason": "이 챔피언의 기준 데이터가 아직 없어요."
+  "available": true,
+  "games": 101,
+  "patches": [
+   "16.22"
+  ],
+  "tiers": [
+   "EMERALD",
+   "DIAMOND"
+  ],
+  "samePatch": true,
+  "metrics": [
+   {
+    "key": "cs10",
+    "label": "10분 CS",
+    "mine": 45,
+    "median": 77.0,
+    "p25": 67.0,
+    "p75": 84.0,
+    "n": 101,
+    "vsMedian": -32.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "gold10",
+    "label": "10분 골드",
+    "mine": 2443,
+    "median": 3758.0,
+    "p25": 3298.0,
+    "p75": 4227.0,
+    "n": 101,
+    "vsMedian": -1315.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "xp10",
+    "label": "10분 경험치",
+    "mine": 2639,
+    "median": 3450.0,
+    "p25": 3128.0,
+    "p75": 3662.0,
+    "n": 101,
+    "vsMedian": -811.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "cs15",
+    "label": "15분 CS",
+    "mine": 67,
+    "median": 116.0,
+    "p25": 102.0,
+    "p75": 127.0,
+    "n": 101,
+    "vsMedian": -49.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "gold15",
+    "label": "15분 골드",
+    "mine": 4164,
+    "median": 6210.0,
+    "p25": 5507.0,
+    "p75": 7347.0,
+    "n": 101,
+    "vsMedian": -2046.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "xp15",
+    "label": "15분 경험치",
+    "mine": 4605,
+    "median": 5420.0,
+    "p25": 4952.0,
+    "p75": 5985.0,
+    "n": 101,
+    "vsMedian": -815.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "goldDiff15",
+    "label": "15분 맞라인 골드 차이",
+    "mine": -6177,
+    "median": -230.0,
+    "p25": -1850.0,
+    "p75": 1123.0,
+    "n": 101,
+    "vsMedian": -5947.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "csDiff15",
+    "label": "15분 맞라인 CS 차이",
+    "mine": -68,
+    "median": -3.0,
+    "p25": -28.0,
+    "p75": 7.0,
+    "n": 101,
+    "vsMedian": -65.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "dmg15",
+    "label": "15분까지 챔피언 피해",
+    "mine": 3494,
+    "median": 6843.0,
+    "p25": 5106.0,
+    "p75": 9128.0,
+    "n": 101,
+    "vsMedian": -3349.0,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "dpm",
+    "label": "분당 챔피언 피해",
+    "mine": 305.3,
+    "median": 773.9,
+    "p25": 526.9,
+    "p75": 1146.6,
+    "n": 101,
+    "vsMedian": -468.6,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "vspm",
+    "label": "분당 시야 점수",
+    "mine": 0.441,
+    "median": 0.69,
+    "p25": 0.56,
+    "p75": 0.86,
+    "n": 101,
+    "vsMedian": -0.25,
+    "band": "하위 25%",
+    "lowerIsBetter": false
+   },
+   {
+    "key": "core1Time",
+    "label": "첫 코어 완성",
+    "mine": 798,
+    "median": 698.0,
+    "p25": 612.0,
+    "p75": 786.0,
+    "n": 99,
+    "vsMedian": 100.0,
+    "band": "하위 25%",
+    "lowerIsBetter": true
+   },
+   {
+    "key": "core2Time",
+    "label": "두 번째 코어 완성",
+    "mine": 1440,
+    "median": 1035.0,
+    "p25": 943.0,
+    "p75": 1150.0,
+    "n": 93,
+    "vsMedian": 405.0,
+    "band": "하위 25%",
+    "lowerIsBetter": true
+   }
+  ],
+  "build": {
+   "mine": "마법광학 장치 C44 → 루난의 허리케인",
+   "rank": 1,
+   "top": [
+    {
+     "name": "마법광학 장치 C44 → 루난의 허리케인",
+     "share": 50.5,
+     "winRate": 62.7,
+     "n": 51
+    },
+    {
+     "name": "마법광학 장치 C44 → 유령 무희",
+     "share": 14.9,
+     "winRate": 40.0,
+     "n": 15
+    },
+    {
+     "name": "윤 탈 야생화살 → 루난의 허리케인",
+     "share": 9.9,
+     "winRate": 70.0,
+     "n": 10
+    }
+   ]
+  },
+  "keystone": {
+   "rank": 1,
+   "top": [
+    {
+     "name": "치명적 속도 + 영감",
+     "share": 82.2,
+     "n": 83
+    },
+    {
+     "name": "치명적 속도 + 마법",
+     "share": 14.9,
+     "n": 15
+    }
+   ]
+  },
+  "support": {
+   "mineAtBotShare": 0.17,
+   "medianAtBotShare": 0.5,
+   "mineCsPerMinWith": 6.0,
+   "medianCsPerMinWith": 7.85,
+   "mineCsPerMinWithout": 4.2,
+   "medianCsPerMinWithout": 7.82
+  }
  }
 }
