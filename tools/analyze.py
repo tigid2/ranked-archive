@@ -294,6 +294,10 @@ def analyze(raw, champ_id, live=None):
             if ld and abs(ld["t"] * 1000 - d["tMs"]) <= 6000:
                 d["live"] = {"gold": ld.get("gold"), "hpFlow": ld.get("hpFlow"), "spells": ld.get("spells")}
     out["deaths"] = deaths
+    # 미니맵 기록이 있으면 죽음마다 "죽인 적이 보였는지, 적 정글 마지막 위치, 주변 안개"를 붙여요
+    if live and live.get("minimap"):
+        out["minimap"] = minimap_view(live["minimap"], live.get("deaths", []), parts, frames, events, my, team, by,
+                                      deaths, nm)
 
     # 내 킬·어시
     out["myKills"] = [{"t": mmss(k["t"]), "victim": nm(k["victim"]), "zone": zone(*k["pos"], team),
@@ -371,6 +375,230 @@ def analyze(raw, champ_id, live=None):
     if pos == "BOTTOM":
         out["benchmark"] = vs_benchmark(raw, my, me["championName"], m["gameVersion"])
     return out
+
+
+# ---------------------------------------------------------------- 미니맵 (게임 중 기록)
+
+MM_FIT_SCORE = 80   # 좌표를 맞출 때 쓰는 확실한 아이콘 점수(0~100)
+MM_SEEN_SCORE = 60  # 이 점수 이상이고 자리도 그럴듯하면 "미니맵에 보였다"고 봐요
+MM_FOG = 0.7        # 그 자리가 가장 밝았을 때보다 이 비율 아래로 어두우면 안개(시야 없음)로 봐요
+MM_RING = (1300, 2600)  # 안개를 보는 범위: 내 주변 이 거리(맵 단위) 사이. 내 시야(약 1200) 바로 바깥이에요
+MAP_MAX = 14870
+
+
+def _norm(s):
+    return "".join(ch for ch in (s or "").lower() if ch.isalnum())
+
+
+def _fit1(pairs):
+    """한 축의 직선 맞추기: 맵 좌표 = a × 화면 위치 + b"""
+    n = len(pairs)
+    sx = sum(p for p, _ in pairs)
+    sy = sum(g for _, g in pairs)
+    sxx = sum(p * p for p, _ in pairs)
+    sxy = sum(p * g for p, g in pairs)
+    den = n * sxx - sx * sx
+    if not den:
+        return None
+    a = (n * sxy - sx * sy) / den
+    return a, (sy - a * sx) / n
+
+
+def _unpack(s, size):
+    import base64
+    import zlib
+    b = zlib.decompress(base64.b64decode(s))
+    return b if len(b) == size * size else None
+
+
+def minimap_view(mm, live_deaths, parts, frames, events, my, team, by, deaths, nm):
+    """기록 프로그램이 남긴 미니맵 기록으로 죽음마다 이런 걸 알아내요.
+    ① 나를 죽인 적이 죽기 몇 초 전부터 미니맵에 보였는지 ② 적 정글이 마지막으로 보인 때와 자리
+    ③ 죽을 때 내 주변(내 시야 바로 바깥)이 얼마나 안개였는지.
+    미니맵의 화면 위치는 기록하지 않았으니, Riot 1분 위치 기록과 맞춰서 맵 좌표로 바꿔요."""
+    import bisect
+    res = {"available": False}
+    players = mm.get("players") or []
+    fr = mm.get("frames") or []
+    if not players or len(fr) < 60:
+        res["reason"] = "미니맵 기록이 거의 없음"
+        return res
+    by_name = {}
+    for p in parts:
+        by_name.setdefault(_norm(p["championName"]), []).append(p)
+    pid_of = {}
+    for i, pl in enumerate(players):
+        c = by_name.get(_norm(pl["key"]))
+        if c and len(c) == 1 and (c[0]["teamId"] == team) == bool(pl["ally"]):
+            pid_of[i] = c[0]["participantId"]
+    if len(pid_of) < 6:
+        res["reason"] = "챔피언 이름을 맞추지 못함"
+        return res
+    idx_of = {v: k for k, v in pid_of.items()}
+    times = [f[0] for f in fr]
+
+    def near(t, tol):
+        k = bisect.bisect_left(times, t)
+        best = None
+        for j in (k - 1, k):
+            if 0 <= j < len(times) and abs(times[j] - t) <= tol and (best is None or abs(times[j] - t) < abs(times[best] - t)):
+                best = j
+        return best
+
+    # 1) 좌표 맞추기: 1분마다 Riot이 준 위치와, 그 순간 미니맵에서 찾은 아이콘 위치
+    pts = []
+    for f in frames[1:]:
+        j = near(f["timestamp"] / 1000, 1.0)
+        if j is None:
+            continue
+        for i, x, y, s in fr[j][1]:
+            pf = f["participantFrames"].get(str(pid_of.get(i)))
+            if s >= MM_FIT_SCORE and pf:
+                pts.append((x, y, pf["position"]["x"], pf["position"]["y"]))
+
+    def errs(fx, fy, ps):
+        return [math.hypot(fx[0] * p[0] + fx[1] - p[2], fy[0] * p[1] + fy[1] - p[3]) for p in ps]
+
+    fx = fy = None
+    for _ in range(4):
+        if len(pts) < 8:
+            break
+        fx, fy = _fit1([(p[0], p[2]) for p in pts]), _fit1([(p[1], p[3]) for p in pts])
+        if not fx or not fy:
+            break
+        e = errs(fx, fy, pts)
+        med = sorted(e)[len(e) // 2]
+        keep = [p for p, v in zip(pts, e) if v <= max(900, 2.5 * med)]
+        if len(keep) == len(pts):
+            break
+        pts = keep
+    if not fx or not fy or len(pts) < 8:
+        res["reason"] = f"좌표를 맞출 점이 부족함({len(pts)}개)"
+        return res
+    e = sorted(errs(fx, fy, pts))
+    med = e[len(e) // 2]
+    ratio = abs(fx[0] / fy[0]) if fy[0] else 0
+    if not (fx[0] > 0 and fy[0] < 0 and 0.8 <= ratio <= 1.25 and med <= 1200):
+        res["reason"] = f"좌표가 맞지 않음(오차 중앙값 {round(med)}, 축 비율 {ratio:.2f})"
+        return res
+    res.update(available=True, fitPoints=len(pts), fitErrMedian=round(med), unitsPerPx=round(fx[0], 1),
+               iconSize=mm.get("size"), msAvg=mm.get("msAvg"))
+
+    def to_map(x, y):
+        return fx[0] * x + fx[1], fy[0] * y + fy[1]
+
+    # 2) 미니맵에 보인 기록. 잘못 찾은 아이콘을 두 가지로 걸러요.
+    #   - 1분 기록 바로 근처(15초 안)인데 Riot 위치와 너무 멀면 빼요.
+    #   - 2.5초 안에 가까운 자리에서 다시 찾히지 않으면 빼요. 진짜 아이콘은 이어서 보이고, 잘못 찾은 건 여기저기 튀어요.
+    cand = {i: [] for i in pid_of}
+    dropped = 0
+    for t, dets in fr:
+        for i, x, y, s in dets:
+            if s < MM_SEEN_SCORE or i not in pid_of:
+                continue
+            gx, gy = to_map(x, y)
+            if not (-600 <= gx <= MAP_MAX + 600 and -600 <= gy <= MAP_MAX + 600):
+                dropped += 1
+                continue
+            ok = True
+            for kk in (int(t // 60), int(t // 60) + 1):
+                if 0 <= kk < len(frames):
+                    pf = frames[kk]["participantFrames"].get(str(pid_of[i]))
+                    dt = abs(frames[kk]["timestamp"] / 1000 - t)
+                    if pf and dt <= 15 and math.hypot(gx - pf["position"]["x"], gy - pf["position"]["y"]) > 550 * dt + 1500:
+                        ok = False
+            if ok:
+                cand[i].append((t, gx, gy))
+            else:
+                dropped += 1
+    seen = {}
+    for i, lst in cand.items():
+        keep = []
+        for k, (t, gx, gy) in enumerate(lst):
+            nb = [lst[j] for j in (k - 1, k + 1) if 0 <= j < len(lst) and 0 < abs(lst[j][0] - t) <= 2.5]
+            if any(math.hypot(gx - q[1], gy - q[2]) <= 800 * abs(q[0] - t) + 400 for q in nb):
+                keep.append((t, gx, gy))
+            else:
+                dropped += 1
+        seen[i] = keep
+    res["droppedDetections"] = dropped
+
+    def seen_info(pid, t):
+        lst = seen.get(idx_of.get(pid))
+        if lst is None:
+            return {"seenFor": None, "lastSeenAgo": None}
+        ts = [x[0] for x in lst]
+        k = bisect.bisect_right(ts, t + 0.5) - 1
+        if k < 0:
+            return {"seenFor": 0, "lastSeenAgo": None}
+        if t - ts[k] <= 2.0:
+            j = k
+            while j > 0 and ts[j] - ts[j - 1] <= 2.5 and t - ts[j - 1] <= 30:
+                j -= 1
+            return {"seenFor": round(t - ts[j], 1), "lastSeenAgo": 0}
+        return {"seenFor": 0, "lastSeenAgo": round(t - ts[k], 1)}
+
+    ej = next((p for p in parts if p["teamId"] != team and p.get("teamPosition") == "JUNGLE"), None)
+    for d in deaths:
+        t = d["tMs"] / 1000
+        if near(t - 1.5, 2.0) is None:
+            d["minimap"] = {"recorded": False}
+            continue
+        ev = next((x for x in events if x["type"] == "CHAMPION_KILL" and x.get("victimId") == my
+                   and abs(x["timestamp"] - d["tMs"]) < 1500), None)
+        ids = ([ev.get("killerId")] + (ev.get("assistingParticipantIds") or [])) if ev else []
+        enemies = [x for x in ids if x in by and by[x]["teamId"] != team]
+        info = {"recorded": True,
+                "enemies": [{"name": nm(pid), "killer": pid == (ev or {}).get("killerId"), **seen_info(pid, t)}
+                            for pid in enemies]}
+        if ej and ej["participantId"] in idx_of:
+            lst = [x for x in seen[idx_of[ej["participantId"]]] if x[0] <= t + 0.5]
+            info["enemyJungle"] = {"name": nm(ej["participantId"]), "inKill": ej["participantId"] in enemies,
+                                   "lastSeenAgo": max(0.0, round(t - lst[-1][0], 1)) if lst else None,
+                                   "lastSeenZone": zone(lst[-1][1], lst[-1][2], team) if lst else None}
+        # 3) 안개: 죽기 직전 밝기와 가장 밝았던 밝기를 비교해요. 내 자리는 Riot 킬 기록의 위치(정확한 값)를 써요
+        ld = min(live_deaths, key=lambda x: abs(x["t"] * 1000 - d["tMs"]), default=None)
+        snap = (ld or {}).get("minimap") if ld and abs(ld["t"] * 1000 - d["tMs"]) <= 6000 else None
+        side = mm.get("regionSide")
+        if snap and ev and side:
+            info["fog"] = _fog(snap, ev["position"], fx, fy, side)
+        d["minimap"] = info
+    return res
+
+
+def _fog(snap, pos, fx, fy, side):
+    size = snap.get("size") or 96
+    cur, ref = _unpack(snap["cur"], size), _unpack(snap["ref"], size)
+    if not cur or not ref:
+        return None
+    k = size / side                       # 줄인 그림 1칸 = 영역 1/k px
+    upx = abs(fx[0]) / k                  # 줄인 그림 1칸이 맵에서 몇 단위인지
+    cx, cy = (pos["x"] - fx[1]) / fx[0] * k, (pos["y"] - fy[1]) / fy[0] * k
+    r0, r1 = MM_RING[0] / upx, MM_RING[1] / upx
+    ring = inner = ring_fog = inner_fog = 0
+    for y in range(max(0, int(cy - r1) - 1), min(size, int(cy + r1) + 2)):
+        for x in range(max(0, int(cx - r1) - 1), min(size, int(cx + r1) + 2)):
+            r = math.hypot(x - cx, y - cy)
+            if r > r1:
+                continue
+            gx, gy = fx[0] * x / k + fx[1], fy[0] * y / k + fy[1]
+            if not (0 <= gx <= MAP_MAX and 0 <= gy <= MAP_MAX):
+                continue
+            rv = ref[y * size + x]
+            if rv < 25:
+                continue
+            dark = cur[y * size + x] < MM_FOG * rv
+            if r < r0 * 0.6:
+                inner += 1
+                inner_fog += dark
+            elif r >= r0:
+                ring += 1
+                ring_fog += dark
+    if ring < 5:
+        return None
+    # 내 바로 주변은 내 시야라 밝아야 해요. 여기가 어두우면 그림이나 좌표가 틀린 거라 믿지 않아요
+    trusted = inner == 0 or inner_fog / inner <= 0.4
+    return {"share": round(ring_fog / ring, 2), "trusted": trusted}
 
 
 # ---------------------------------------------------------------- 기준 데이터 대비

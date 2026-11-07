@@ -23,6 +23,7 @@ import time
 import traceback
 import urllib.error
 import urllib.request
+import zlib
 from collections import deque
 from datetime import datetime
 
@@ -34,6 +35,7 @@ DEBUG_DIR = os.path.join(HERE, "debug")
 CACHE_DIR = os.path.join(HERE, "cache")
 LOG_PATH = os.path.join(HERE, "logger_log.txt")
 SLOT_CACHE = os.path.join(HERE, "cache", "spell_slots.json")  # 한 번 찾은 스펠 칸 위치 (롤 창 크기별)
+MM_CACHE = os.path.join(HERE, "cache", "minimap.json")  # 한 번 맞춘 미니맵 아이콘 크기 (롤 창 크기별)
 
 LIVE_URL = "https://127.0.0.1:2999/liveclientdata/allgamedata"
 # 롤이 내 컴퓨터 안에서 쓰는 자체 인증서라 확인을 건너뛰어요. 127.0.0.1(내 컴퓨터)에만 쓰여요.
@@ -67,6 +69,9 @@ DEFAULT_CONFIG = {
     "spell_checks_per_second": 4,
     "monitor": 1,
     "save_debug_images": True,
+    "minimap_check": True,
+    "minimap_checks_per_second": 1,
+    "minimap_side": "right",
 }
 
 STEP = 0.1            # 기본 반복 간격(초). 이 간격마다 할 일이 있는지만 확인해요
@@ -665,10 +670,354 @@ class SpellTracker:
         return [h for h in self.history if t - seconds <= h[0] <= t]
 
 
+# ---------------------------------------------------------------- 미니맵 읽기
+
+MM_CALIB_FROM = 60.0        # 이 시간(초) 뒤부터 아이콘 크기를 맞춰요. 게임 시작 때는 우리 팀이 우물에 겹쳐 있어서요
+MM_CALIB_EVERY = 15.0       # 크기 맞추기를 다시 해 보는 간격(초)
+MM_CALIB_ROUNDS = 3         # 이만큼 모아서 가장 잘 맞는 크기를 골라요
+MM_SIZES = list(range(8, 34, 2))  # 아이콘 안쪽 그림 크기 후보(px)
+MM_KEEP = 40                # 이 점수(0~100) 이상인 후보만 기록해요. 진짜로 보였는지는 게임 뒤 analyze.py가 정해요
+MM_SMALL = 96               # 안개(시야) 비교용으로 줄인 미니맵 크기(px)
+MM_CROP = 0.6               # 챔피언 아이콘 가운데 60%만 써요. 미니맵 아이콘의 테두리 색(우리 팀/상대 팀)을 피하려고요
+
+
+class MinimapTracker:
+    """미니맵에서 10명의 챔피언 아이콘을 찾아 위치와 점수를 기록해요. 미니맵에는 우리 팀이 실제로 본 것만 나와요.
+    미니맵의 정확한 위치와 크기는 몰라도 돼요. 화면 오른쪽 아래를 넉넉히 읽고,
+    게임이 끝난 뒤 analyze.py가 Riot의 1분 단위 위치 기록과 맞춰서 맵 좌표로 바꿔요.
+    게임 화면에는 아무것도 띄우지 않아요."""
+
+    def __init__(self, cfg, grab=None, icon_loader=None):
+        self.cv2 = __import__("cv2")
+        self.np = __import__("numpy")
+        if grab is None:
+            import mss
+            self.sct = mss.mss()
+        self._grab_fn = grab
+        self._icon_loader = icon_loader
+        self.side = cfg.get("minimap_side", "right")
+        self.save_debug = cfg.get("save_debug_images", False)
+        self.players = []        # [{"key", "ally", "me"}]
+        self.templates = {}      # 번호 → 아이콘 가운데 부분(원래 크기)
+        self.scaled = {}         # 번호 → 맞춘 크기의 아이콘
+        self.size = None         # 맞춘 아이콘 크기(px)
+        self.size_from_cache = False
+        self.verify_left = 0     # 저장해 둔 크기가 맞는지 확인할 남은 횟수
+        self.calib_sum = {}      # 크기 → 점수 합
+        self.calib_rounds = 0
+        self.calib_tries = 0
+        self.last_calib = -999
+        self.calib_score = None
+        self.region = None       # (left, top, side) 화면 기준
+        self.win = None          # 롤 창 크기 (w, h)
+        self.frames = []         # [게임 시간, [[번호, x, y, 점수], ...]]  x, y는 읽은 영역 안의 위치(px)
+        self.recent = deque(maxlen=15)  # (게임 시간, 줄인 회색 미니맵)
+        self.ref = None          # 칸마다 지금까지 가장 밝았던 값 (시야가 있을 때의 밝기)
+        self.last_full = None    # (게임 시간, 영역 그림, 찾은 것)
+        self.ms = deque(maxlen=300)
+        self.last_ms_log = time.time()
+        self.fail_saved = False
+        self.hidden_logged = False
+
+    # 준비 -----------------------------------------------------------
+    def set_players(self, data):
+        if self.players:
+            return
+        me = find_me(data) or {}
+        my_team = me.get("team")
+        ps = []
+        for p in data.get("allPlayers", []):
+            key = champ_key(p)
+            if key:
+                ps.append({"key": key, "ally": p.get("team") == my_team, "me": p is me})
+        if len(ps) < 2:
+            return
+        self.players = ps
+        threading.Thread(target=self._load_templates, daemon=True).start()
+
+    def _champ_icon(self, key):
+        if self._icon_loader:
+            return self._icon_loader(key)
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        path = os.path.join(CACHE_DIR, f"champ_{key}.png")
+        if not os.path.exists(path):
+            req = urllib.request.Request("https://ddragon.leagueoflegends.com/api/versions.json",
+                                         headers={"User-Agent": "lol-live-logger"})
+            with urllib.request.urlopen(req, timeout=10, context=WEB_CTX) as r:
+                ver = json.loads(r.read().decode("utf-8"))[0]
+            url = f"https://ddragon.leagueoflegends.com/cdn/{ver}/img/champion/{key}.png"
+            req = urllib.request.Request(url, headers={"User-Agent": "lol-live-logger"})
+            with urllib.request.urlopen(req, timeout=10, context=WEB_CTX) as r:
+                data = r.read()
+            with open(path, "wb") as f:
+                f.write(data)
+        return self.cv2.imdecode(self.np.fromfile(path, dtype=self.np.uint8), self.cv2.IMREAD_COLOR)
+
+    def _load_templates(self):
+        for i, p in enumerate(self.players):
+            try:
+                img = self._champ_icon(p["key"])
+                h = img.shape[0]
+                c = int(round(h * (1 - MM_CROP) / 2))
+                self.templates[i] = img[c:h - c, c:h - c].copy()
+            except Exception as e:
+                log(f"미니맵: {p['key']} 아이콘을 받지 못했어요({e}). 이 챔피언은 미니맵에서 찾지 않아요.")
+        log(f"미니맵: 챔피언 아이콘 {len(self.templates)}/{len(self.players)}개 준비")
+
+    def _scale_all(self, size):
+        cv2 = self.cv2
+        self.scaled = {i: cv2.resize(t, (size, size), interpolation=cv2.INTER_AREA) for i, t in self.templates.items()}
+        self.scaled_g = {i: cv2.cvtColor(t, cv2.COLOR_BGR2GRAY) for i, t in self.scaled.items()}
+
+    # 화면 읽기 --------------------------------------------------------
+    def _region(self):
+        """롤 창 오른쪽 아래(설정에 따라 왼쪽 아래)의 정사각형 영역이에요. 미니맵을 가장 크게 해도 들어가는 크기예요."""
+        probe = None
+        if self.region:
+            l, t, z = self.region
+            probe = (l + z * 0.8, t + z * 0.8) if self.side == "right" else (l + z * 0.2, t + z * 0.8)
+        rect = league_window_rect(probe)
+        if rect is None and probe is not None:
+            rect = league_window_rect()
+            if rect is not None:
+                return None  # 미니맵 자리에 다른 창이 있어요
+        if rect is None:
+            return None
+        L, T, W, H = rect
+        z = int(min(0.5 * H, 0.4 * W))
+        left = L + W - z if self.side == "right" else L
+        self.region = (left, T + H - z, z)
+        if self.win != (W, H):
+            if self.win is not None:
+                log(f"미니맵: 롤 창 크기가 {self.win} → {(W, H)}로 바뀌어서 아이콘 크기를 다시 맞출게요.")
+                self._reset_size()
+            self.win = (W, H)
+        return self.region
+
+    def _grab(self, left, top, z):
+        if self._grab_fn:
+            return self._grab_fn(left, top, z)
+        shot = self.sct.grab({"left": int(left), "top": int(top), "width": int(z), "height": int(z)})
+        return self.np.asarray(shot)[:, :, :3].copy()
+
+    def _reset_size(self):
+        self.size, self.scaled = None, {}
+        self.size_from_cache = False
+        self.calib_sum, self.calib_rounds = {}, 0
+
+    # 아이콘 크기 맞추기 ------------------------------------------------
+    def _best(self, frame, tpl):
+        res = self.cv2.matchTemplate(frame, tpl, self.cv2.TM_CCOEFF_NORMED)
+        _, mx, _, loc = self.cv2.minMaxLoc(res)
+        return mx, loc
+
+    def _ally_score(self, gray, size):
+        """우리 팀(나 포함) 아이콘이 이 크기에서 얼마나 잘 맞는지. 우리 팀은 항상 보여서 기준으로 써요.
+        잘 맞는 3명의 평균을 써요(겹치거나 죽은 사람이 있어도 괜찮게). 빠르게 하려고 흑백으로 봐요."""
+        cv2 = self.cv2
+        scores = []
+        for i, p in enumerate(self.players):
+            if p["ally"] and i in self.templates:
+                tpl = cv2.cvtColor(cv2.resize(self.templates[i], (size, size), interpolation=cv2.INTER_AREA),
+                                   cv2.COLOR_BGR2GRAY)
+                scores.append(self._best(gray, tpl)[0])
+        scores.sort(reverse=True)
+        top = scores[:3]
+        return sum(top) / len(top) if top else 0.0
+
+    def _cache_key(self):
+        return f"{self.win[0]}x{self.win[1]}_{self.side}"
+
+    def _load_cached_size(self):
+        try:
+            with open(MM_CACHE, encoding="utf-8") as f:
+                return json.load(f).get(self._cache_key())
+        except Exception:
+            return None
+
+    def _save_cached_size(self):
+        try:
+            os.makedirs(CACHE_DIR, exist_ok=True)
+            try:
+                with open(MM_CACHE, encoding="utf-8") as f:
+                    c = json.load(f)
+            except Exception:
+                c = {}
+            c[self._cache_key()] = self.size
+            with open(MM_CACHE, "w", encoding="utf-8") as f:
+                json.dump(c, f)
+        except Exception:
+            pass
+
+    def _calibrate(self, frame, t):
+        self.last_calib = t
+        gray = self.cv2.cvtColor(frame, self.cv2.COLOR_BGR2GRAY)
+        cached = self._load_cached_size()
+        if cached and not self.calib_rounds and self.calib_tries == 0:
+            self.size, self.size_from_cache, self.verify_left = cached, True, 3
+            self._scale_all(cached)
+            log(f"미니맵: 저장해 둔 아이콘 크기 {cached}px를 써요 (창 {self._cache_key()})")
+            return
+        for z in MM_SIZES:
+            self.calib_sum[z] = self.calib_sum.get(z, 0.0) + self._ally_score(gray, z)
+        self.calib_rounds += 1
+        if self.calib_rounds < MM_CALIB_ROUNDS:
+            return
+        best = max(self.calib_sum, key=self.calib_sum.get)
+        # 2px 간격으로 찾은 뒤 바로 옆 크기도 확인해요
+        near = {z: self._ally_score(gray, z) for z in (best - 1, best, best + 1) if z >= 6}
+        best = max(near, key=near.get)
+        mean = self.calib_sum.get(best, near[best] * MM_CALIB_ROUNDS) / MM_CALIB_ROUNDS
+        self.calib_tries += 1
+        if max(mean, near[best]) < 0.5:
+            log(f"미니맵: 우리 팀 아이콘을 찾지 못했어요(가장 잘 맞은 크기 {best}px, 점수 {near[best]:.2f}). "
+                f"잠시 뒤 다시 해 볼게요. 미니맵을 왼쪽에 두었다면 config.json의 minimap_side를 \"left\"로 바꿔 주세요.")
+            self._save_fail(frame)
+            self.calib_sum, self.calib_rounds = {}, 0
+            return
+        self.size, self.calib_score = best, round(near[best], 2)
+        self._scale_all(best)
+        self._save_cached_size()
+        log(f"미니맵: 아이콘 크기 {best}px로 맞췄어요 (우리 팀 점수 {near[best]:.2f})")
+        self._save_debug("minimap_calib", frame, self._detect(frame), t)
+
+    def _save_fail(self, frame):
+        if self.save_debug and not self.fail_saved:
+            self.fail_saved = True
+            self._write(os.path.join(DEBUG_DIR, f"minimap_fail_{datetime.now():%Y%m%d_%H%M%S}.png"), frame)
+
+    # 찾기 ------------------------------------------------------------
+    def _detect(self, frame):
+        """챔피언마다 흑백으로 가장 닮은 자리 두 곳을 찾고, 그 두 곳만 컬러로 다시 비교해요.
+        (컬러로 전체를 뒤지면 7배쯤 느려요)"""
+        cv2 = self.cv2
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        out = []
+        z = self.size
+        h = z // 2
+        for i, tpl in self.scaled.items():
+            res = cv2.matchTemplate(gray, self.scaled_g[i], cv2.TM_CCOEFF_NORMED)
+            best = (-1.0, None)
+            for _ in range(2):
+                _, mx, _, (x, y) = cv2.minMaxLoc(res)
+                if mx < 0.25:
+                    break
+                cs = float(cv2.matchTemplate(frame[y:y + z, x:x + z], tpl, cv2.TM_CCOEFF_NORMED)[0, 0])
+                if cs > best[0]:
+                    best = (cs, (x, y))
+                res[max(0, y - z):y + z, max(0, x - z):x + z] = -1
+            if best[1] is not None and best[0] * 100 >= MM_KEEP:
+                out.append([i, best[1][0] + h, best[1][1] + h, int(round(best[0] * 100))])
+        return out
+
+    def check(self, t):
+        """1초에 한 번쯤 불러요. 미니맵 영역을 읽고 10명의 아이콘을 찾아 기록해요."""
+        if not self.players or len(self.templates) < len(self.players) // 2:
+            return
+        reg = self._region()
+        if reg is None:
+            if not self.hidden_logged:
+                self.hidden_logged = True
+                log(f"미니맵: 롤 화면이 안 보여서 읽지 못했어요 (보이는 창: {LAST_BLOCKER['name']})")
+            return
+        self.hidden_logged = False
+        t0 = time.perf_counter()
+        frame = self._grab(*reg)
+        cv2, np = self.cv2, self.np
+        small = cv2.resize(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (MM_SMALL, MM_SMALL), interpolation=cv2.INTER_AREA)
+        self.ref = small.copy() if self.ref is None or self.ref.shape != small.shape else np.maximum(self.ref, small)
+        self.recent.append((t, small))
+        if self.size is None:
+            if t >= MM_CALIB_FROM and t - self.last_calib >= MM_CALIB_EVERY:
+                self._calibrate(frame, t)
+            return
+        dets = self._detect(frame)
+        if self.size_from_cache and self.verify_left > 0:
+            self.verify_left -= 1
+            allies = sorted((d[3] for d in dets if self.players[d[0]]["ally"]), reverse=True)[:3]
+            if len(allies) < 2 or sum(allies) / len(allies) < 50:
+                if self.verify_left == 0:
+                    log("미니맵: 저장해 둔 아이콘 크기가 안 맞는 것 같아서 다시 맞출게요.")
+                    self._reset_size()
+                    self.calib_tries = 1  # 저장된 크기를 다시 쓰지 않게
+                    return
+            else:
+                self.verify_left = 0
+        self.frames.append([round(t, 1), dets])
+        self.last_full = (t, frame, dets)
+        self.ms.append((time.perf_counter() - t0) * 1000)
+        if time.time() - self.last_ms_log > 300:
+            self.last_ms_log = time.time()
+            log(f"미니맵: 한 번 읽는 데 평균 {sum(self.ms) / len(self.ms):.0f}ms (최근 {len(self.ms)}번)")
+
+    # 죽을 때 ---------------------------------------------------------
+    @staticmethod
+    def _pack(img):
+        """회색 그림을 압축한 글자로 바꿔요. 분석 쪽에서 파이썬 기본 기능(zlib)만으로 풀 수 있어요."""
+        return base64.b64encode(zlib.compress(img.tobytes(), 9)).decode("ascii")
+
+    def death_snapshot(self, t_death, t_label):
+        """죽기 직전 미니맵의 밝기(줄인 그림)와, 지금까지 가장 밝았던 밝기를 저장해요.
+        둘을 비교하면 그때 어디가 안개(시야 없음)였는지 알 수 있어요."""
+        if self.ref is None:
+            return None
+        before = [r for r in self.recent if r[0] <= t_death + 0.05]
+        if not before:
+            return None
+        tt, small = before[-1]
+        snap = {"t": round(tt, 1), "size": MM_SMALL, "cur": self._pack(small), "ref": self._pack(self.ref)}
+        if self.last_full and self.last_full[0] <= t_death + 0.05:
+            self._save_debug("minimap_death", self.last_full[1], self.last_full[2], t_label)
+        return snap
+
+    def _write(self, path, img):
+        try:
+            os.makedirs(DEBUG_DIR, exist_ok=True)
+            ok, buf = self.cv2.imencode(".png", img)
+            if ok:
+                with open(path, "wb") as f:
+                    f.write(buf.tobytes())
+        except Exception as e:
+            log(f"미니맵 이미지 저장 실패: {e}")
+
+    def _save_debug(self, prefix, frame, dets, t):
+        """찾은 아이콘에 동그라미와 이름을 그린 확인용 그림이에요. 파랑 = 우리 팀, 빨강 = 상대 팀, 노랑 = 나."""
+        if not self.save_debug:
+            return
+        cv2 = self.cv2
+        img = frame.copy()
+        r = max(4, int(self.size * 0.9)) if self.size else 10
+        for i, x, y, sc in dets:
+            p = self.players[i]
+            if sc < 55:
+                continue
+            col = (0, 220, 255) if p["me"] else ((255, 140, 0) if p["ally"] else (0, 0, 255))
+            cv2.circle(img, (x, y), r, col, 2)
+            cv2.putText(img, f"{p['key'][:6]} {sc}", (x - r, y - r - 3), cv2.FONT_HERSHEY_SIMPLEX, 0.38, col, 1)
+        scale = 2 if img.shape[0] < 500 else 1
+        if scale > 1:
+            img = cv2.resize(img, None, fx=scale, fy=scale, interpolation=cv2.INTER_NEAREST)
+        self._write(os.path.join(DEBUG_DIR, f"{prefix}_{datetime.now():%Y%m%d_%H%M%S}_{int(t)}s.png"), img)
+
+    def to_record(self):
+        return {
+            "version": 1,
+            "players": self.players,
+            "size": self.size,
+            "regionSide": self.region[2] if self.region else None,
+            "window": list(self.win) if self.win else None,
+            "side": self.side,
+            "calibScore": self.calib_score,
+            "keepScore": MM_KEEP,
+            "msAvg": round(sum(self.ms) / len(self.ms)) if self.ms else None,
+            "frames": self.frames,
+        }
+
+
 # ---------------------------------------------------------------- 한 판 기록
 
 class GameSession:
-    def __init__(self, data, tracker):
+    def __init__(self, data, tracker, mm=None):
         gd = data.get("gameData", {})
         self.mode = gd.get("gameMode", "")
         self.start_epoch = time.time() - gd.get("gameTime", 0)
@@ -676,6 +1025,7 @@ class GameSession:
         self.me_names = {me.get("riotId"), me.get("summonerName"), me.get("riotIdGameName")} - {None, ""}
         self.champion = champ_key(me)
         self.tracker = tracker
+        self.mm = mm            # 미니맵 읽기 (없으면 None)
         self.snapshots = []
         self.recent = deque(maxlen=30)  # (게임 시간, 골드, 체력%) 1초 단위
         self.deaths = []
@@ -707,6 +1057,8 @@ class GameSession:
         self.deaths = p.get("deaths") or []
         self.snapshots = [x for x in (p.get("snapshots") or []) if x.get("t", 0) <= now_t]
         self.resumed = (p.get("resumed") or []) + [{"at": round(now_t, 1), "lastSaved": p.get("gameLength")}]
+        if self.mm and p.get("minimap"):
+            self.mm.frames = [f for f in (p["minimap"].get("frames") or []) if f[0] <= now_t]
         lost = now_t - float(p.get("gameLength") or now_t)
         log(f"강제 종료 전 기록을 이어 붙였어요 (데스 {len(self.deaths)}번, 기록이 빈 시간 약 {int(lost)}초)")
 
@@ -741,6 +1093,11 @@ class GameSession:
         hp_pct = round(hp / maxhp * 100)
         dead = bool(me.get("isDead"))
 
+        if self.mm:
+            try:
+                self.mm.set_players(data)
+            except Exception as e:
+                log(f"미니맵 준비 오류: {e}")
         if self.tracker:
             try:
                 ss = me.get("summonerSpells") or {}
@@ -807,6 +1164,11 @@ class GameSession:
                 spells.append({"key": key, "state": state, "age": age, "verdict": verdict})
             entry["spells"] = spells
             self.sheet = {"pre": tr.last_frame, "pre_states": [sp["state"] for sp in spells], "after": []}
+        if self.mm:
+            try:
+                entry["minimap"] = self.mm.death_snapshot(t_death, t_death)
+            except Exception as e:
+                log(f"미니맵 죽음 기록 오류: {e}")
         self.deaths.append(entry)
         if tr and tr.slots:
             entry["afterDeath"] = []
@@ -894,6 +1256,7 @@ class GameSession:
             "deaths": self.deaths,
             "snapshots": self.snapshots,
             "resumed": self.resumed,
+            "minimap": self.mm.to_record() if self.mm else None,
         }
 
 
@@ -1003,6 +1366,7 @@ def finish(session, cfg):
     except OSError:
         pass
     prune(DEBUG_DIR, KEEP_DEBUG_IMAGES, prefix="death_", suffix=".png")
+    prune(DEBUG_DIR, KEEP_DEBUG_IMAGES, prefix="minimap_", suffix=".png")
     prune(DEBUG_DIR, 0, prefix="afterdeath_", suffix=".png")  # 예전 방식으로 저장된 사진은 정리해요
     prune(GAMES_DIR, KEEP_GAME_FILES, suffix=".json")
     log(f"게임 종료: {rec['gameMode']} / {int(rec['gameLength'] // 60)}분 / 데스 {len(rec['deaths'])}번 기록")
@@ -1046,6 +1410,9 @@ def main():
     last_poll = 0
     spell_gap = 1.0 / max(0.5, float(cfg["spell_checks_per_second"]))
     last_spell = 0
+    mm = None
+    mm_gap = 1.0 / max(0.2, float(cfg["minimap_checks_per_second"]))
+    last_mm = 0
     while True:
         try:
             now = time.time()
@@ -1062,20 +1429,29 @@ def main():
                             except Exception as e:
                                 tracker = None
                                 log(f"스펠 확인 기능 시작 실패: {e}")
-                        session = GameSession(data, tracker)
+                        mm = None
+                        if cfg["minimap_check"] and tracker_ok:
+                            try:
+                                mm = MinimapTracker(cfg)
+                            except Exception as e:
+                                log(f"미니맵 읽기 시작 실패: {e}")
+                        session = GameSession(data, tracker, mm)
                     else:
                         session.update(data)
                 elif session is not None:
                     fails += 1
                     if session.ended or fails >= 5:
                         finish(session, cfg)
-                        session, tracker = None, None
+                        session, tracker, mm = None, None, None
             if session and tracker and session.post_death and now - last_spell >= AFTER_DEATH_GAP:
                 last_spell = now
                 session.watch_after_death()
             elif session and tracker and not session.was_dead and now - last_spell >= spell_gap:
                 last_spell = now
                 tracker.check(session.est_game_time())
+            if session and mm and not session.was_dead and now - last_mm >= mm_gap:
+                last_mm = now
+                mm.check(session.est_game_time())
         except Exception:
             log("오류가 났지만 계속 실행할게요:\n" + traceback.format_exc())
             time.sleep(2)
