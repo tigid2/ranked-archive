@@ -13,6 +13,7 @@
 | `tools/index/` | 기록 목록(첫 페이지) 시안 |
 | `tools/fonts/` | 리포트에 넣는 글꼴 2개(Pretendard, Archivo, 둘 다 OFL) |
 | `tools/` | `analyze.py`(분석), `inline_img.py`(아이콘을 넣어 한 파일로), `ds_build4.py`(디자인 시스템), `make_gray_map.py`(흑백 지도) |
+| `benchmarks/` | 기준 데이터 요약(`<챔피언>.json`)과 판별 숫자 줄(`rows/<챔피언>.jsonl`). 워크플로 "기준 데이터 모으기"가 만들어요. 읽을 때는 요약 파일만 읽어요. |
 | `logger/` | PC 기록 프로그램 사본. PC에서 실제로 돌아가는 건 `아카이브\lol-live-logger` 폴더예요. 토큰이 든 `config.json`은 저장소에 넣지 않아요. |
 
 ## 할 일별로 꺼낼 파일
@@ -22,7 +23,8 @@
 | 리포트 만들기/디자인 고치기 | `tools/report/`, `feedback/`, `analysis/`, `tools/inline_img.py` |
 | 기록 목록(첫 페이지) | `tools/index/` |
 | 디자인 시스템 artifact | `tools/ds_build4.py`, `tools/report/report.css` |
-| 기록 프로그램 | `logger/` |
+| 기록 프로그램 | `benchmarks/` | 기준 데이터 요약(`<챔피언>.json`)과 판별 숫자 줄(`rows/<챔피언>.jsonl`). 워크플로 "기준 데이터 모으기"가 만들어요. 읽을 때는 요약 파일만 읽어요. |
+| `logger/` |
 
 ## 실행 방법
 `pip install brotli fonttools pillow --break-system-packages`가 필요해요. 모두 저장소 맨 위에서 실행해요.
@@ -33,6 +35,10 @@ python3 tools/analyze.py raw/KR_8448036968.json.gz Xayah raw/KR_8448036968.live.
 # 리포트: 피드백은 feedback/<경기ID>.json 을 자동으로 읽어요. 결과는 tools/report/ 에 저장
 RA_MID=KR_8448036968 RA_CHAMP=Xayah RA_TIER="플래티넘 4" RA_LP=49 RA_OUT=xayah.html python3 tools/report/build2.py local
 python3 tools/inline_img.py tools/report/xayah.html tools/report/xayah_single.html   # artifact에 올릴 한 파일
+
+# 기준 데이터: 저장소 원본 경기로 뽑기 시험(키 필요 없음) / 쌓인 줄로 요약만 다시 만들기
+python3 scripts/benchmarks.py test
+python3 scripts/benchmarks.py summarize
 
 # 기록 목록 시안
 python3 tools/index/build_index.py . tools/report /tmp/index.html
@@ -52,9 +58,13 @@ python3 tools/index/build_index.py . tools/report /tmp/index.html
 - 05 팀 `sec_team` / 06 빌드 `item_timeline`, `sec_build` / 07 체크리스트 `sec_check` / 08 메모 `sec_memo`
 - 페이지 조립 `page`, 글꼴 넣기 `embed`
 
-`analyze.py`: 본체 `analyze`, 라인전 서폿/바텀 원딜 킬 `lane_support`
+`analyze.py`: 본체 `analyze`, 라인전 서폿/바텀 원딜 킬 `lane_support`, 기준 데이터 대비 `vs_benchmark`(결과의 `benchmark` 칸)
+
+`scripts/benchmarks.py`: 한 판에서 숫자 뽑기 `extract_row`, 요약 `summarize`, 수집 `collect`/`find_games`, 요청 속도 `Limiter`
 
 ## 알아 둘 것
+- 기준 데이터의 이 판 숫자는 `analyze.py`가 `scripts/benchmarks.py`의 `extract_row`를 그대로 불러서 계산해요. 계산 방법을 바꿀 때는 `extract_row` 한 곳만 고치고 `summarize`로 요약을 다시 만들어요.
+- 기준 데이터의 티어는 "판을 찾은 참가자"의 티어예요. 그 판의 원딜 티어를 따로 확인하지는 않아요(요청 수를 아끼려고).
 - 자야 판 게임 중 기록은 PC에서 직접 가져와서 `raw/KR_8448036968.live.json`에 있어요(`live/`에 두면 갱신 워크플로가 지워요). 28:45 죽음은 골드 1,465와 체력 흐름(67% → 2%), 23:53 죽음은 골드 1,925만 있어요.
 - 카이사 판도 서폿 칸이 나와요(서폿 있을 때 CS 51 : 72, 없을 때 34 : 25, 바텀 원딜 킬 2 : 3). 카이사 피드백 글은 이 규칙으로 아직 다시 보지 않았어요.
 - `analyze.py` 버그: 역할 퀘스트 신발의 완성 시간이 틀려요.

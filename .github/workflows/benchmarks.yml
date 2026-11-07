@@ -1,0 +1,66 @@
+name: 기준 데이터 모으기
+
+# 에메랄드~다이아 솔로 랭크에서 원딜 챔피언 판을 모아 benchmarks/ 요약을 만들어요.
+# 손으로만 실행해요. 같은 API 키를 쓰는 "경기 기록 갱신"과 동시에 돌면 조금 느려질 수 있어요.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "챔피언당 모을 판 수 (최신 패치 기준, 이미 있는 판 포함)"
+        type: number
+        default: 150
+      max_minutes:
+        description: "최대 실행 시간(분). 넘으면 모은 데까지 저장해요."
+        type: number
+        default: 120
+      champs:
+        description: "챔피언 (영문, 쉼표로 구분)"
+        type: string
+        default: "Jinx,Ashe,MissFortune,Xayah"
+      patch:
+        description: "auto = 최신 패치만, any = 전부, 또는 16.22처럼 직접"
+        type: string
+        default: "auto"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: benchmarks
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 경기 모으기와 요약
+        env:
+          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
+          BM_TARGET: ${{ inputs.target }}
+          BM_MAX_MINUTES: ${{ inputs.max_minutes }}
+          BM_CHAMPS: ${{ inputs.champs }}
+          BM_PATCH: ${{ inputs.patch }}
+        run: python scripts/benchmarks.py collect
+
+      - name: 요약 저장
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p benchmarks
+          git add -A benchmarks
+          if git diff --cached --quiet; then
+            echo "새로 저장할 내용이 없어요."
+          else
+            git commit -m "기준 데이터 갱신"
+            git pull --rebase
+            git push
+          fi

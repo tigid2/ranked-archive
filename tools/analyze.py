@@ -367,7 +367,89 @@ def analyze(raw, champ_id, live=None):
     # 라인전 서폿 위치와 바텀 원딜 킬 (원딜일 때만)
     if pos == "BOTTOM" and duo and opp:
         out["lane"] = lane_support(frames, events, my, opp["participantId"], duo["participantId"], team, by, nm)
+    # 기준 데이터(에메랄드~다이아 같은 챔피언) 대비 (계획 3단계)
+    if pos == "BOTTOM":
+        out["benchmark"] = vs_benchmark(raw, my, me["championName"], m["gameVersion"])
     return out
+
+
+# ---------------------------------------------------------------- 기준 데이터 대비
+
+BM_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "benchmarks")
+BM_LABELS = [  # (요약 키, 이름, 낮을수록 좋은지)
+    ("cs10", "10분 CS", False), ("gold10", "10분 골드", False), ("xp10", "10분 경험치", False),
+    ("cs15", "15분 CS", False), ("gold15", "15분 골드", False), ("xp15", "15분 경험치", False),
+    ("goldDiff15", "15분 맞라인 골드 차이", False), ("csDiff15", "15분 맞라인 CS 차이", False),
+    ("dmg15", "15분까지 챔피언 피해", False), ("dpm", "분당 챔피언 피해", False), ("vspm", "분당 시야 점수", False),
+    ("core1Time", "첫 코어 완성", True), ("core2Time", "두 번째 코어 완성", True),
+]
+
+
+def _band(v, st, lower_better):
+    if v is None:
+        return None
+    good, bad = (v <= st["p25"], v >= st["p75"]) if lower_better else (v >= st["p75"], v <= st["p25"])
+    return "상위 25%" if good else ("하위 25%" if bad else "중간 50%")
+
+
+def vs_benchmark(raw, my, champ, version):
+    """benchmarks/<챔피언>.json과 이 판 숫자를 비교해요. 판 수가 minN보다 적은 숫자는 넣지 않아요.
+    이 판 숫자는 scripts/benchmarks.py의 extract_row로 똑같이 계산해요."""
+    p = os.path.join(BM_DIR, f"{champ}.json")
+    if not os.path.exists(p):
+        return {"available": False, "reason": "이 챔피언의 기준 데이터가 아직 없어요."}
+    bm = json.load(open(p, encoding="utf-8"))
+    sys.path.insert(0, os.path.join(os.path.dirname(BM_DIR), "scripts"))
+    import benchmarks as B  # noqa: E402
+    B.DD["item"] = DD.get("item", {})
+    row = B.extract_row(raw["match"], raw["timeline"], my)
+    mine = {"cs10": row["t10"]["cs"], "gold10": row["t10"]["gold"], "xp10": row["t10"]["xp"],
+            "cs15": row["t15"]["cs"], "gold15": row["t15"]["gold"], "xp15": row["t15"]["xp"],
+            "dmg15": row["t15"]["dmg"], "dpm": row["dpm"], "vspm": row["vspm"],
+            "goldDiff15": row["t15"]["gold"] - row["oppGold15"] if "oppGold15" in row else None,
+            "csDiff15": row["t15"]["cs"] - row["oppCs15"] if "oppCs15" in row else None,
+            "core1Time": row["items"][0][1] if len(row["items"]) >= 1 else None,
+            "core2Time": row["items"][1][1] if len(row["items"]) >= 2 else None}
+    mn = bm["minN"]
+    res = {"available": True, "games": bm["games"], "patches": bm["patches"], "tiers": bm["tiers"],
+           "samePatch": ".".join(version.split(".")[:2]) in bm["patches"], "metrics": []}
+    for k, label, lower in BM_LABELS:
+        st = bm["metrics"].get(k, {})
+        if st.get("n", 0) < mn["stat"]:
+            continue
+        v = mine.get(k)
+        if v is None:
+            continue
+        res["metrics"].append({"key": k, "label": label, "mine": v, "median": st["median"], "p25": st["p25"],
+                               "p75": st["p75"], "n": st["n"], "vsMedian": round(v - st["median"], 2),
+                               "band": _band(v, st, lower), "lowerIsBetter": lower})
+    # 상대 원딜 상성
+    opp = row.get("opp")
+    mu = next((x for x in bm.get("matchups", []) if x["opp"] == opp), None)
+    if mu and mu["n"] >= mn["matchup"]:
+        res["matchup"] = {"opp": opp, "oppKo": mu["oppKo"], "n": mu["n"], "winRate": mu["winRate"],
+                          "goldDiff15Median": mu["goldDiff15"], "mine": mine["goldDiff15"]}
+    # 빌드: 내 첫 두 코어가 기준 데이터에서 몇 번째로 많이 쓰였는지
+    core12 = [b for b in bm["builds"]["core12"] if b["n"] >= mn["build"]]
+    my12 = [i for i, _ in row["items"][:2]]
+    hit = next((i for i, b in enumerate(core12) if b["key"] == my12), None)
+    res["build"] = {"mine": " → ".join(iname(i) for i in my12) if my12 else None,
+                    "rank": hit + 1 if hit is not None else None,
+                    "top": [{"name": b["name"], "share": b["share"], "winRate": b["winRate"], "n": b["n"]} for b in core12[:3]]}
+    ks = [b for b in bm["builds"]["keystone"] if b["n"] >= mn["build"]]
+    my_ks = [row["keystone"], row["styles"][1]]
+    res["keystone"] = {"rank": next((i + 1 for i, b in enumerate(ks) if b["key"] == my_ks), None),
+                       "top": [{"name": b["name"], "share": b["share"], "n": b["n"]} for b in ks[:3]]}
+    # 서폿이 바텀에 있던 비율
+    su = bm.get("support", {})
+    if "sup" in row and su.get("atBotShare", {}).get("n", 0) >= mn["stat"]:
+        x = row["sup"]
+        res["support"] = {"mineAtBotShare": round(x["withMin"] / 12, 2), "medianAtBotShare": su["atBotShare"]["median"],
+                          "mineCsPerMinWith": round(x["withCs"] / x["withMin"], 2) if x["withMin"] else None,
+                          "medianCsPerMinWith": su.get("csPerMinWith", {}).get("median"),
+                          "mineCsPerMinWithout": round(x["withoutCs"] / x["withoutMin"], 2) if x["withoutMin"] else None,
+                          "medianCsPerMinWithout": su.get("csPerMinWithout", {}).get("median")}
+    return res
 
 
 BOT = lambda p: p["x"] > 9000 and p["y"] < 6000  # 바텀 근처 (1분 위치라 대략적)
