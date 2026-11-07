@@ -17,7 +17,8 @@
 
 ## 만들어지는 파일
 
-- `docs/index.html` : 전체 기록 페이지
+- `docs/index.html` : 사이트 첫 페이지 ("준비 중" 화면)
+- `docs/records.html` : 전체 기록 페이지 (지금은 사이트에 공개 안 함)
 - `docs/latest.md` : 가장 최근 판 리포트
 - `docs/games/경기ID.md` : 판별 리포트
 - `docs/data/*.json` : 기록 데이터

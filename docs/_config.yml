@@ -1,3 +1,9 @@
 title: 랭크 셀프 피드백 아카이브
 theme: jekyll-theme-primer
 lang: ko
+# 새 디자인이 나오기 전까지 사이트에 공개하지 않는 것 (저장소에는 그대로 있어요)
+exclude:
+  - games
+  - latest.md
+  - records.html
+  - data

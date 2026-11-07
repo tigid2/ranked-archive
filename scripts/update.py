@@ -5,7 +5,7 @@
 - 저장소 Secrets의 RIOT_API_KEY, Variables의 RIOT_ID 를 사용해요.
 - 마지막 갱신 이후의 새 솔로랭크 게임만 받아와요.
 - 판별 리포트(docs/games/*.md), 최신 판(docs/latest.md),
-  전체 기록 페이지(docs/index.html), 기록 데이터(docs/data/*.json)를 만들어요.
+  전체 기록 페이지(docs/records.html), 기록 데이터(docs/data/*.json)를 만들어요.
 """
 
 import gzip
@@ -25,6 +25,9 @@ DATA = os.path.join(DOCS, "data")
 GAMES_DIR = os.path.join(DOCS, "games")
 GAMES_JSON = os.path.join(DATA, "games.json")
 RANK_JSON = os.path.join(DATA, "rank_history.json")
+# 전체 기록 페이지. 새 디자인이 나오기 전까지는 사이트에 공개하지 않아요(docs/_config.yml의 exclude).
+# 사이트 첫 페이지(docs/index.html)는 "준비 중" 화면이고, 이 스크립트는 건드리지 않아요.
+RECORDS_HTML = os.path.join(DOCS, "records.html")
 LIVE_DIR = os.path.join(ROOT, "live")  # 내 컴퓨터의 게임 중 기록 프로그램이 올리는 파일
 RAW_DIR = os.path.join(ROOT, "raw")    # 라이엇 원본 데이터 (경기 상세 + 타임라인, 압축) - 피드백할 때 직접 분석용
 RAW_BACKFILL = 5                       # 한 번 갱신할 때 원본이 없는 예전 경기를 최대 몇 판까지 채울지
@@ -751,8 +754,8 @@ def main():
         print("새 솔로랭크 게임이 없어요.")
         backfill_raw(key, games)
         clean_live_logs(games)
-        if not os.path.exists(os.path.join(DOCS, "index.html")):
-            with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
+        if not os.path.exists(RECORDS_HTML):
+            with open(RECORDS_HTML, "w", encoding="utf-8") as f:
                 f.write(build_index(games, read_json(RANK_JSON, []), riot_id))
         return
     if not games:
@@ -815,7 +818,7 @@ def main():
     write_json(GAMES_JSON, games)
     write_json(RANK_JSON, rank_hist)
     write_json(os.path.join(DATA, "skipped.json"), sorted(skipped))
-    with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
+    with open(RECORDS_HTML, "w", encoding="utf-8") as f:
         f.write(build_index(games, rank_hist, riot_id))
     print(f"완료! 새 게임 {len(added)}판을 추가했어요.")
 
