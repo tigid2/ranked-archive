@@ -1,0 +1,13 @@
+__pycache__/
+# 리포트 생성기가 만드는 결과물과 아이콘 캐시
+tools/report/img/
+tools/report/*.html
+tools/index/img/
+tools/index/*.html
+# 기록 프로그램이 PC에서 만드는 파일 (토큰이 든 config.json 포함)
+logger/config.json
+logger/games/
+logger/pending/
+logger/debug/
+logger/cache/
+logger/logger_log.txt
