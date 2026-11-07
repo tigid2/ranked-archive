@@ -9,32 +9,39 @@
 | `analysis/` | `analyze.py` 분석 결과(`*.analysis.json`) |
 | `feedback/` | 판별 피드백 글(`<경기ID>.json`) |
 | `data/` | Data Dragon 데이터(`dd_*.json`), 흑백 지도(`map11_gray.png`) |
-| `tools/report/` | 리포트 생성기 `build2.py`, 스타일 `report.css` |
+| `tools/report/` | 리포트 데이터 만들기 `report_data.py`, artifact용 한 파일 `single.py`, 스타일 `report.css`(React 화면도 이 파일을 그대로 써요), 예전 생성기 `build2.py` |
+| `web/` | React 리포트 화면(Vite). 빌드하면 `docs/report/`에 저장돼요. |
+| `docs/report-data/` | 판별 리포트 데이터(`<경기ID>.json`, 닉네임 없음)와 목록 `index.json`. 화면이 열릴 때 읽어요. |
 | `tools/index/` | 기록 목록(첫 페이지) 시안 |
 | `tools/fonts/` | 리포트에 넣는 글꼴 2개(Pretendard, Archivo, 둘 다 OFL) |
-| `tools/` | `analyze.py`(분석), `inline_img.py`(아이콘을 넣어 한 파일로), `ds_build4.py`(디자인 시스템), `make_gray_map.py`(흑백 지도) |
+| `tools/` | `analyze.py`(분석), `inline_img.py`(예전 생성기 결과에 아이콘을 넣어 한 파일로), `ds_build4.py`(디자인 시스템), `make_gray_map.py`(흑백 지도) |
 | `benchmarks/` | 기준 데이터 요약(`<챔피언>.json`)과 판별 숫자 줄(`rows/<챔피언>.jsonl`). 워크플로 "기준 데이터 모으기"가 만들어요. 읽을 때는 요약 파일만 읽어요. |
 | `logger/` | PC 기록 프로그램 사본. PC에서 실제로 돌아가는 건 `아카이브\lol-live-logger` 폴더예요. 토큰이 든 `config.json`은 저장소에 넣지 않아요. |
 
 ## 할 일별로 꺼낼 파일
 | 할 일 | 필요한 파일 |
 |---|---|
-| 새 판 피드백 쓰기 | `raw/`, `tools/analyze.py`, `data/dd_*.json`, 예시로 `feedback/KR_8448036968.json`, `knowledge/rules.md` |
-| 리포트 만들기/디자인 고치기 | `tools/report/`, `feedback/`, `analysis/`, `tools/inline_img.py` |
+| 새 판 피드백 쓰기 | `analysis/<경기ID>.analysis.json`, 예시로 `feedback/KR_8448036968.json`, `knowledge/rules.md` (피드백 파일만 올리면 리포트는 워크플로가 다시 만들어요) |
+| 리포트 숫자/계산 고치기 | `tools/report/report_data.py` |
+| 리포트 화면/디자인 고치기 | `web/src/` 의 해당 섹션 파일, `tools/report/report.css` |
 | 기록 목록(첫 페이지) | `tools/index/` |
 | 디자인 시스템 artifact | `tools/ds_build4.py`, `tools/report/report.css` |
-| 기록 프로그램 | `benchmarks/` | 기준 데이터 요약(`<챔피언>.json`)과 판별 숫자 줄(`rows/<챔피언>.jsonl`). 워크플로 "기준 데이터 모으기"가 만들어요. 읽을 때는 요약 파일만 읽어요. |
-| `logger/` |
+| 기록 프로그램 | `logger/` |
 
 ## 실행 방법
-`pip install brotli fonttools pillow --break-system-packages`가 필요해요. 모두 저장소 맨 위에서 실행해요.
+`pip install brotli fonttools pillow --break-system-packages`가 필요해요(한 파일 만들기 글꼴용). React 화면은 Node 22가 필요해요. 모두 저장소 맨 위에서 실행해요.
 ```
 # 분석: 결과는 analysis/ 에 저장
 python3 tools/analyze.py raw/KR_8448036968.json.gz Xayah raw/KR_8448036968.live.json data analysis
 
-# 리포트: 피드백은 feedback/<경기ID>.json 을 자동으로 읽어요. 결과는 tools/report/ 에 저장
-RA_MID=KR_8448036968 RA_CHAMP=Xayah RA_TIER="플래티넘 4" RA_LP=49 RA_OUT=xayah.html python3 tools/report/build2.py local
-python3 tools/inline_img.py tools/report/xayah.html tools/report/xayah_single.html   # artifact에 올릴 한 파일
+# 리포트 데이터: raw/ 의 모든 판을 다시 분석하고 docs/report-data/<경기ID>.json 을 만들어요(4판에 1초 안쪽)
+python3 tools/report/report_data.py --all
+python3 tools/report/report_data.py KR_8448036968        # 한 판만
+
+# React 화면 (web/ 에서). 처음 한 번 npm ci
+cd web && npm ci && npm run build && cd ..                # GitHub Pages용 → docs/report/
+cd web && npm run build:single && cd ..                   # artifact용 틀 → web/dist-single/
+python3 tools/report/single.py KR_8448036968              # artifact에 올릴 한 파일 → tools/report/KR_8448036968_single.html
 
 # 기준 데이터: 저장소 원본 경기로 뽑기 시험(키 필요 없음) / 쌓인 줄로 요약만 다시 만들기
 python3 scripts/benchmarks.py test
@@ -43,12 +50,29 @@ python3 scripts/benchmarks.py summarize
 # 기록 목록 시안
 python3 tools/index/build_index.py . tools/report /tmp/index.html
 ```
-- 판마다 바꾸는 값은 환경 변수로 넣어요: `RA_MID`, `RA_CHAMP`, `RA_TIER`, `RA_LP`, `RA_OUT`. 다른 피드백 파일을 쓰려면 `RA_FB`.
-- `local` 모드는 아이콘을 `tools/report/img/`에 내려받아요. `cdn` 모드는 GitHub Pages용이에요(아이콘은 Data Dragon 주소, 지도는 파일 안에 넣음). `RA_NOLINK=1`이면 메뉴 이동을 막아요(미리보기용).
-- 스킬 아이콘에 `data/dd_champ_<챔피언>.json`이 필요해요. 지금은 카이사, 자야만 있어요.
-- 만들어진 html과 아이콘 캐시는 저장소에 올리지 않아요(`.gitignore`).
+- 리포트 주소: `https://tigid2.github.io/ranked-archive/report/?id=<경기ID>`. 화면은 열릴 때 `docs/report-data/<경기ID>.json`을 읽어요. 그래서 새 판이 들어와도 화면을 다시 빌드하지 않아요.
+- 챔피언, 티어/LP는 `docs/data/games.json`에서 가져와요(예전처럼 환경 변수로 넣지 않아요).
+- 피드백 파일이 없으면 숫자 리포트만 나와요(요약·체크리스트 칸은 "아직 없어요", 죽음은 모두 카드로).
+- 아이콘은 데이터에 Data Dragon CDN 기준 경로(`img` 칸)로만 들어 있어요. 사이트는 CDN 주소를 붙이고, `single.py`는 미러에서 받아 파일 안에 넣어요(캐시는 `tools/report/img/`).
+- 스킬 아이콘에 `data/dd_champ_<챔피언>.json`이 필요해요. 지금은 카이사, 자야만 있어요. 없으면 글자(QWER)만 나와요.
+- 만들어진 한 파일 html, 아이콘 캐시, `web/node_modules`, `web/dist-single`은 저장소에 올리지 않아요(`.gitignore`). `docs/report/`(Pages용 빌드)는 올려요.
 
-## build2.py 함수 위치 (grep으로 찾기)
+## 워크플로
+- "경기 기록 갱신": 경기를 받은 뒤 `report_data.py --all`까지 돌려서 새 판 리포트 데이터를 같이 저장해요.
+- "리포트 만들기"(`report.yml`): `feedback/`, `web/`, `tools/report/`, `tools/analyze.py`, `benchmarks/*.json`을 올리면 자동으로 돌아요. 리포트 데이터와 화면을 다시 만들어 저장해요. 손으로도 실행할 수 있어요.
+
+## React 화면 파일 (web/src/)
+- `main.jsx` 데이터 읽기, `Report.jsx` 페이지 조립과 메뉴, `ui.jsx` 공통 조각(아이콘, 숫자 모양, 비교 막대)
+- `sections/`: `Hero` / `Summary`(01) / `Flow`(02, 골드 차트 `GoldChart`) / `Lane`(03) / `Deaths`(04, 지도 `DeathMap`, 카드 `DeathCard`) / `Team`(05) / `Build`(06) / `Check`(07 체크리스트, 08 메모)
+
+## report_data.py 함수 위치
+- 아이콘 정보 `champ`, `item`, `spell`, `perk`, 본체 `build`(섹션별로 hero/flow/lane/deaths/team/build 칸을 만듦), 유불리 구간 `swings`, 죽을 때 스펠 `death_spells`, 분석 다시 돌리기 `run_analyze`
+
+## build2.py (예전 생성기)
+React 화면이 같은 결과를 내는 걸 확인했어요(11-08, 카이사·자야 판 스크린샷 비교). 지금은 `ds_build4.py`(디자인 시스템)가 이 파일을 불러 써서 남겨 뒀어요. 디자인 시스템을 다시 정할 때 같이 지워요.
+예전 실행 방법: `RA_MID=… RA_CHAMP=… RA_TIER=… RA_LP=… RA_OUT=x.html python3 tools/report/build2.py local`
+
+### build2.py 함수 위치 (grep으로 찾기)
 - 아이콘/이름: `asset`, `gray_map`, `cimg`
 - 계산: `pf`, `purchases`, 오브젝트 정리 `merge_grubs`
 - 히어로 `hero` / 01 요약 `sec_summary`

@@ -1492,5 +1492,9 @@
    ],
    "myDeaths": []
   }
+ },
+ "benchmark": {
+  "available": false,
+  "reason": "이 챔피언의 기준 데이터가 아직 없어요."
  }
 }

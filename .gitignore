@@ -11,3 +11,7 @@ logger/pending/
 logger/debug/
 logger/cache/
 logger/logger_log.txt
+
+# React 화면 (web/)
+web/node_modules/
+web/dist-single/

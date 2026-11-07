@@ -1,0 +1,30 @@
+[
+ {
+  "matchId": "KR_8448036968",
+  "start": "2026-11-07T00:28:47.143000+09:00",
+  "champ": "자야",
+  "win": true,
+  "hasFeedback": true
+ },
+ {
+  "matchId": "KR_8447066522",
+  "start": "2026-11-06T11:59:16.219000+09:00",
+  "champ": "카이사",
+  "win": false,
+  "hasFeedback": true
+ },
+ {
+  "matchId": "KR_8447002769",
+  "start": "2026-11-06T09:35:20.809000+09:00",
+  "champ": "징크스",
+  "win": false,
+  "hasFeedback": false
+ },
+ {
+  "matchId": "KR_8446855719",
+  "start": "2026-11-06T01:48:29.905000+09:00",
+  "champ": "아리",
+  "win": false,
+  "hasFeedback": false
+ }
+]
