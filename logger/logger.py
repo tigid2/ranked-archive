@@ -726,6 +726,11 @@ MM_ID_PART = 0.55           # 가려진 아이콘의 기준(보이는 부분만 
 MM_ID_MARGIN = 0.08         # 가려진 아이콘은 두 번째로 닮은 챔피언보다 이만큼 더 닮아야 해요
 MM_ID_MINVIS = 0.25         # 그림이 이만큼도 안 보이면 누구인지 정하지 않아요
 MM_PLAIN = 0.80             # 테두리 없이 그림만으로 찾았을 때의 기준(테두리 색을 못 읽는 화면 대비)
+# --- 바로 전 위치로 이어 붙이기 (2026-11-16, 사용자 제안) ---
+# 아이콘이 늘 겹쳐 있지는 않아요. 조금 전에 따로 보였던 챔피언이 그 근처의 "누구인지 못 정한 원"이 됐다면 같은 챔피언으로 봐요.
+MM_TRACK_SEC = 3.0          # 이 시간(초) 안에 보였던 위치만 이어 붙여요
+MM_TRACK_SPEED = 0.8        # 1초에 아이콘 지름의 이만큼까지 움직였다고 봐요(점멸·돌진 여유 포함)
+MM_TRACK_MINSCORE = 0.30    # 보이는 부분이 그 챔피언과 이만큼도 안 닮았으면 이어 붙이지 않아요
 MM_RAW_EVERY = 180.0        # 확인용으로 아무 표시도 없는 미니맵 그림을 이 간격(초)으로 저장해요
 
 
@@ -749,7 +754,9 @@ class MinimapTracker:
         self.templates = {}      # 번호 → 아이콘 가운데 부분(원래 크기)
         self.icons = {}          # 번호 → 아이콘 전체(원래 크기)
         self.S = None            # 미니맵 아이콘 전체 지름(px). 맞춘 크기 / 0.6
-        self.stat = {"ring": 0, "plain": 0, "unknown": 0}   # 어떤 방법으로 찾았는지(로그용)
+        self.stat = {"ring": 0, "plain": 0, "track": 0, "unknown": 0}   # 어떤 방법으로 찾았는지(로그용)
+        self.last_pos = {}       # 번호 → (게임 시간, x, y) 마지막으로 찾은 자리(미니맵 그림 기준)
+        self.dead = set()        # 지금 죽어 있는 선수 번호(죽으면 아이콘이 사라져요)
         self.last_raw = -999
         self.scaled = {}         # 번호 → 맞춘 크기의 아이콘
         self.size = None         # 맞춘 아이콘 크기(px)
@@ -776,6 +783,9 @@ class MinimapTracker:
     # 준비 -----------------------------------------------------------
     def set_players(self, data):
         if self.players:
+            live = [p for p in data.get("allPlayers", []) if champ_key(p)]
+            if len(live) == len(self.players):
+                self.dead = {k for k, p in enumerate(live) if p.get("isDead")}
             return
         me = find_me(data) or {}
         my_team = me.get("team")
@@ -1064,7 +1074,7 @@ class MinimapTracker:
         den = math.sqrt(float((a * a).sum()) * float((b * b).sum()))
         return float((a * b).sum()) / den if den > 1e-6 else -1.0
 
-    def _detect(self, frame):
+    def _detect(self, frame, t=None):
         """① 색 테두리 원을 찾고 ② 겹친 원은 누가 앞인지 정한 다음 ③ 안 가려진 부분만으로 누구인지 맞춰요.
         ④ 그래도 못 찾은 챔피언은 예전처럼 그림만으로 한 번 더 찾아요(기준을 높게).
         돌려주는 값: [[번호, x, y, 점수], ...]. 번호 -1은 이름 모르는 상대 아이콘, -2는 이름 모르는 우리 팀 아이콘이에요."""
@@ -1109,6 +1119,7 @@ class MinimapTracker:
                         sc = self._score(img, vis, i, x0, y0)
                         if i not in best or sc > best[i][0]:
                             best[i] = (sc, vf, x0 + hs, y0 + hs)
+            c["best"] = best
             for i, (sc, vf, x, y) in best.items():
                 second = max((v[0] for j, v in best.items() if j != i), default=-1.0)
                 pairs.append((sc, ci, i, vf, x, y, sc - second))
@@ -1150,6 +1161,29 @@ class MinimapTracker:
                 if all(math.hypot(best[1][0] + ox - f[1], best[1][1] + oy - f[2]) > 6 for f in found.values()):
                     found[i] = [i, best[1][0] + ox, best[1][1] + oy, int(round(best[0] * 100))]
                     self.stat["plain"] += 1
+        # 바로 전 위치로 이어 붙이기: 누구인지 못 정한 원 근처에, 조금 전까지 보이던 같은 팀 챔피언이 있으면 그 챔피언으로 봐요
+        if t is not None:
+            opts = []
+            for ci, c in enumerate(cands):
+                if ci in used or any(math.hypot(c["x"] + ox - f[1], c["y"] + oy - f[2]) <= 6 for f in found.values()):
+                    continue
+                for i, (lt, lx, ly) in self.last_pos.items():
+                    if i in found or i in self.dead or self.players[i]["ally"] != c["ally"]:
+                        continue
+                    dt = t - lt
+                    if not (0 < dt <= MM_TRACK_SEC):
+                        continue
+                    d = math.hypot(c["x"] - lx, c["y"] - ly)
+                    b = c["best"].get(i)
+                    if d <= MM_TRACK_SPEED * S * dt + 4 and (b is None or b[0] >= MM_TRACK_MINSCORE):
+                        opts.append((d, ci, i))
+            for d, ci, i in sorted(opts):
+                if i not in found and ci not in used:
+                    found[i] = [i, cands[ci]["x"] + ox, cands[ci]["y"] + oy, 60]
+                    used.add(ci)
+                    self.stat["track"] += 1
+            for i, f in found.items():
+                self.last_pos[i] = (t, f[1] - ox, f[2] - oy)
         out = list(found.values())
         for ci, c in enumerate(cands):
             if ci not in used and c["ring"] >= MM_RING_UNKNOWN and \
@@ -1183,7 +1217,7 @@ class MinimapTracker:
             if t >= MM_CALIB_FROM and t - self.last_calib >= MM_CALIB_EVERY:
                 self._calibrate(frame, t)
             return
-        dets = self._detect(frame)
+        dets = self._detect(frame, t)
         if self.size_from_cache and self.verify_left > 0:
             self.verify_left -= 1
             allies = sorted((d[3] for d in dets if self.players[d[0]]["ally"]), reverse=True)[:3]
@@ -1203,9 +1237,10 @@ class MinimapTracker:
         self.ms.append((time.perf_counter() - t0) * 1000)
         if time.time() - self.last_ms_log > 300:
             self.last_ms_log = time.time()
-            st, self.stat = self.stat, {"ring": 0, "plain": 0, "unknown": 0}
+            st, self.stat = self.stat, {"ring": 0, "plain": 0, "track": 0, "unknown": 0}
             log(f"미니맵: 한 번 읽는 데 평균 {sum(self.ms) / len(self.ms):.0f}ms (최근 {len(self.ms)}번). "
-                f"테두리로 찾음 {st['ring']}, 그림만으로 찾음 {st['plain']}, 이름 모르는 아이콘 {st['unknown']}")
+                f"테두리로 찾음 {st['ring']}, 그림만으로 찾음 {st['plain']}, 바로 전 위치로 이어 붙임 {st['track']}, "
+                f"이름 모르는 아이콘 {st['unknown']}")
 
     # 죽을 때 ---------------------------------------------------------
     @staticmethod
