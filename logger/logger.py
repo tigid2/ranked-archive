@@ -144,7 +144,11 @@ def spell_key(spell):
 def champ_key(player):
     """'game_character_displayname_Jinx' → 'Jinx'"""
     raw = player.get("rawChampionName", "")
-    return raw.rsplit("_", 1)[-1] if raw else player.get("championName", "")
+    if not raw:
+        return player.get("championName", "")
+    # 일부 챔피언은 'Character_Seraphine_Name'처럼 모양이 달라요(2026-11-16 세라핀이 'Name'으로 읽힘).
+    parts = [x for x in raw.split("_") if x and x.lower() not in ("game", "character", "displayname", "name")]
+    return parts[-1] if parts else raw.rsplit("_", 1)[-1]
 
 
 def find_me(data):
@@ -678,6 +682,9 @@ MM_CALIB_ROUNDS = 3         # 이만큼 모아서 가장 잘 맞는 크기를 �
 MM_SIZES = list(range(8, 34, 2))  # 아이콘 안쪽 그림 크기 후보(px)
 MM_KEEP = 40                # 이 점수(0~100) 이상인 후보만 기록해요. 진짜로 보였는지는 게임 뒤 analyze.py가 정해요
 MM_SMALL = 96               # 안개(시야) 비교용으로 줄인 미니맵 크기(px)
+MM_BOX_ROUNDS = 5           # 미니맵 테두리를 찾을 때 모으는 화면 수
+MM_BOX_TRIES = 3            # 테두리 찾기를 이만큼 해 보고 안 되면 영역 전체에서 찾아요
+MM_BOX_PAD = 6              # 찾은 테두리 바깥으로 남기는 여유(px)
 MM_CROP = 0.6               # 챔피언 아이콘 가운데 60%만 써요. 미니맵 아이콘의 테두리 색(우리 팀/상대 팀)을 피하려고요
 
 
@@ -709,6 +716,8 @@ class MinimapTracker:
         self.last_calib = -999
         self.calib_score = None
         self.region = None       # (left, top, side) 화면 기준
+        self.box = None          # 영역 안에서 미니맵이 차지하는 정사각형 한 변(px). 모서리에 붙어 있어요. 못 찾으면 None
+        self.box_sum, self.box_rounds, self.box_tries = None, 0, 0
         self.win = None          # 롤 창 크기 (w, h)
         self.frames = []         # [게임 시간, [[번호, x, y, 점수], ...]]  x, y는 읽은 영역 안의 위치(px)
         self.recent = deque(maxlen=15)  # (게임 시간, 줄인 회색 미니맵)
@@ -803,10 +812,53 @@ class MinimapTracker:
 
     def _reset_size(self):
         self.size, self.scaled = None, {}
+        self.box, self.box_sum, self.box_rounds, self.box_tries = None, None, 0, 0
         self.size_from_cache = False
         self.calib_sum, self.calib_rounds = {}, 0
 
     # 아이콘 크기 맞추기 ------------------------------------------------
+    def _find_box(self, frame):
+        """읽는 영역 안에서 미니맵 테두리를 찾아요. 미니맵은 영역의 아래쪽 모서리에 붙은 정사각형이라,
+        한 변의 길이만 찾으면 돼요. 왼쪽 변과 위쪽 변에 밝기가 뚝 끊기는 선이 길게 이어지는 크기를 골라요.
+        게임 화면은 계속 바뀌고 테두리는 그대로라서, 여러 화면을 모아서 정해요.
+        (2026-11-16 실제 게임에서 미니맵 바깥의 게임 화면을 챔피언 아이콘으로 잘못 찾아서 넣었어요)"""
+        cv2, np = self.cv2, self.np
+        g = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        if self.side != "right":
+            g = g[:, ::-1]
+        z = g.shape[0]
+        gx = np.abs(g[:, 2:] - g[:, :-2])
+        gy = np.abs(g[2:, :] - g[:-2, :])
+        sc = np.zeros(z, dtype=np.float32)
+        for s in range(max(120, z // 5), z - 4):
+            o = z - s
+            a = gx[o:z, max(0, o - 2):o + 1].max(axis=1)
+            b = gy[max(0, o - 2):o + 1, o:z].max(axis=0)
+            sc[s] = ((a > 25).mean() + (b > 25).mean()) / 2
+        self.box_sum = sc if self.box_sum is None or self.box_sum.shape != sc.shape else self.box_sum + sc
+        self.box_rounds += 1
+        if self.box_rounds < MM_BOX_ROUNDS:
+            return
+        best = int(self.box_sum.argmax())
+        score = float(self.box_sum[best]) / self.box_rounds
+        self.box_tries += 1
+        self.box_sum, self.box_rounds = None, 0
+        if score >= 0.8:
+            self.box = min(z, best + MM_BOX_PAD)
+            log(f"미니맵: 테두리를 찾았어요. 한 변 {best}px (점수 {score:.2f}). 이 안에서만 아이콘을 찾아요.")
+        elif self.box_tries >= MM_BOX_TRIES:
+            log(f"미니맵: 테두리를 찾지 못해서(가장 잘 맞은 크기 {best}px, 점수 {score:.2f}) 영역 전체에서 아이콘을 찾아요.")
+
+    def _sub(self, frame):
+        """미니맵 부분만 잘라 낸 그림과, 그 그림이 영역 안에서 시작하는 자리(x, y)를 돌려줘요."""
+        z = frame.shape[0]
+        if not self.box or self.box >= z:
+            return frame, 0, 0
+        o = z - self.box
+        if self.side == "right":
+            return frame[o:, o:], o, o
+        return frame[o:, :self.box], 0, o
+
     def _best(self, frame, tpl):
         res = self.cv2.matchTemplate(frame, tpl, self.cv2.TM_CCOEFF_NORMED)
         _, mx, _, loc = self.cv2.minMaxLoc(res)
@@ -852,7 +904,7 @@ class MinimapTracker:
 
     def _calibrate(self, frame, t):
         self.last_calib = t
-        gray = self.cv2.cvtColor(frame, self.cv2.COLOR_BGR2GRAY)
+        gray = self.cv2.cvtColor(self._sub(frame)[0], self.cv2.COLOR_BGR2GRAY)
         cached = self._load_cached_size()
         if cached and not self.calib_rounds and self.calib_tries == 0:
             self.size, self.size_from_cache, self.verify_left = cached, True, 3
@@ -892,6 +944,7 @@ class MinimapTracker:
         """챔피언마다 흑백으로 가장 닮은 자리 두 곳을 찾고, 그 두 곳만 컬러로 다시 비교해요.
         (컬러로 전체를 뒤지면 7배쯤 느려요)"""
         cv2 = self.cv2
+        frame, ox, oy = self._sub(frame)   # 좌표는 영역 기준으로 다시 돌려놔요(분석 쪽은 그대로)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         out = []
         z = self.size
@@ -908,7 +961,7 @@ class MinimapTracker:
                     best = (cs, (x, y))
                 res[max(0, y - z):y + z, max(0, x - z):x + z] = -1
             if best[1] is not None and best[0] * 100 >= MM_KEEP:
-                out.append([i, best[1][0] + h, best[1][1] + h, int(round(best[0] * 100))])
+                out.append([i, best[1][0] + h + ox, best[1][1] + h + oy, int(round(best[0] * 100))])
         return out
 
     def check(self, t):
@@ -928,6 +981,10 @@ class MinimapTracker:
         small = cv2.resize(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (MM_SMALL, MM_SMALL), interpolation=cv2.INTER_AREA)
         self.ref = small.copy() if self.ref is None or self.ref.shape != small.shape else np.maximum(self.ref, small)
         self.recent.append((t, small))
+        if self.box is None and self.box_tries < MM_BOX_TRIES:
+            self._find_box(frame)
+            if self.box is None and self.box_tries < MM_BOX_TRIES:
+                return
         if self.size is None:
             if t >= MM_CALIB_FROM and t - self.last_calib >= MM_CALIB_EVERY:
                 self._calibrate(frame, t)
@@ -1006,6 +1063,7 @@ class MinimapTracker:
             "players": self.players,
             "size": self.size,
             "regionSide": self.region[2] if self.region else None,
+            "box": self.box,
             "window": list(self.win) if self.win else None,
             "side": self.side,
             "calibScore": self.calib_score,
