@@ -730,8 +730,9 @@ class MinimapTracker:
             key = champ_key(p)
             if key:
                 ps.append({"key": key, "ally": p.get("team") == my_team, "me": p is me})
-        if len(ps) < 2:
+        if not ps:
             return
+        # 연습 모드에 혼자 있어도(1명) 내 아이콘으로 크기를 맞춰 볼 수 있게 해요.
         self.players = ps
         threading.Thread(target=self._load_templates, daemon=True).start()
 
