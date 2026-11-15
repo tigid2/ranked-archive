@@ -14,6 +14,7 @@
 
 import base64
 import json
+import math
 import os
 import socket
 import ssl
@@ -77,6 +78,9 @@ DEFAULT_CONFIG = {
 STEP = 0.1            # 기본 반복 간격(초). 이 간격마다 할 일이 있는지만 확인해요
 POLL_EVERY = 1.0      # 게임 정보 확인 간격(초)
 SNAPSHOT_EVERY = 5.0  # 흐름 기록 간격(초)
+SPELL_BLUE_MIN = 0.15  # 스펠 칸에 쿨타임 파란 판이 이만큼만 남아 있어도(평소 모습과 안 닮았으면) 쿨타임으로 봐요
+SPELL_READY_AFTER_CD = 0.85  # 쿨타임이던 칸은 평소 모습과 이만큼 닮아야 '쓸 수 있음'으로 바꿔요
+SPELL_DIGIT_MIN = 0.03       # 쿨타임이던 칸에 흰 숫자가 이만큼 남아 있으면 아직 쿨타임으로 봐요
 STALE_READY = 0.6     # 죽기 직전 마지막 확인이 이보다 오래됐으면 '들고 죽음'이라고 단정하지 않아요(초)
 AFTER_DEATH_SECONDS = 2.0  # 죽은 직후 스펠 칸을 지켜보는 시간(초)
 AFTER_DEATH_GAP = 0.25     # 그때 확인 간격(초)
@@ -256,6 +260,7 @@ class SpellTracker:
         self.ref_crop = [None, None]   # 슬롯별 '쓸 수 있는 상태'의 실제 화면 모습
         self.ref_tcorr = [0.0, 0.0]    # 그 모습이 공식 아이콘과 얼마나 닮았는지
         self.history = deque(maxlen=60)  # (게임 시간, [상태1, 상태2])
+        self.last_def = [None, None]     # 칸마다 마지막으로 확실했던 상태 ("ready" / "cooldown")
         self.last_locate_try = 0
         self.last_frame = None
         self.ddragon_version = None
@@ -410,6 +415,7 @@ class SpellTracker:
                     self.ref_tcorr[i] = 0.0
                     self.learned[i] = False
                     self.calib[i] = []
+                    self.last_def[i] = None
                     if self.slots and self.slots_rect:
                         self._load_learned(self.slots_rect)
                 except Exception as e:
@@ -542,6 +548,19 @@ class SpellTracker:
         den = float(np.sqrt((a * a).sum() * (b * b).sum()))
         return float((a * b).sum() / den) if den > 0 else 0.0
 
+    def _digit(self, img, i):
+        """쿨타임 숫자(흰 글자)가 얼마나 있는지. 평소 모습과 밝기를 맞춘 뒤, 평소보다 훨씬 밝은 점의 비율이에요.
+        죽어서 화면이 어두워져도 숫자는 주변보다 밝아서 잡혀요."""
+        if self.ref_crop[i] is None:
+            return 0.0
+        cv2, np = self.cv2, self.np
+        z = img.shape[0]
+        pad = max(2, int(z * 0.15))
+        a = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY).astype(np.float32)[pad:z - pad, pad:z - pad]
+        b = cv2.cvtColor(cv2.resize(self.ref_crop[i], (z, z)), cv2.COLOR_BGR2GRAY).astype(np.float32)[pad:z - pad, pad:z - pad]
+        k = float(np.median(b)) / max(1.0, float(np.median(a)))
+        return float(((a * k - b) > 70).mean())
+
     def _measure(self, img, i):
         cv2 = self.cv2
         z = img.shape[0]
@@ -635,7 +654,7 @@ class SpellTracker:
                 # 공식 아이콘과 비교해서 판단해요.
                 if tcorr >= 0.6:
                     states.append("ready")
-                elif tcorr < 0.45 and blue >= 0.5:
+                elif tcorr < 0.45 and blue >= SPELL_BLUE_MIN:
                     states.append("cooldown")
                 else:
                     states.append("unclear")
@@ -644,14 +663,22 @@ class SpellTracker:
             # 실제 화면 기준 (2026-11 연습 모드 측정)
             #  - 쓸 수 있음: 평소 모습과 95~100% 닮음. 죽은 뒤에는 밝기가 40% 정도로 어두워지지만 모양은 그대로예요.
             #  - 쿨타임: 파란 판 위에 숫자. 평소 모습과 13~26%만 닮고, 파란 부분이 75~80%예요.
+            #  - 쿨타임이 줄어들수록 파란 판이 시계 방향으로 걷혀요. 180초 중 42초 남았을 때 파란 부분은 30%뿐이었어요
+            #    (2026-11-16 자야 판, 이때 '애매함'으로 남았던 걸 고쳤어요).
             if rcorr >= 0.7:
-                states.append("ready")
-            elif rcorr < 0.45 and blue >= 0.5:
-                states.append("cooldown")          # 파란 판 + 숫자
+                st = "ready"
+            elif rcorr < 0.45 and blue >= SPELL_BLUE_MIN:
+                st = "cooldown"                    # 파란 판(일부만 남아도) + 숫자
             elif rcorr < 0.35 and ratio_v < 0.8:
-                states.append("cooldown")          # 다른 방식으로 가려진 쿨타임
+                st = "cooldown"                    # 다른 방식으로 가려진 쿨타임
             else:
-                states.append("unclear")
+                st = "unclear"
+            # 쿨타임이 거의 끝나면 파란 판이 다 걷히고 숫자만 남아서 평소 모습과 꽤 닮아 보여요.
+            # 바로 전까지 쿨타임이었다면, 숫자 없는 깨끗한 모습이 될 때까지는 쿨타임으로 봐요.
+            if self.last_def[i] == "cooldown" and st != "cooldown" and \
+                    (rcorr < SPELL_READY_AFTER_CD or self._digit(img, i) >= SPELL_DIGIT_MIN):
+                st = "cooldown"
+            states.append(st)
         if after_death:
             return states, crops
         if self.from_cache:
@@ -661,6 +688,9 @@ class SpellTracker:
             if self.bad_streak >= 120:
                 log("저장해 둔 스펠 칸 위치가 맞지 않는 것 같아서 새로 찾을게요.")
                 self.slots, self.from_cache, self.cache_rejected, self.bad_streak = None, False, True, 0
+        for i, st in enumerate(states):
+            if st in ("ready", "cooldown"):
+                self.last_def[i] = st
         self.history.append((game_time, states))
         self.last_frame = crops
         return states
@@ -685,7 +715,18 @@ MM_SMALL = 96               # 안개(시야) 비교용으로 줄인 미니맵 �
 MM_BOX_ROUNDS = 5           # 미니맵 테두리를 찾을 때 모으는 화면 수
 MM_BOX_TRIES = 3            # 테두리 찾기를 이만큼 해 보고 안 되면 영역 전체에서 찾아요
 MM_BOX_PAD = 6              # 찾은 테두리 바깥으로 남기는 여유(px)
-MM_CROP = 0.6               # 챔피언 아이콘 가운데 60%만 써요. 미니맵 아이콘의 테두리 색(우리 팀/상대 팀)을 피하려고요
+MM_CROP = 0.6               # 아이콘 크기를 맞출 때는 챔피언 그림 가운데 60%만 써요(테두리 색을 피하려고)
+# --- 테두리 원으로 찾기 (2026-11-16) ---
+# 미니맵의 챔피언 아이콘에는 1px짜리 색 테두리가 있어요(상대 팀 빨강, 우리 팀 파랑). 이 원을 먼저 찾고,
+# 그 안의 그림이 누구인지는 "다른 아이콘에 가려지지 않은 부분"만 비교해서 정해요. 싸울 때 겹친 아이콘을 찾으려고 넣었어요.
+MM_RING_MIN = 0.30          # 원 둘레 중 이만큼 이상 테두리 색이면 아이콘 후보로 봐요
+MM_RING_UNKNOWN = 0.50      # 누구인지 못 정했어도 테두리가 이만큼 뚜렷하면 "이름 모르는 아이콘"으로 기록해요
+MM_ID_FULL = 0.68           # 안 가려진 아이콘이 이 점수 이상 닮아야 그 챔피언으로 봐요
+MM_ID_PART = 0.55           # 가려진 아이콘의 기준(보이는 부분만 비교)
+MM_ID_MARGIN = 0.08         # 가려진 아이콘은 두 번째로 닮은 챔피언보다 이만큼 더 닮아야 해요
+MM_ID_MINVIS = 0.25         # 그림이 이만큼도 안 보이면 누구인지 정하지 않아요
+MM_PLAIN = 0.80             # 테두리 없이 그림만으로 찾았을 때의 기준(테두리 색을 못 읽는 화면 대비)
+MM_RAW_EVERY = 180.0        # 확인용으로 아무 표시도 없는 미니맵 그림을 이 간격(초)으로 저장해요
 
 
 class MinimapTracker:
@@ -706,6 +747,10 @@ class MinimapTracker:
         self.save_debug = cfg.get("save_debug_images", False)
         self.players = []        # [{"key", "ally", "me"}]
         self.templates = {}      # 번호 → 아이콘 가운데 부분(원래 크기)
+        self.icons = {}          # 번호 → 아이콘 전체(원래 크기)
+        self.S = None            # 미니맵 아이콘 전체 지름(px). 맞춘 크기 / 0.6
+        self.stat = {"ring": 0, "plain": 0, "unknown": 0}   # 어떤 방법으로 찾았는지(로그용)
+        self.last_raw = -999
         self.scaled = {}         # 번호 → 맞춘 크기의 아이콘
         self.size = None         # 맞춘 아이콘 크기(px)
         self.size_from_cache = False
@@ -770,6 +815,7 @@ class MinimapTracker:
                 h = img.shape[0]
                 c = int(round(h * (1 - MM_CROP) / 2))
                 self.templates[i] = img[c:h - c, c:h - c].copy()
+                self.icons[i] = img
             except Exception as e:
                 log(f"미니맵: {p['key']} 아이콘을 받지 못했어요({e}). 이 챔피언은 미니맵에서 찾지 않아요.")
         log(f"미니맵: 챔피언 아이콘 {len(self.templates)}/{len(self.players)}개 준비")
@@ -778,6 +824,32 @@ class MinimapTracker:
         cv2 = self.cv2
         self.scaled = {i: cv2.resize(t, (size, size), interpolation=cv2.INTER_AREA) for i, t in self.templates.items()}
         self.scaled_g = {i: cv2.cvtColor(t, cv2.COLOR_BGR2GRAY) for i, t in self.scaled.items()}
+        self._prep_rings(size)
+
+    def _prep_rings(self, size):
+        """테두리 원 찾기에 쓰는 것들을 아이콘 크기에 맞춰 준비해요."""
+        cv2, np = self.cv2, self.np
+        S = int(round(size / MM_CROP))
+        R = S / 2.0
+        yy, xx = np.mgrid[:S, :S]
+        c = (S - 1) / 2.0
+        self.S, self.R, self.gy, self.gx = S, R, yy, xx
+        self.disc = (((xx - c) ** 2 + (yy - c) ** 2) <= (S * 0.44) ** 2).astype(np.float32)  # 테두리 안쪽 그림
+        self.full = {i: cv2.resize(t, (S, S), interpolation=cv2.INTER_AREA).astype(np.float32)
+                     for i, t in self.icons.items()}
+
+        def annulus(r0, r1):
+            q = int(math.ceil(r1)) + 1
+            ay, ax = np.mgrid[-q:q + 1, -q:q + 1]
+            d = np.hypot(ax, ay)
+            k = ((d >= r0) & (d <= r1)).astype(np.float32)
+            return k / k.sum()
+
+        self.k_ring = annulus(R - 1.2, R + 0.6)
+        self.k_in = annulus(R * 0.55, R * 0.75)
+        self.k_out = annulus(R + 2.2, R + 3.8)
+        ang = np.radians(np.arange(0, 360, 5))
+        self.acos, self.asin = np.cos(ang), np.sin(ang)
 
     # 화면 읽기 --------------------------------------------------------
     def _region(self):
@@ -940,28 +1012,150 @@ class MinimapTracker:
             self._write(os.path.join(DEBUG_DIR, f"minimap_fail_{datetime.now():%Y%m%d_%H%M%S}.png"), frame)
 
     # 찾기 ------------------------------------------------------------
-    def _detect(self, frame):
-        """챔피언마다 흑백으로 가장 닮은 자리 두 곳을 찾고, 그 두 곳만 컬러로 다시 비교해요.
-        (컬러로 전체를 뒤지면 7배쯤 느려요)"""
+    def _ring_masks(self, img):
+        """테두리 색인 점들. 상대 팀 빨강, 우리 팀 파랑(색약 모드가 아닌 기본 색 기준)."""
         cv2 = self.cv2
-        frame, ox, oy = self._sub(frame)   # 좌표는 영역 기준으로 다시 돌려놔요(분석 쪽은 그대로)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        out = []
+        h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
+        red = ((h < 10) | (h > 170)) & (s > 130) & (v > 140)
+        blue = (h > 95) & (h < 115) & (s > 110) & (v > 140)
+        return red, blue
+
+    def _ring_cands(self, mask):
+        """테두리 색 점이 아이콘 크기의 원 둘레에 모여 있는 자리를 찾아요.
+        색이 넓게 칠해진 곳(강, 넥서스)은 원 안쪽과 바깥쪽도 같은 색이라서 빼요."""
+        cv2, np = self.cv2, self.np
+        m = mask.astype(np.float32)
+        f = lambda k: cv2.filter2D(m, -1, k, borderType=cv2.BORDER_CONSTANT)
+        sc = f(self.k_ring) - np.minimum(f(self.k_in), f(self.k_out))
+        ys, xs = np.where((sc >= MM_RING_MIN) & (sc >= cv2.dilate(sc, np.ones((7, 7), np.uint8)) - 1e-6))
+        keep = []
+        for v, x, y in sorted(((float(sc[y, x]), int(x), int(y)) for y, x in zip(ys, xs)), reverse=True):
+            if all((x - a) ** 2 + (y - b) ** 2 > 64 for _, a, b in keep):
+                keep.append((v, x, y))
+        return keep
+
+    def _ring_hits(self, mask, x, y):
+        """원 둘레를 5도씩 돌면서 테두리 색이 있는지."""
+        np = self.np
+        h, w = mask.shape
+        hit = np.zeros(len(self.acos), bool)
+        for r in (self.R - 1, self.R - 0.5, self.R, self.R + 0.5):
+            px = np.clip(np.round(x + r * self.acos).astype(int), 0, w - 1)
+            py = np.clip(np.round(y + r * self.asin).astype(int), 0, h - 1)
+            hit |= mask[py, px]
+        return hit
+
+    def _score(self, img, vis, i, x0, y0):
+        """왼쪽 위가 (x0, y0)인 자리의 그림이 i번 챔피언과 얼마나 닮았는지. 보이는 부분(vis)만 비교해요."""
+        S = self.S
+        if x0 < 0 or y0 < 0:
+            return -1.0
+        I = img[y0:y0 + S, x0:x0 + S]
+        if I.shape[:2] != (S, S):
+            return -1.0
+        I = I.astype(self.np.float32)
+        T = self.full[i]
+        w = vis[..., None]
+        n = float(vis.sum()) * 3
+        if n < 90:
+            return -1.0
+        a = (I - float((I * w).sum()) / n) * w
+        b = (T - float((T * w).sum()) / n) * w
+        den = math.sqrt(float((a * a).sum()) * float((b * b).sum()))
+        return float((a * b).sum()) / den if den > 1e-6 else -1.0
+
+    def _detect(self, frame):
+        """① 색 테두리 원을 찾고 ② 겹친 원은 누가 앞인지 정한 다음 ③ 안 가려진 부분만으로 누구인지 맞춰요.
+        ④ 그래도 못 찾은 챔피언은 예전처럼 그림만으로 한 번 더 찾아요(기준을 높게).
+        돌려주는 값: [[번호, x, y, 점수], ...]. 번호 -1은 이름 모르는 상대 아이콘, -2는 이름 모르는 우리 팀 아이콘이에요."""
+        cv2, np = self.cv2, self.np
+        img, ox, oy = self._sub(frame)   # 좌표는 영역 기준으로 다시 돌려놔요(분석 쪽은 그대로)
+        S, R = self.S, self.R
+        hs = S // 2
+        red, blue = self._ring_masks(img)
+        cands = []
+        for ally, mask in ((False, red), (True, blue)):
+            for v, x, y in self._ring_cands(mask):
+                cands.append({"ally": ally, "ring": v, "x": x, "y": y, "hit": self._ring_hits(mask, x, y), "occ": []})
+        # 누가 앞인지: 상대 원 안쪽을 지나가는 내 테두리가 보이면 내가 앞이에요
+        for ai, a in enumerate(cands):
+            for b in cands[ai + 1:]:
+                if math.hypot(a["x"] - b["x"], a["y"] - b["y"]) >= 2 * R - 1:
+                    continue
+                ia = np.hypot(a["x"] + R * self.acos - b["x"], a["y"] + R * self.asin - b["y"]) < R - 2
+                ib = np.hypot(b["x"] + R * self.acos - a["x"], b["y"] + R * self.asin - a["y"]) < R - 2
+                fa = float(a["hit"][ia].mean()) if ia.any() else 0.0
+                fb = float(b["hit"][ib].mean()) if ib.any() else 0.0
+                if abs(fa - fb) <= 0.15:
+                    fa, fb = a["ring"], b["ring"]
+                (b if fa >= fb else a)["occ"].append(a if fa >= fb else b)
+        pairs = []
+        for ci, c in enumerate(cands):
+            best = {}
+            for dx in (-2, -1, 0, 1, 2):
+                for dy in (-2, -1, 0, 1, 2):
+                    x0, y0 = c["x"] + dx - hs, c["y"] + dy - hs
+                    vis = self.disc
+                    if c["occ"]:
+                        vis = vis.copy()
+                        for o in c["occ"]:
+                            vis[np.hypot(self.gx + x0 - o["x"], self.gy + y0 - o["y"]) <= R + 0.8] = 0
+                    vf = float(vis.sum()) / float(self.disc.sum())
+                    if vf < MM_ID_MINVIS:
+                        continue
+                    for i in self.full:
+                        if self.players[i]["ally"] != c["ally"]:
+                            continue
+                        sc = self._score(img, vis, i, x0, y0)
+                        if i not in best or sc > best[i][0]:
+                            best[i] = (sc, vf, x0 + hs, y0 + hs)
+            for i, (sc, vf, x, y) in best.items():
+                second = max((v[0] for j, v in best.items() if j != i), default=-1.0)
+                pairs.append((sc, ci, i, vf, x, y, sc - second))
+        found, used = {}, set()
+        for sc, ci, i, vf, x, y, margin in sorted(pairs, reverse=True):
+            if i in found or ci in used:
+                continue
+            if vf >= 0.9:
+                ok = sc >= MM_ID_FULL
+            else:
+                ok = sc >= MM_ID_PART and margin >= MM_ID_MARGIN
+            if ok:
+                found[i] = [i, x + ox, y + oy, max(60, int(round(sc * 100)))]
+                used.add(ci)
+        self.stat["ring"] += len(found)
+        # 그림만으로 한 번 더 (테두리 색을 못 읽은 경우 대비)
+        gray = None
         z = self.size
-        h = z // 2
-        for i, tpl in self.scaled.items():
+        for i in self.full:
+            if i in found or i not in self.scaled_g:
+                continue
+            if gray is None:
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             res = cv2.matchTemplate(gray, self.scaled_g[i], cv2.TM_CCOEFF_NORMED)
             best = (-1.0, None)
             for _ in range(2):
                 _, mx, _, (x, y) = cv2.minMaxLoc(res)
-                if mx < 0.25:
+                if mx < 0.4:
                     break
-                cs = float(cv2.matchTemplate(frame[y:y + z, x:x + z], tpl, cv2.TM_CCOEFF_NORMED)[0, 0])
-                if cs > best[0]:
-                    best = (cs, (x, y))
+                cx, cy = x + z // 2, y + z // 2
+                for dx in (-1, 0, 1):
+                    for dy in (-1, 0, 1):
+                        sc = self._score(img, self.disc, i, cx + dx - hs, cy + dy - hs)
+                        if sc > best[0]:
+                            best = (sc, (cx + dx, cy + dy))
                 res[max(0, y - z):y + z, max(0, x - z):x + z] = -1
-            if best[1] is not None and best[0] * 100 >= MM_KEEP:
-                out.append([i, best[1][0] + h + ox, best[1][1] + h + oy, int(round(best[0] * 100))])
+            if best[1] is not None and best[0] >= MM_PLAIN:
+                # 이미 찾은 아이콘과 같은 자리면 넣지 않아요
+                if all(math.hypot(best[1][0] + ox - f[1], best[1][1] + oy - f[2]) > 6 for f in found.values()):
+                    found[i] = [i, best[1][0] + ox, best[1][1] + oy, int(round(best[0] * 100))]
+                    self.stat["plain"] += 1
+        out = list(found.values())
+        for ci, c in enumerate(cands):
+            if ci not in used and c["ring"] >= MM_RING_UNKNOWN and \
+                    all(math.hypot(c["x"] + ox - f[1], c["y"] + oy - f[2]) > 6 for f in found.values()):
+                out.append([-2 if c["ally"] else -1, c["x"] + ox, c["y"] + oy, int(round(c["ring"] * 100))])
+                self.stat["unknown"] += 1
         return out
 
     def check(self, t):
@@ -1003,10 +1197,15 @@ class MinimapTracker:
                 self.verify_left = 0
         self.frames.append([round(t, 1), dets])
         self.last_full = (t, frame, dets)
+        if self.save_debug and t - self.last_raw >= MM_RAW_EVERY:
+            self.last_raw = t
+            self._save_debug("minimap_sample", frame, dets, t)
         self.ms.append((time.perf_counter() - t0) * 1000)
         if time.time() - self.last_ms_log > 300:
             self.last_ms_log = time.time()
-            log(f"미니맵: 한 번 읽는 데 평균 {sum(self.ms) / len(self.ms):.0f}ms (최근 {len(self.ms)}번)")
+            st, self.stat = self.stat, {"ring": 0, "plain": 0, "unknown": 0}
+            log(f"미니맵: 한 번 읽는 데 평균 {sum(self.ms) / len(self.ms):.0f}ms (최근 {len(self.ms)}번). "
+                f"테두리로 찾음 {st['ring']}, 그림만으로 찾음 {st['plain']}, 이름 모르는 아이콘 {st['unknown']}")
 
     # 죽을 때 ---------------------------------------------------------
     @staticmethod
@@ -1039,28 +1238,36 @@ class MinimapTracker:
             log(f"미니맵 이미지 저장 실패: {e}")
 
     def _save_debug(self, prefix, frame, dets, t):
-        """찾은 아이콘에 동그라미와 이름을 그린 확인용 그림이에요. 파랑 = 우리 팀, 빨강 = 상대 팀, 노랑 = 나."""
+        """확인용 그림 두 장을 저장해요. ① 아무 표시도 없는 미니맵(_raw) ② 찾은 아이콘 아래에 이름과 점수를 적은 그림.
+        글자색: 파랑 = 우리 팀, 빨강 = 상대 팀, 노랑 = 나, 흰색 = 이름 모르는 아이콘.
+        (예전에는 아이콘 위에 동그라미를 그려서, 저장된 그림으로는 테두리를 다시 시험할 수 없었어요)"""
         if not self.save_debug:
             return
         cv2 = self.cv2
-        img = frame.copy()
-        r = max(4, int(self.size * 0.9)) if self.size else 10
+        sub, ox, oy = self._sub(frame)
+        name = f"{prefix}_{datetime.now():%Y%m%d_%H%M%S}_{int(t)}s"
+        self._write(os.path.join(DEBUG_DIR, name + "_raw.png"), sub)
+        k = 3
+        img = cv2.resize(sub, None, fx=k, fy=k, interpolation=cv2.INTER_NEAREST)
+        r = int((self.R or 15) * k)
         for i, x, y, sc in dets:
-            p = self.players[i]
-            if sc < 55:
-                continue
-            col = (0, 220, 255) if p["me"] else ((255, 140, 0) if p["ally"] else (0, 0, 255))
-            cv2.circle(img, (x, y), r, col, 2)
-            cv2.putText(img, f"{p['key'][:6]} {sc}", (x - r, y - r - 3), cv2.FONT_HERSHEY_SIMPLEX, 0.38, col, 1)
-        scale = 2 if img.shape[0] < 500 else 1
-        if scale > 1:
-            img = cv2.resize(img, None, fx=scale, fy=scale, interpolation=cv2.INTER_NEAREST)
-        self._write(os.path.join(DEBUG_DIR, f"{prefix}_{datetime.now():%Y%m%d_%H%M%S}_{int(t)}s.png"), img)
+            if i < 0:
+                col, label = (255, 255, 255), ("?ally" if i == -2 else "?enemy")
+            else:
+                p = self.players[i]
+                col = (0, 220, 255) if p["me"] else ((255, 140, 0) if p["ally"] else (0, 0, 255))
+                label = p["key"][:6]
+            cx, cy = (x - ox) * k, (y - oy) * k
+            cv2.line(img, (cx - 6, cy + r + 6), (cx + 6, cy + r + 6), col, 2)
+            cv2.putText(img, f"{label} {sc}", (cx - r, cy + r + 22), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 3)
+            cv2.putText(img, f"{label} {sc}", (cx - r, cy + r + 22), cv2.FONT_HERSHEY_SIMPLEX, 0.5, col, 1)
+        self._write(os.path.join(DEBUG_DIR, name + ".png"), img)
 
     def to_record(self):
         return {
-            "version": 1,
+            "version": 2,            # 2 = 테두리 원으로 찾기(2026-11-16). 번호 -1/-2는 이름 모르는 상대/우리 팀 아이콘
             "players": self.players,
+            "iconFull": self.S,
             "size": self.size,
             "regionSide": self.region[2] if self.region else None,
             "box": self.box,
@@ -1425,7 +1632,7 @@ def finish(session, cfg):
     except OSError:
         pass
     prune(DEBUG_DIR, KEEP_DEBUG_IMAGES, prefix="death_", suffix=".png")
-    prune(DEBUG_DIR, KEEP_DEBUG_IMAGES, prefix="minimap_", suffix=".png")
+    prune(DEBUG_DIR, KEEP_DEBUG_IMAGES * 2, prefix="minimap_", suffix=".png")
     prune(DEBUG_DIR, 0, prefix="afterdeath_", suffix=".png")  # 예전 방식으로 저장된 사진은 정리해요
     prune(GAMES_DIR, KEEP_GAME_FILES, suffix=".json")
     log(f"게임 종료: {rec['gameMode']} / {int(rec['gameLength'] // 60)}분 / 데스 {len(rec['deaths'])}번 기록")
