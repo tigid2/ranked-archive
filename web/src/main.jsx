@@ -1,7 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import '../../tools/report/report.css'
 import Report from './Report.jsx'
-import Lab from './lab/Lab.jsx'
 
 // 데이터 읽는 순서: artifact용 한 파일이면 파일 안의 window.__REPORT__,
 // 아니면 주소의 ?id=<경기ID> (또는 #<경기ID>)로 ../report-data/<경기ID>.json 을 읽어요.
@@ -19,8 +18,8 @@ function Message({ title, body }) {
 
 async function start() {
   const q = new URLSearchParams(location.search)
-  // ?lab=1 이면 실험 페이지(넣어 볼 항목 모음)를 보여 줘요. artifact 한 파일은 window.__LAB__로 정해요.
-  const View = (window.__LAB__ || q.get('lab')) ? Lab : Report
+  // 실험 리포트는 artifact용 한 파일(window.__LAB__)에서만 보여요. 공개 사이트 빌드에는 실험 화면 코드가 들어가지 않아요.
+  const View = (__SINGLE__ && window.__LAB__) ? (await import('./lab/Lab.jsx')).default : Report
   if (window.__REPORT__) {
     root.render(<View data={window.__REPORT__} />)
     return

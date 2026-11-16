@@ -133,7 +133,7 @@ def rank_of(mid):
 
 
 # ---------- 한 판 ----------
-def build(mid, champ_id=None):
+def build(mid, champ_id=None, lab=False):
     raw = json.load(gzip.open(os.path.join(ROOT, "raw", mid + ".json.gz"), "rt", encoding="utf-8"))
     A = json.load(open(os.path.join(ROOT, "analysis", mid + ".analysis.json"), encoding="utf-8"))
     fb_path = os.path.join(ROOT, "feedback", mid + ".json")
@@ -376,8 +376,8 @@ def build(mid, champ_id=None):
         "me": champ(CHAMP), "opp": champ(OPP["championName"]), "oppWith": josa(champ(OPP["championName"])["n"]),
         "hero": hero, "flow": flow_out, "lane": lane, "deaths": deaths, "team": teams, "build": build_out,
         "feedback": FB,
-        # 실험 페이지(?lab=1)용. 기존 리포트 화면은 읽지 않아요.
-        "lab": build_lab(raw, A, ME, OPP, item, champ),
+        # 실험 리포트용(--lab). 공개 사이트 데이터에는 넣지 않아요.
+        **({"lab": build_lab(raw, A, ME, OPP, item, champ, perk, spell, is_complete)} if lab else {}),
     }
 
 
@@ -508,7 +508,11 @@ def games_champ():
 
 
 def main(args):
-    os.makedirs(OUT_DIR, exist_ok=True)
+    # --lab: 실험 리포트 데이터를 tools/report/lab-data/ 에 만들어요(저장소에 올리지 않음, artifact로만 봐요).
+    lab = "--lab" in args
+    args = [a for a in args if a != "--lab"]
+    out_dir = os.path.join(ROOT, "tools", "report", "lab-data") if lab else OUT_DIR
+    os.makedirs(out_dir, exist_ok=True)
     champs = games_champ()
     if args and args[0] == "--all":
         mids = sorted(f[:-8] for f in os.listdir(os.path.join(ROOT, "raw")) if f.endswith(".json.gz"))
@@ -523,11 +527,11 @@ def main(args):
             elif not os.path.exists(os.path.join(ROOT, "analysis", mid + ".analysis.json")):
                 print(mid, "챔피언을 몰라서 건너뜀(games.json에 없음)")
                 continue
-            data = build(mid, champ_id)
+            data = build(mid, champ_id, lab)
         except Exception as e:  # 한 판이 실패해도 나머지는 만들어요
             print(mid, "실패:", type(e).__name__, e)
             continue
-        out = os.path.join(OUT_DIR, mid + ".json")
+        out = os.path.join(out_dir, mid + ".json")
         old = json.load(open(out, encoding="utf-8")) if os.path.exists(out) else None
         if old:  # 내용이 같으면 만든 시각만 바뀌지 않게 그대로 둬요(쓸데없는 커밋 막기)
             old_g, data_g = old.pop("generated", None), data.pop("generated")
@@ -537,7 +541,8 @@ def main(args):
             data["generated"] = data_g
         json.dump(data, open(out, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
         print(mid, "→", os.path.relpath(out, ROOT), os.path.getsize(out) // 1024, "KB")
-    write_index()
+    if not lab:
+        write_index()
 
 
 if __name__ == "__main__":

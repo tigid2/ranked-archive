@@ -8,6 +8,7 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "scripts"))
 import benchmarks as B  # noqa: E402
+from site_data import build_site  # noqa: E402
 
 POS_ORDER = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"]
 POS_KO = {"TOP": "탑", "JUNGLE": "정글", "MIDDLE": "미드", "BOTTOM": "원딜", "UTILITY": "서폿"}
@@ -26,7 +27,7 @@ def _label(k):
     return next((lb for kk, lb, _, _ in B.METRICS if kk == k), k)
 
 
-def build_lab(raw, A, ME, OPP, item_fn, champ_fn):
+def build_lab(raw, A, ME, OPP, item_fn, champ_fn, perk_fn=None, spell_fn=None, complete_fn=None):
     info = raw["match"]["info"]
     frames = raw["timeline"]["info"]["frames"]
     events = [e for f in frames for e in f["events"]]
@@ -153,4 +154,5 @@ def build_lab(raw, A, ME, OPP, item_fn, champ_fn):
         "teamDetail": {"ours": side(my_team), "theirs": side(300 - my_team)},
         "dmgMix": {"ours": mix(my_team), "theirs": mix(300 - my_team)},
         "bench": bm, "radar": radar,
+        "site": build_site(raw, ME, OPP, x, events, frames, complete_fn, item_fn, champ_fn, perk_fn, spell_fn) if perk_fn else None,
     }

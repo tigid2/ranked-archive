@@ -67,7 +67,8 @@ def main(mid, out=None, lab=False):
     if not os.path.exists(APP):
         sys.exit("web/dist-single/index.html이 없어요. 먼저 (cd web && npm run build:single) 을 실행해 주세요.")
     app = open(APP, encoding="utf-8").read()
-    data = json.load(open(os.path.join(ROOT, "docs", "report-data", mid + ".json"), encoding="utf-8"))
+    src = os.path.join(HERE, "lab-data") if lab else os.path.join(ROOT, "docs", "report-data")  # 실험 데이터는 report_data.py --lab 이 만들어요
+    data = json.load(open(os.path.join(src, mid + ".json"), encoding="utf-8"))
     assets = {r: u for r in sorted(refs(data, set())) if (u := fetch(r))}
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     js = ("<script>window.__REPORT__=" + blob.replace("</", "<\\/") + ";window.__ASSETS__="
