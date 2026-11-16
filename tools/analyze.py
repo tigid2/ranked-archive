@@ -381,6 +381,9 @@ def analyze(raw, champ_id, live=None):
 
 MM_FIT_SCORE = 80   # 좌표를 맞출 때 쓰는 확실한 아이콘 점수(0~100)
 MM_SEEN_SCORE = 60  # 이 점수 이상이고 자리도 그럴듯하면 "미니맵에 보였다"고 봐요
+MM_TRACK_TAG = 55   # 기록 프로그램이 "바로 전 위치로 이어 붙인" 추정 자리. 보였다고 보지 않아요
+MM_UNSURE_SEC = 5.0     # 죽기 전 이 시간(초) 안을 보고 "못 찾았을 수 있음"을 판단해요
+MM_UNSURE_DIST = 2500   # 내가 죽은 자리에서 이 거리(맵 단위) 안의 이름 모르는 상대 아이콘/추정 자리를 봐요
 MM_FOG = 0.7        # 그 자리가 가장 밝았을 때보다 이 비율 아래로 어두우면 안개(시야 없음)로 봐요
 MM_RING = (1300, 2600)  # 안개를 보는 범위: 내 주변 이 거리(맵 단위) 사이. 내 시야(약 1200) 바로 바깥이에요
 MAP_MAX = 14870
@@ -523,7 +526,42 @@ def minimap_view(mm, live_deaths, parts, frames, events, my, team, by, deaths, n
         seen[i] = keep
     res["droppedDetections"] = dropped
 
-    def seen_info(pid, t):
+    def unsure(pid, t, pos):
+        """안 보였다고 말해도 되는지. 아래 중 하나면 "못 찾았을 수 있음"이에요.
+        ① 죽기 전 5초 동안 미니맵을 읽은 횟수가 너무 적음 ② 내 근처에 이름 모르는 상대 아이콘이 있었음
+        ③ 그 적이 추정 자리(이어 붙이기)로만 잡혔음"""
+        if (mm.get("version") or 1) < 2:
+            return "예전 방식 기록(못 찾은 것과 안 보인 것을 구분하지 못함)"
+        js = [j for j, tt in enumerate(times) if t - MM_UNSURE_SEC <= tt <= t + 0.5]
+        if len(js) < 3:
+            return "읽은 횟수가 적음"
+        me_i = idx_of.get(pid)
+        for j in js:
+            for i, x, y, s in fr[j][1]:
+                if i == -1 or (i == me_i and s == MM_TRACK_TAG):
+                    if pos is None:
+                        return "이름 모르는 상대 아이콘이 있었음"
+                    gx, gy = to_map(x, y)
+                    if math.hypot(gx - pos["x"], gy - pos["y"]) <= MM_UNSURE_DIST:
+                        return "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+        return None
+
+    def seen_info(pid, t, pos=None):
+        """status: seen(보였음) / notSeen(안 보였음) / unknown(못 찾았을 수 있어서 판단 안 함)"""
+        r = _seen_info(pid, t)
+        if r["seenFor"] is None:
+            r["status"] = "unknown"
+            r["why"] = "챔피언을 맞추지 못함"
+        elif r["lastSeenAgo"] == 0:
+            r["status"] = "seen"
+        else:
+            why = unsure(pid, t, pos)
+            r["status"] = "unknown" if why else "notSeen"
+            if why:
+                r["why"] = why
+        return r
+
+    def _seen_info(pid, t):
         lst = seen.get(idx_of.get(pid))
         if lst is None:
             return {"seenFor": None, "lastSeenAgo": None}
@@ -549,7 +587,7 @@ def minimap_view(mm, live_deaths, parts, frames, events, my, team, by, deaths, n
         ids = ([ev.get("killerId")] + (ev.get("assistingParticipantIds") or [])) if ev else []
         enemies = [x for x in ids if x in by and by[x]["teamId"] != team]
         info = {"recorded": True,
-                "enemies": [{"name": nm(pid), "killer": pid == (ev or {}).get("killerId"), **seen_info(pid, t)}
+                "enemies": [{"name": nm(pid), "killer": pid == (ev or {}).get("killerId"), **seen_info(pid, t, (ev or {}).get("position"))}
                             for pid in enemies]}
         if ej and ej["participantId"] in idx_of:
             lst = [x for x in seen[idx_of[ej["participantId"]]] if x[0] <= t + 0.5]

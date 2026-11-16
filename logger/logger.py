@@ -72,6 +72,7 @@ DEFAULT_CONFIG = {
     "save_debug_images": True,
     "minimap_check": True,
     "minimap_checks_per_second": 1,
+    "minimap_fight_checks_per_second": 3,   # 아이콘이 겹쳐 있을 때(싸울 때)는 잠깐 더 자주 읽어요
     "minimap_side": "right",
 }
 
@@ -731,6 +732,10 @@ MM_PLAIN = 0.80             # 테두리 없이 그림만으로 찾았을 때의 
 MM_TRACK_SEC = 3.0          # 이 시간(초) 안에 보였던 위치만 이어 붙여요
 MM_TRACK_SPEED = 0.8        # 1초에 아이콘 지름의 이만큼까지 움직였다고 봐요(점멸·돌진 여유 포함)
 MM_TRACK_MINSCORE = 0.30    # 보이는 부분이 그 챔피언과 이만큼도 안 닮았으면 이어 붙이지 않아요
+# 이어 붙인 자리는 "추정"이에요. 점수를 55로 적어서 analyze.py의 "보였다" 기준(60)에 들어가지 않게 해요.
+# 추정한 자리를 다시 다음 추정의 출발점으로 쓰지 않아요(추정이 꼬리를 물고 이어지지 않게).
+MM_TRACK_TAG = 55
+MM_FAST_SEC = 10.0          # 아이콘이 겹친 걸 본 뒤 이 시간(초) 동안 더 자주 읽어요
 MM_RAW_EVERY = 180.0        # 확인용으로 아무 표시도 없는 미니맵 그림을 이 간격(초)으로 저장해요
 
 
@@ -757,6 +762,7 @@ class MinimapTracker:
         self.stat = {"ring": 0, "plain": 0, "track": 0, "unknown": 0}   # 어떤 방법으로 찾았는지(로그용)
         self.last_pos = {}       # 번호 → (게임 시간, x, y) 마지막으로 찾은 자리(미니맵 그림 기준)
         self.dead = set()        # 지금 죽어 있는 선수 번호(죽으면 아이콘이 사라져요)
+        self.fast_until = -1.0   # 이 게임 시간까지는 더 자주 읽어요(아이콘이 겹쳤을 때)
         self.last_raw = -999
         self.scaled = {}         # 번호 → 맞춘 크기의 아이콘
         self.size = None         # 맞춘 아이콘 크기(px)
@@ -1099,6 +1105,8 @@ class MinimapTracker:
                 if abs(fa - fb) <= 0.15:
                     fa, fb = a["ring"], b["ring"]
                 (b if fa >= fb else a)["occ"].append(a if fa >= fb else b)
+                if t is not None:
+                    self.fast_until = t + MM_FAST_SEC
         pairs = []
         for ci, c in enumerate(cands):
             best = {}
@@ -1175,15 +1183,16 @@ class MinimapTracker:
                         continue
                     d = math.hypot(c["x"] - lx, c["y"] - ly)
                     b = c["best"].get(i)
-                    if d <= MM_TRACK_SPEED * S * dt + 4 and (b is None or b[0] >= MM_TRACK_MINSCORE):
+                    if d <= MM_TRACK_SPEED * S * dt + 4 and b is not None and b[0] >= MM_TRACK_MINSCORE:
                         opts.append((d, ci, i))
             for d, ci, i in sorted(opts):
                 if i not in found and ci not in used:
-                    found[i] = [i, cands[ci]["x"] + ox, cands[ci]["y"] + oy, 60]
+                    found[i] = [i, cands[ci]["x"] + ox, cands[ci]["y"] + oy, MM_TRACK_TAG]
                     used.add(ci)
                     self.stat["track"] += 1
             for i, f in found.items():
-                self.last_pos[i] = (t, f[1] - ox, f[2] - oy)
+                if f[3] != MM_TRACK_TAG:
+                    self.last_pos[i] = (t, f[1] - ox, f[2] - oy)
         out = list(found.values())
         for ci, c in enumerate(cands):
             if ci not in used and c["ring"] >= MM_RING_UNKNOWN and \
@@ -1713,6 +1722,7 @@ def main():
     last_spell = 0
     mm = None
     mm_gap = 1.0 / max(0.2, float(cfg["minimap_checks_per_second"]))
+    mm_fast_gap = min(mm_gap, 1.0 / max(0.2, float(cfg.get("minimap_fight_checks_per_second", 3))))
     last_mm = 0
     while True:
         try:
@@ -1750,9 +1760,11 @@ def main():
             elif session and tracker and not session.was_dead and now - last_spell >= spell_gap:
                 last_spell = now
                 tracker.check(session.est_game_time())
-            if session and mm and not session.was_dead and now - last_mm >= mm_gap:
-                last_mm = now
-                mm.check(session.est_game_time())
+            if session and mm and not session.was_dead:
+                gt = session.est_game_time()
+                if now - last_mm >= (mm_fast_gap if gt <= mm.fast_until else mm_gap):
+                    last_mm = now
+                    mm.check(gt)
         except Exception:
             log("오류가 났지만 계속 실행할게요:\n" + traceback.format_exc())
             time.sleep(2)
