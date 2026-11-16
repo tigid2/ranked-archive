@@ -26,9 +26,32 @@ export function Checklist({ fb }) {
 
 export function Memo({ fb }) {
   const m = (fb && fb.memo) || ''
+  if (!m) {
+    return (
+      <Section no="08">
+        <div className="memo is-empty"><p>이 판은 메모가 없어요.</p></div>
+      </Section>
+    )
+  }
+  if (typeof m === 'string') {
+    return (
+      <Section no="08">
+        <div className="memo"><p>{m}</p></div>
+      </Section>
+    )
+  }
+  const qs = m.questions || []
   return (
     <Section no="08">
-      {m ? <div className="memo"><p>{m}</p></div> : <div className="memo is-empty"><p>이 판은 메모가 없어요.</p></div>}
+      <div className="memo">
+        {m.principle ? (
+          <p><strong>오늘의 원칙 {m.principle}</strong>{m.kept ? ` · ${m.kept}` : ''}{m.scene ? ` — ${m.scene}` : ''}</p>
+        ) : null}
+        {qs.map((x, i) => (
+          <p key={i}><strong>{x.q}</strong><br />{x.a || '아직 답이 없어요.'}</p>
+        ))}
+        {m.free ? <p>{m.free}</p> : null}
+      </div>
     </Section>
   )
 }

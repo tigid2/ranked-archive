@@ -1041,6 +1041,8 @@ def sec_check():
 
 def sec_memo():
     m = FB.get("memo") or ""
+    if not isinstance(m, str):  # 세 칸 메모(2026-11-16)는 React 화면에서만 다 보여 줘요
+        m = m.get("free") or ""
     body = f'<div class="memo"><p>{esc(m)}</p></div>' if m else '<div class="memo is-empty"><p>이 판은 메모가 없어요.</p></div>'
     return section("08", body)
 
