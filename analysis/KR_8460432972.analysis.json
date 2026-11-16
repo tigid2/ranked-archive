@@ -720,19 +720,25 @@
       "name": "바이(적)",
       "killer": true,
       "seenFor": 0,
-      "lastSeenAgo": null
+      "lastSeenAgo": null,
+      "status": "unknown",
+      "why": "예전 방식 기록(못 찾은 것과 안 보인 것을 구분하지 못함)"
      },
      {
       "name": "애쉬(적)",
       "killer": false,
       "seenFor": 0,
-      "lastSeenAgo": 42.6
+      "lastSeenAgo": 42.6,
+      "status": "unknown",
+      "why": "예전 방식 기록(못 찾은 것과 안 보인 것을 구분하지 못함)"
      },
      {
       "name": "세라핀(적)",
       "killer": false,
       "seenFor": null,
-      "lastSeenAgo": null
+      "lastSeenAgo": null,
+      "status": "unknown",
+      "why": "챔피언을 맞추지 못함"
      }
     ],
     "enemyJungle": {
@@ -861,7 +867,9 @@
       "name": "바이(적)",
       "killer": true,
       "seenFor": 0,
-      "lastSeenAgo": 129.8
+      "lastSeenAgo": 129.8,
+      "status": "unknown",
+      "why": "예전 방식 기록(못 찾은 것과 안 보인 것을 구분하지 못함)"
      }
     ],
     "enemyJungle": {
@@ -990,7 +998,9 @@
       "name": "애쉬(적)",
       "killer": true,
       "seenFor": 0,
-      "lastSeenAgo": 5.7
+      "lastSeenAgo": 5.7,
+      "status": "unknown",
+      "why": "예전 방식 기록(못 찾은 것과 안 보인 것을 구분하지 못함)"
      }
     ],
     "enemyJungle": {
@@ -1138,19 +1148,24 @@
       "name": "애쉬(적)",
       "killer": true,
       "seenFor": 0,
-      "lastSeenAgo": 12.5
+      "lastSeenAgo": 12.5,
+      "status": "unknown",
+      "why": "예전 방식 기록(못 찾은 것과 안 보인 것을 구분하지 못함)"
      },
      {
       "name": "카시오페아(적)",
       "killer": false,
       "seenFor": 2.3,
-      "lastSeenAgo": 0
+      "lastSeenAgo": 0,
+      "status": "seen"
      },
      {
       "name": "세라핀(적)",
       "killer": false,
       "seenFor": null,
-      "lastSeenAgo": null
+      "lastSeenAgo": null,
+      "status": "unknown",
+      "why": "챔피언을 맞추지 못함"
      }
     ],
     "enemyJungle": {
@@ -1304,19 +1319,24 @@
       "name": "티모(적)",
       "killer": true,
       "seenFor": 2.9,
-      "lastSeenAgo": 0
+      "lastSeenAgo": 0,
+      "status": "seen"
      },
      {
       "name": "바이(적)",
       "killer": false,
       "seenFor": 0,
-      "lastSeenAgo": 47.0
+      "lastSeenAgo": 47.0,
+      "status": "unknown",
+      "why": "예전 방식 기록(못 찾은 것과 안 보인 것을 구분하지 못함)"
      },
      {
       "name": "세라핀(적)",
       "killer": false,
       "seenFor": null,
-      "lastSeenAgo": null
+      "lastSeenAgo": null,
+      "status": "unknown",
+      "why": "챔피언을 맞추지 못함"
      }
     ],
     "enemyJungle": {
