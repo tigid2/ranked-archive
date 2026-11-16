@@ -7,6 +7,7 @@
   python3 tools/report/report_data.py KR_8448036968        # 한 판
   python3 tools/report/report_data.py --all                # raw/ 의 모든 판 (analyze.py도 다시 돌려요)
 결과: docs/report-data/<경기ID>.json, docs/report-data/index.json(만들어진 판 목록)
+      단, tools/report/public.json 에 없는 판은 tools/report/private-data/<경기ID>.json 에만 만들어요(비공개).
 """
 import gzip, json, os, re, sys, datetime as dt
 
@@ -14,6 +15,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 DATA = os.path.join(ROOT, "data")
 OUT_DIR = os.path.join(ROOT, "docs", "report-data")
+PRIVATE_DIR = os.path.join(HERE, "private-data")  # 공개 목록(public.json)에 없는 판. 저장소에 올리지 않아요(.gitignore)
+
+
+def public_ids():
+    p = os.path.join(HERE, "public.json")
+    return set(json.load(open(p, encoding="utf-8"))["public"]) if os.path.exists(p) else set()
 VER = "16.22.1"  # 아이콘을 받을 Data Dragon 버전
 SCHEMA = 1
 
@@ -515,8 +522,10 @@ def main(args):
     # --lab: 실험 리포트 데이터를 tools/report/lab-data/ 에 만들어요(저장소에 올리지 않음, artifact로만 봐요).
     lab = "--lab" in args
     args = [a for a in args if a != "--lab"]
-    out_dir = os.path.join(ROOT, "tools", "report", "lab-data") if lab else OUT_DIR
-    os.makedirs(out_dir, exist_ok=True)
+    lab_dir = os.path.join(ROOT, "tools", "report", "lab-data")
+    pub = public_ids()
+    for d in (lab_dir if lab else OUT_DIR, PRIVATE_DIR):
+        os.makedirs(d, exist_ok=True)
     champs = games_champ()
     if args and args[0] == "--all":
         mids = sorted(f[:-8] for f in os.listdir(os.path.join(ROOT, "raw")) if f.endswith(".json.gz"))
@@ -535,6 +544,9 @@ def main(args):
         except Exception as e:  # 한 판이 실패해도 나머지는 만들어요
             print(mid, "실패:", type(e).__name__, e)
             continue
+        out_dir = lab_dir if lab else (OUT_DIR if mid in pub else PRIVATE_DIR)
+        if not lab and mid not in pub and os.path.exists(os.path.join(OUT_DIR, mid + ".json")):
+            os.remove(os.path.join(OUT_DIR, mid + ".json"))  # 예전에 공개로 만든 파일은 사이트에서 내려요
         out = os.path.join(out_dir, mid + ".json")
         old = json.load(open(out, encoding="utf-8")) if os.path.exists(out) else None
         if old:  # 내용이 같으면 만든 시각만 바뀌지 않게 그대로 둬요(쓸데없는 커밋 막기)

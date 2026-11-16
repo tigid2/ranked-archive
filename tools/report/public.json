@@ -1,0 +1,4 @@
+{
+ "_설명": "GitHub 사이트(docs/report-data)에 올릴 리포트 목록이에요. 여기 없는 판은 tools/report/private-data/ 에만 만들고 저장소에 올리지 않아요(artifact로 봐요). 11-16 사용자 요청: 첫 자야 판(상대 칼리스타)만 공개.",
+ "public": ["KR_8448036968"]
+}

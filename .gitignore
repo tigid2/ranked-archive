@@ -16,3 +16,4 @@ logger/logger_log.txt
 web/node_modules/
 web/dist-single/
 tools/report/lab-data/
+tools/report/private-data/
