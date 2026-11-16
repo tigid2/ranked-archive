@@ -1,3 +1,4 @@
+import { Grid, PhaseCard, DiffCard } from './Extra.jsx'
 import { Section, Gi, signed, mmss, fix, cx } from '../ui.jsx'
 
 const OB_LEGEND = [['dragon', '드래곤'], ['grub', '공허 유충'], ['herald', '전령'], ['baron', '바론'], ['tower', '포탑'], ['inhib', '억제기']]
@@ -170,6 +171,7 @@ export default function Flow({ d, fb }) {
           </ul>
         </div>
       </div>
+      {d.plus && <Grid><PhaseCard L={d.plus} d={d} /><DiffCard L={d.plus} d={d} /></Grid>}
       <FlowExtra f={f} dur={dur} fb={fb} />
       {moments.length > 0 && (
         <>

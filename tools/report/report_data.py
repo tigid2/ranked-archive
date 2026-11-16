@@ -371,13 +371,17 @@ def build(mid, champ_id=None, lab=False):
         "skillshotsHit": A["skills"].get("skillshotsHit"), "skillshotsDodged": A["skills"].get("skillshotsDodged"),
     }
 
+    LAB = build_lab(raw, A, ME, OPP, item, champ, perk, spell, is_complete)
     return {
         "schema": SCHEMA, "matchId": mid, "generated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "me": champ(CHAMP), "opp": champ(OPP["championName"]), "oppWith": josa(champ(OPP["championName"])["n"]),
         "hero": hero, "flow": flow_out, "lane": lane, "deaths": deaths, "team": teams, "build": build_out,
         "feedback": FB,
-        # 실험 리포트용(--lab). 공개 사이트 데이터에는 넣지 않아요.
-        **({"lab": build_lab(raw, A, ME, OPP, item, champ, perk, spell, is_complete)} if lab else {}),
+        # plus: 실험 리포트에서 본 리포트로 옮긴 칸(11-16). 구간별 성적, 맞라인 차이, 첫 귀환, 피해 구성, 사이트 통계.
+        "plus": {**{k: LAB[k] for k in ("phases", "minute", "back", "dmgMix")},
+                 "site": {k: v for k, v in (LAB["site"] or {}).items() if k not in ("length", "objectives")} or None},
+        # 실험 리포트용(--lab). 나머지 실험 칸은 공개 사이트 데이터에 넣지 않아요.
+        **({"lab": LAB} if lab else {}),
     }
 
 

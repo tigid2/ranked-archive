@@ -54,7 +54,7 @@ export default function Report({ data }) {
         <SiteNav />
         <Hero d={data} />
         <SecNav />
-        <Summary fb={fb} />
+        <Summary fb={fb} d={data} />
         <Flow d={data} fb={fb} />
         <Lane d={data} fb={fb} />
         <Deaths d={data} fb={fb} />

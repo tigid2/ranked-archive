@@ -1,3 +1,4 @@
+import { Grid, BuildCard } from './Extra.jsx'
 import { Section, Ci, Ii, Pi, src, mmss, fix, cx } from '../ui.jsx'
 
 const srcOf = (p) => src(p.img)
@@ -95,6 +96,7 @@ export default function Build({ d, fb }) {
           <p className="body small">논타깃 스킬 적중 {B.skillshotsHit}번, 피한 스킬 {B.skillshotsDodged}번</p>
         </div>
       </div>
+      {d.plus && <Grid><BuildCard S={d.plus.site} L={d.plus} d={d} /></Grid>}
     </Section>
   )
 }

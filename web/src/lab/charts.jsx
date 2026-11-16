@@ -24,7 +24,7 @@ export function Radar({ axes }) {
         return (
           <g key={a.axis} className={cx('rd-label', a.value == null && 'is-none')}>
             <text x={x} y={y - 7} textAnchor="middle" className="rd-axis">{a.axis}</text>
-            <text x={x} y={y + 11} textAnchor="middle" className="rd-val num">{a.value == null ? '모으는 중' : `${a.value}`}</text>
+            <text x={x} y={y + 11} textAnchor="middle" className="rd-val num">{a.value == null ? '모으는 중' : (a.text ?? `${a.value}`)}</text>
           </g>
         )
       })}

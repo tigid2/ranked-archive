@@ -1,3 +1,4 @@
+import { Grid, MatchupCard, Lane14Card } from './Extra.jsx'
 import { Section, Ci, BfRow, cx } from '../ui.jsx'
 
 // 라인전 동안 아군 서폿이 바텀에 있었는지(1분마다)와, 있을 때/없을 때로 나눈 CS
@@ -57,6 +58,7 @@ export default function Lane({ d, fb }) {
           <p className="body">{(fb && fb.laneText) || ''}</p>
         </div>
       </div>
+      {d.plus && <Grid><MatchupCard S={d.plus.site} d={d} /><Lane14Card S={d.plus.site} L={d.plus} d={d} /></Grid>}
     </Section>
   )
 }

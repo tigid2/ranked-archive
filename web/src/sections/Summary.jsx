@@ -1,10 +1,13 @@
+import { Grid, StyleCard } from './Extra.jsx'
 import { Section, Lede, Pending } from '../ui.jsx'
 
-export default function Summary({ fb }) {
+export default function Summary({ fb, d }) {
+  const style = d?.plus?.site?.lane14 && <Grid><StyleCard S={d.plus.site} d={d} /></Grid>
   if (!fb) {
     return (
       <Section no="01">
         <Pending text="이 판은 피드백 글이 아직 없어요. 아래 숫자 기록을 먼저 보여 드려요." />
+        {style}
       </Section>
     )
   }
@@ -19,6 +22,7 @@ export default function Summary({ fb }) {
         </ol>
         <aside className="takeaway"><span className="label">다음 판 목표</span><p>{fb.takeaway}</p></aside>
       </div>
+      {style}
     </Section>
   )
 }
