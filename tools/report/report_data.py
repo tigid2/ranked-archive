@@ -252,7 +252,8 @@ def build(mid, champ_id=None, lab=False):
     flow_out = {
         "points": [{"min": f["min"], "team": f["teamGoldDiff"], "bot": f["botGoldDiff"]} for f in flow],
         "myKills": [e["timestamp"] for e in my_kills_ev], "myDeaths": ts, "objs": objs,
-        "gd14": at(14), "gd25": at(25) if dur >= 25 * 60 else None,  # 25분 전에 끝난 판은 비워요 "gdMin": min(f["teamGoldDiff"] for f in flow), "final": flow[-1]["teamGoldDiff"],
+        "gd14": at(14), "gd25": at(25) if dur >= 25 * 60 else None,  # 25분 전에 끝난 판은 비워요
+        "gdMin": min(f["teamGoldDiff"] for f in flow), "final": flow[-1]["teamGoldDiff"],
         "peak": {"min": peak["min"], "v": peak["teamGoldDiff"]}, "swings": sw,
         "focus": {"chain": sum(1 for x, y in zip(ts, ts[1:]) if y - x <= 120000), "cut": cut,
                   "before": cs_at(cut) / cut if cut else None,
@@ -277,10 +278,11 @@ def build(mid, champ_id=None, lab=False):
             "with": L["csWithSupport"], "without": L["csWithoutSupport"]},
         "botAdcKills": L["botAdcKills"] if L else None,
         "soloKills": {"me": solo(my_pid, opp_pid), "opp": solo(opp_pid, my_pid)},
-        "first2": tsec(lv["2"]["me"]) < tsec(lv["2"]["opp"]) if "2" in lv else None,
+        "first2": tsec(lv["2"]["me"]) < tsec(lv["2"]["opp"]) if "2" in lv and lv["2"]["me"] and lv["2"]["opp"] else None,
         "maxCsAdv": A["basic"].get("maxCsAdvantage", 0),
         "levels": [{"lv": n, "me": v["me"], "opp": v["opp"],
-                    "meAhead": tsec(v["me"]) < tsec(v["opp"]), "oppAhead": tsec(v["opp"]) < tsec(v["me"])} for n, v in lv.items()],
+                    "meAhead": tsec(v["me"]) < tsec(v["opp"]), "oppAhead": tsec(v["opp"]) < tsec(v["me"])}
+                   for n, v in lv.items() if v["me"] and v["opp"]],  # 둘 중 하나라도 못 찍은 레벨(짧은 판의 11레벨 등)은 빼요
     }
 
     # ----- 04 죽음 -----
@@ -452,8 +454,8 @@ def swings(flow, dur, my_kills_ev, my_deaths_ev, th=1500):
     return out
 
 
-SPELL_VERDICT = {"held": ("들고 죽음", "bad"), "used_before": ("직전에 씀", "line"),
-                 "already_down": ("쿨타임", "line"), "uncertain": ("판단 보류", "unknown")}
+SPELL_VERDICT = {"held": ("미사용", "bad"), "used_before": ("사용", "line"),
+                 "already_down": ("없음", "line"), "uncertain": ("판단 보류", "unknown")}
 NO_RESULT = {None, "not_visible", "unknown"}
 
 

@@ -111,11 +111,12 @@
 .mu-lv-row { display: grid; grid-template-columns: 44px 1fr 44px 104px; gap: var(--s-2); align-items: center; font-size: 13px; }
 .mu-lv-n { font-weight: 700; } .mu-lv-v { text-align: right; font-weight: 700; }
 .mu-lv-row .chip { justify-self: start; }
+.mu-lv-head { display: flex; justify-content: space-between; } .mu-lv-head .label:last-child { width: 104px; }
 .mu-track { position: relative; height: 10px; background: var(--bg); }
 .mu-track i { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--text-3); }
 .mu-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--dark); }
 .mu-fill.is-good { background: var(--mint); }
-@media (max-width: 520px) { .mu-lv-row { grid-template-columns: 44px 1fr 44px; } .mu-lv-row .chip { grid-column: 1 / -1; } }
+@media (max-width: 520px) { .mu-lv-row { grid-template-columns: 44px 1fr 44px; } .mu-lv-row .chip { grid-column: 1 / -1; } .mu-lv-head .label:last-child { display: none; } }
 
 /* 14분 라인전, 빌드 표 */
 .l14 td, .l14 th, .bd td, .bd th { text-align: right; }

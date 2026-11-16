@@ -1,18 +1,18 @@
 import { Grid, MatchupCard, Lane14Card } from './Extra.jsx'
 import { Section, Ci, BfRow, cx } from '../ui.jsx'
 
-// 라인전 동안 아군 서폿이 바텀에 있었는지(1분마다)와, 있을 때/없을 때로 나눈 CS
-function Support({ s }) {
+// 라인전 동안 아군 서폿이 바텀에 있었는지(1분마다)와, 서폿 있음/없음으로 나눈 CS
+function Support({ s, me, opp }) {
   return (
     <div className="sup">
-      <h3 className="panel-title">아군 서폿 위치</h3>
+      <h3 className="panel-title">아군 서폿 유무별 CS <span className="muted small">({me} : {opp})</span></h3>
       <div className="sup-strip">{s.atBot.map((c) => <span key={c.min} className={c.in ? 'in' : ''}>{c.min}</span>)}</div>
       <div className="sup-foot">
-        <ul className="legend"><li><span className="lg lg-sup-in" />바텀에 있음</li><li><span className="lg lg-sup-out" />바텀에 없음</li></ul>
+        <ul className="legend"><li><span className="lg lg-sup-in" />서폿 있음</li><li><span className="lg lg-sup-out" />서폿 없음</li></ul>
       </div>
       <div className="sup-cs">
-        <div><span className="label">서폿이 있을 때 CS</span><b>{s.with.me} : {s.with.opp}</b></div>
-        <div><span className="label">서폿이 없을 때 CS</span><b>{s.without.me} : {s.without.opp}</b></div>
+        <div><span className="label">서폿 있음</span><b>{s.with.me} : {s.with.opp}</b></div>
+        <div><span className="label">서폿 없음</span><b>{s.without.me} : {s.without.opp}</b></div>
       </div>
     </div>
   )
@@ -31,11 +31,11 @@ export default function Lane({ d, fb }) {
             <span className="bf-who">{opp}<Ci c={d.opp} size="sm" /></span>
           </div>
           <div className="bf">{L.rows.map((r) => <BfRow key={r.label} label={r.label} mine={r.me} theirs={r.opp} />)}</div>
-          {L.support && <Support s={L.support} />}
+          {L.support && <Support s={L.support} me={me} opp={opp} />}
         </div>
         <div className="panel">
           <div className="lane-facts">
-            <div><span className="label">2레벨 선점</span><b className={L.first2 ? 'me-name' : ''}>{L.first2 ? me : opp}</b></div>
+            {L.first2 != null && <div><span className="label">2레벨 선점</span><b className={L.first2 ? 'me-name' : ''}>{L.first2 ? me : opp}</b></div>}
             {bk ? (
               <div>
                 <span className="label" title="14분까지 바텀 근처에서 원딜이 죽은 횟수. 서폿이 막타를 친 것도 셉니다.">바텀 원딜 킬</span>
@@ -47,7 +47,7 @@ export default function Lane({ d, fb }) {
             <div><span className="label">최대 CS 우위</span><b className="pos">+{L.maxCsAdv}</b></div>
           </div>
           <h3 className="panel-title">레벨 도달 시간</h3>
-          <div className="lv-grid">
+          <div className="lv-grid" style={{ gridTemplateColumns: `72px repeat(${L.levels.length}, 1fr)` }}>
             <span className="lv-h lv-n">레벨</span>
             {L.levels.map((v) => <span key={v.lv} className="lv-n">{v.lv}</span>)}
             <span className="lv-h">{me}</span>

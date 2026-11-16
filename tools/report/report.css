@@ -269,10 +269,8 @@ p { margin: 0; }
 .sup-cs > div + div { border-left: 1px solid var(--line); }
 .sup-cs b { font: 800 20px/1.1 var(--font-num); font-stretch: 112%; }
 .sup-cs b .neg { color: var(--text-3); }
-.lv-grid { display: grid; grid-template-columns: 72px repeat(4, 1fr); border: 1px solid var(--line); }
-.lv-grid > span { padding: 8px 6px; font: 600 14px/1.2 var(--font-num); text-align: center; border-bottom: 1px solid var(--line-soft); border-right: 1px solid var(--line-soft); color: var(--text-2); }
-.lv-grid > span:nth-child(5n) { border-right: 0; }
-.lv-grid > span:nth-last-child(-n+5) { border-bottom: 0; }
+.lv-grid { display: grid; grid-template-columns: 72px repeat(4, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line); }
+.lv-grid > span { padding: 8px 6px; font: 600 14px/1.2 var(--font-num); text-align: center; background: var(--panel); color: var(--text-2); }
 .lv-grid .lv-h { font: 600 12px/1.2 var(--font-sans); color: var(--text-3); text-align: left; padding-left: 12px; }
 .lv-grid .lv-n { background: var(--panel-2); color: var(--text); font-weight: 800; }
 .lv-grid .ahead { background: var(--mint); color: var(--on-accent); font-weight: 800; }

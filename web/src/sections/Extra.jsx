@@ -80,12 +80,13 @@ export function PhaseCard({ L, d }) {
 
 
 // ---- 02 흐름: 맞라인 차이 그래프. 지금 리포트의 골드 그래프에 탭만 더해요.
-const TABS = [['gold', '골드'], ['cs', 'CS'], ['xp', '경험치'], ['lv', '레벨']]
+// 경험치 탭은 뺐어요(11-16): 레벨 그래프와 모양이 거의 같고, 레벨 차이가 더 바로 읽혀요.
+const TABS = [['gold', '골드'], ['cs', 'CS'], ['lv', '레벨']]
 export function DiffCard({ L, d }) {
   const [t, setT] = useState('gold')
   const vals = L.minute.map((r) => r[t][0] - r[t][1])
   return (
-    <Card title={`${d.opp.n}${d.oppWith.slice(d.opp.n.length)}의 차이`} sub="지금 리포트의 골드 그래프에 CS·경험치·레벨 탭을 더해요. 위쪽이 내가 앞선 구간이에요." wide>
+    <Card title={`${d.opp.n}${d.oppWith.slice(d.opp.n.length)}의 차이`} sub="위쪽이 내가 앞선 구간이에요." wide>
       <div className="lab-tabs">{TABS.map(([k, n]) => <button key={k} className={cx(t === k && 'on')} onClick={() => setT(k)}>{n}</button>)}</div>
       <DiffChart values={vals} />
     </Card>
@@ -115,14 +116,13 @@ export function MatchupCard({ S, d }) {
       </div>
       {mu.lv?.length > 0 && (
         <div className="mu-lv">
-          <span className="label">{d.me.n}가 레벨을 먼저 찍는 비율</span>
+          <div className="mu-lv-head"><span className="label">{d.me.n}가 레벨을 먼저 찍는 비율</span><span className="label">이 판</span></div>
           {mu.lv.map((r) => (
             <div key={r.lv} className="mu-lv-row">
               <span className="num mu-lv-n">{r.lv}레벨</span>
               <div className="mu-track"><span className={cx('mu-fill', r.first >= 50 && 'is-good')} style={{ width: `${r.first}%` }} /><i /></div>
               <span className="num mu-lv-v">{r.first}%</span>
-              {r.mine == null ? <span className="chip chip-unknown">기록 없음</span>
-                : <span className={cx('chip', r.mine ? 'chip-pos' : 'chip-line')}>이 판: {r.mine ? '내가 먼저' : '상대가 먼저'}</span>}
+              {r.mine != null && <span className={cx('chip', r.mine ? 'chip-pos' : 'chip-line')}>{r.mine ? d.me.n : d.opp.n} 선점</span>}
             </div>
           ))}
         </div>
