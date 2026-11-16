@@ -1,0 +1,2878 @@
+{
+ "matchId": "KR_8460947769",
+ "version": "16.22.834.8910",
+ "durationSec": 2449,
+ "win": false,
+ "champion": "자이라",
+ "position": "정글",
+ "opponent": "자르반 4세",
+ "duo": "진",
+ "enemyDuo": "멜",
+ "basic": {
+  "kda": [
+   2,
+   11,
+   14
+  ],
+  "cs": 175,
+  "csPerMin": 4.3,
+  "gold": 12951,
+  "goldPerMin": 317,
+  "damage": 21191,
+  "damageShare": 14,
+  "damageTaken": 34257,
+  "killParticipation": 46,
+  "vision": 37,
+  "wardsPlaced": 6,
+  "wardsKilled": 7,
+  "controlWards": 6,
+  "turretDamage": 163,
+  "cs10": 0,
+  "soloKills": 0,
+  "skillshotsHit": 23,
+  "skillshotsDodged": 12,
+  "maxCsAdvantage": 0,
+  "teamDamagePct": 0.13972605869303242
+ },
+ "teams": [
+  {
+   "team": "우리",
+   "pos": "탑",
+   "champ": "오공",
+   "me": false,
+   "kda": [
+    12,
+    8,
+    15
+   ],
+   "cs": 263,
+   "gold": 19210,
+   "damage": 38845,
+   "vision": 25
+  },
+  {
+   "team": "우리",
+   "pos": "정글",
+   "champ": "자이라",
+   "me": true,
+   "kda": [
+    2,
+    11,
+    14
+   ],
+   "cs": 175,
+   "gold": 12951,
+   "damage": 21191,
+   "vision": 37
+  },
+  {
+   "team": "우리",
+   "pos": "미드",
+   "champ": "이렐리아",
+   "me": false,
+   "kda": [
+    5,
+    15,
+    16
+   ],
+   "cs": 296,
+   "gold": 16554,
+   "damage": 23664,
+   "vision": 24
+  },
+  {
+   "team": "우리",
+   "pos": "원딜",
+   "champ": "진",
+   "me": false,
+   "kda": [
+    10,
+    4,
+    12
+   ],
+   "cs": 356,
+   "gold": 22036,
+   "damage": 38799,
+   "vision": 28
+  },
+  {
+   "team": "우리",
+   "pos": "서폿",
+   "champ": "베이가",
+   "me": false,
+   "kda": [
+    6,
+    8,
+    11
+   ],
+   "cs": 34,
+   "gold": 12649,
+   "damage": 29159,
+   "vision": 110
+  },
+  {
+   "team": "상대",
+   "pos": "탑",
+   "champ": "티모",
+   "me": false,
+   "kda": [
+    12,
+    7,
+    9
+   ],
+   "cs": 284,
+   "gold": 20182,
+   "damage": 49413,
+   "vision": 37
+  },
+  {
+   "team": "상대",
+   "pos": "정글",
+   "champ": "자르반 4세",
+   "me": false,
+   "kda": [
+    8,
+    7,
+    22
+   ],
+   "cs": 275,
+   "gold": 18700,
+   "damage": 35173,
+   "vision": 60
+  },
+  {
+   "team": "상대",
+   "pos": "미드",
+   "champ": "빅토르",
+   "me": false,
+   "kda": [
+    15,
+    6,
+    10
+   ],
+   "cs": 262,
+   "gold": 18286,
+   "damage": 55176,
+   "vision": 23
+  },
+  {
+   "team": "상대",
+   "pos": "원딜",
+   "champ": "멜",
+   "me": false,
+   "kda": [
+    9,
+    7,
+    12
+   ],
+   "cs": 265,
+   "gold": 17293,
+   "damage": 19689,
+   "vision": 49
+  },
+  {
+   "team": "상대",
+   "pos": "서폿",
+   "champ": "브라움",
+   "me": false,
+   "kda": [
+    2,
+    8,
+    24
+   ],
+   "cs": 35,
+   "gold": 11733,
+   "damage": 10421,
+   "vision": 111
+  }
+ ],
+ "flow": [
+  {
+   "min": 0,
+   "teamGoldDiff": 0,
+   "gold": 500,
+   "cs": 0,
+   "level": 1,
+   "currentGold": 500,
+   "laneGoldDiff": 0,
+   "laneCsDiff": 0,
+   "laneXpDiff": 0,
+   "botGoldDiff": 0
+  },
+  {
+   "min": 1,
+   "teamGoldDiff": -15,
+   "gold": 500,
+   "cs": 0,
+   "level": 1,
+   "currentGold": 0,
+   "laneGoldDiff": 0,
+   "laneCsDiff": 0,
+   "laneXpDiff": 0,
+   "botGoldDiff": -15
+  },
+  {
+   "min": 2,
+   "teamGoldDiff": 587,
+   "gold": 812,
+   "cs": 8,
+   "level": 2,
+   "currentGold": 312,
+   "laneGoldDiff": -56,
+   "laneCsDiff": -4,
+   "laneXpDiff": -159,
+   "botGoldDiff": -43
+  },
+  {
+   "min": 3,
+   "teamGoldDiff": 555,
+   "gold": 1209,
+   "cs": 20,
+   "level": 3,
+   "currentGold": 709,
+   "laneGoldDiff": -33,
+   "laneCsDiff": -3,
+   "laneXpDiff": -166,
+   "botGoldDiff": -8
+  },
+  {
+   "min": 4,
+   "teamGoldDiff": 86,
+   "gold": 1412,
+   "cs": 24,
+   "level": 4,
+   "currentGold": 112,
+   "laneGoldDiff": -153,
+   "laneCsDiff": -4,
+   "laneXpDiff": -174,
+   "botGoldDiff": -539
+  },
+  {
+   "min": 5,
+   "teamGoldDiff": -188,
+   "gold": 1663,
+   "cs": 28,
+   "level": 4,
+   "currentGold": 363,
+   "laneGoldDiff": -246,
+   "laneCsDiff": -10,
+   "laneXpDiff": -286,
+   "botGoldDiff": -632
+  },
+  {
+   "min": 6,
+   "teamGoldDiff": -63,
+   "gold": 1890,
+   "cs": 32,
+   "level": 5,
+   "currentGold": 590,
+   "laneGoldDiff": -363,
+   "laneCsDiff": -9,
+   "laneXpDiff": -275,
+   "botGoldDiff": -529
+  },
+  {
+   "min": 7,
+   "teamGoldDiff": -519,
+   "gold": 2123,
+   "cs": 36,
+   "level": 5,
+   "currentGold": 823,
+   "laneGoldDiff": -756,
+   "laneCsDiff": -13,
+   "laneXpDiff": -555,
+   "botGoldDiff": -1014
+  },
+  {
+   "min": 8,
+   "teamGoldDiff": -2242,
+   "gold": 2245,
+   "cs": 36,
+   "level": 5,
+   "currentGold": 145,
+   "laneGoldDiff": -1215,
+   "laneCsDiff": -15,
+   "laneXpDiff": -626,
+   "botGoldDiff": -1887
+  },
+  {
+   "min": 9,
+   "teamGoldDiff": -1597,
+   "gold": 2478,
+   "cs": 40,
+   "level": 5,
+   "currentGold": 378,
+   "laneGoldDiff": -1234,
+   "laneCsDiff": -15,
+   "laneXpDiff": -499,
+   "botGoldDiff": -1895
+  },
+  {
+   "min": 10,
+   "teamGoldDiff": -1363,
+   "gold": 3196,
+   "cs": 48,
+   "level": 6,
+   "currentGold": 1096,
+   "laneGoldDiff": -876,
+   "laneCsDiff": -16,
+   "laneXpDiff": -210,
+   "botGoldDiff": -1458
+  },
+  {
+   "min": 11,
+   "teamGoldDiff": -1692,
+   "gold": 3632,
+   "cs": 60,
+   "level": 7,
+   "currentGold": 1532,
+   "laneGoldDiff": -889,
+   "laneCsDiff": -17,
+   "laneXpDiff": -175,
+   "botGoldDiff": -1412
+  },
+  {
+   "min": 12,
+   "teamGoldDiff": -3913,
+   "gold": 3755,
+   "cs": 60,
+   "level": 7,
+   "currentGold": 380,
+   "laneGoldDiff": -1374,
+   "laneCsDiff": -25,
+   "laneXpDiff": -956,
+   "botGoldDiff": -2526
+  },
+  {
+   "min": 13,
+   "teamGoldDiff": -3730,
+   "gold": 3882,
+   "cs": 60,
+   "level": 7,
+   "currentGold": 507,
+   "laneGoldDiff": -1569,
+   "laneCsDiff": -33,
+   "laneXpDiff": -1346,
+   "botGoldDiff": -2345
+  },
+  {
+   "min": 14,
+   "teamGoldDiff": -4301,
+   "gold": 4155,
+   "cs": 65,
+   "level": 8,
+   "currentGold": 275,
+   "laneGoldDiff": -1922,
+   "laneCsDiff": -40,
+   "laneXpDiff": -1752,
+   "botGoldDiff": -2396
+  },
+  {
+   "min": 15,
+   "teamGoldDiff": -5079,
+   "gold": 4392,
+   "cs": 69,
+   "level": 8,
+   "currentGold": 512,
+   "laneGoldDiff": -2027,
+   "laneCsDiff": -42,
+   "laneXpDiff": -1674,
+   "botGoldDiff": -2689
+  },
+  {
+   "min": 16,
+   "teamGoldDiff": -7249,
+   "gold": 4806,
+   "cs": 79,
+   "level": 9,
+   "currentGold": 926,
+   "laneGoldDiff": -2319,
+   "laneCsDiff": -41,
+   "laneXpDiff": -1444,
+   "botGoldDiff": -3756
+  },
+  {
+   "min": 17,
+   "teamGoldDiff": -6399,
+   "gold": 5176,
+   "cs": 83,
+   "level": 10,
+   "currentGold": 1296,
+   "laneGoldDiff": -2461,
+   "laneCsDiff": -53,
+   "laneXpDiff": -1626,
+   "botGoldDiff": -3557
+  },
+  {
+   "min": 18,
+   "teamGoldDiff": -7681,
+   "gold": 5319,
+   "cs": 84,
+   "level": 10,
+   "currentGold": 164,
+   "laneGoldDiff": -2684,
+   "laneCsDiff": -60,
+   "laneXpDiff": -1970,
+   "botGoldDiff": -3730
+  },
+  {
+   "min": 19,
+   "teamGoldDiff": -7609,
+   "gold": 5441,
+   "cs": 84,
+   "level": 10,
+   "currentGold": 286,
+   "laneGoldDiff": -3006,
+   "laneCsDiff": -72,
+   "laneXpDiff": -2570,
+   "botGoldDiff": -4449
+  },
+  {
+   "min": 20,
+   "teamGoldDiff": -7996,
+   "gold": 5564,
+   "cs": 84,
+   "level": 10,
+   "currentGold": 409,
+   "laneGoldDiff": -3789,
+   "laneCsDiff": -84,
+   "laneXpDiff": -3286,
+   "botGoldDiff": -4575
+  },
+  {
+   "min": 21,
+   "teamGoldDiff": -8726,
+   "gold": 5686,
+   "cs": 84,
+   "level": 10,
+   "currentGold": 131,
+   "laneGoldDiff": -4538,
+   "laneCsDiff": -96,
+   "laneXpDiff": -4156,
+   "botGoldDiff": -5369
+  },
+  {
+   "min": 22,
+   "teamGoldDiff": -6302,
+   "gold": 6033,
+   "cs": 86,
+   "level": 11,
+   "currentGold": 473,
+   "laneGoldDiff": -4385,
+   "laneCsDiff": -94,
+   "laneXpDiff": -3339,
+   "botGoldDiff": -4425
+  },
+  {
+   "min": 23,
+   "teamGoldDiff": -5888,
+   "gold": 6459,
+   "cs": 95,
+   "level": 12,
+   "currentGold": 524,
+   "laneGoldDiff": -4406,
+   "laneCsDiff": -97,
+   "laneXpDiff": -3195,
+   "botGoldDiff": -4339
+  },
+  {
+   "min": 24,
+   "teamGoldDiff": -6573,
+   "gold": 7028,
+   "cs": 103,
+   "level": 12,
+   "currentGold": 1088,
+   "laneGoldDiff": -4327,
+   "laneCsDiff": -93,
+   "laneXpDiff": -3340,
+   "botGoldDiff": -4412
+  },
+  {
+   "min": 25,
+   "teamGoldDiff": -5878,
+   "gold": 7672,
+   "cs": 108,
+   "level": 13,
+   "currentGold": 1732,
+   "laneGoldDiff": -3970,
+   "laneCsDiff": -92,
+   "laneXpDiff": -2846,
+   "botGoldDiff": -3494
+  },
+  {
+   "min": 26,
+   "teamGoldDiff": -3573,
+   "gold": 8289,
+   "cs": 115,
+   "level": 13,
+   "currentGold": 2344,
+   "laneGoldDiff": -3969,
+   "laneCsDiff": -103,
+   "laneXpDiff": -3102,
+   "botGoldDiff": -2782
+  },
+  {
+   "min": 27,
+   "teamGoldDiff": -4353,
+   "gold": 8457,
+   "cs": 117,
+   "level": 13,
+   "currentGold": 12,
+   "laneGoldDiff": -4184,
+   "laneCsDiff": -107,
+   "laneXpDiff": -3311,
+   "botGoldDiff": -3240
+  },
+  {
+   "min": 28,
+   "teamGoldDiff": -3228,
+   "gold": 8679,
+   "cs": 117,
+   "level": 14,
+   "currentGold": 159,
+   "laneGoldDiff": -4556,
+   "laneCsDiff": -111,
+   "laneXpDiff": -3669,
+   "botGoldDiff": -3016
+  },
+  {
+   "min": 29,
+   "teamGoldDiff": -3066,
+   "gold": 9111,
+   "cs": 129,
+   "level": 14,
+   "currentGold": 591,
+   "laneGoldDiff": -4666,
+   "laneCsDiff": -114,
+   "laneXpDiff": -3440,
+   "botGoldDiff": -3020
+  },
+  {
+   "min": 30,
+   "teamGoldDiff": -4280,
+   "gold": 9234,
+   "cs": 129,
+   "level": 14,
+   "currentGold": 314,
+   "laneGoldDiff": -4960,
+   "laneCsDiff": -116,
+   "laneXpDiff": -4470,
+   "botGoldDiff": -3427
+  },
+  {
+   "min": 31,
+   "teamGoldDiff": -3733,
+   "gold": 9448,
+   "cs": 129,
+   "level": 15,
+   "currentGold": 529,
+   "laneGoldDiff": -4983,
+   "laneCsDiff": -116,
+   "laneXpDiff": -4075,
+   "botGoldDiff": -3175
+  },
+  {
+   "min": 32,
+   "teamGoldDiff": -2815,
+   "gold": 9706,
+   "cs": 134,
+   "level": 15,
+   "currentGold": 486,
+   "laneGoldDiff": -4988,
+   "laneCsDiff": -115,
+   "laneXpDiff": -3808,
+   "botGoldDiff": -2425
+  },
+  {
+   "min": 33,
+   "teamGoldDiff": -1973,
+   "gold": 9967,
+   "cs": 134,
+   "level": 16,
+   "currentGold": 747,
+   "laneGoldDiff": -5514,
+   "laneCsDiff": -116,
+   "laneXpDiff": -3318,
+   "botGoldDiff": -1769
+  },
+  {
+   "min": 34,
+   "teamGoldDiff": -21,
+   "gold": 10559,
+   "cs": 143,
+   "level": 16,
+   "currentGold": 760,
+   "laneGoldDiff": -5044,
+   "laneCsDiff": -107,
+   "laneXpDiff": -2318,
+   "botGoldDiff": -842
+  },
+  {
+   "min": 35,
+   "teamGoldDiff": 1074,
+   "gold": 10998,
+   "cs": 152,
+   "level": 17,
+   "currentGold": 1198,
+   "laneGoldDiff": -4972,
+   "laneCsDiff": -106,
+   "laneXpDiff": -2068,
+   "botGoldDiff": -374
+  },
+  {
+   "min": 36,
+   "teamGoldDiff": 517,
+   "gold": 11273,
+   "cs": 154,
+   "level": 17,
+   "currentGold": 1474,
+   "laneGoldDiff": -5036,
+   "laneCsDiff": -107,
+   "laneXpDiff": -2611,
+   "botGoldDiff": -666
+  },
+  {
+   "min": 37,
+   "teamGoldDiff": 77,
+   "gold": 11651,
+   "cs": 155,
+   "level": 17,
+   "currentGold": 127,
+   "laneGoldDiff": -4968,
+   "laneCsDiff": -106,
+   "laneXpDiff": -2632,
+   "botGoldDiff": -517
+  },
+  {
+   "min": 38,
+   "teamGoldDiff": 636,
+   "gold": 12005,
+   "cs": 161,
+   "level": 17,
+   "currentGold": 476,
+   "laneGoldDiff": -4736,
+   "laneCsDiff": -100,
+   "laneXpDiff": -2323,
+   "botGoldDiff": 271
+  },
+  {
+   "min": 39,
+   "teamGoldDiff": 281,
+   "gold": 12636,
+   "cs": 169,
+   "level": 18,
+   "currentGold": 1106,
+   "laneGoldDiff": -4537,
+   "laneCsDiff": -93,
+   "laneXpDiff": -1681,
+   "botGoldDiff": 569
+  },
+  {
+   "min": 40,
+   "teamGoldDiff": 861,
+   "gold": 12802,
+   "cs": 172,
+   "level": 18,
+   "currentGold": 1273,
+   "laneGoldDiff": -4619,
+   "laneCsDiff": -94,
+   "laneXpDiff": -1794,
+   "botGoldDiff": 655
+  },
+  {
+   "min": 41,
+   "teamGoldDiff": -2794,
+   "gold": 12951,
+   "cs": 175,
+   "level": 18,
+   "currentGold": 1422,
+   "laneGoldDiff": -5749,
+   "laneCsDiff": -100,
+   "laneXpDiff": -3104,
+   "botGoldDiff": -1006
+  }
+ ],
+ "levels": {
+  "2": {
+   "me": "1:33",
+   "opp": "1:22"
+  },
+  "3": {
+   "me": "2:15",
+   "opp": "1:57"
+  },
+  "6": {
+   "me": "9:02",
+   "opp": "6:33"
+  },
+  "11": {
+   "me": "21:17",
+   "opp": "16:28"
+  }
+ },
+ "deaths": [
+  {
+   "t": "3:27",
+   "tMs": 207763,
+   "zone": "우리 아래쪽 정글",
+   "killer": "멜(적)",
+   "assists": [
+    "자르반 4세(적)",
+    "브라움(적)"
+   ],
+   "alliesNear": [
+    "베이가(아군)"
+   ],
+   "enemiesNear": [],
+   "roams": [
+    {
+     "who": "브라움(적)",
+     "role": "서폿",
+     "minuteMark": "3:00",
+     "wasAt": "바텀 라인",
+     "distance": 3203
+    }
+   ],
+   "damage": [
+    [
+     "자르반 4세(적)",
+     401
+    ],
+    [
+     "브라움(적)",
+     209
+    ],
+    [
+     "멜(적)",
+     169
+    ]
+   ],
+   "topSpells": [
+    [
+     "jarvanivdragonstrike",
+     102
+    ],
+    [
+     "jarvanivmartialcadence",
+     96
+    ],
+    [
+     "braumbasicattackshieldoverride",
+     89
+    ]
+   ],
+   "approxGold": 800,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "3:27",
+    "end": "3:27",
+    "weKilled": 0,
+    "weLost": 1,
+    "size": 1
+   },
+   "lostAfter": [],
+   "teamGoldDiff": 555,
+   "live": {
+    "gold": 844,
+    "hpFlow": [
+     {
+      "t": 198.8,
+      "hp": 100
+     },
+     {
+      "t": 199.9,
+      "hp": 100
+     },
+     {
+      "t": 201.1,
+      "hp": 100
+     },
+     {
+      "t": 202.2,
+      "hp": 100
+     },
+     {
+      "t": 203.4,
+      "hp": 100
+     },
+     {
+      "t": 204.6,
+      "hp": 91
+     },
+     {
+      "t": 205.8,
+      "hp": 59
+     },
+     {
+      "t": 206.9,
+      "hp": 42
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "ready",
+      "age": 0.07,
+      "verdict": "held",
+      "afterDeath": null
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "ready",
+      "age": 0.07,
+      "verdict": "held",
+      "afterDeath": "ready"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "멜(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 5.5,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "자르반 4세(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 2.3,
+      "status": "notSeen"
+     },
+     {
+      "name": "브라움(적)",
+      "killer": false,
+      "seenFor": 5.5,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 2.3,
+     "lastSeenZone": "우리 아래쪽 정글"
+    },
+    "fog": {
+     "share": 0.75,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "7:23",
+   "tMs": 443052,
+   "zone": "바텀 라인",
+   "killer": "자르반 4세(적)",
+   "assists": [
+    "멜(적)",
+    "브라움(적)"
+   ],
+   "alliesNear": [
+    "진(아군)",
+    "베이가(아군)"
+   ],
+   "enemiesNear": [
+    "자르반 4세(적)",
+    "멜(적)",
+    "브라움(적)"
+   ],
+   "roams": [
+    {
+     "who": "브라움(적)",
+     "role": "서폿",
+     "minuteMark": "7:00",
+     "wasAt": "바텀 라인",
+     "distance": 1675
+    }
+   ],
+   "damage": [
+    [
+     "자르반 4세(적)",
+     374
+    ],
+    [
+     "브라움(적)",
+     200
+    ],
+    [
+     "멜(적)",
+     111
+    ]
+   ],
+   "topSpells": [
+    [
+     "jarvanivdragonstrike",
+     188
+    ],
+    [
+     "braumq",
+     147
+    ],
+    [
+     "jarvanivmartialcadence",
+     122
+    ]
+   ],
+   "approxGold": 870,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "7:00",
+    "end": "7:23",
+    "weKilled": 0,
+    "weLost": 4,
+    "size": 4
+   },
+   "lostAfter": [],
+   "teamGoldDiff": -519,
+   "live": {
+    "gold": 867,
+    "hpFlow": [
+     {
+      "t": 434.1,
+      "hp": 61
+     },
+     {
+      "t": 435.2,
+      "hp": 61
+     },
+     {
+      "t": 436.3,
+      "hp": 61
+     },
+     {
+      "t": 437.4,
+      "hp": 47
+     },
+     {
+      "t": 438.5,
+      "hp": 38
+     },
+     {
+      "t": 439.6,
+      "hp": 37
+     },
+     {
+      "t": 440.8,
+      "hp": 37
+     },
+     {
+      "t": 441.9,
+      "hp": 13
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.33,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.33,
+      "verdict": "used_before",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "자르반 4세(적)",
+      "killer": true,
+      "seenFor": 3.4,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     },
+     {
+      "name": "멜(적)",
+      "killer": false,
+      "seenFor": 5.3,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     },
+     {
+      "name": "브라움(적)",
+      "killer": false,
+      "seenFor": 29.6,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 0.3,
+     "lastSeenZone": "바텀 라인"
+    },
+    "fog": {
+     "share": 0.64,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "11:36",
+   "tMs": 696564,
+   "zone": "위쪽 강가(바론 쪽)",
+   "killer": "빅토르(적)",
+   "assists": [
+    "자르반 4세(적)"
+   ],
+   "alliesNear": [
+    "오공(아군)",
+    "이렐리아(아군)"
+   ],
+   "enemiesNear": [
+    "자르반 4세(적)",
+    "빅토르(적)"
+   ],
+   "roams": [
+    {
+     "who": "빅토르(적)",
+     "role": "미드",
+     "minuteMark": "11:00",
+     "wasAt": "미드 라인",
+     "distance": 4029
+    }
+   ],
+   "damage": [
+    [
+     "빅토르(적)",
+     748
+    ],
+    [
+     "자르반 4세(적)",
+     623
+    ]
+   ],
+   "topSpells": [
+    [
+     "viktore",
+     405
+    ],
+    [
+     "viktorr",
+     303
+    ],
+    [
+     "jarvanivdragonstrike",
+     234
+    ]
+   ],
+   "approxGold": null,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "11:36",
+    "end": "11:50",
+    "weKilled": 0,
+    "weLost": 3,
+    "size": 3
+   },
+   "lostAfter": [],
+   "teamGoldDiff": -1692,
+   "live": {
+    "gold": 330,
+    "hpFlow": [
+     {
+      "t": 686.9,
+      "hp": 100
+     },
+     {
+      "t": 687.9,
+      "hp": 100
+     },
+     {
+      "t": 688.9,
+      "hp": 100
+     },
+     {
+      "t": 689.9,
+      "hp": 100
+     },
+     {
+      "t": 691.1,
+      "hp": 100
+     },
+     {
+      "t": 692.2,
+      "hp": 100
+     },
+     {
+      "t": 693.4,
+      "hp": 100
+     },
+     {
+      "t": 694.7,
+      "hp": 83
+     },
+     {
+      "t": 696.0,
+      "hp": 14
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.42,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.42,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "빅토르(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 30.8,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "자르반 4세(적)",
+      "killer": false,
+      "seenFor": 2.6,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 1.0,
+     "lastSeenZone": "위쪽 강가(바론 쪽)"
+    },
+    "fog": {
+     "share": 0.82,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "13:37",
+   "tMs": 817599,
+   "zone": "우리 아래쪽 정글",
+   "killer": "자르반 4세(적)",
+   "assists": [],
+   "alliesNear": [],
+   "enemiesNear": [
+    "자르반 4세(적)"
+   ],
+   "roams": [],
+   "damage": [
+    [
+     "자르반 4세(적)",
+     1425
+    ]
+   ],
+   "topSpells": [
+    [
+     "jarvanivdragonstrike",
+     599
+    ],
+    [
+     "jarvanivbasicattack",
+     299
+    ],
+    [
+     "jarvanivmartialcadence",
+     215
+    ]
+   ],
+   "approxGold": 680,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "13:37",
+    "end": "13:37",
+    "weKilled": 0,
+    "weLost": 1,
+    "size": 1
+   },
+   "lostAfter": [
+    "14:08 미드 1차 포탑",
+    "15:00 바다 드래곤"
+   ],
+   "teamGoldDiff": -3730,
+   "live": {
+    "gold": 727,
+    "hpFlow": [
+     {
+      "t": 808.8,
+      "hp": 100
+     },
+     {
+      "t": 809.9,
+      "hp": 100
+     },
+     {
+      "t": 811.0,
+      "hp": 100
+     },
+     {
+      "t": 812.3,
+      "hp": 64
+     },
+     {
+      "t": 813.6,
+      "hp": 45
+     },
+     {
+      "t": 814.6,
+      "hp": 33
+     },
+     {
+      "t": 815.9,
+      "hp": 23
+     },
+     {
+      "t": 817.0,
+      "hp": 22
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.03,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.03,
+      "verdict": "used_before",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "자르반 4세(적)",
+      "killer": true,
+      "seenFor": 6.1,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 0.0,
+     "lastSeenZone": "우리 아래쪽 정글"
+    },
+    "fog": {
+     "share": 0.83,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "18:32",
+   "tMs": 1112494,
+   "zone": "미드 라인",
+   "killer": "멜(적)",
+   "assists": [
+    "빅토르(적)",
+    "브라움(적)"
+   ],
+   "alliesNear": [
+    "오공(아군)",
+    "이렐리아(아군)",
+    "진(아군)",
+    "베이가(아군)"
+   ],
+   "enemiesNear": [
+    "멜(적)",
+    "브라움(적)"
+   ],
+   "roams": [
+    {
+     "who": "빅토르(적)",
+     "role": "미드",
+     "minuteMark": "18:00",
+     "wasAt": "미드 라인",
+     "distance": 1390
+    },
+    {
+     "who": "브라움(적)",
+     "role": "서폿",
+     "minuteMark": "18:00",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 2958
+    }
+   ],
+   "damage": [
+    [
+     "빅토르(적)",
+     1072
+    ],
+    [
+     "멜(적)",
+     630
+    ]
+   ],
+   "topSpells": [
+    [
+     "기본 공격",
+     529
+    ],
+    [
+     "viktore",
+     323
+    ],
+    [
+     "viktorq",
+     308
+    ]
+   ],
+   "approxGold": 230,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "18:32",
+    "end": "18:32",
+    "weKilled": 0,
+    "weLost": 2,
+    "size": 2
+   },
+   "lostAfter": [
+    "19:07 바텀 2차 포탑"
+   ],
+   "teamGoldDiff": -7681,
+   "live": {
+    "gold": 230,
+    "hpFlow": [
+     {
+      "t": 1103.6,
+      "hp": 100
+     },
+     {
+      "t": 1104.7,
+      "hp": 100
+     },
+     {
+      "t": 1105.7,
+      "hp": 100
+     },
+     {
+      "t": 1106.7,
+      "hp": 100
+     },
+     {
+      "t": 1107.8,
+      "hp": 100
+     },
+     {
+      "t": 1108.9,
+      "hp": 100
+     },
+     {
+      "t": 1110.1,
+      "hp": 75
+     },
+     {
+      "t": 1111.1,
+      "hp": 62
+     },
+     {
+      "t": 1112.2,
+      "hp": 41
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.75,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.75,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "멜(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 2.2,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "빅토르(적)",
+      "killer": false,
+      "seenFor": 3.1,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     },
+     {
+      "name": "브라움(적)",
+      "killer": false,
+      "seenFor": 11.4,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": false,
+     "lastSeenAgo": 18.6,
+     "lastSeenZone": "위쪽 강가(바론 쪽)"
+    },
+    "fog": {
+     "share": 0.83,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "19:57",
+   "tMs": 1197612,
+   "zone": "우리 아래쪽 정글",
+   "killer": "티모(적)",
+   "assists": [
+    "자르반 4세(적)"
+   ],
+   "alliesNear": [
+    "진(아군)"
+   ],
+   "enemiesNear": [
+    "티모(적)",
+    "빅토르(적)"
+   ],
+   "roams": [
+    {
+     "who": "티모(적)",
+     "role": "탑",
+     "minuteMark": "19:00",
+     "wasAt": "바텀 라인",
+     "distance": 3346
+    }
+   ],
+   "damage": [
+    [
+     "티모(적)",
+     468
+    ]
+   ],
+   "topSpells": [
+    [
+     "teemoe",
+     423
+    ],
+    [
+     "기본 공격",
+     45
+    ]
+   ],
+   "approxGold": 400,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "19:57",
+    "end": "19:57",
+    "weKilled": 0,
+    "weLost": 1,
+    "size": 1
+   },
+   "lostAfter": [
+    "20:22 대지 드래곤"
+   ],
+   "teamGoldDiff": -7609,
+   "live": {
+    "gold": 402,
+    "hpFlow": [
+     {
+      "t": 1187.7,
+      "hp": 26
+     },
+     {
+      "t": 1188.9,
+      "hp": 26
+     },
+     {
+      "t": 1190.1,
+      "hp": 26
+     },
+     {
+      "t": 1191.3,
+      "hp": 26
+     },
+     {
+      "t": 1192.3,
+      "hp": 26
+     },
+     {
+      "t": 1193.4,
+      "hp": 26
+     },
+     {
+      "t": 1194.6,
+      "hp": 27
+     },
+     {
+      "t": 1195.7,
+      "hp": 14
+     },
+     {
+      "t": 1196.8,
+      "hp": 1
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.11,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.11,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "티모(적)",
+      "killer": true,
+      "seenFor": 3.3,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     },
+     {
+      "name": "자르반 4세(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 26.7,
+      "status": "notSeen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 26.7,
+     "lastSeenZone": "미드 라인"
+    },
+    "fog": {
+     "share": 0.84,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "26:12",
+   "tMs": 1572891,
+   "zone": "우리 위쪽 정글",
+   "killer": "빅토르(적)",
+   "assists": [],
+   "alliesNear": [
+    "오공(아군)",
+    "진(아군)"
+   ],
+   "enemiesNear": [
+    "티모(적)"
+   ],
+   "roams": [
+    {
+     "who": "빅토르(적)",
+     "role": "미드",
+     "minuteMark": "26:00",
+     "wasAt": "미드 라인",
+     "distance": 3596
+    }
+   ],
+   "damage": [
+    [
+     "빅토르(적)",
+     2380
+    ]
+   ],
+   "topSpells": [
+    [
+     "viktore",
+     743
+    ],
+    [
+     "viktorr",
+     670
+    ],
+    [
+     "기본 공격",
+     605
+    ]
+   ],
+   "approxGold": 2380,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "25:57",
+    "end": "26:12",
+    "weKilled": 1,
+    "weLost": 2,
+    "size": 3
+   },
+   "lostAfter": [
+    "26:35 미드 3차 포탑",
+    "26:44 미드 억제기",
+    "26:55 탑 억제기"
+   ],
+   "teamGoldDiff": -3573,
+   "live": {
+    "gold": 2413,
+    "hpFlow": [
+     {
+      "t": 1563.4,
+      "hp": 100
+     },
+     {
+      "t": 1564.4,
+      "hp": 100
+     },
+     {
+      "t": 1565.5,
+      "hp": 75
+     },
+     {
+      "t": 1566.5,
+      "hp": 70
+     },
+     {
+      "t": 1567.6,
+      "hp": 49
+     },
+     {
+      "t": 1568.7,
+      "hp": 35
+     },
+     {
+      "t": 1570.1,
+      "hp": 35
+     },
+     {
+      "t": 1571.1,
+      "hp": 35
+     },
+     {
+      "t": 1572.5,
+      "hp": 15
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": -0.01,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": -0.01,
+      "verdict": "used_before",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "빅토르(적)",
+      "killer": true,
+      "seenFor": 1.5,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": false,
+     "lastSeenAgo": 35.2,
+     "lastSeenZone": "미드 라인"
+    },
+    "fog": {
+     "share": 0.89,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "27:08",
+   "tMs": 1628364,
+   "zone": "우리 본진",
+   "killer": "자르반 4세(적)",
+   "assists": [],
+   "alliesNear": [
+    "오공(아군)",
+    "이렐리아(아군)",
+    "진(아군)",
+    "베이가(아군)"
+   ],
+   "enemiesNear": [
+    "자르반 4세(적)",
+    "빅토르(적)",
+    "멜(적)",
+    "브라움(적)"
+   ],
+   "roams": [],
+   "damage": [
+    [
+     "자르반 4세(적)",
+     2120
+    ]
+   ],
+   "topSpells": [
+    [
+     "jarvanivbasicattack",
+     996
+    ],
+    [
+     "jarvanivcataclysm",
+     523
+    ],
+    [
+     "jarvanivmartialcadence",
+     321
+    ]
+   ],
+   "approxGold": 40,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "27:08",
+    "end": "27:14",
+    "weKilled": 3,
+    "weLost": 2,
+    "size": 5
+   },
+   "lostAfter": [],
+   "teamGoldDiff": -4353,
+   "live": {
+    "gold": 25,
+    "hpFlow": [
+     {
+      "t": 1619.2,
+      "hp": 100
+     },
+     {
+      "t": 1620.4,
+      "hp": 100
+     },
+     {
+      "t": 1621.5,
+      "hp": 100
+     },
+     {
+      "t": 1622.5,
+      "hp": 100
+     },
+     {
+      "t": 1623.7,
+      "hp": 100
+     },
+     {
+      "t": 1625.0,
+      "hp": 74
+     },
+     {
+      "t": 1626.2,
+      "hp": 34
+     },
+     {
+      "t": 1627.4,
+      "hp": 20
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.05,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.05,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "자르반 4세(적)",
+      "killer": true,
+      "seenFor": 2.9,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 0.3,
+     "lastSeenZone": "우리 본진"
+    },
+    "fog": {
+     "share": 0.51,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "29:33",
+   "tMs": 1773110,
+   "zone": "우리 위쪽 정글",
+   "killer": "멜(적)",
+   "assists": [
+    "자르반 4세(적)",
+    "브라움(적)"
+   ],
+   "alliesNear": [],
+   "enemiesNear": [],
+   "roams": [
+    {
+     "who": "브라움(적)",
+     "role": "서폿",
+     "minuteMark": "29:00",
+     "wasAt": "우리 위쪽 정글",
+     "distance": 2006
+    }
+   ],
+   "damage": [
+    [
+     "자르반 4세(적)",
+     1124
+    ],
+    [
+     "멜(적)",
+     700
+    ],
+    [
+     "브라움(적)",
+     450
+    ]
+   ],
+   "topSpells": [
+    [
+     "jarvanivdragonstrike",
+     432
+    ],
+    [
+     "mele",
+     397
+    ],
+    [
+     "jarvanivmartialcadence",
+     376
+    ]
+   ],
+   "approxGold": 660,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "29:33",
+    "end": "29:33",
+    "weKilled": 0,
+    "weLost": 1,
+    "size": 1
+   },
+   "lostAfter": [
+    "29:56 바론",
+    "30:57 바텀 3차 포탑"
+   ],
+   "teamGoldDiff": -3066,
+   "live": {
+    "gold": 657,
+    "hpFlow": [
+     {
+      "t": 1763.8,
+      "hp": 100
+     },
+     {
+      "t": 1764.8,
+      "hp": 100
+     },
+     {
+      "t": 1765.8,
+      "hp": 100
+     },
+     {
+      "t": 1766.9,
+      "hp": 100
+     },
+     {
+      "t": 1767.9,
+      "hp": 100
+     },
+     {
+      "t": 1769.0,
+      "hp": 100
+     },
+     {
+      "t": 1770.1,
+      "hp": 100
+     },
+     {
+      "t": 1771.4,
+      "hp": 100
+     },
+     {
+      "t": 1772.6,
+      "hp": 34
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.02,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.02,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "멜(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 31.7,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "자르반 4세(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 16.6,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "브라움(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 29.4,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 16.6,
+     "lastSeenZone": "미드 라인"
+    },
+    "fog": {
+     "share": 0.92,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "35:56",
+   "tMs": 2156781,
+   "zone": "상대 위쪽 정글",
+   "killer": "멜(적)",
+   "assists": [
+    "자르반 4세(적)",
+    "브라움(적)"
+   ],
+   "alliesNear": [
+    "오공(아군)",
+    "이렐리아(아군)"
+   ],
+   "enemiesNear": [
+    "티모(적)",
+    "자르반 4세(적)",
+    "멜(적)",
+    "브라움(적)"
+   ],
+   "roams": [
+    {
+     "who": "브라움(적)",
+     "role": "서폿",
+     "minuteMark": "35:00",
+     "wasAt": "블루팀 본진",
+     "distance": 6789
+    }
+   ],
+   "damage": [
+    [
+     "자르반 4세(적)",
+     1445
+    ],
+    [
+     "멜(적)",
+     1227
+    ]
+   ],
+   "topSpells": [
+    [
+     "melr",
+     792
+    ],
+    [
+     "jarvanivcataclysm",
+     514
+    ],
+    [
+     "jarvanivdragonstrike",
+     361
+    ]
+   ],
+   "approxGold": 1460,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "35:56",
+    "end": "36:15",
+    "weKilled": 3,
+    "weLost": 4,
+    "size": 7
+   },
+   "lostAfter": [
+    "36:49 탑 억제기",
+    "36:51 미드 억제기"
+   ],
+   "teamGoldDiff": 1074,
+   "live": {
+    "gold": 1418,
+    "hpFlow": [
+     {
+      "t": 2148.0,
+      "hp": 100
+     },
+     {
+      "t": 2149.2,
+      "hp": 100
+     },
+     {
+      "t": 2150.2,
+      "hp": 100
+     },
+     {
+      "t": 2151.4,
+      "hp": 100
+     },
+     {
+      "t": 2152.7,
+      "hp": 61
+     },
+     {
+      "t": 2153.9,
+      "hp": 62
+     },
+     {
+      "t": 2155.0,
+      "hp": 62
+     },
+     {
+      "t": 2156.1,
+      "hp": 41
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.21,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.21,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "멜(적)",
+      "killer": true,
+      "seenFor": 4.4,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     },
+     {
+      "name": "자르반 4세(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 3.2,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "브라움(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 6.1,
+      "status": "notSeen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 3.2,
+     "lastSeenZone": "상대 위쪽 정글"
+    },
+    "fog": {
+     "share": 0.95,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "40:41",
+   "tMs": 2441444,
+   "zone": "우리 본진",
+   "killer": "자르반 4세(적)",
+   "assists": [
+    "빅토르(적)",
+    "멜(적)",
+    "브라움(적)"
+   ],
+   "alliesNear": [
+    "오공(아군)",
+    "이렐리아(아군)",
+    "진(아군)",
+    "베이가(아군)"
+   ],
+   "enemiesNear": [
+    "티모(적)",
+    "자르반 4세(적)",
+    "빅토르(적)",
+    "멜(적)",
+    "브라움(적)"
+   ],
+   "roams": [
+    {
+     "who": "빅토르(적)",
+     "role": "미드",
+     "minuteMark": "40:00",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 8279
+    },
+    {
+     "who": "브라움(적)",
+     "role": "서폿",
+     "minuteMark": "40:00",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 7654
+    }
+   ],
+   "damage": [
+    [
+     "자르반 4세(적)",
+     2716
+    ],
+    [
+     "미니언",
+     50
+    ]
+   ],
+   "topSpells": [
+    [
+     "elderdragonbuff",
+     682
+    ],
+    [
+     "jarvanivdragonstrike",
+     598
+    ],
+    [
+     "jarvanivcataclysm",
+     551
+    ]
+   ],
+   "approxGold": 1370,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "40:26",
+    "end": "40:41",
+    "weKilled": 0,
+    "weLost": 4,
+    "size": 4
+   },
+   "lostAfter": [],
+   "teamGoldDiff": 861,
+   "live": {
+    "gold": 1404,
+    "hpFlow": [
+     {
+      "t": 2432.7,
+      "hp": 90
+     },
+     {
+      "t": 2434.2,
+      "hp": 89
+     },
+     {
+      "t": 2435.5,
+      "hp": 68
+     },
+     {
+      "t": 2436.6,
+      "hp": 42
+     },
+     {
+      "t": 2438.0,
+      "hp": 46
+     },
+     {
+      "t": 2439.1,
+      "hp": 47
+     },
+     {
+      "t": 2440.9,
+      "hp": 32
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerSmite",
+      "state": "cooldown",
+      "age": 0.14,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.14,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "자르반 4세(적)",
+      "killer": true,
+      "seenFor": 3.9,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     },
+     {
+      "name": "빅토르(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 18.2,
+      "status": "notSeen"
+     },
+     {
+      "name": "멜(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 13.7,
+      "status": "notSeen"
+     },
+     {
+      "name": "브라움(적)",
+      "killer": false,
+      "seenFor": 21.5,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "자르반 4세(적)",
+     "inKill": true,
+     "lastSeenAgo": 0.0,
+     "lastSeenZone": "우리 본진"
+    },
+    "fog": {
+     "share": 0.42,
+     "trusted": false
+    }
+   }
+  }
+ ],
+ "minimap": {
+  "available": true,
+  "fitPoints": 145,
+  "fitErrMedian": 50,
+  "unitsPerPx": 42.1,
+  "iconSize": 18,
+  "msAvg": 206,
+  "droppedDetections": 473
+ },
+ "myKills": [
+  {
+   "t": "9:37",
+   "victim": "브라움(적)",
+   "zone": "아래쪽 강가(드래곤 쪽)",
+   "withAllies": [
+    "진(아군)",
+    "베이가(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "24:29",
+   "victim": "빅토르(적)",
+   "zone": "바텀 라인",
+   "withAllies": [
+    "이렐리아(아군)",
+    "진(아군)"
+   ],
+   "solo": false
+  }
+ ],
+ "objectives": [
+  {
+   "t": "9:34",
+   "name": "화염 드래곤",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 4455
+  },
+  {
+   "t": "10:06",
+   "name": "공허 유충",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "11:27",
+   "name": "공허 유충",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "11:29",
+   "name": "공허 유충",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "15:00",
+   "name": "바다 드래곤",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 9711
+  },
+  {
+   "t": "17:48",
+   "name": "전령",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "20:22",
+   "name": "대지 드래곤",
+   "ours": false,
+   "iWasDead": true,
+   "myDistance30sBefore": 4373
+  },
+  {
+   "t": "23:23",
+   "name": "바론",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 5795
+  },
+  {
+   "t": "26:06",
+   "name": "대지 드래곤",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 6028
+  },
+  {
+   "t": "29:56",
+   "name": "바론",
+   "ours": false,
+   "iWasDead": true,
+   "myDistance30sBefore": 4211
+  },
+  {
+   "t": "33:11",
+   "name": "장로 드래곤",
+   "ours": true,
+   "iWasDead": false,
+   "myDistance30sBefore": 768
+  },
+  {
+   "t": "40:05",
+   "name": "장로 드래곤",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 2413
+  }
+ ],
+ "buildings": [
+  {
+   "t": "14:08",
+   "name": "미드 1차 포탑",
+   "ours": false
+  },
+  {
+   "t": "15:25",
+   "name": "바텀 1차 포탑",
+   "ours": false
+  },
+  {
+   "t": "15:45",
+   "name": "탑 1차 포탑",
+   "ours": false
+  },
+  {
+   "t": "17:43",
+   "name": "미드 2차 포탑",
+   "ours": false
+  },
+  {
+   "t": "19:07",
+   "name": "바텀 2차 포탑",
+   "ours": false
+  },
+  {
+   "t": "21:43",
+   "name": "탑 2차 포탑",
+   "ours": false
+  },
+  {
+   "t": "24:32",
+   "name": "탑 3차 포탑",
+   "ours": false
+  },
+  {
+   "t": "25:31",
+   "name": "미드 1차 포탑",
+   "ours": true
+  },
+  {
+   "t": "25:36",
+   "name": "바텀 1차 포탑",
+   "ours": true
+  },
+  {
+   "t": "26:35",
+   "name": "미드 3차 포탑",
+   "ours": false
+  },
+  {
+   "t": "26:44",
+   "name": "미드 억제기",
+   "ours": false
+  },
+  {
+   "t": "26:55",
+   "name": "탑 억제기",
+   "ours": false
+  },
+  {
+   "t": "30:57",
+   "name": "바텀 3차 포탑",
+   "ours": false
+  },
+  {
+   "t": "34:48",
+   "name": "미드 2차 포탑",
+   "ours": true
+  },
+  {
+   "t": "35:03",
+   "name": "미드 3차 포탑",
+   "ours": true
+  },
+  {
+   "t": "35:05",
+   "name": "미드 억제기",
+   "ours": true
+  },
+  {
+   "t": "36:49",
+   "name": "탑 억제기",
+   "ours": false
+  },
+  {
+   "t": "36:51",
+   "name": "미드 억제기",
+   "ours": false
+  },
+  {
+   "t": "38:49",
+   "name": "미드 쌍둥이 포탑",
+   "ours": false
+  },
+  {
+   "t": "40:38",
+   "name": "미드 쌍둥이 포탑",
+   "ours": false
+  }
+ ],
+ "fights": [
+  {
+   "start": "5:19",
+   "kills": "1:1",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -188
+  },
+  {
+   "start": "7:00",
+   "kills": "0:4",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "바텀 라인",
+   "teamGoldDiffBefore": -519
+  },
+  {
+   "start": "9:37",
+   "kills": "1:1",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "아래쪽 강가(드래곤 쪽)",
+   "teamGoldDiffBefore": -1597
+  },
+  {
+   "start": "11:36",
+   "kills": "0:3",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "위쪽 강가(바론 쪽)",
+   "teamGoldDiffBefore": -1692
+  },
+  {
+   "start": "14:52",
+   "kills": "1:3",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": -4301
+  },
+  {
+   "start": "17:02",
+   "kills": "2:4",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -6399
+  },
+  {
+   "start": "18:32",
+   "kills": "0:2",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -7681
+  },
+  {
+   "start": "18:55",
+   "kills": "3:1",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -7681
+  },
+  {
+   "start": "21:15",
+   "kills": "4:1",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -8726
+  },
+  {
+   "start": "23:46",
+   "kills": "1:1",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": -5888
+  },
+  {
+   "start": "25:57",
+   "kills": "1:2",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "우리 위쪽 정글",
+   "teamGoldDiffBefore": -5878
+  },
+  {
+   "start": "27:08",
+   "kills": "3:2",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "우리 본진",
+   "teamGoldDiffBefore": -4353
+  },
+  {
+   "start": "30:34",
+   "kills": "3:1",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "우리 본진",
+   "teamGoldDiffBefore": -4280
+  },
+  {
+   "start": "32:05",
+   "kills": "4:2",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "아래쪽 강가(드래곤 쪽)",
+   "teamGoldDiffBefore": -2815
+  },
+  {
+   "start": "35:56",
+   "kills": "3:4",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "상대 위쪽 정글",
+   "teamGoldDiffBefore": 1074
+  },
+  {
+   "start": "38:07",
+   "kills": "3:3",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": 636
+  },
+  {
+   "start": "40:26",
+   "kills": "0:4",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "우리 본진",
+   "teamGoldDiffBefore": 861
+  }
+ ],
+ "items": {
+  "me": [
+   {
+    "t": "11:00",
+    "item": "마법사의 신발",
+    "gold": 1100
+   },
+   {
+    "t": "17:42",
+    "item": "리안드리의 고통",
+    "gold": 3000
+   },
+   {
+    "t": "26:18",
+    "item": "그림자불꽃",
+    "gold": 3200
+   },
+   {
+    "t": "36:13",
+    "item": "존야의 모래시계",
+    "gold": 3250
+   }
+  ],
+  "opp": [
+   {
+    "t": "8:14",
+    "item": "불경한 히드라",
+    "gold": 2850
+   },
+   {
+    "t": "12:19",
+    "item": "헤르메스의 발걸음",
+    "gold": 1250
+   },
+   {
+    "t": "17:02",
+    "item": "벼락폭풍검",
+    "gold": 3000
+   },
+   {
+    "t": "23:54",
+    "item": "죽음의 무도",
+    "gold": 3300
+   },
+   {
+    "t": "30:50",
+    "item": "수호 천사",
+    "gold": 3200
+   }
+  ],
+  "final": [
+   "존야의 모래시계",
+   "마법사의 신발",
+   "그림자불꽃",
+   "리안드리의 고통",
+   "예언자의 렌즈"
+  ]
+ },
+ "bankedGold": [
+  {
+   "min": 11,
+   "currentGold": 1532
+  },
+  {
+   "min": 25,
+   "currentGold": 1732
+  },
+  {
+   "min": 26,
+   "currentGold": 2344
+  }
+ ],
+ "runes": {
+  "primary": "지배",
+  "secondary": "정밀",
+  "picks": [
+   {
+    "rune": "감전",
+    "vars": [
+     1855,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "비열한 한 방",
+    "vars": [
+     454,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "육감",
+    "vars": [
+     8,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "보물 사냥꾼",
+    "vars": [
+     450,
+     5,
+     0
+    ]
+   },
+   {
+    "rune": "전설: 가속",
+    "vars": [
+     23,
+     20,
+     0
+    ]
+   },
+   {
+    "rune": "체력차 극복",
+    "vars": [
+     2531,
+     0,
+     0
+    ]
+   }
+  ],
+  "shards": [
+   "스킬 가속",
+   "적응형 능력치",
+   "체력 증가(성장)"
+  ]
+ },
+ "spells": [
+  {
+   "name": "강타",
+   "casts": 23
+  },
+  {
+   "name": "점멸",
+   "casts": 6
+  }
+ ],
+ "skills": {
+  "casts": [
+   138,
+   162,
+   101,
+   15
+  ],
+  "immobilizations": 33,
+  "skillshotsHit": 23,
+  "skillshotsDodged": 12
+ },
+ "pings": {
+  "onMyWayPings": 1,
+  "enemyMissingPings": 3,
+  "getBackPings": 4,
+  "assistMePings": 0,
+  "allInPings": 0,
+  "pushPings": 0,
+  "needVisionPings": 0,
+  "enemyVisionPings": 2,
+  "holdPings": 0,
+  "dangerPings": 0,
+  "retreatPings": 0,
+  "visionClearedPings": 0,
+  "basicPings": 0,
+  "commandPings": 1
+ },
+ "wardTimeline": {
+  "10": 1,
+  "15": 1,
+  "20": 1,
+  "25": 1,
+  "30": 1,
+  "35": 1
+ }
+}
