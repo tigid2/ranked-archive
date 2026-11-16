@@ -739,6 +739,81 @@ MM_FAST_SEC = 10.0          # 아이콘이 겹친 걸 본 뒤 이 시간(초) �
 MM_RAW_EVERY = 180.0        # 확인용으로 아무 표시도 없는 미니맵 그림을 이 간격(초)으로 저장해요
 
 
+# --- 미니맵용 원형 아이콘 (2026-11-16) ---
+# Data Dragon의 네모 초상화는 미니맵 그림과 자른 범위가 달라서 잘 안 맞는 챔피언이 있었어요(비에고 0.55, 요네 0.77).
+# 게임 파일에 든 미니맵용 원형 아이콘(CommunityDragon이 공개)으로 바꾸면 같은 화면에서 0.88, 0.93이 나와요.
+# 처음 한 번 모든 챔피언 것을 cache/에 받아 두고, 그 뒤로는 저장된 파일만 써요.
+MM_ICON_BASE = "https://raw.communitydragon.org/latest/game/assets/characters/"
+# 파일 이름이 챔피언 이름과 다른 경우(옛 내부 이름)
+MM_ICON_ODD = {"Blitzcrank": "steamgolem_circle.png", "Anivia": "cryophoenix_circle.png",
+               "Orianna": "oriana_circle.png", "Chogath": "greenterror_circle.png",
+               "XinZhao": "xinzhaorework_circle_0.png", "Zilean": "chronokeeper_circle.png",
+               "Rammus": "armordillo_circle.png", "Shaco": "jester_circle.png"}
+MM_ICON_DONE = os.path.join(CACHE_DIR, "mm_icons_done.json")
+
+
+def _http_get(url, timeout=10):
+    req = urllib.request.Request(url, headers={"User-Agent": "lol-live-logger"})
+    with urllib.request.urlopen(req, timeout=timeout, context=WEB_CTX) as r:
+        return r.read()
+
+
+def _ddragon_version():
+    return json.loads(_http_get("https://ddragon.leagueoflegends.com/api/versions.json").decode("utf-8"))[0]
+
+
+def mm_icon_path(key):
+    return os.path.join(CACHE_DIR, f"mm_{key}.png")
+
+
+def fetch_mm_icon(key):
+    """챔피언 한 명의 원형 아이콘을 받아서 cache/에 저장해요. 못 받으면 오류를 내요."""
+    c = key.lower()
+    names = [MM_ICON_ODD[key]] if key in MM_ICON_ODD else [f"{c}_circle.png", f"{c}_circle_0.png"]
+    err = None
+    for name in names:
+        try:
+            data = _http_get(f"{MM_ICON_BASE}{c}/hud/{name}")
+            if data[:8] != b"\x89PNG\r\n\x1a\n":
+                raise ValueError("그림 파일이 아니에요")
+            os.makedirs(CACHE_DIR, exist_ok=True)
+            with open(mm_icon_path(key), "wb") as f:
+                f.write(data)
+            return
+        except Exception as e:
+            err = e
+    raise err
+
+
+def prefetch_mm_icons():
+    """모든 챔피언의 원형 아이콘을 한 번만 받아 둬요. 게임 기록과 따로 뒤에서 돌아요."""
+    try:
+        if os.path.exists(MM_ICON_DONE):
+            return
+        ver = _ddragon_version()
+        keys = sorted(json.loads(_http_get(
+            f"https://ddragon.leagueoflegends.com/cdn/{ver}/data/en_US/champion.json", 20).decode("utf-8"))["data"])
+        got, failed = 0, []
+        for k in keys:
+            if os.path.exists(mm_icon_path(k)):
+                got += 1
+                continue
+            try:
+                fetch_mm_icon(k)
+                got += 1
+            except Exception:
+                failed.append(k)
+            time.sleep(0.05)
+        log(f"미니맵: 원형 아이콘 {got}/{len(keys)}개를 받아 뒀어요."
+            + (f" 못 받은 챔피언: {', '.join(failed[:10])}" if failed else ""))
+        if len(failed) <= 5:   # 거의 다 받았을 때만 끝난 걸로 적어요. 남은 건 그 챔피언이 나온 판에 다시 받아요.
+            with open(MM_ICON_DONE, "w", encoding="utf-8") as f:
+                json.dump({"version": ver, "count": got, "failed": failed}, f, ensure_ascii=False)
+    except Exception as e:
+        log(f"미니맵: 원형 아이콘 미리 받기를 못 했어요({e}). 다음에 켤 때 다시 해 볼게요.")
+
+
+
 class MinimapTracker:
     """미니맵에서 10명의 챔피언 아이콘을 찾아 위치와 점수를 기록해요. 미니맵에는 우리 팀이 실제로 본 것만 나와요.
     미니맵의 정확한 위치와 크기는 몰라도 돼요. 화면 오른쪽 아래를 넉넉히 읽고,
@@ -807,22 +882,31 @@ class MinimapTracker:
         threading.Thread(target=self._load_templates, daemon=True).start()
 
     def _champ_icon(self, key):
+        """미니맵에 실제로 쓰이는 원형 아이콘을 먼저 쓰고, 없으면 예전처럼 네모 초상화를 써요."""
         if self._icon_loader:
             return self._icon_loader(key)
-        os.makedirs(CACHE_DIR, exist_ok=True)
+        cv2, np = self.cv2, self.np
+        path = mm_icon_path(key)
+        if not os.path.exists(path):
+            try:
+                fetch_mm_icon(key)
+            except Exception as e:
+                log(f"미니맵: {key} 원형 아이콘을 받지 못해서 네모 초상화를 써요({e}).")
+        if os.path.exists(path):
+            img = cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_UNCHANGED)
+            if img is not None:
+                if img.ndim == 3 and img.shape[2] == 4:  # 투명한 바깥은 검정으로
+                    a = img[..., 3:4].astype(np.float32) / 255.0
+                    img = (img[..., :3].astype(np.float32) * a).astype(np.uint8)
+                elif img.ndim == 2:
+                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+                return img
         path = os.path.join(CACHE_DIR, f"champ_{key}.png")
         if not os.path.exists(path):
-            req = urllib.request.Request("https://ddragon.leagueoflegends.com/api/versions.json",
-                                         headers={"User-Agent": "lol-live-logger"})
-            with urllib.request.urlopen(req, timeout=10, context=WEB_CTX) as r:
-                ver = json.loads(r.read().decode("utf-8"))[0]
-            url = f"https://ddragon.leagueoflegends.com/cdn/{ver}/img/champion/{key}.png"
-            req = urllib.request.Request(url, headers={"User-Agent": "lol-live-logger"})
-            with urllib.request.urlopen(req, timeout=10, context=WEB_CTX) as r:
-                data = r.read()
+            data = _http_get(f"https://ddragon.leagueoflegends.com/cdn/{_ddragon_version()}/img/champion/{key}.png")
             with open(path, "wb") as f:
                 f.write(data)
-        return self.cv2.imdecode(self.np.fromfile(path, dtype=self.np.uint8), self.cv2.IMREAD_COLOR)
+        return cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_COLOR)
 
     def _load_templates(self):
         for i, p in enumerate(self.players):
@@ -1714,6 +1798,8 @@ def main():
             tracker_ok = False
             log(f"스펠 확인 기능을 쓸 수 없어요({e}). 'install.bat'을 다시 실행해 주세요. 골드·체력 기록은 계속해요.")
     upload_pending(cfg)
+    if cfg["minimap_check"]:
+        threading.Thread(target=prefetch_mm_icons, daemon=True).start()
 
     session = None
     fails = 0
