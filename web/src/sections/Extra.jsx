@@ -5,11 +5,11 @@ import { Ci, Ii, Pi, num, signed, cx } from '../ui.jsx'
 import { Radar, DiffChart } from '../lab/charts.jsx'
 import '../lab/lab.css'
 
-const sec = (s) => (s == null ? '–' : `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`)
-const p1 = (v) => (+v).toFixed(1)
+export const sec = (s) => (s == null ? '–' : `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`)
+export const p1 = (v) => (+v).toFixed(1)
 const Empty = ({ text }) => <p className="lab-empty">{text}</p>
 
-function Card({ title, sub, wide, children }) {
+export function Card({ title, sub, wide, children }) {
   return (
     <article className={cx('panel lab-card', wide && 'is-wide')}>
       <div className="panel-head"><h3>{title}</h3></div>
@@ -200,8 +200,6 @@ export function BuildCard({ S, L, d }) {
       <td><div className="bd-alts">{others(top, m?.item.id)}</div></td>
     </tr>
   )
-  const o = S.order, sp = S.spells, mx = L.dmgMix.theirs
-  const tot = mx.phys + mx.magic + mx.true || 1
   return (
     <Card title="빌드 비교" sub={`에메랄드 이상 ${d.me.n} ${num(S.champ.games)}판의 선택과 나란히 놓았어요. 승률은 그 아이템을 그 순서로 산 판의 승률이에요.`} wide>
       <div className="table-wrap">
@@ -213,33 +211,42 @@ export function BuildCard({ S, L, d }) {
           </tbody>
         </table>
       </div>
-      <div className="bd-extra">
-        {o && (
-          <div>
-            <span className="label">구매 순서</span>
-            <div className="bd-order">{o.mine.map((it, i) => <span key={i}>{i > 0 && <i aria-hidden="true">→</i>}<Ii it={it} size="sm" /></span>)}</div>
-            <p className="small">{o.stat ? <><b className="num">{p1(o.stat.pick)}%</b>가 고른 순서 ({o.rank}번째로 많음) · 승률 <b className="num">{p1(o.stat.win)}%</b></> : <span className="muted">많이 가는 순서 6개 안에 없어요</span>}</p>
-          </div>
-        )}
-        <div>
-          <span className="label">룬</span>
-          <div className="bd-runes">{S.runes.map((r, i) => (
-            <span key={i} className={cx('bd-rune', r.main && 'is-main')}><Pi p={r} cls="ic ic-sm ic-rune" /><span className="num small">{r.stat ? `${r.stat.pick}%` : '3% 미만'}</span></span>
-          ))}</div>
-          <p className="small muted">숫자는 그 룬을 고른 비율이에요.</p>
-        </div>
-        <div>
-          <span className="label">소환사 주문</span>
-          <div className="bd-runes">{sp.mineSpells.map((x) => <Pi key={x.key} p={x} cls="ic ic-sm" />)}</div>
-          <p className="small">{sp.mine ? <><b className="num">{p1(sp.mine.pick)}%</b>가 고른 조합 · 승률 <b className="num">{p1(sp.mine.win)}%</b></> : <span className="muted">선택률 1% 미만</span>}</p>
-        </div>
-        <div>
-          <span className="label">상대 팀 피해 구성</span>
-          <div className="mix-bar is-theirs bd-mix">{[mx.phys, mx.magic, mx.true].map((v, i) => <span key={i} className={`mx-${i}`} style={{ width: `${(100 * v) / tot}%` }} />)}</div>
-          <p className="small num">물리 {Math.round((100 * mx.phys) / tot)}% · 마법 {Math.round((100 * mx.magic) / tot)}% · 고정 {Math.round((100 * mx.true) / tot)}%</p>
-        </div>
-      </div>
+      <BuildExtras S={S} L={L} />
     </Card>
   )
 }
 
+
+// 빌드 칸 아래쪽(구매 순서, 룬, 소환사 주문, 상대 팀 피해 구성). 빌드 비교 시안(BuildV2)도 같이 써요.
+export function BuildExtras({ S, L }) {
+  const o = S.order, sp = S.spells, mx = L.dmgMix.theirs
+  const tot = mx.phys + mx.magic + mx.true || 1
+  return (
+    <div className="bd-extra">
+      {o && (
+        <div>
+          <span className="label">구매 순서</span>
+          <div className="bd-order">{o.mine.map((it, i) => <span key={i}>{i > 0 && <i aria-hidden="true">→</i>}<Ii it={it} size="sm" /></span>)}</div>
+          <p className="small">{o.stat ? <><b className="num">{p1(o.stat.pick)}%</b>가 고른 순서 ({o.rank}번째로 많음) · 승률 <b className="num">{p1(o.stat.win)}%</b></> : <span className="muted">많이 가는 순서 6개 안에 없어요</span>}</p>
+        </div>
+      )}
+      <div>
+        <span className="label">룬</span>
+        <div className="bd-runes">{S.runes.map((r, i) => (
+          <span key={i} className={cx('bd-rune', r.main && 'is-main')}><Pi p={r} cls="ic ic-sm ic-rune" /><span className="num small">{r.stat ? `${r.stat.pick}%` : '3% 미만'}</span></span>
+        ))}</div>
+        <p className="small muted">숫자는 그 룬을 고른 비율이에요.</p>
+      </div>
+      <div>
+        <span className="label">소환사 주문</span>
+        <div className="bd-runes">{sp.mineSpells.map((x) => <Pi key={x.key} p={x} cls="ic ic-sm" />)}</div>
+        <p className="small">{sp.mine ? <><b className="num">{p1(sp.mine.pick)}%</b>가 고른 조합 · 승률 <b className="num">{p1(sp.mine.win)}%</b></> : <span className="muted">선택률 1% 미만</span>}</p>
+      </div>
+      <div>
+        <span className="label">상대 팀 피해 구성</span>
+        <div className="mix-bar is-theirs bd-mix">{[mx.phys, mx.magic, mx.true].map((v, i) => <span key={i} className={`mx-${i}`} style={{ width: `${(100 * v) / tot}%` }} />)}</div>
+        <p className="small num">물리 {Math.round((100 * mx.phys) / tot)}% · 마법 {Math.round((100 * mx.magic) / tot)}% · 고정 {Math.round((100 * mx.true) / tot)}%</p>
+      </div>
+    </div>
+  )
+}

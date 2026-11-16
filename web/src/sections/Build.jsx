@@ -1,4 +1,5 @@
 import { Grid, BuildCard } from './Extra.jsx'
+import { BuildCardV2 } from './BuildV2.jsx'
 import { Section, Ci, Ii, Pi, src, mmss, fix, cx } from '../ui.jsx'
 
 const srcOf = (p) => src(p.img)
@@ -97,6 +98,7 @@ export default function Build({ d, fb }) {
         </div>
       </div>
       {d.plus && <Grid><BuildCard S={d.plus.site} L={d.plus} d={d} /></Grid>}
+      {d.plus && typeof window !== 'undefined' && window.__BUILD_V2__ && <Grid><BuildCardV2 S={d.plus.site} L={d.plus} d={d} /></Grid>}
     </Section>
   )
 }
