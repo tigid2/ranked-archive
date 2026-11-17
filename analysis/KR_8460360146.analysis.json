@@ -686,14 +686,17 @@
    "alliesNear": [
     "이즈리얼(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "사일러스(적)",
+    "제라스(적)"
+   ],
    "roams": [
     {
      "who": "사일러스(적)",
      "role": "정글",
-     "minuteMark": "7:00",
+     "minuteMark": "6:59",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 2971
+     "distance": 2972
     }
    ],
    "damage": [
@@ -743,16 +746,16 @@
     "이즈리얼(아군)"
    ],
    "enemiesNear": [
-    "진(적)",
-    "제라스(적)"
+    "제드(적)",
+    "진(적)"
    ],
    "roams": [
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "10:00",
+     "minuteMark": "9:51",
      "wasAt": "미드 라인",
-     "distance": 6876
+     "distance": 7514
     }
    ],
    "damage": [
@@ -801,6 +804,7 @@
     "제라스(적)"
    ],
    "alliesNear": [
+    "쉔(아군)",
     "르블랑(아군)",
     "이즈리얼(아군)"
    ],
@@ -813,9 +817,9 @@
     {
      "who": "올라프(적)",
      "role": "탑",
-     "minuteMark": "22:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 530
+     "minuteMark": "21:34",
+     "wasAt": "바텀 라인",
+     "distance": 6212
     }
    ],
    "damage": [
@@ -870,22 +874,24 @@
    ],
    "enemiesNear": [
     "사일러스(적)",
+    "제드(적)",
+    "진(적)",
     "제라스(적)"
    ],
    "roams": [
     {
      "who": "사일러스(적)",
      "role": "정글",
-     "minuteMark": "24:00",
-     "wasAt": "상대 아래쪽 정글",
-     "distance": 2433
+     "minuteMark": "23:49",
+     "wasAt": "레드팀 본진",
+     "distance": 7958
     },
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "24:00",
-     "wasAt": "미드 라인",
-     "distance": 2503
+     "minuteMark": "23:46",
+     "wasAt": "레드팀 본진",
+     "distance": 8259
     }
    ],
    "damage": [
@@ -953,9 +959,9 @@
     {
      "who": "올라프(적)",
      "role": "탑",
-     "minuteMark": "30:00",
-     "wasAt": "미드 라인",
-     "distance": 1171
+     "minuteMark": "29:34",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 3602
     }
    ],
    "damage": [
@@ -1013,24 +1019,29 @@
     "제드(적)"
    ],
    "alliesNear": [
+    "쉔(아군)",
     "리 신(아군)",
     "이즈리얼(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "올라프(적)",
+    "사일러스(적)",
+    "제드(적)"
+   ],
    "roams": [
     {
      "who": "올라프(적)",
      "role": "탑",
-     "minuteMark": "32:00",
+     "minuteMark": "31:46",
      "wasAt": "탑 라인",
-     "distance": 3118
+     "distance": 4338
     },
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "32:00",
+     "minuteMark": "31:46",
      "wasAt": "미드 라인",
-     "distance": 3520
+     "distance": 4502
     }
    ],
    "damage": [
@@ -1080,7 +1091,6 @@
    "killer": "제드(적)",
    "assists": [],
    "alliesNear": [
-    "리 신(아군)",
     "르블랑(아군)",
     "이즈리얼(아군)"
    ],
@@ -1092,9 +1102,9 @@
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "33:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 4710
+     "minuteMark": "33:20",
+     "wasAt": "레드팀 본진",
+     "distance": 5176
     }
    ],
    "damage": [
@@ -1240,7 +1250,7 @@
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3219
+   "myDistance30sBefore": 3124
   },
   {
    "t": "8:15",
@@ -1268,7 +1278,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 1534
+   "myDistance30sBefore": 3366
   },
   {
    "t": "16:26",
@@ -1282,28 +1292,28 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3915
+   "myDistance30sBefore": 3998
   },
   {
    "t": "22:57",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4948
+   "myDistance30sBefore": 5416
   },
   {
    "t": "27:37",
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2609
+   "myDistance30sBefore": 2240
   },
   {
    "t": "32:06",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 722
+   "myDistance30sBefore": 3317
   },
   {
    "t": "33:07",
@@ -1789,18 +1799,31 @@
    "13": false,
    "14": true
   },
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 0.77,
+   "5~6": 0.9,
+   "6~7": 0.68,
+   "7~8": 0.82,
+   "8~9": 0.83,
+   "9~10": 1.0,
+   "10~11": 0.67,
+   "11~12": 1.0,
+   "12~13": 0.23,
+   "13~14": 0.78
+  },
+  "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 35,
-   "opp": 47
+   "me": 78,
+   "opp": 73
   },
   "csWithoutSupport": {
-   "me": 47,
-   "opp": 34
+   "me": 4,
+   "opp": 8
   },
   "supportAwayRanges": [
-   "4~6분",
-   "7~9분",
-   "12~14분"
+   "12~13분"
   ],
   "botAdcKills": {
    "opp": 2,
@@ -1827,6 +1850,7 @@
    ]
   }
  },
+ "positionSource": "replay",
  "benchmark": {
   "available": false,
   "reason": "이 챔피언의 기준 데이터가 아직 없어요."

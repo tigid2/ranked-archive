@@ -676,6 +676,7 @@
     "멜(아군)"
    ],
    "enemiesNear": [
+    "나피리(적)",
     "카이사(적)",
     "노틸러스(적)"
    ],
@@ -683,9 +684,9 @@
     {
      "who": "나피리(적)",
      "role": "정글",
-     "minuteMark": "8:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 4931
+     "minuteMark": "8:11",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 4234
     }
    ],
    "damage": [
@@ -844,9 +845,9 @@
     {
      "who": "나피리(적)",
      "role": "정글",
-     "minuteMark": "9:00",
+     "minuteMark": "9:28",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 3556
+     "distance": 3998
     }
    ],
    "damage": [
@@ -989,8 +990,13 @@
    "zone": "미드 라인",
    "killer": "카이사(적)",
    "assists": [],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "아리(아군)",
+    "멜(아군)"
+   ],
+   "enemiesNear": [
+    "카이사(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -1111,18 +1117,20 @@
    "killer": "트리스타나(적)",
    "assists": [],
    "alliesNear": [
+    "아리(아군)",
     "멜(아군)"
    ],
    "enemiesNear": [
+    "리산드라(적)",
     "트리스타나(적)"
    ],
    "roams": [
     {
      "who": "트리스타나(적)",
      "role": "미드",
-     "minuteMark": "30:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 2469
+     "minuteMark": "29:43",
+     "wasAt": "바텀 라인",
+     "distance": 2006
     }
    ],
    "damage": [
@@ -1324,7 +1332,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 10215
+   "myDistance30sBefore": null
   },
   {
    "t": "9:25",
@@ -1338,7 +1346,7 @@
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3775
+   "myDistance30sBefore": 3540
   },
   {
    "t": "18:18",
@@ -1352,42 +1360,42 @@
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4670
+   "myDistance30sBefore": 5576
   },
   {
    "t": "21:33",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3854
+   "myDistance30sBefore": 3709
   },
   {
    "t": "25:56",
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3378
+   "myDistance30sBefore": 1269
   },
   {
    "t": "29:27",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4126
+   "myDistance30sBefore": 4527
   },
   {
    "t": "31:24",
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 452
+   "myDistance30sBefore": null
   },
   {
    "t": "35:51",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 9529
+   "myDistance30sBefore": 2273
   }
  ],
  "buildings": [
@@ -1808,15 +1816,32 @@
    "13": true,
    "14": true
   },
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.93,
+   "4~5": 1.0,
+   "5~6": 0.58,
+   "6~7": 1.0,
+   "7~8": 0.67,
+   "8~9": 1.0,
+   "9~10": 0.57,
+   "10~11": 0.47,
+   "11~12": 1.0,
+   "12~13": 1.0,
+   "13~14": 0.82
+  },
+  "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 95,
-   "opp": 111
+   "me": 88,
+   "opp": 100
   },
   "csWithoutSupport": {
-   "me": 0,
-   "opp": 0
+   "me": 7,
+   "opp": 11
   },
-  "supportAwayRanges": [],
+  "supportAwayRanges": [
+   "10~11분"
+  ],
   "botAdcKills": {
    "opp": 1,
    "me": 2,
@@ -1838,6 +1863,7 @@
    ]
   }
  },
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,

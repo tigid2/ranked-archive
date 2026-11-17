@@ -274,7 +274,10 @@ def build(mid, champ_id=None, lab=False):
             ("10분 CS", m10, o10, "cs"), ("10분 골드", m10, o10, "gold"), ("10분 경험치", m10, o10, "xp"),
             ("15분 CS", m15, o15, "cs"), ("15분 골드", m15, o15, "gold"), ("15분 경험치", m15, o15, "xp")]],
         "support": None if not L else {
-            "atBot": [{"min": int(m), "in": bool(v)} for m, v in L["supportAtBot"].items()],
+            # 리플레이 1초 위치가 있으면 칸 하나 = 그 1분(예: 2 = 2:00~3:00) 동안 서폿이 반 넘게 바텀에 있었는지.
+            # 아래 CS 나누기와 같은 기준이라 칸과 숫자가 맞아요. 없으면 예전처럼 매분 그 순간 위치예요.
+            "atBot": [{"min": int(k.split("~")[0]), "in": v >= L["supportShareMin"]} for k, v in L["supportBotShare"].items()]
+            if L.get("supportBotShare") else [{"min": int(m), "in": bool(v)} for m, v in L["supportAtBot"].items()],
             "with": L["csWithSupport"], "without": L["csWithoutSupport"]},
         "botAdcKills": L["botAdcKills"] if L else None,
         "soloKills": {"me": solo(my_pid, opp_pid), "opp": solo(opp_pid, my_pid)},
@@ -491,7 +494,8 @@ def run_analyze(mid, champ_id):
     raw = json.load(gzip.open(raw_p, "rt", encoding="utf-8"))
     live = json.load(open(live_p, encoding="utf-8")) if os.path.exists(live_p) else None
     AZ.load_dd(DATA)
-    res = AZ.analyze(raw, champ_id, live)
+    # 리플레이 1초 위치(PC의 replay_worker.py가 올림)가 있으면 같이 써요. 없으면 1분 위치로 계산해요.
+    res = AZ.analyze(raw, champ_id, live, AZ.load_track(os.path.join(ROOT, "raw", mid + ".pos.json.gz")))
     os.makedirs(os.path.join(ROOT, "analysis"), exist_ok=True)
     json.dump(res, open(os.path.join(ROOT, "analysis", mid + ".analysis.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 
@@ -530,7 +534,7 @@ def main(args):
         os.makedirs(d, exist_ok=True)
     champs = games_champ()
     if args and args[0] == "--all":
-        mids = sorted(f[:-8] for f in os.listdir(os.path.join(ROOT, "raw")) if f.endswith(".json.gz"))
+        mids = sorted(f[:-8] for f in os.listdir(os.path.join(ROOT, "raw")) if f.endswith(".json.gz") and not f.endswith(".pos.json.gz"))  # .pos는 리플레이 위치 파일
     else:
         mids = args
     for mid in mids:

@@ -1980,6 +1980,8 @@
    "13": true,
    "14": false
   },
+  "supportBotShare": null,
+  "supportShareMin": 0.5,
   "csWithSupport": {
    "me": 51,
    "opp": 72
@@ -2022,6 +2024,7 @@
    ]
   }
  },
+ "positionSource": "minute",
  "benchmark": {
   "available": false,
   "reason": "이 챔피언의 기준 데이터가 아직 없어요."

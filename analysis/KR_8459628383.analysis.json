@@ -601,8 +601,7 @@
     "렐(아군)"
    ],
    "enemiesNear": [
-    "카이사(적)",
-    "노틸러스(적)"
+    "카이사(적)"
    ],
    "roams": [],
    "damage": [
@@ -646,7 +645,10 @@
     "노틸러스(적)"
    ],
    "alliesNear": [],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "카이사(적)",
+    "노틸러스(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -713,16 +715,16 @@
     {
      "who": "사일러스(적)",
      "role": "정글",
-     "minuteMark": "19:00",
-     "wasAt": "미드 라인",
-     "distance": 552
+     "minuteMark": "18:32",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 4071
     },
     {
      "who": "다이애나(적)",
      "role": "미드",
-     "minuteMark": "19:00",
-     "wasAt": "미드 라인",
-     "distance": 807
+     "minuteMark": "18:32",
+     "wasAt": "바텀 라인",
+     "distance": 5435
     }
    ],
    "damage": [
@@ -778,19 +780,23 @@
    "killer": "다이애나(적)",
    "assists": [],
    "alliesNear": [
-    "럼블(아군)"
+    "럼블(아군)",
+    "리 신(아군)",
+    "라이즈(아군)",
+    "렐(아군)"
    ],
    "enemiesNear": [
     "아트록스(적)",
-    "카이사(적)"
+    "다이애나(적)",
+    "노틸러스(적)"
    ],
    "roams": [
     {
      "who": "다이애나(적)",
      "role": "미드",
-     "minuteMark": "23:00",
+     "minuteMark": "22:57",
      "wasAt": "미드 라인",
-     "distance": 5546
+     "distance": 6041
     }
    ],
    "damage": [
@@ -888,7 +894,7 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2283
+   "myDistance30sBefore": 1881
   },
   {
    "t": "8:20",
@@ -916,7 +922,7 @@
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1387
+   "myDistance30sBefore": 1379
   },
   {
    "t": "16:22",
@@ -930,28 +936,28 @@
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3523
+   "myDistance30sBefore": 3069
   },
   {
    "t": "21:26",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 442
+   "myDistance30sBefore": 444
   },
   {
    "t": "23:56",
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": true,
-   "myDistance30sBefore": 1755
+   "myDistance30sBefore": 1618
   },
   {
    "t": "28:09",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 675
+   "myDistance30sBefore": 4206
   }
  ],
  "buildings": [
@@ -1332,17 +1338,32 @@
    "13": true,
    "14": false
   },
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.37,
+   "4~5": 0.72,
+   "5~6": 1.0,
+   "6~7": 0.55,
+   "7~8": 0.87,
+   "8~9": 0.42,
+   "9~10": 0.9,
+   "10~11": 0.72,
+   "11~12": 1.0,
+   "12~13": 1.0,
+   "13~14": 0.55
+  },
+  "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 80,
-   "opp": 95
+   "me": 85,
+   "opp": 92
   },
   "csWithoutSupport": {
-   "me": 18,
-   "opp": 19
+   "me": 13,
+   "opp": 22
   },
   "supportAwayRanges": [
-   "6~8분",
-   "13~14분"
+   "3~4분",
+   "8~9분"
   ],
   "botAdcKills": {
    "opp": 1,
@@ -1365,6 +1386,7 @@
    ]
   }
  },
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,

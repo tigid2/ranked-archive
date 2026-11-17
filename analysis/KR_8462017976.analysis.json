@@ -612,7 +612,10 @@
     "카이사(적)",
     "노틸러스(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "에코(아군)",
+    "마오카이(아군)"
+   ],
    "enemiesNear": [
     "자크(적)",
     "카이사(적)",
@@ -622,9 +625,9 @@
     {
      "who": "자크(적)",
      "role": "정글",
-     "minuteMark": "8:00",
+     "minuteMark": "8:04",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 3432
+     "distance": 2994
     }
    ],
    "damage": [
@@ -783,9 +786,9 @@
     {
      "who": "자크(적)",
      "role": "정글",
-     "minuteMark": "10:00",
-     "wasAt": "바텀 라인",
-     "distance": 283
+     "minuteMark": "9:32",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 5946
     }
    ],
    "damage": [
@@ -921,14 +924,18 @@
    "alliesNear": [
     "에코(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "자크(적)",
+    "카이사(적)",
+    "노틸러스(적)"
+   ],
    "roams": [
     {
      "who": "자크(적)",
      "role": "정글",
-     "minuteMark": "12:00",
+     "minuteMark": "12:07",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 8229
+     "distance": 5914
     }
    ],
    "damage": [
@@ -1065,24 +1072,28 @@
    "assists": [
     "야스오(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "가렌(아군)",
+    "에코(아군)"
+   ],
    "enemiesNear": [
-    "노틸러스(적)"
+    "야스오(적)",
+    "자크(적)"
    ],
    "roams": [
     {
      "who": "자크(적)",
      "role": "정글",
-     "minuteMark": "18:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 3956
+     "minuteMark": "17:54",
+     "wasAt": "우리 위쪽 정글",
+     "distance": 5601
     },
     {
      "who": "야스오(적)",
      "role": "탑",
-     "minuteMark": "18:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 5335
+     "minuteMark": "17:54",
+     "wasAt": "탑 라인",
+     "distance": 6502
     }
    ],
    "damage": [
@@ -1345,10 +1356,11 @@
     "노틸러스(적)"
    ],
    "alliesNear": [
+    "에코(아군)",
+    "다이애나(아군)",
     "마오카이(아군)"
    ],
    "enemiesNear": [
-    "야스오(적)",
     "자크(적)",
     "카이사(적)",
     "노틸러스(적)"
@@ -1488,23 +1500,28 @@
    ],
    "alliesNear": [
     "에코(아군)",
-    "다이애나(아군)"
+    "마오카이(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "야스오(적)",
+    "자크(적)",
+    "카이사(적)",
+    "노틸러스(적)"
+   ],
    "roams": [
     {
      "who": "야스오(적)",
      "role": "탑",
-     "minuteMark": "28:00",
+     "minuteMark": "27:59",
      "wasAt": "상대 위쪽 정글",
-     "distance": 7244
+     "distance": 7313
     },
     {
      "who": "자크(적)",
      "role": "정글",
-     "minuteMark": "28:00",
+     "minuteMark": "27:59",
      "wasAt": "상대 위쪽 정글",
-     "distance": 7118
+     "distance": 7219
     }
    ],
    "damage": [
@@ -1775,7 +1792,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 6679
+   "myDistance30sBefore": null
   },
   {
    "t": "9:30",
@@ -1803,7 +1820,7 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3256
+   "myDistance30sBefore": 3254
   },
   {
    "t": "15:27",
@@ -1817,21 +1834,21 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 5809
+   "myDistance30sBefore": 7014
   },
   {
    "t": "25:25",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4212
+   "myDistance30sBefore": 3656
   },
   {
    "t": "26:11",
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 491
+   "myDistance30sBefore": 3160
   }
  ],
  "buildings": [
@@ -2243,19 +2260,31 @@
    "13": false,
    "14": true
   },
+  "supportBotShare": {
+   "2~3": 0.98,
+   "3~4": 1.0,
+   "4~5": 1.0,
+   "5~6": 0.75,
+   "6~7": 0.92,
+   "7~8": 0.4,
+   "8~9": 0.98,
+   "9~10": 0.72,
+   "10~11": 0.72,
+   "11~12": 0.82,
+   "12~13": 0.75,
+   "13~14": 0.7
+  },
+  "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 23,
-   "opp": 36
+   "me": 78,
+   "opp": 92
   },
   "csWithoutSupport": {
-   "me": 58,
-   "opp": 70
+   "me": 3,
+   "opp": 14
   },
   "supportAwayRanges": [
-   "2~3분",
-   "5~7분",
-   "8~10분",
-   "11~14분"
+   "7~8분"
   ],
   "botAdcKills": {
    "opp": 3,
@@ -2290,6 +2319,7 @@
    ]
   }
  },
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 138,

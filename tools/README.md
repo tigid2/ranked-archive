@@ -5,7 +5,7 @@
 ## 폴더
 | 위치 | 내용 |
 |---|---|
-| `raw/` | 경기 원본(`*.json.gz`), 직접 넣은 게임 중 기록(`*.live.json`) |
+| `raw/` | 경기 원본(`*.json.gz`), 직접 넣은 게임 중 기록(`*.live.json`), 리플레이 1초 위치(`*.pos.json.gz`, PC의 `replay_worker.py`가 올림) |
 | `analysis/` | `analyze.py` 분석 결과(`*.analysis.json`) |
 | `feedback/` | 판별 피드백 글(`<경기ID>.json`) |
 | `data/` | Data Dragon 데이터(`dd_*.json`), 흑백 지도(`map11_gray.png`) |
@@ -16,7 +16,7 @@
 | `tools/fonts/` | 리포트에 넣는 글꼴 2개(Pretendard, Archivo, 둘 다 OFL) |
 | `tools/` | `analyze.py`(분석), `inline_img.py`(예전 생성기 결과에 아이콘을 넣어 한 파일로), `ds_build4.py`(디자인 시스템), `make_gray_map.py`(흑백 지도) |
 | `benchmarks/` | 기준 데이터 요약(`<챔피언>.json`)과 판별 숫자 줄(`rows/<챔피언>.jsonl`). 워크플로 "기준 데이터 모으기"가 만들어요. 읽을 때는 요약 파일만 읽어요. |
-| `logger/` | PC 기록 프로그램 사본. PC에서 실제로 돌아가는 건 `아카이브\lol-live-logger` 폴더예요. 토큰이 든 `config.json`은 저장소에 넣지 않아요. |
+| `logger/` | PC 기록 프로그램 사본. PC에서 실제로 돌아가는 건 `아카이브\lol-live-logger` 폴더예요. 토큰이 든 `config.json`은 저장소에 넣지 않아요. `replay_worker.py`는 게임 뒤 프로그램(리플레이 받기 → 디코딩 → 1초 위치 올리기), 점검은 `replay_check.bat`. 디코더(`decode.py`, 표, `rofl_extract.py`)는 공개 저장소에 넣지 않고 PC의 `Replays\rofl-decoder`에만 있어요. |
 
 ## 할 일별로 꺼낼 파일
 | 할 일 | 필요한 파일 |
@@ -58,6 +58,11 @@ python3 tools/index/build_index.py . tools/report /tmp/index.html
 - 아이콘은 데이터에 Data Dragon CDN 기준 경로(`img` 칸)로만 들어 있어요. 사이트는 CDN 주소를 붙이고, `single.py`는 미러에서 받아 파일 안에 넣어요(캐시는 `tools/report/img/`).
 - 스킬 아이콘에 `data/dd_champ_<챔피언>.json`이 필요해요. 지금은 카이사, 자야만 있어요. 없으면 글자(QWER)만 나와요.
 - 만들어진 한 파일 html, 아이콘 캐시, `web/node_modules`, `web/dist-single`은 저장소에 올리지 않아요(`.gitignore`). `docs/report/`(Pages용 빌드)는 올려요.
+
+## 리플레이 1초 위치 (11-17)
+- `raw/<경기ID>.pos.json.gz`가 있으면 `analyze.py`가 1분 위치 대신 써요: 죽을 때 주변 아군·적(그 순간), 합류한 적의 30초 전 자리, 오브젝트 30초 전 내 거리, 라인전 서폿 유무(1분 중 반 넘게 바텀). 없으면 예전 그대로예요. 분석 결과의 `positionSource`가 `replay`/`minute`.
+- 형식: 슬롯 i = participantId i+1, `pos`는 [초, x, y]를 앞 값과의 차이로 적은 목록(푸는 법 `load_track`). `wards`는 와드 설치·끝남(아직 안 씀). `timing`은 게임 끝 → 리플레이 준비 → 받기 → 디코딩 → 올리기 시각.
+- 올라오면 워크플로 "리포트 만들기"가 자동으로 돌아요.
 
 ## 워크플로
 - "경기 기록 갱신": 경기를 받은 뒤 `report_data.py --all`까지 돌려서 새 판 리포트 데이터를 같이 저장해요.

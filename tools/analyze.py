@@ -4,6 +4,7 @@
 피드백에 쓸 사실들을 JSON으로 정리해요. (Claude가 피드백 쓸 때 쓰는 도구)
 
 사용: python3 tools/analyze.py raw/<경기>.json.gz <내 챔피언 영문 ID> [raw/<경기>.live.json|-] [data] [analysis]
+ - raw/<경기>.pos.json.gz(리플레이 1초 위치)가 있으면 위치 계산에 같이 써요.
  - 마지막 칸은 결과를 저장할 폴더예요. 없으면 경기 파일 옆에 저장해요.
 """
 import gzip
@@ -92,7 +93,31 @@ def mmss(ms):
     return f"{s // 60}:{s % 60:02d}"
 
 
-def analyze(raw, champ_id, live=None):
+def load_track(path):
+    """리플레이 디코딩으로 얻은 1초 위치(raw/<경기ID>.pos.json.gz)를 {participantId: {초: (x, y)}}로 풀어요.
+    PC의 게임 뒤 프로그램(replay_worker.py)이 올려요. 죽어 있는 초는 들어 있지 않아요.
+    파일이 없거나 형식을 모르면 None이에요. 그러면 예전처럼 1분 위치를 써요."""
+    if not path or not os.path.exists(path):
+        return None
+    d = json.load(gzip.open(path, "rt", encoding="utf-8"))
+    if d.get("format") != 1:
+        return None
+    by = {}
+    for i, enc in enumerate(d["pos"]):
+        tr, t, x, y = {}, 0, 0, 0
+        for k in range(0, len(enc), 3):
+            t, x, y = t + enc[k], x + enc[k + 1], y + enc[k + 2]
+            tr[t] = (x, y)
+        by[i + 1] = tr
+    return {"by": by, "patch": d.get("patch"), "champions": d.get("champions")}
+
+
+TRACK_ROAM_SEC = 30   # 죽음에 관여한 적이 이 시간(초) 전에 어디 있었는지 봐요(1분 위치일 때는 0~60초 전이었어요)
+TRACK_NEAR_BACK = 5   # 죽을 때 주변을 볼 때, 그 순간 이미 죽어 있던 사람은 이 시간(초) 안의 마지막 위치를 써요
+LANE_SUP_SHARE = 0.5  # 1분 구간에서 서폿이 바텀에 있던 시간이 이 비율 이상이면 '서폿 있을 때'로 봐요
+
+
+def analyze(raw, champ_id, live=None, track=None):
     m, tl = raw["match"]["info"], raw["timeline"]["info"]
     parts = m["participants"]
     by = {p["participantId"]: p for p in parts}
@@ -125,6 +150,20 @@ def analyze(raw, champ_id, live=None):
         k = min(range(len(frames)), key=lambda i: abs(frames[i]["timestamp"] - t_ms))
         f = pf(k, pid)
         return (f["position"]["x"], f["position"]["y"]) if f else None, frames[k]["timestamp"]
+
+    # 리플레이 1초 위치가 있으면 써요. 챔피언 순서가 라이엇 기록과 다르면(다른 판 파일) 쓰지 않아요.
+    if track and track.get("champions") and \
+            [str(c).lower() for c in track["champions"]] != [str(by[i + 1]["championName"]).lower() for i in range(len(parts))]:
+        track = None
+
+    def tpos(pid, t_ms, back=0):
+        """t 시점의 1초 위치. 그때 죽어 있었으면 back초 안의 마지막 위치, 그것도 없으면 None."""
+        tr = track["by"].get(pid, {})
+        s = int(t_ms // 1000)
+        for k in range(s, s - back - 1, -1):
+            if k in tr:
+                return tr[k]
+        return None
 
     def cs(f):
         return f["minionsKilled"] + f["jungleMinionsKilled"]
@@ -234,6 +273,16 @@ def analyze(raw, champ_id, live=None):
         for pid in involved:
             if pid not in by or pid in ((opp or {}).get("participantId"), (eduo or {}).get("participantId")):
                 continue
+            if track:
+                # 30초 전 위치. 그때 죽어 있었으면 부활한 뒤 처음 보인 자리(우물)를 써요.
+                s0 = max(0, int(t // 1000) - TRACK_ROAM_SEC)
+                tr = track["by"].get(pid, {})
+                s = next((k for k in range(s0, int(t // 1000) + 1) if k in tr), None)
+                if s is not None:
+                    p0 = tr[s]
+                    roams.append({"who": nm(pid), "role": POS_KO.get(by[pid].get("teamPosition"), ""),
+                                  "minuteMark": mmss(s * 1000), "wasAt": zone(*p0, team), "distance": round(dist(p0, dpos))})
+                continue
             # 1분 전 위치
             prev_k = max(0, int(t // 60000) - 0)
             f = pf(prev_k, pid)
@@ -246,6 +295,11 @@ def analyze(raw, champ_id, live=None):
         near_k = round(t / 60000)
         for p in parts:
             if p["participantId"] == my:
+                continue
+            if track:
+                q = tpos(p["participantId"], t, back=TRACK_NEAR_BACK)
+                if q and dist(q, dpos) < 2500:
+                    (allies_near if p["teamId"] == team else enemies_near).append(nm(p["participantId"]))
                 continue
             f = pf(min(near_k, len(frames) - 1), p["participantId"])
             if not f:
@@ -314,7 +368,8 @@ def analyze(raw, champ_id, live=None):
         if o["type"] != "monster":
             continue
         dead = any(a <= o["t"] <= b for a, b in dead_windows)
-        p, _ = ppos(o["t"] - 30000, my)
+        # 1초 위치가 있으면 그 순간 위치(그때 죽어 있었으면 거리 없음)
+        p = tpos(my, o["t"] - 30000) if track else ppos(o["t"] - 30000, my)[0]
         pit = DRAGON if "드래곤" in o["name"] else BARON if o["name"] in ("바론",) else None
         near = round(dist(p, pit)) if (p and pit) else None
         objs.append({"t": mmss(o["t"]), "name": o["name"], "ours": o["ours"], "iWasDead": dead, "myDistance30sBefore": near})
@@ -370,7 +425,9 @@ def analyze(raw, champ_id, live=None):
             out["wardTimeline"][b] = out["wardTimeline"].get(b, 0) + 1
     # 라인전 서폿 위치와 바텀 원딜 킬 (원딜일 때만)
     if pos == "BOTTOM" and duo and opp:
-        out["lane"] = lane_support(frames, events, my, opp["participantId"], duo["participantId"], team, by, nm)
+        out["lane"] = lane_support(frames, events, my, opp["participantId"], duo["participantId"], team, by, nm,
+                                   sup_track=track["by"].get(duo["participantId"]) if track else None)
+    out["positionSource"] = "replay" if track else "minute"
     # 기준 데이터(에메랄드~다이아 같은 챔피언) 대비 (계획 3단계)
     if pos == "BOTTOM":
         out["benchmark"] = vs_benchmark(raw, my, me["championName"], m["gameVersion"])
@@ -737,19 +794,30 @@ def vs_benchmark(raw, my, champ, version):
 BOT = lambda p: p["x"] > 9000 and p["y"] < 6000  # 바텀 근처 (1분 위치라 대략적)
 
 
-def lane_support(frames, events, my, opp, sup, team, by, nm, start=2, end=14):
+def lane_support(frames, events, my, opp, sup, team, by, nm, start=2, end=14, sup_track=None):
     """라인전(2:00~14:00) 동안 아군 서폿이 바텀에 있었는지와, 그에 따라 나눈 CS.
-    1분 구간 양 끝 모두 서폿이 바텀에 있으면 '서폿 있을 때', 아니면 '서폿 없을 때'로 CS 증가량을 더해요."""
+    1분 위치만 있으면: 1분 구간 양 끝 모두 서폿이 바텀에 있으면 '서폿 있을 때', 아니면 '서폿 없을 때'로 CS 증가량을 더해요.
+    리플레이 1초 위치(sup_track)가 있으면: 1분 구간 중 서폿이 바텀에 있던 시간이 LANE_SUP_SHARE 이상이면 '서폿 있을 때'예요.
+    서폿이 죽어 있던 초는 '바텀에 없음'으로 세요."""
     def f(m, pid):
         return frames[min(m, len(frames) - 1)]["participantFrames"][str(pid)]
 
     def cs(m, pid):
         x = f(m, pid)
         return x["minionsKilled"] + x["jungleMinionsKilled"]
-    at = {m: BOT(f(m, sup)["position"]) for m in range(start, end + 1)}
+
+    def bot_at(sec):
+        q = sup_track.get(sec)
+        return bool(q) and BOT({"x": q[0], "y": q[1]})
+    if sup_track:
+        at = {m: bot_at(m * 60) for m in range(start, end + 1)}
+        share = {m: sum(bot_at(s) for s in range(m * 60, (m + 1) * 60)) / 60 for m in range(start, end)}
+    else:
+        at = {m: BOT(f(m, sup)["position"]) for m in range(start, end + 1)}
+        share = None
     w, wo, away = {"me": 0, "opp": 0}, {"me": 0, "opp": 0}, []
     for m in range(start, end):
-        both = at[m] and at[m + 1]
+        both = share[m] >= LANE_SUP_SHARE if share else (at[m] and at[m + 1])
         t = w if both else wo
         t["me"] += cs(m + 1, my) - cs(m, my)
         t["opp"] += cs(m + 1, opp) - cs(m, opp)
@@ -763,6 +831,8 @@ def lane_support(frames, events, my, opp, sup, team, by, nm, start=2, end=14):
     od = [{"t": mmss(e["timestamp"]), "killer": nm(e["killerId"])} for e in kills if e["victimId"] == opp]
     md = [{"t": mmss(e["timestamp"]), "killer": nm(e["killerId"])} for e in kills if e["victimId"] == my]
     return {"supportAtBot": {str(m): v for m, v in at.items()},
+            "supportBotShare": {f"{m}~{m + 1}": round(v, 2) for m, v in share.items()} if share else None,
+            "supportShareMin": LANE_SUP_SHARE,
             "csWithSupport": w, "csWithoutSupport": wo,
             "supportAwayRanges": [f"{a}~{b}분" for a, b in away],
             "botAdcKills": {"opp": len(od), "me": len(md), "oppDeaths": od, "myDeaths": md}}
@@ -772,7 +842,8 @@ if __name__ == "__main__":
     raw = json.load(gzip.open(sys.argv[1], "rt", encoding="utf-8"))
     live = json.load(open(sys.argv[3], encoding="utf-8")) if len(sys.argv) > 3 and sys.argv[3] != "-" else None
     load_dd(sys.argv[4] if len(sys.argv) > 4 else os.path.dirname(sys.argv[1]))
-    res = analyze(raw, sys.argv[2], live)
+    # 경기 파일 옆에 리플레이 1초 위치(<경기ID>.pos.json.gz)가 있으면 같이 써요
+    res = analyze(raw, sys.argv[2], live, load_track(sys.argv[1].replace(".json.gz", ".pos.json.gz")))
     out_dir = sys.argv[5] if len(sys.argv) > 5 else os.path.dirname(sys.argv[1])
     out = os.path.join(out_dir, os.path.basename(sys.argv[1]).replace(".json.gz", ".analysis.json"))
     json.dump(res, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=str)

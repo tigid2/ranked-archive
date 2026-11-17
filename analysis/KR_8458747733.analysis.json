@@ -1588,6 +1588,8 @@
    "13": true,
    "14": true
   },
+  "supportBotShare": null,
+  "supportShareMin": 0.5,
   "csWithSupport": {
    "me": 71,
    "opp": 85
@@ -1624,6 +1626,7 @@
    ]
   }
  },
+ "positionSource": "minute",
  "benchmark": {
   "available": true,
   "games": 101,

@@ -635,17 +635,18 @@
    "assists": [
     "트위스티드 페이트(적)"
    ],
-   "alliesNear": [
-    "리 신(아군)"
+   "alliesNear": [],
+   "enemiesNear": [
+    "키아나(적)",
+    "트위스티드 페이트(적)"
    ],
-   "enemiesNear": [],
    "roams": [
     {
      "who": "키아나(적)",
      "role": "정글",
-     "minuteMark": "3:00",
+     "minuteMark": "3:01",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 4332
+     "distance": 4035
     }
    ],
    "damage": [
@@ -705,9 +706,9 @@
     {
      "who": "키아나(적)",
      "role": "정글",
-     "minuteMark": "11:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 2472
+     "minuteMark": "11:25",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 5011
     }
    ],
    "damage": [
@@ -760,22 +761,23 @@
    ],
    "enemiesNear": [
     "뽀삐(적)",
-    "키아나(적)"
+    "키아나(적)",
+    "트위스티드 페이트(적)"
    ],
    "roams": [
     {
      "who": "뽀삐(적)",
      "role": "탑",
-     "minuteMark": "16:00",
+     "minuteMark": "15:40",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 1375
+     "distance": 1780
     },
     {
      "who": "키아나(적)",
      "role": "정글",
-     "minuteMark": "16:00",
-     "wasAt": "탑 라인",
-     "distance": 325
+     "minuteMark": "15:40",
+     "wasAt": "위쪽 강가(바론 쪽)",
+     "distance": 2070
     }
    ],
    "damage": [
@@ -825,7 +827,6 @@
     "트위스티드 페이트(적)"
    ],
    "alliesNear": [
-    "사이온(아군)",
     "리 신(아군)",
     "애쉬(아군)",
     "세라핀(아군)"
@@ -840,9 +841,9 @@
     {
      "who": "뽀삐(적)",
      "role": "탑",
-     "minuteMark": "24:00",
-     "wasAt": "탑 라인",
-     "distance": 11227
+     "minuteMark": "24:27",
+     "wasAt": "미드 라인",
+     "distance": 6678
     }
    ],
    "damage": [
@@ -909,9 +910,9 @@
     {
      "who": "뽀삐(적)",
      "role": "탑",
-     "minuteMark": "27:00",
-     "wasAt": "레드팀 본진",
-     "distance": 6650
+     "minuteMark": "27:29",
+     "wasAt": "위쪽 강가(바론 쪽)",
+     "distance": 2109
     }
    ],
    "damage": [
@@ -1045,7 +1046,7 @@
    "name": "대지 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3916
+   "myDistance30sBefore": 4479
   },
   {
    "t": "15:25",
@@ -1059,28 +1060,28 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 695
+   "myDistance30sBefore": 975
   },
   {
    "t": "26:44",
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2476
+   "myDistance30sBefore": 2099
   },
   {
    "t": "31:02",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 415
+   "myDistance30sBefore": 3270
   },
   {
    "t": "32:06",
    "name": "화학공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 1030
+   "myDistance30sBefore": 3793
   }
  ],
  "buildings": [
@@ -1458,5 +1459,6 @@
   "5": 2,
   "10": 2,
   "15": 4
- }
+ },
+ "positionSource": "replay"
 }

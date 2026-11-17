@@ -1707,6 +1707,21 @@ def upload_pending(cfg):
             log(f"갱신 실행 실패({e}). 깃허브 Actions에서 직접 눌러 주세요.")
 
 
+def start_replay_worker(after_game):
+    """게임 뒤 프로그램(replay_worker.py)을 따로 켜요. 리플레이를 받아 디코딩하고 1초 위치를 올려요.
+    따로 돌아서 여기서 문제가 생겨도 이 기록 프로그램은 그대로예요. 다음 판이 시작되면 받기·디코딩을 미뤄요."""
+    path = os.path.join(HERE, "replay_worker.py")
+    if not os.path.exists(path):
+        return
+    try:
+        import subprocess
+        subprocess.Popen([sys.executable, path] + (["--after-game"] if after_game else []), cwd=HERE,
+                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        log("리플레이 받기·디코딩을 따로 시작했어요. 진행은 replay_log.txt에 남아요.")
+    except Exception as e:
+        log(f"리플레이 프로그램 시작 실패({e})")
+
+
 def read_progress():
     try:
         with open(PROGRESS_PATH, encoding="utf-8") as f:
@@ -1770,6 +1785,7 @@ def finish(session, cfg):
         with open(os.path.join(PENDING_DIR, name), "w", encoding="utf-8") as f:
             json.dump(rec, f, ensure_ascii=False)
         upload_pending(cfg)
+        start_replay_worker(after_game=True)
     else:
         log("소환사의 협곡 일반 게임이 아니거나 5분 미만이라 깃허브에는 올리지 않을게요.")
 
@@ -1799,6 +1815,7 @@ def main():
             tracker_ok = False
             log(f"스펠 확인 기능을 쓸 수 없어요({e}). 'install.bat'을 다시 실행해 주세요. 골드·체력 기록은 계속해요.")
     upload_pending(cfg)
+    start_replay_worker(after_game=False)  # 지난번에 못 끝낸 리플레이가 있으면 이어서 해요
     if cfg["minimap_check"]:
         threading.Thread(target=prefetch_mm_icons, daemon=True).start()
 

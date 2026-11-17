@@ -744,6 +744,8 @@
    "13": false,
    "14": false
   },
+  "supportBotShare": null,
+  "supportShareMin": 0.5,
   "csWithSupport": {
    "me": 49,
    "opp": 33
@@ -788,6 +790,7 @@
    "myDeaths": []
   }
  },
+ "positionSource": "minute",
  "benchmark": {
   "available": true,
   "games": 101,

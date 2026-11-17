@@ -527,17 +527,21 @@
    "assists": [
     "오리아나(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "오른(아군)"
+   ],
    "enemiesNear": [
+    "키아나(적)",
+    "오리아나(적)",
     "아펠리오스(적)"
    ],
    "roams": [
     {
      "who": "오리아나(적)",
      "role": "미드",
-     "minuteMark": "4:00",
+     "minuteMark": "4:06",
      "wasAt": "미드 라인",
-     "distance": 7465
+     "distance": 7499
     }
    ],
    "damage": [
@@ -677,13 +681,11 @@
    "killer": "미니언·포탑",
    "assists": [],
    "alliesNear": [
+    "진(아군)",
     "오공(아군)",
-    "벡스(아군)",
     "오른(아군)"
    ],
    "enemiesNear": [
-    "아칼리(적)",
-    "키아나(적)",
     "오리아나(적)",
     "아펠리오스(적)",
     "갈리오(적)"
@@ -963,7 +965,7 @@
    "name": "바다 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2975
+   "myDistance30sBefore": 3235
   },
   {
    "t": "8:18",
@@ -991,7 +993,7 @@
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3609
+   "myDistance30sBefore": 3514
   },
   {
    "t": "17:32",
@@ -1005,14 +1007,14 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1625
+   "myDistance30sBefore": 2448
   },
   {
    "t": "22:50",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 5695
+   "myDistance30sBefore": 3344
   }
  ],
  "buildings": [
@@ -1398,17 +1400,32 @@
    "13": false,
    "14": false
   },
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.62,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.7,
+   "7~8": 1.0,
+   "8~9": 1.0,
+   "9~10": 0.42,
+   "10~11": 1.0,
+   "11~12": 0.52,
+   "12~13": 0.27,
+   "13~14": 0.2
+  },
+  "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 57,
-   "opp": 43
+   "me": 73,
+   "opp": 59
   },
   "csWithoutSupport": {
-   "me": 37,
-   "opp": 30
+   "me": 21,
+   "opp": 14
   },
   "supportAwayRanges": [
-   "5~7분",
-   "11~14분"
+   "9~10분",
+   "12~14분"
   ],
   "botAdcKills": {
    "opp": 5,
@@ -1443,6 +1460,7 @@
    ]
   }
  },
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,

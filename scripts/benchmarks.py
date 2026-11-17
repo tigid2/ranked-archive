@@ -651,6 +651,6 @@ if __name__ == "__main__":
         load_dd()
         write_summaries()
     elif mode == "test":
-        test(sys.argv[2:] or sorted(glob.glob(os.path.join(ROOT, "raw", "*.json.gz"))))
+        test(sys.argv[2:] or sorted(f for f in glob.glob(os.path.join(ROOT, "raw", "*.json.gz")) if not f.endswith(".pos.json.gz")))
     else:
         sys.exit("collect / summarize / test 중 하나를 써 주세요.")
