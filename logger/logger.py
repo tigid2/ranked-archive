@@ -713,6 +713,7 @@ MM_CALIB_ROUNDS = 3         # 이만큼 모아서 가장 잘 맞는 크기를 �
 MM_SIZES = list(range(8, 34, 2))  # 아이콘 안쪽 그림 크기 후보(px)
 MM_KEEP = 40                # 이 점수(0~100) 이상인 후보만 기록해요. 진짜로 보였는지는 게임 뒤 analyze.py가 정해요
 MM_SMALL = 96               # 안개(시야) 비교용으로 줄인 미니맵 크기(px)
+LOADING_WAIT = 5            # 게임 시간이 이만큼(초) 지난 뒤부터 화면을 읽어요(로딩 화면 건너뛰기)
 MM_BOX_ROUNDS = 5           # 미니맵 테두리를 찾을 때 모으는 화면 수
 MM_BOX_TRIES = 3            # 테두리 찾기를 이만큼 해 보고 안 되면 영역 전체에서 찾아요
 MM_BOX_PAD = 6              # 찾은 테두리 바깥으로 남기는 여유(px)
@@ -1843,10 +1844,13 @@ def main():
             if session and tracker and session.post_death and now - last_spell >= AFTER_DEATH_GAP:
                 last_spell = now
                 session.watch_after_death()
-            elif session and tracker and not session.was_dead and now - last_spell >= spell_gap:
+            elif session and tracker and not session.was_dead and now - last_spell >= spell_gap \
+                    and session.last_game_time >= LOADING_WAIT:
                 last_spell = now
                 tracker.check(session.est_game_time())
-            if session and mm and not session.was_dead:
+            # 로딩 화면에서는 게임 시간이 0에 멈춰 있어요. 이때 화면을 읽으면 로딩 화면의 스펠 그림을
+            # 스펠 칸으로 잘못 저장하고, 미니맵 테두리 찾기도 실패해요(2026-11-17 애쉬 판, 로딩 48초).
+            if session and mm and not session.was_dead and session.last_game_time >= LOADING_WAIT:
                 gt = session.est_game_time()
                 if now - last_mm >= (mm_fast_gap if gt <= mm.fast_until else mm_gap):
                     last_mm = now
