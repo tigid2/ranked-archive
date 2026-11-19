@@ -6,7 +6,6 @@ function DeathMap({ m }) {
   return (
     <svg className="map" viewBox={`0 0 ${S} ${S}`} role="img" aria-label="소환사의 협곡에서 내가 죽은 곳과 킬한 곳">
       <image href={MAP_IMG} x="0" y="0" width={S} height={S} className="map-img" />
-      <rect className="map-veil" x="0" y="0" width={S} height={S} />
       {m.kills.map((p, i) => (
         <g key={`k${i}`}>
           <title>{p.t} {p.solid ? '킬' : '어시스트'}</title>

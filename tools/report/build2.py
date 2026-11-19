@@ -309,14 +309,14 @@ def items_row(p, size="sm"):
 
 # ---------- 아이콘 묶음 (글자 대신 쓰는 그림 아이콘) ----------
 SPRITE = '''<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<symbol id="i-dragon" viewBox="0 0 24 24"><path d="M3 20 8 10 6 3l5 4 4-3-1 5 7 2-5 3 1 6-5-4z"/></symbol>
-<symbol id="i-baron" viewBox="0 0 24 24"><path d="M6 9 7.5 3 10 7l2-4 2 4 2.5-4L18 9z"/><path fill-rule="evenodd" d="M4 21c0-7 3.5-11 8-11s8 4 8 11l-4-2.5-4 2.5-4-2.5zm8-8a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></symbol>
-<symbol id="i-herald" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M1.5 12C5 5.5 19 5.5 22.5 12 19 18.5 5 18.5 1.5 12zm10.5-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2.4a1.6 1.6 0 1 1 0 3.2 1.6 1.6 0 0 1 0-3.2z"/></symbol>
-<symbol id="i-grub" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><circle cx="6.5" cy="16" r="4"/><circle cx="17.5" cy="16" r="4"/></symbol>
-<symbol id="i-tower" viewBox="0 0 24 24"><path d="M6 3h3v2h2V3h2v2h2V3h3v6l-2 2 1 10H7l1-10-2-2z"/></symbol>
-<symbol id="i-inhib" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 1.5 20.5 12 12 22.5 3.5 12zm0 5.5L8 12l4 5 4-5z"/></symbol>
+<symbol id="i-dragon" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5.3 16.5 L7.5 14 L2.5 10 L8.5 8.5 L4 2.5 L11 5 L15 5 L21.5 8.5 L20.5 11.5 L14.5 11.5 L13 12.2 L14.5 13 L19.2 13 L18.5 15.5 L11.5 15.5 L9.2 19.5 Z M12.5 7.5 L14.5 7.1 L16.5 8.5 L14.5 8.9 Z" /></symbol>
+<symbol id="i-baron" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M 12 2 L 14 5.2 L 18 3.5 L 16.5 6.8 L 21.8 9 L 21.2 12.2 L 18.8 14 L 17.2 20.5 L 12 21.5 L 6.8 20.5 L 5.2 14 L 2.8 12.2 L 2.2 9 L 7.5 6.8 L 6 3.5 L 10 5.2 Z M 10.1 7 L 11.2 8.2 L 10.1 9.4 L 9 8.2 Z M 13.9 7 L 15 8.2 L 13.9 9.4 L 12.8 8.2 Z M 8.6 10.3 L 9.7 11.5 L 8.6 12.7 L 7.5 11.5 Z M 15.4 10.3 L 16.5 11.5 L 15.4 12.7 L 14.3 11.5 Z M 12 13.8 L 8.2 15.2 L 7.8 17.8 L 9.8 16.6 L 12 18.2 L 14.2 16.6 L 16.2 17.8 L 15.8 15.2 Z" /></symbol>
+<symbol id="i-herald" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M 8.6 2.5 L 9.4 6 L 14.6 6 L 15.4 2.5 L 19.6 6 L 20.2 11.2 L 17.8 16.2 L 14.4 19.8 L 9.6 19.8 L 6.2 16.2 L 3.8 11.2 L 4.4 6 Z M 12 7.6 L 15.8 10.3 L 15.8 15.3 L 12 18 L 8.2 15.3 L 8.2 10.3 Z" /> <polygon points="12,9.7 13.8,12.8 12,15.9 10.2,12.8" /> <polygon points="3.3,14.8 6.1,19.8 2,19.8" /> <polygon points="20.7,14.8 22,19.8 17.9,19.8" /></symbol>
+<symbol id="i-grub" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M 9.4 5.5 L 9.8 4.5 L 11 5.5 L 13 5.5 L 14.2 4.5 L 14.6 5.5 L 15.8 6.7 L 15.8 9.7 L 14.4 11.1 L 9.6 11.1 L 8.2 9.7 L 8.2 6.7 Z M 10 7.5 L 14 7.5 L 14 9.1 L 10 9.1 Z" /> <path fill-rule="evenodd" d="M 4.6 13.9 L 5 12.9 L 6.2 13.9 L 8.2 13.9 L 9.4 12.9 L 9.8 13.9 L 11 15.1 L 11 18.1 L 9.6 19.5 L 4.8 19.5 L 3.4 18.1 L 3.4 15.1 Z M 5.2 15.9 L 9.2 15.9 L 9.2 17.5 L 5.2 17.5 Z" /> <path fill-rule="evenodd" d="M 14.2 13.9 L 14.6 12.9 L 15.8 13.9 L 17.8 13.9 L 19 12.9 L 19.4 13.9 L 20.6 15.1 L 20.6 18.1 L 19.2 19.5 L 14.4 19.5 L 13 18.1 L 13 15.1 Z M 14.8 15.9 L 18.8 15.9 L 18.8 17.5 L 14.8 17.5 Z" /></symbol>
+<symbol id="i-tower" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.5 L15 5.5 L12 8.5 L9 5.5 Z M9 10.5 L15 10.5 L15 12 L16.5 12 L18 21.5 L6 21.5 L7.5 12 L9 12 Z M11 14 L13 14 L13 18.5 L11 18.5 Z" /></symbol>
+<symbol id="i-inhib" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.5 L18 9.5 L12 16.5 L6 9.5 Z M12 6.5 L9.5 9.5 L12 12.5 L14.5 9.5 Z M4.5 18 L19.5 18 L21.5 19.8 L19.5 21.5 L4.5 21.5 L2.5 19.8 Z" /></symbol>
 <symbol id="i-atakhan" viewBox="0 0 24 24"><path d="M3 2c1.5 6 4.5 9 9 9s7.5-3 9-9c1.5 8-1.5 14-9 20C4.5 16 1.5 10 3 2z"/></symbol>
-<symbol id="i-minion" viewBox="0 0 24 24"><path d="M12 2 20 5.5V12c0 4.5-3.2 8-8 10-4.8-2-8-5.5-8-10V5.5z"/></symbol>
+<symbol id="i-minion" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M 12 2 L 19.4 5.2 L 21.8 15.8 L 19.2 21 L 4.8 21 L 2.2 15.8 L 4.6 5.2 Z M 6.5 21 L 6.9 17.2 L 4.7 15 L 6.5 7.3 L 12 4.9 L 17.5 7.3 L 19.3 15 L 17.1 17.2 L 17.5 21 L 15.9 21 L 15.5 16.2 L 17.5 14.2 L 16.1 8.4 L 14.2 7.6 L 12 8 L 9.8 7.6 L 7.9 8.4 L 6.5 14.2 L 8.5 16.2 L 8.1 21 Z M 9.1 10.1 L 11.2 11.1 L 9.3 11.9 Z M 14.9 10.1 L 12.8 11.1 L 14.7 11.9 Z" /></symbol>
 </svg>'''
 
 OB_LEGEND = [("dragon", "드래곤"), ("grub", "공허 유충"), ("herald", "전령"), ("baron", "바론"), ("tower", "포탑"), ("inhib", "억제기")]

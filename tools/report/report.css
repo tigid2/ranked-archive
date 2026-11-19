@@ -213,8 +213,8 @@ p { margin: 0; }
 .lg-mdeath { border-radius: 50%; }
 .lg-death { width: 10px; height: 10px; }
 .lg-kill { background: var(--mint-ink); width: 3px; height: 12px; }
-.lg-mkill { background: var(--mint-ink); width: 10px; height: 10px; transform: rotate(45deg); }
-.lg-massist { border: 2px solid var(--mint-ink); width: 10px; height: 10px; transform: rotate(45deg); }
+.lg-mkill { background: var(--mint); outline: 1px solid var(--dark); width: 10px; height: 10px; transform: rotate(45deg); }  /* 지도와 같은 쨍한 민트. 흰 바탕에서 보이게 다크 1px 테두리 */
+.lg-massist { border: 2px solid var(--mint); outline: 1px solid var(--dark); width: 10px; height: 10px; transform: rotate(45deg); }
 .ob-legend .lg-ours .gi { color: var(--mint-ink); }
 .ob-legend .lg-theirs .gi { color: var(--opp); }
 .flow-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-5); flex-wrap: wrap; border-top: 1px solid var(--line-soft); margin-top: var(--s-4); padding-top: var(--s-4); }
@@ -281,11 +281,10 @@ p { margin: 0; }
 @media (max-width: 900px) { .death-top { grid-template-columns: 1fr; } }
 .map-panel { padding: var(--s-4); }
 .map { width: 100%; height: auto; display: block; background: var(--dark); }
-.map .map-veil { fill: var(--dark); opacity: 0.35; }
 .map .mp-death { fill: var(--red); }
 .map .mp-num { font: 800 12px var(--font-num); fill: var(--on-accent); }
-.map .mp-kill { fill: var(--mint-ink); }
-.map .mp-assist { fill: none; stroke: var(--mint-ink); stroke-width: 2.8; }
+.map .mp-kill { fill: var(--mint); }  /* 다크 지도 위라서 쨍한 민트(길 색과 5.8:1). 진한 민트는 2.0:1이라 안 보여요 */
+.map .mp-assist { fill: none; stroke: var(--mint); stroke-width: 2.8; }
 .legend-map { margin-top: var(--s-3); }
 .death-stats { background: var(--panel); border: 1px solid var(--line); padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-5); }
 .big-stat { display: flex; align-items: baseline; gap: 10px; }
