@@ -344,6 +344,11 @@ def build(mid, champ_id=None, lab=False):
         "roamN": sum(1 for x in A["deaths"] if any(r["distance"] > 4000 for r in x["roams"])),
         "alone": sum(1 for x in A["deaths"] if not x["alliesNear"]),
     }
+    # 1초 위치(리플레이)가 있는 판은 미니맵 리플레이와 교전 시간을 붙여요(11-19). 없으면 None.
+    rp = replay_block(mid, P, ME, events, dur, S, my_deaths_ev, A)
+    deaths["replay"] = rp["replay"] if rp else None
+    for x in death_list:
+        x.update((rp or {}).get("perDeath", {}).get(x["t"], {}))
 
     # ----- 05 팀 -----
     us, th = MY_TEAM, 300 - MY_TEAM
@@ -497,6 +502,133 @@ def death_spells(x, ME):
         out.append(s)
     state = "none" if not live else ("unseen" if all(s.get("verdict") is None for s in out) else "each")
     return {"state": state, "list": out}
+
+
+# ----- 04 죽음: 미니맵 리플레이 (11-19) -----
+FIGHT_R = 1000      # 내 죽음에 관여한 적이 이 거리 안에 있으면 '교전 중'으로 봐요
+FIGHT_GAP = 3       # 이 초 이하로 잠깐 멀어진 건 같은 교전으로 이어 봐요
+FIGHT_BACK = 90     # 교전 시작은 죽기 전 최대 이 초까지만 거슬러 찾아요
+TURRETS = {  # 포탑 자리(게임 좌표). 추정 시야에만 써요.
+    100: [(981, 10441), (1512, 6699), (1169, 4287), (5846, 6396), (5048, 4812), (3651, 3696),
+          (10504, 1029), (6919, 1483), (4281, 1253), (1748, 2270), (2177, 1807)],
+    200: [(4318, 13875), (7943, 13411), (10481, 13650), (8955, 8510), (9767, 10113), (11134, 11207),
+          (13866, 4505), (13327, 8226), (13624, 10572), (12611, 13084), (13052, 12612)],
+}
+SLOT = {0: "Q", 1: "W", 2: "E", 3: "R"}
+
+
+def replay_block(mid, P, ME, events, dur, S, my_deaths_ev, A):
+    path = os.path.join(ROOT, "raw", mid + ".pos.json.gz")
+    if not os.path.exists(path):
+        return None
+    d = json.load(gzip.open(path, "rt", encoding="utf-8"))
+    if d.get("format") != 1:
+        return None
+    # 게임 좌표 → 지도 좌표(0~S)를 10배 한 정수. 화면에서 10으로 나눠요.
+    gx = lambda x: round((x + 120) / 14990 * S * 10)
+    gy = lambda y: round((S - (y + 120) / 15100 * S) * 10)
+    my_team = ME["teamId"]
+    tracks, champs = {}, []
+    for i, enc in enumerate(d["pos"]):
+        tr, t, x, y = {}, 0, 0, 0
+        for k in range(0, len(enc), 3):
+            t, x, y = t + enc[k], x + enc[k + 1], y + enc[k + 2]
+            tr[t] = (x, y)
+        tracks[i + 1] = tr
+    by = {p["participantId"]: p for p in P}
+    out_tracks = []
+    for pid in range(1, 11):
+        p = by[pid]
+        c = champ(p["championName"])
+        champs.append({**c, "us": p["teamId"] == my_team, "me": pid == ME["participantId"]})
+        enc, pt, px, py = [], 0, 0, 0
+        for t in sorted(tracks.get(pid, {})):
+            x, y = tracks[pid][t]
+            X, Y = gx(x), gy(y)
+            enc += [t - pt, X - px, Y - py]
+            pt, px, py = t, X, Y
+        out_tracks.append(enc)
+    idx = lambda pid: pid - 1  # 화면의 챔피언 번호(0~9)
+    ev = []
+    for e in events:
+        t = round(e["timestamp"] / 1000)
+        pos = e.get("position")
+        if e["type"] == "CHAMPION_KILL":
+            ev.append({"k": "kill", "t": t, "x": gx(pos["x"]), "y": gy(pos["y"]), "by": idx(e["killerId"]) if e["killerId"] else None,
+                       "who": idx(e["victimId"]), "us": by[e["victimId"]]["teamId"] != my_team})
+        elif e["type"] == "ELITE_MONSTER_KILL":
+            m = e.get("monsterType")
+            g = {"DRAGON": "dragon", "BARON_NASHOR": "baron", "RIFTHERALD": "herald", "HORDE": "grub"}.get(m, "dragon")
+            ev.append({"k": "obj", "t": t, "x": gx(pos["x"]), "y": gy(pos["y"]), "g": g, "us": e.get("killerTeamId") == my_team})
+        elif e["type"] == "BUILDING_KILL":
+            g = "tower" if e.get("buildingType") == "TOWER_BUILDING" else "inhib"
+            ev.append({"k": "bld", "t": t, "x": gx(pos["x"]), "y": gy(pos["y"]), "g": g, "us": e.get("teamId") != my_team})
+    # 추정 시야용: 우리 팀 와드, 우리 팀 포탑(부서진 시각까지)
+    wc = d.get("wardCols") or []
+    wards = []
+    for w in d.get("wards") or []:
+        w = dict(zip(wc, w))
+        cr = w.get("creator")
+        if cr and cr in by and by[cr]["teamId"] == my_team and w.get("x") is not None:
+            r = 500 if w.get("type") == "BLUE_TRINKET" else 900
+            wards.append([round(w["t"]), round(w["end_t"] if w.get("end_t") else dur), gx(w["x"]), gy(w["y"]), round(r / 14990 * S * 10)])
+    dead_at = {}
+    for e in events:
+        if e["type"] == "BUILDING_KILL" and e.get("buildingType") == "TOWER_BUILDING" and e.get("teamId") == my_team:
+            p2 = (e["position"]["x"], e["position"]["y"])
+            near = min(TURRETS[my_team], key=lambda q: (q[0] - p2[0]) ** 2 + (q[1] - p2[1]) ** 2)
+            dead_at[near] = round(e["timestamp"] / 1000)
+    turrets = [[gx(x), gy(y), dead_at.get((x, y), dur)] for x, y in TURRETS[my_team]]
+
+    # 죽음마다: 교전 시간, 관여한 적이 다가온 시각, 맞은 큰 기술, 죽기 전 체력
+    me_tr = tracks.get(ME["participantId"], {})
+
+    def at(tr, s):
+        for k in (0, -1, 1, -2, 2):
+            if s + k in tr:
+                return tr[s + k]
+        return None
+
+    def dist(a, b):
+        return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5 if a and b else None
+    live_by_t = {x["t"]: x.get("live") or {} for x in A["deaths"]}
+    per = {}
+    for e in my_deaths_ev:
+        D = round(e["timestamp"] / 1000)
+        inv = [p for p in [e.get("killerId")] + e.get("assistingParticipantIds", []) if p and by[p]["teamId"] != my_team]
+        close = lambda s: any((dist(at(me_tr, s), at(tracks.get(p, {}), s)) or 1e9) <= FIGHT_R for p in inv)
+        start, gap, s = None, 0, D
+        while s >= D - FIGHT_BACK:
+            if close(s):
+                start, gap = s, 0
+            else:
+                gap += 1
+                if gap > FIGHT_GAP:
+                    break
+            s -= 1
+        joins = []
+        for p in inv:
+            tr = tracks.get(p, {})
+            first = next((s2 for s2 in range((start or D) - 5, D + 1) if (dist(at(me_tr, s2), at(tr, s2)) or 1e9) <= FIGHT_R), None)
+            if first is not None:
+                joins.append({"t": first, "who": idx(p)})
+        hits = {}
+        for h in e.get("victimDamageReceived", []):
+            if h.get("type") == "OTHER" and h.get("spellSlot") in SLOT and h.get("participantId"):
+                key = (h["participantId"], h["spellSlot"])
+                hits[key] = hits.get(key, 0) + h["physicalDamage"] + h["magicDamage"] + h["trueDamage"]
+        top = sorted(hits.items(), key=lambda kv: -kv[1])[:3]
+        lv = live_by_t.get(mmss(e["timestamp"]), {})
+        per[mmss(e["timestamp"])] = {
+            "sec": D,
+            "fight": {"from": start, "to": D} if start is not None else None,
+            "joins": sorted(joins, key=lambda j: j["t"]),
+            "skills": [{"who": champ(by[pid]["championName"]), "slot": SLOT[sl], "v": v} for (pid, sl), v in top],
+            "hp": [{"t": round(h["t"], 1), "hp": h["hp"]} for h in lv.get("hpFlow") or []],
+        }
+    return {"replay": {"size": S, "len": dur, "champs": champs, "tracks": out_tracks, "events": ev,
+                       "wards": wards, "turrets": turrets, "sight": round(1200 / 14990 * S * 10)},
+            "perDeath": per}
 
 
 def run_analyze(mid, champ_id):
