@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ranked Archive 메인 시안</title>
+<style>/*FONTS*/</style>
+<style>
+/* 배치 생각: 밝은 푸른 흰색 바탕 위에 아주 큰 영어 제목과 아주 작은 라벨만 쓰고, 다크와 민트는 포인트 면에만 쓴다.
+   마우스가 지나간 자리에만 연한 홀로그램 질감이 드러난다. */
+:root {
+  --bg: #eef0f6;
+  --panel: #ffffff;
+  --ink: #111214;
+  --text-2: #464950;
+  --text-3: #6b6f78;
+  --line: #d6d9e2;
+  --dark: #1a1b1e;
+  --dark-line: #34363c;
+  --on-dark: #f2f3f5;
+  --on-dark-2: #9a9ea7;
+  --mint: #3fe0e6;
+  --mint-ink: #00828a;
+  --font-sans: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-num: "Archivo", "Pretendard Variable", sans-serif;
+  --gut: clamp(16px, 4vw, 56px);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font-sans); letter-spacing: -0.005em; word-break: keep-all; overflow-x: clip; }
+h1, h2, h3, p, ul, ol, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--mint-ink); outline-offset: 3px; }
+
+/* ---------- 공통 조각 ---------- */
+.label { font: 600 12px/1.2 var(--font-num); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.label b { color: var(--ink); font-weight: 700; }
+.display { font: 450 clamp(52px, 9.6vw, 144px)/1 var(--font-num); letter-spacing: -0.03em; }
+.display .ln { display: block; overflow: hidden; padding-bottom: .08em; }
+.display .ln > span { display: block; transition: transform 1s var(--ease); }
+.js .display:not(.in) .ln > span { transform: translateY(105%); }
+.display .ln:nth-child(2) > span { transition-delay: .08s; }
+.step { padding-left: 18%; }
+.sec-tag { display: flex; align-items: center; gap: 12px; }
+.sec-tag::before { content: ""; width: 7px; height: 7px; background: var(--ink); }
+
+/* 십자 표시 줄 */
+.crosses { display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; height: 28px; position: relative; }
+.crosses i { position: relative; width: 11px; height: 11px; justify-self: center; transition: transform .6s var(--ease); }
+.crosses i:first-child { justify-self: start; } .crosses i:last-of-type { justify-self: end; }
+.crosses i::before, .crosses i::after { content: ""; position: absolute; background: currentColor; }
+.crosses i::before { left: 5px; top: 0; width: 1px; height: 11px; }
+.crosses i::after { top: 5px; left: 0; height: 1px; width: 11px; }
+.crosses .label { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--bg); padding: 0 14px; color: var(--ink); white-space: nowrap; }
+.crosses.on-dark .label { background: transparent; }
+.crosses:hover i { transform: rotate(90deg); }
+
+/* 점이 붙은 버튼 (한쪽 모서리를 깎음) */
+.btn { display: inline-flex; align-items: center; gap: 12px; height: 46px; padding: 0 20px 0 18px; font: 700 13px/1 var(--font-sans); letter-spacing: .02em; background: var(--ink); color: #fff;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%); transition: background .25s; white-space: nowrap; }
+.btn .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); transition: transform .35s var(--ease); }
+.btn .arr { width: 0; overflow: hidden; transition: width .35s var(--ease); font-family: var(--font-num); }
+.btn:hover .arr, .btn:focus-visible .arr { width: 18px; }
+.btn:hover .dot { transform: scale(1.6); }
+.btn.light { background: var(--panel); color: var(--ink); }
+.btn.light .dot { background: var(--ink); }
+
+/* 이미지가 들어갈 자리 */
+.slot { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 18px; overflow: hidden; }
+.slot::before { content: ""; position: absolute; inset: 0; background:
+  linear-gradient(to top right, transparent calc(50% - .5px), currentColor calc(50% - .5px), currentColor calc(50% + .5px), transparent calc(50% + .5px)),
+  linear-gradient(to bottom right, transparent calc(50% - .5px), currentColor calc(50% - .5px), currentColor calc(50% + .5px), transparent calc(50% + .5px));
+  opacity: .14; pointer-events: none; }
+.slot .label { color: inherit; opacity: .75; position: relative; }
+.slot p { position: relative; font-size: 13px; line-height: 1.5; max-width: 30em; opacity: .9; }
+
+/* ---------- 마우스가 지나간 자리의 질감 ---------- */
+#holo { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+main, .top, .rail { position: relative; z-index: 1; }
+/* 글자 안에 드러나는 질감 */
+.foil { position: relative; display: inline-block; }
+.foil .foil-fill { position: absolute; inset: 0; color: transparent; background-image: var(--holo); background-size: 160% auto; background-position: calc(var(--fx, 50) * 1%) calc(var(--fy, 50) * 1%);
+  -webkit-background-clip: text; background-clip: text; pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle var(--fr, 0px) at calc(var(--mx, 50) * 1%) calc(var(--my, 50) * 1%), #000 0, #000 35%, transparent 100%);
+  mask-image: radial-gradient(circle var(--fr, 0px) at calc(var(--mx, 50) * 1%) calc(var(--my, 50) * 1%), #000 0, #000 35%, transparent 100%);
+  transition: --fr .5s; }
+
+/* 커서를 따라다니는 고리 */
+.cur { position: fixed; left: 0; top: 0; width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1px solid var(--ink); border-radius: 50%; z-index: 60; pointer-events: none; opacity: 0;
+  display: grid; place-items: center; transition: width .3s var(--ease), height .3s var(--ease), margin .3s var(--ease), background .3s, opacity .3s, border-color .3s; }
+.cur span { font: 700 11px/1 var(--font-sans); color: var(--ink); opacity: 0; white-space: nowrap; transition: opacity .2s; }
+.cur.on { opacity: 1; }
+.cur.link { width: 54px; height: 54px; margin: -27px 0 0 -27px; background: rgba(63, 224, 230, .35); border-color: transparent; }
+.cur.view { width: 96px; height: 96px; margin: -48px 0 0 -48px; background: var(--mint); border-color: transparent; }
+.cur.view span { opacity: 1; }
+.cur.down { transform-origin: center; border-width: 2px; }
+@media (pointer: coarse) { .cur { display: none; } }
+
+/* ---------- 위쪽 막대와 메뉴 ---------- */
+.top { position: fixed; z-index: 40; top: 0; left: 0; right: 0; height: 68px; padding: 0 var(--gut); display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.top > * { pointer-events: auto; }
+.logo { font: 800 14px/1 var(--font-num); font-stretch: 125%; letter-spacing: .02em; display: flex; align-items: center; gap: 10px; }
+.top .logo { height: 40px; padding: 0 14px 0 12px; margin-left: -12px; background: var(--panel); border: 1px solid var(--line); }
+.logo i { width: 9px; height: 9px; background: var(--mint); outline: 1px solid var(--ink); }
+.menu-btn { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px 0 16px; background: var(--panel); border: 1px solid var(--line); font: 700 12px/1 var(--font-num); letter-spacing: .08em; }
+.menu-btn .w { display: inline-block; height: 12px; overflow: hidden; }
+.menu-btn .w span { display: block; height: 12px; transition: transform .45s var(--ease); }
+.menu-btn[aria-expanded="true"] .w span { transform: translateY(-12px); }
+.menu-btn .dd { display: inline-flex; gap: 3px; }
+.menu-btn .dd i { width: 4px; height: 4px; border-radius: 50%; background: var(--ink); transition: transform .35s var(--ease); }
+.menu-btn[aria-expanded="true"] .dd i:first-child { transform: translateX(3.5px); }
+.menu-btn[aria-expanded="true"] .dd i:last-child { transform: translateX(-3.5px); }
+.menu { position: fixed; z-index: 39; top: 62px; right: var(--gut); width: min(300px, calc(100vw - 32px)); background: var(--panel); border: 1px solid var(--line); padding: 8px;
+  clip-path: inset(0 0 100% 0); visibility: hidden; transition: clip-path .5s var(--ease), visibility 0s .5s; }
+.menu.open { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .5s var(--ease), visibility 0s; }
+.menu a { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 12px; font-weight: 600; font-size: 15px; transition: background .2s, padding .3s var(--ease); }
+.menu a .st { margin-left: auto; font: 600 10px/1 var(--font-num); letter-spacing: .08em; color: var(--text-3); }
+.menu a::before { content: "→"; font-family: var(--font-num); width: 0; overflow: hidden; transition: width .3s var(--ease); }
+.menu a:hover, .menu a:focus-visible { background: var(--bg); }
+.menu a:hover::before, .menu a:focus-visible::before { width: 18px; }
+.menu a.cur-page::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
+
+/* 왼쪽 스크롤 위치 표시 */
+.rail { position: fixed; z-index: 30; left: 18px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; pointer-events: none; }
+.rail-line { position: relative; width: 1px; height: 150px; background: var(--line); }
+.rail-mark { position: absolute; left: -5px; top: 0; width: 11px; height: 11px; margin-top: -5px; }
+.rail-mark::before, .rail-mark::after { content: ""; position: absolute; background: var(--ink); }
+.rail-mark::before { left: 5px; top: 0; width: 1px; height: 11px; } .rail-mark::after { top: 5px; left: 0; height: 1px; width: 11px; }
+.rail-no { font: 700 11px/1 var(--font-num); letter-spacing: .04em; }
+@media (max-width: 900px) { .rail { display: none; } }
+
+/* 숫자 굴리기 */
+.rd { display: inline-block; height: 1em; line-height: 1; overflow: hidden; vertical-align: bottom; }
+.rd-s { display: block; white-space: pre; transition: transform .9s var(--ease); }
+
+/* ---------- 로딩 ---------- */
+.loader { position: fixed; inset: 0; z-index: 80; background: var(--bg); display: none; transition: clip-path .9s cubic-bezier(.7, 0, .2, 1); clip-path: inset(0 0 0 0); }
+.js.loading .loader { display: block; }
+.loader.done { clip-path: inset(0 0 100% 0); }
+.loader .logo { position: absolute; left: var(--gut); top: 14px; height: 40px; }
+.loader-n { position: absolute; left: var(--gut); bottom: clamp(16px, 4vw, 48px); font: 400 clamp(110px, 24vw, 340px)/1 var(--font-num); letter-spacing: -0.04em; }
+.loader-bar { position: absolute; left: 50%; top: 50%; width: 160px; height: 2px; margin-left: -80px; background: var(--line); }
+.loader-bar i { display: block; height: 100%; width: 100%; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .5s var(--ease); }
+.loader .label { position: absolute; right: var(--gut); bottom: clamp(16px, 4vw, 48px); }
+
+/* ---------- 1. 첫 화면 ---------- */
+section { position: relative; }
+.hero { padding: 108px var(--gut) 0; }
+.hero-top { display: grid; grid-template-columns: 1fr minmax(0, 2.2fr) 1fr; gap: 32px; align-items: start; }
+.hero-top .lede { font-size: clamp(22px, 2.5vw, 36px); line-height: 1.32; font-weight: 500; letter-spacing: -0.025em; }
+.hero-top .lede em { font-style: normal; font-family: var(--font-num); font-weight: 600; }
+.hero-meta { display: flex; flex-direction: column; gap: 8px; }
+.hero-meta.r { align-items: flex-end; text-align: right; }
+.hero-frame { margin-top: clamp(28px, 4vw, 56px); height: clamp(280px, 56vh, 620px); background: var(--dark); color: var(--on-dark); transform-origin: 50% 0;
+  clip-path: polygon(0 0, calc(100% - 64px) 0, 100% 64px, 100% 100%, 64px 100%, 0 calc(100% - 64px)); will-change: transform; }
+.hero-frame .slot { height: 100%; padding: clamp(18px, 3vw, 40px) clamp(18px, 3vw, 40px) clamp(18px, 3vw, 40px) clamp(84px, 8vw, 110px); }
+.hero-frame .par { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.hero-frame .ghost { font: 800 clamp(64px, 16vw, 250px)/.9 var(--font-num); font-stretch: 125%; letter-spacing: -0.03em; color: transparent; -webkit-text-stroke: 1px var(--dark-line); white-space: nowrap; }
+.hero-frame .ghost .foil-fill { -webkit-text-stroke: 0; }
+.hero .crosses { margin-top: 14px; }
+@media (max-width: 860px) { .hero-top { grid-template-columns: 1fr; } .hero-meta.r { align-items: flex-start; text-align: left; flex-direction: row; flex-wrap: wrap; gap: 6px 18px; } .hero-meta.l { display: none; } }
+
+/* ---------- 2. 소개 ---------- */
+.intro { padding: clamp(120px, 18vw, 240px) var(--gut) clamp(100px, 14vw, 200px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 340px); gap: 48px; align-items: end; }
+.intro .sec-tag { grid-column: 1 / -1; margin-bottom: 20px; }
+.intro .draw { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: visible; }
+.intro .draw path { fill: none; stroke: var(--mint); stroke-width: 58; stroke-linecap: round; stroke-linejoin: round; }
+.intro-side { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; padding-bottom: 14px; }
+.intro-side p { font-size: 18px; line-height: 1.6; color: var(--text-2); }
+@media (max-width: 860px) { .intro { grid-template-columns: 1fr; } .intro .draw path { stroke-width: 34; } }
+
+/* ---------- 3. 오늘의 원칙 (틀이 커지는 구역) ---------- */
+.prin { height: 240vh; }
+.prin-stage { position: sticky; top: 0; height: 100vh; overflow: clip; }
+.prin-intro { position: absolute; left: var(--gut); top: 50%; transform: translateY(-50%); width: min(46vw, 620px); display: flex; flex-direction: column; gap: 22px; }
+.prin-intro h2 { font-size: clamp(44px, 6.6vw, 100px); }
+.prin-intro p { font-size: 18px; color: var(--text-2); max-width: 24em; }
+.prin-frame { position: absolute; background: var(--dark); color: var(--on-dark); will-change: left, top, width, height; }
+.prin-frame .crosses { position: absolute; left: 0; right: 0; color: var(--ink); }
+.prin-frame .crosses.t { top: -34px; } .prin-frame .crosses.b { bottom: -34px; }
+.prin-in { position: absolute; inset: 0; padding: clamp(18px, 3vw, 44px); display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+.prin-in .label { color: var(--on-dark-2); display: flex; justify-content: space-between; gap: 16px; }
+.prin-in .label b { color: var(--mint); }
+.prin-say { font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; font-size: calc(17px + var(--g, 0) * (clamp(30px, 4.6vw, 72px) - 17px)); max-width: 15em; position: relative; z-index: 1; }
+.prin-say span { display: inline-block; margin-right: .26em; opacity: .26; transition: opacity .5s; }
+.prin-say span.lit { opacity: 1; }
+.prin-say .q { color: var(--mint); }
+.prin-p1 { position: absolute; right: clamp(8px, 2vw, 32px); bottom: -0.12em; font: 800 calc(110px + var(--g, 0) * (clamp(220px, 40vw, 620px) - 110px))/.8 var(--font-num); font-stretch: 125%; letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 1.5px var(--dark-line); user-select: none; }
+.prin-p1 .foil-fill { -webkit-text-stroke: 0; }
+@media (max-width: 860px) { .prin-intro { top: 96px; transform: none; width: auto; right: var(--gut); } .prin-intro p { display: none; } }
+
+/* ---------- 4. Certa와 챔피언 3개 (화면 고정) ---------- */
+.champs { height: 380vh; }
+.champs-stage { position: sticky; top: 0; height: 100vh; overflow: clip; display: grid; grid-template-rows: auto 1fr auto; padding: 96px var(--gut) clamp(20px, 3vw, 40px); }
+.champs-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.champs-head .who { font: 450 clamp(28px, 3.4vw, 48px)/1 var(--font-num); letter-spacing: -0.03em; margin-top: 12px; }
+.champs-head .who small { font: 500 15px/1.5 var(--font-sans); letter-spacing: 0; color: var(--text-2); display: block; margin-top: 10px; }
+.gname { position: relative; align-self: center; height: clamp(84px, 19vw, 340px); font: 760 clamp(96px, 21vw, 380px)/.9 var(--font-num); font-stretch: 112%; letter-spacing: -0.035em; text-align: center; user-select: none; }
+.gword { position: absolute; inset: 0; display: flex; justify-content: center; overflow: hidden; }
+.gword span { display: inline-block; transition: transform .9s var(--ease); transition-delay: calc(var(--i) * 45ms); transform: translateY(110%); }
+.gword.is-cur span { transform: none; } .gword.is-prev span { transform: translateY(-110%); }
+.obj { position: absolute; left: 50%; top: 50%; width: clamp(170px, 20vw, 320px); aspect-ratio: 3 / 4; margin: calc(clamp(170px, 20vw, 320px) * -0.6) 0 0 calc(clamp(170px, 20vw, 320px) * -0.5);
+  transform: translate3d(var(--ox, 0px), var(--oy, 0px), 0) rotate(var(--rot, -6deg)); transition: transform .9s var(--ease), opacity .5s; }
+.obj .slot { height: 100%; border: 1.5px dashed var(--ink); background: rgba(255, 255, 255, .28); -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px); color: var(--ink); }
+.obj:not(.is-cur) { opacity: 0; pointer-events: none; }
+.obj.is-prev { --oy: -60px; } .obj.is-next { --oy: 60px; }
+.champs-foot { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: end; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { display: inline-flex; align-items: center; height: 28px; padding: 0 11px; border: 1px solid var(--ink); font: 700 11px/1 var(--font-num); letter-spacing: .06em; text-transform: uppercase; background: var(--bg); }
+.tag.fill { background: var(--ink); color: #fff; } .tag.mint { background: var(--mint); border-color: var(--mint); }
+.cinfo { position: relative; min-height: 76px; }
+.cinfo > div { position: absolute; left: 0; right: 0; bottom: 0; transition: opacity .5s, transform .7s var(--ease); }
+.cinfo > div:not(.is-cur) { opacity: 0; transform: translateY(14px); pointer-events: none; }
+.cinfo.r { text-align: right; } .cinfo.r .tags { justify-content: flex-end; }
+.cinfo h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+.cinfo p { font-size: 14px; color: var(--text-2); }
+.cmid { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.cidx { font: 700 13px/1 var(--font-num); letter-spacing: .04em; display: flex; align-items: center; gap: 10px; }
+.cidx .bars { display: flex; gap: 4px; } .cidx .bars i { width: 26px; height: 2px; background: var(--line); position: relative; overflow: hidden; }
+.cidx .bars i::after { content: ""; position: absolute; inset: 0; background: var(--ink); transform: scaleX(var(--f, 0)); transform-origin: left; }
+@media (max-width: 860px) { .champs-foot { grid-template-columns: 1fr 1fr; } .cmid { grid-column: 1 / -1; order: -1; } .champs-head .label.r { display: none; } }
+
+/* ---------- 5. 최근 리포트 ---------- */
+.recent { padding: clamp(100px, 13vw, 190px) var(--gut) 0; }
+.sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; margin-bottom: clamp(32px, 5vw, 64px); }
+.sec-head h2 { font-size: clamp(44px, 7vw, 104px); margin-top: 18px; }
+.sec-head p { color: var(--text-2); max-width: 22em; padding-bottom: 12px; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(40px, 5vw, 72px) clamp(16px, 2.4vw, 32px); }
+.card { display: block; }
+.card:nth-child(even) { margin-top: clamp(0px, 6vw, 88px); }
+.card-img { position: relative; aspect-ratio: 4 / 3; background: var(--panel); color: var(--ink); overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - var(--cut, 34px)) 0, 100% var(--cut, 34px), 100% 100%, 0 100%); transition: --cut .5s var(--ease), clip-path .5s var(--ease); }
+.card:hover .card-img, .card:focus-visible .card-img { --cut: 84px; clip-path: polygon(0 0, calc(100% - 84px) 0, 100% 84px, 100% 100%, 0 100%); }
+.card-img .slot { position: absolute; inset: 0; transition: transform .9s var(--ease); }
+.card:hover .card-img .slot { transform: scale(1.045); }
+.card-img .wm { position: absolute; left: 14px; top: 6px; font: 800 clamp(48px, 8.4vw, 132px)/1 var(--font-num); font-stretch: 125%; letter-spacing: -0.03em; color: transparent; -webkit-text-stroke: 1px var(--line); }
+.card-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-top: 16px; }
+.card-meta .label + .label::before { content: "•"; margin-right: 14px; color: var(--text-3); }
+.card h3 { display: flex; align-items: center; font-size: clamp(24px, 3vw, 43px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-top: 8px; }
+.card h3::before { content: "→"; font-family: var(--font-num); font-weight: 500; width: 0; overflow: hidden; transition: width .45s var(--ease); }
+.card:hover h3::before, .card:focus-visible h3::before { width: 1.2em; }
+.card .sub { margin-top: 4px; font-size: 14px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) { .cards { grid-template-columns: 1fr; } .card:nth-child(even) { margin-top: 0; } }
+
+/* ---------- 6. 다른 페이지 목록 (얇은 선 줄) ---------- */
+.index { padding: clamp(110px, 14vw, 210px) var(--gut) 0; }
+.rows { border-top: 1px solid var(--ink); }
+.row { border-bottom: 1px solid var(--line); transition: opacity .4s; }
+.rows.has-open .row:not(.open) { opacity: .32; }
+.row-btn { width: 100%; display: grid; grid-template-columns: 64px 1fr auto 44px; align-items: center; gap: 16px; padding: clamp(18px, 2.4vw, 30px) 0; text-align: left; }
+.row-no { font: 600 12px/1 var(--font-num); letter-spacing: .08em; color: var(--text-3); }
+.row-t { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; transition: transform .45s var(--ease); }
+.row-t b { font-size: clamp(26px, 3.8vw, 54px); font-weight: 600; letter-spacing: -0.035em; line-height: 1.15; }
+.row-btn:hover .row-t, .row-btn:focus-visible .row-t { transform: translateX(18px); }
+.row-arr { font: 500 26px/1 var(--font-num); justify-self: end; transition: transform .45s var(--ease); }
+.row.open .row-arr { transform: rotate(90deg); }
+.row-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s var(--ease); }
+.row.open .row-body { grid-template-rows: 1fr; }
+.row-body > div { overflow: hidden; }
+.row-body p { padding: 0 0 clamp(20px, 2.6vw, 34px) 80px; max-width: 46em; font-size: 17px; color: var(--text-2); }
+.peek { position: fixed; left: 0; top: 0; z-index: 50; width: 220px; aspect-ratio: 4 / 3; margin: -82px 0 0 26px; background: var(--dark); color: var(--on-dark); pointer-events: none; opacity: 0;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%); transition: opacity .25s, scale .35s var(--ease); scale: .8; }
+.peek.on { opacity: 1; scale: 1; }
+.peek .slot { height: 100%; padding: 12px; }
+@media (max-width: 700px) { .row-btn { grid-template-columns: 34px 1fr 30px; } .row-btn .st { display: none; } .row-body p { padding-left: 50px; } }
+@media (pointer: coarse) { .peek { display: none; } }
+
+/* ---------- 7. 끝 ---------- */
+.end { height: 170vh; margin-top: clamp(90px, 12vw, 180px); }
+.end-stage { position: sticky; top: 0; height: 100vh; overflow: clip; display: flex; flex-direction: column; justify-content: space-between; padding: 96px var(--gut) 0; }
+.end-mid { display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; margin-top: 4vh; }
+.end-mid h2 { font-size: clamp(52px, 9vw, 132px); }
+.end-prog { width: min(420px, 70vw); display: flex; align-items: center; gap: 14px; }
+.end-prog .bar { flex: 1; height: 2px; background: var(--line); }
+.end-prog .bar i { display: block; height: 100%; background: var(--ink); transform: scaleX(var(--p, 0)); transform-origin: left; }
+.end-prog .pct { font: 700 13px/1 var(--font-num); min-width: 3.2em; text-align: right; font-variant-numeric: tabular-nums; }
+.end-note { font-size: 14px; color: var(--text-2); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s var(--ease); }
+.end.full .end-note { opacity: 1; transform: none; }
+.end.full .btn .arr { width: 18px; }
+.wordmark { display: block; width: 100%; padding-bottom: 6px; }
+.wordmark svg { display: block; width: 100%; height: auto; overflow: visible; }
+.wordmark text { font: 800 100px var(--font-num); font-stretch: 125%; letter-spacing: -2px; fill: var(--ink); }
+.wordmark .wm-holo { fill: url(#wmPat); opacity: 0; transition: opacity .6s; }
+.wordmark:hover .wm-holo { opacity: 1; }
+.foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 14px var(--gut) 20px; border-top: 1px solid var(--line); background: var(--bg); position: relative; z-index: 1; }
+
+@property --fr { syntax: "<length>"; inherits: true; initial-value: 0px; }
+@property --cut { syntax: "<length>"; inherits: true; initial-value: 34px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .display .ln > span, .gword span, .rd-s, .obj { transition-duration: .01s !important; transition-delay: 0s !important; }
+  .js .display:not(.in) .ln > span { transform: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="holo" aria-hidden="true"></canvas>
+
+<div class="loader" aria-hidden="true">
+  <span class="logo"><i></i>RANKED ARCHIVE</span>
+  <div class="loader-bar"><i></i></div>
+  <div class="loader-n" id="loadN"></div>
+  <span class="label">Loading records</span>
+</div>
+
+<header class="top">
+  <a class="logo" href="#top" data-cur="link"><i></i>RANKED ARCHIVE</a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" data-cur="link">
+    <span class="w"><span>MENU</span><span>CLOSE</span></span><span class="dd"><i></i><i></i></span>
+  </button>
+</header>
+<nav class="menu" id="menu" aria-label="페이지">
+  <a class="cur-page" href="#top">메인</a>
+  <a href="#index">기록 목록<span class="st">시안 있음</span></a>
+  <a href="#index">챔피언 노트<span class="st">준비 중</span></a>
+  <a href="#index">성장 확인<span class="st">준비 중</span></a>
+  <a href="#index">규칙<span class="st">준비 중</span></a>
+</nav>
+
+<div class="rail" aria-hidden="true">
+  <div class="rail-line"><span class="rail-mark" id="railMark"></span></div>
+  <span class="rail-no" id="railNo"></span>
+</div>
+<div class="cur" id="cur" aria-hidden="true"><span>리포트 보기</span></div>
+<div class="peek" id="peek" aria-hidden="true"><div class="slot"><span class="label" id="peekL">PREVIEW</span><p id="peekP"></p></div></div>
+
+<main id="top">
+  <!-- 1. 첫 화면 -->
+  <section class="hero" data-sec="01">
+    <div class="hero-top">
+      <div class="hero-meta l">
+        <span class="label" data-scr>Solo rank review</span>
+        <span class="label" data-scr>ADC • KR</span>
+      </div>
+      <p class="lede">한 판이 끝날 때마다 그 판을 다시 보고, 다음 판에서 하나를 바꾸기 위해 쌓는 <em>Certa</em>의 솔로 랭크 복기 기록이에요.</p>
+      <div class="hero-meta r">
+        <span class="label"><b><span id="cntGames"></span></b> games logged</span>
+        <span class="label">Since 2026.11.06</span>
+      </div>
+    </div>
+    <div class="hero-frame" id="heroFrame">
+      <div class="par" id="heroPar"><span class="ghost foil" data-foil="260">REVIEW<span class="foil-fill" aria-hidden="true">REVIEW</span></span></div>
+      <div class="slot">
+        <span class="label">Image 01 — 21:9</span>
+        <p>이미지가 들어갈 자리예요. 진한 바탕 위에 광택 없는 입체 덩어리 여러 개가 겹쳐 있는 느낌이고, 색은 흰색, 민트, 진회색이에요.</p>
+      </div>
+    </div>
+    <div class="crosses"><i></i><i></i><i></i><i></i><i></i><span class="label" data-scr>Scroll to explore</span></div>
+  </section>
+
+  <!-- 2. 소개 -->
+  <section class="intro" id="intro" data-sec="02">
+    <svg class="draw" id="draw" viewBox="0 0 1440 700" preserveAspectRatio="none" aria-hidden="true">
+      <path id="drawPath" d="M-80 560 C 180 640, 330 210, 610 250 S 900 620, 1090 440 S 1330 40, 1560 150"/>
+    </svg>
+    <span class="label sec-tag" data-scr>002 — About</span>
+    <h2 class="display" data-in>
+      <span class="ln step"><span>Every Game,</span></span>
+      <span class="ln"><span>Reviewed.</span></span>
+    </h2>
+    <div class="intro-side">
+      <p>리포트는 숫자와 장면으로 한 판을 다시 보여 줘요. 리포트를 읽고 나면 어떤 부분을 확인해야 하는지, 다음 판에서 무엇을 바꿔야 하는지가 남아요.</p>
+      <a class="btn" href="#recent" data-cur="link"><span class="dot"></span>최근 리포트<span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <!-- 3. 오늘의 원칙 -->
+  <section class="prin" id="prin" data-sec="03">
+    <div class="prin-stage">
+      <div class="prin-intro" id="prinIntro">
+        <span class="label sec-tag" data-scr>003 — Today's principle</span>
+        <h2 class="display" data-in><span class="ln step"><span>One Rule</span></span><span class="ln"><span>a Day.</span></span></h2>
+        <p>원칙은 하루에 하나만 정해요. 오늘 하는 모든 판에서 이 한 가지만 지켰는지 확인해요.</p>
+      </div>
+      <div class="prin-frame" id="prinFrame">
+        <div class="crosses t"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="prin-in">
+          <span class="label"><span><b>P1</b> — 오늘의 원칙</span><span>2026.11.17</span></span>
+          <p class="prin-say" id="prinSay">평타, 귀환, 뒤로 빠지기 전에 <i class="q" style="font-style:normal">“이걸 해야 하는 이유가 있는가”</i></p>
+          <span class="prin-p1 foil" data-foil="300" aria-hidden="true">P1<span class="foil-fill">P1</span></span>
+        </div>
+        <div class="crosses b"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Certa와 최근 많이 한 챔피언 3개 -->
+  <section class="champs" id="champs" data-sec="04">
+    <div class="champs-stage">
+      <div class="champs-head">
+        <div>
+          <span class="label sec-tag" data-scr>004 — Most played</span>
+          <p class="who">Certa<small>최근 29판에서 가장 많이 한 챔피언 3개예요.</small></p>
+        </div>
+        <span class="label r">Keep scrolling</span>
+      </div>
+      <div class="gname" id="gname" aria-hidden="true"></div>
+      <div id="objs"></div>
+      <div class="champs-foot">
+        <div class="cinfo" id="cinfoL"></div>
+        <div class="cmid">
+          <span class="cidx"><span id="cidxN"></span><span>/ 03</span><span class="bars" id="cbars"><i></i><i></i><i></i></span></span>
+          <a class="btn light" href="#index" data-cur="link"><span class="dot"></span>챔피언 노트<span class="arr">→</span></a>
+        </div>
+        <div class="cinfo r" id="cinfoR"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 최근 리포트 -->
+  <section class="recent" id="recent" data-sec="05">
+    <div class="sec-head">
+      <div>
+        <span class="label sec-tag" data-scr>005 — Recent reports</span>
+        <h2 class="display" data-in><span class="ln"><span>Recent</span></span><span class="ln step"><span>Reports</span></span></h2>
+      </div>
+      <p>가장 최근에 한 솔로 랭크 네 판이에요. 카드를 누르면 그 판의 리포트로 들어가요.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- 6. 다른 페이지 목록 -->
+  <section class="index" id="index" data-sec="06">
+    <div class="sec-head">
+      <div>
+        <span class="label sec-tag" data-scr>006 — Index</span>
+        <h2 class="display" data-in><span class="ln"><span>Pages</span></span></h2>
+      </div>
+      <p>줄을 누르면 그 페이지가 어떤 곳인지 펼쳐져요.</p>
+    </div>
+    <ol class="rows" id="rows"></ol>
+  </section>
+
+  <!-- 7. 끝 -->
+  <section class="end" id="end" data-sec="07">
+    <div class="end-stage">
+      <div class="crosses"><i></i><i></i><i></i><i></i><i></i><span class="label" data-scr>Keep scrolling to open</span></div>
+      <div class="end-mid">
+        <span class="label">Next page</span>
+        <h2 class="display in"><span class="ln"><span>Records</span></span></h2>
+        <div class="end-prog"><span class="bar"><i></i></span><span class="pct" id="endPct">0%</span></div>
+        <a class="btn" href="#index" data-cur="link"><span class="dot"></span>기록 목록으로<span class="arr">→</span></a>
+        <p class="end-note">실제 사이트에서는 여기서 기록 목록으로 넘어가요. 지금은 시안이라 이동하지 않아요.</p>
+      </div>
+      <a class="wordmark" href="#top" aria-label="맨 위로">
+        <svg viewBox="0 0 1000 96" aria-hidden="true">
+          <defs><pattern id="wmPat" patternUnits="userSpaceOnUse" width="1000" height="96"><image id="wmImg" width="1000" height="625" y="-200" preserveAspectRatio="xMidYMid slice"/></pattern></defs>
+          <text x="500" y="82" text-anchor="middle" textLength="996" lengthAdjust="spacingAndGlyphs">RANKED ARCHIVE</text>
+          <text class="wm-holo" x="500" y="82" text-anchor="middle" textLength="996" lengthAdjust="spacingAndGlyphs">RANKED ARCHIVE</text>
+        </svg>
+      </a>
+    </div>
+  </section>
+</main>
+<footer class="foot">
+  <span class="label">Ranked Archive — 메인 페이지 시안</span>
+  <span class="label">숫자는 2026.11.17까지의 실제 기록이에요</span>
+</footer>
+
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const ease = (t) => 1 - Math.pow(1 - t, 3);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const root = document.documentElement;
+root.classList.add('js');
+
+/* ---------- 실제 기록에서 가져온 내용 ---------- */
+const CHAMPS = [
+  { en: 'JINX', ko: '징크스', games: 16, w: 5, l: 11, kda: '1.99', cs: '7.3', rot: -6,
+    slot: '징크스를 떠올리게 하는 사물 하나가 들어갈 자리예요. 바탕 없이 사물만 있어서 글자 위에 겹쳐요.' },
+  { en: 'XAYAH', ko: '자야', games: 4, w: 2, l: 2, kda: '2.44', cs: '7.3', rot: 5,
+    slot: '자야를 떠올리게 하는 사물 하나가 들어갈 자리예요. 예를 들면 깃털 한 장이에요.' },
+  { en: 'ASHE', ko: '애쉬', games: 2, w: 0, l: 2, kda: '1.33', cs: '7.5', rot: -3,
+    slot: '애쉬를 떠올리게 하는 사물 하나가 들어갈 자리예요. 예를 들면 얼음 화살이에요.' },
+];
+const RECENT = [
+  { en: 'ASHE', me: '애쉬', opp: '이즈리얼', win: false, when: '11.17 12:10', kda: '1 / 7 / 2', dur: '31:42' },
+  { en: 'JINX', me: '징크스', opp: '애쉬', win: false, when: '11.17 08:25', kda: '8 / 6 / 6', dur: '37:36' },
+  { en: 'JINX', me: '징크스', opp: '카이사', win: false, when: '11.17 07:28', kda: '2 / 11 / 4', dur: '33:49' },
+  { en: 'JINX', me: '징크스', opp: '카이사', win: true, when: '11.17 06:57', kda: '2 / 3 / 6', dur: '25:19' },
+];
+const PAGES = [
+  { ko: '기록 목록', en: 'Records', st: '시안 있음', d: '솔로 랭크 기록을 날짜별로 모아 둔 곳이에요. 하루에 한 폴더씩 쌓이고, 폴더를 열면 그날의 판이 나와요.', peek: '폴더 모양 날짜 카드' },
+  { ko: '챔피언 노트', en: 'Champion notes', st: '준비 중', d: '챔피언마다 쌓인 숫자와 자주 나오는 실수를 모아 볼 곳이에요. 상대 챔피언별 메모도 여기에 들어가요.', peek: '챔피언별 카드 줄' },
+  { ko: '성장 확인', en: 'Growth', st: '준비 중', d: '판과 판을 같은 기준으로 비교해서 정말 나아졌는지 확인하는 곳이에요. 한 판짜리 리포트로는 볼 수 없는 변화를 보여 줘요.', peek: '스크롤하면 그려지는 그래프' },
+  { ko: '규칙', en: 'Rules', st: '준비 중', d: '강의와 복기에서 채택한 판단 규칙을 모아 둔 곳이에요. 리포트의 체크리스트는 이 규칙을 기준으로 써요.', peek: '얇은 선 목록' },
+];
+
+/* ---------- 숫자 굴리기 ---------- */
+function roller(el, digits) {
+  el.textContent = '';
+  const cols = [];
+  for (let i = 0; i < digits; i++) {
+    const c = document.createElement('span'); c.className = 'rd';
+    const s = document.createElement('span'); s.className = 'rd-s'; s.textContent = '0\n1\n2\n3\n4\n5\n6\n7\n8\n9';
+    c.appendChild(s); el.appendChild(c); cols.push(s);
+  }
+  return (n) => {
+    const str = String(n).padStart(digits, '0');
+    cols.forEach((s, i) => { s.style.transform = `translateY(${-str[i] * 10}%)`; s.parentNode.style.opacity = (i < digits - String(n).length) ? '.18' : '1'; });
+  };
+}
+
+/* ---------- 글자가 무작위로 바뀌다 제자리를 찾는 효과 (영어 라벨에만) ---------- */
+const POOL = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789+';
+function scramble(el) {
+  if (reduce || el._busy) return;
+  const text = el.dataset.t || (el.dataset.t = el.textContent);
+  el._busy = true; let f = 0; const total = 26;
+  const tick = () => {
+    const done = Math.floor((f / total) * text.length);
+    let out = '';
+    for (let i = 0; i < text.length; i++) out += (i < done || text[i] === ' ' || text[i] === '—' || text[i] === '•') ? text[i] : POOL[(Math.random() * POOL.length) | 0];
+    el.textContent = out;
+    if (f++ < total) setTimeout(tick, 28); else { el.textContent = text; el._busy = false; }
+  };
+  tick();
+}
+
+/* ---------- 내용 채우기 ---------- */
+const gname = $('#gname'), objs = $('#objs'), cinfoL = $('#cinfoL'), cinfoR = $('#cinfoR');
+CHAMPS.forEach((c, i) => {
+  const w = document.createElement('div'); w.className = 'gword';
+  w.innerHTML = [...c.en].map((ch, k) => `<span style="--i:${k}">${ch}</span>`).join('');
+  gname.appendChild(w);
+  const o = document.createElement('div'); o.className = 'obj'; o.style.setProperty('--rot', c.rot + 'deg');
+  o.innerHTML = `<div class="slot"><span class="label">Image 0${i + 2} — 3:4</span><p>${c.slot}</p></div>`;
+  objs.appendChild(o);
+  const a = document.createElement('div');
+  a.innerHTML = `<div class="tags"><span class="tag fill">ADC</span><span class="tag">${c.games} games</span><span class="tag">${c.w}W ${c.l}L</span></div>`;
+  cinfoL.appendChild(a);
+  const b = document.createElement('div');
+  b.innerHTML = `<h3>${c.ko}</h3><p>평점 ${c.kda}, 분당 CS ${c.cs}</p>`;
+  cinfoR.appendChild(b);
+});
+$('#cards').innerHTML = RECENT.map((r, i) => `
+  <a class="card ${r.win ? 'win' : 'loss'}" href="#recent" data-cur="view">
+    <div class="card-img"><div class="slot"><span class="wm" aria-hidden="true">${r.en}</span>
+      <span class="label">Image 05 — 4:3</span><p>${i === 0 ? '리포트 카드 이미지가 들어갈 자리예요. 판마다 만들기 어려우면 챔피언별로 한 장을 돌려 써요.' : '챔피언별 이미지 한 장이 들어가요.'}</p></div></div>
+    <div class="card-meta"><span class="tag ${r.win ? 'mint' : 'fill'}">${r.win ? 'Win' : 'Loss'}</span><span class="label">${r.when}</span><span class="label">${r.dur}</span><span class="label">KDA ${r.kda}</span></div>
+    <h3>${r.me} vs ${r.opp}</h3>
+  </a>`).join('');
+$('#rows').innerHTML = PAGES.map((p, i) => `
+  <li class="row" data-peek="${p.peek}">
+    <button class="row-btn" aria-expanded="false" data-cur="link">
+      <span class="row-no">0${i + 1}</span>
+      <span class="row-t"><b>${p.ko}</b><span class="label">${p.en}</span></span>
+      <span class="label st">${p.st}</span>
+      <span class="row-arr" aria-hidden="true">→</span>
+    </button>
+    <div class="row-body"><div><p>${p.d}</p></div></div>
+  </li>`).join('');
+
+/* ---------- 로딩: 숫자가 굴러 100까지 (처음 한 번만) ---------- */
+let seen = false;
+try { seen = sessionStorage.getItem('ra-seen') === '1'; sessionStorage.setItem('ra-seen', '1'); } catch (e) {}
+const setGames = roller($('#cntGames'), 2);
+function start() {
+  setGames(29);
+  $$('.hero [data-scr]').forEach((el, i) => setTimeout(() => scramble(el), 200 + i * 140));
+}
+if (!seen && !reduce) {
+  root.classList.add('loading');
+  const set = roller($('#loadN'), 3), bar = $('.loader-bar i'), ld = $('.loader');
+  [[0, 80], [23, 300], [58, 620], [86, 940], [100, 1260]].forEach(([n, t]) => setTimeout(() => { set(n); bar.style.transform = `scaleX(${n / 100})`; }, t));
+  setTimeout(() => { ld.classList.add('done'); start(); }, 2250);
+  setTimeout(() => root.classList.remove('loading'), 3200);
+} else { requestAnimationFrame(start); }
+
+/* ---------- 메뉴 카드 ---------- */
+const menuBtn = $('#menuBtn'), menu = $('#menu');
+const setMenu = (open) => { menu.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', open); };
+menuBtn.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
+menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+document.addEventListener('pointerdown', (e) => { if (!e.target.closest('#menu, #menuBtn')) setMenu(false); });
+
+/* ---------- 목록 줄: 누르면 펼쳐지고 나머지는 흐려짐 ---------- */
+const rows = $('#rows');
+rows.addEventListener('click', (e) => {
+  const btn = e.target.closest('.row-btn'); if (!btn) return;
+  const row = btn.parentNode, open = !row.classList.contains('open');
+  $$('.row', rows).forEach((r) => { r.classList.remove('open'); $('.row-btn', r).setAttribute('aria-expanded', 'false'); });
+  if (open) { row.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
+  rows.classList.toggle('has-open', open);
+});
+
+/* ---------- 화면에 들어올 때: 큰 제목 올라오기, 라벨 글자 섞기 ---------- */
+const io = new IntersectionObserver((es) => es.forEach((e) => {
+  if (!e.isIntersecting) return;
+  if (e.target.hasAttribute('data-in')) e.target.classList.add('in'); else scramble(e.target);
+  io.unobserve(e.target);
+}), { rootMargin: '0px 0px -12% 0px' });
+$$('[data-in], main [data-scr]').forEach((el) => { if (!el.closest('.hero')) io.observe(el); });
+$$('.label[data-scr]').forEach((el) => el.addEventListener('pointerenter', () => scramble(el)));
+
+/* ---------- 스크롤에 따라 움직이는 것 ---------- */
+const heroFrame = $('#heroFrame'), drawPath = $('#drawPath'), intro = $('#intro');
+const prin = $('#prin'), prinFrame = $('#prinFrame'), prinIntro = $('#prinIntro'), prinSay = $('#prinSay');
+const champs = $('#champs'), endS = $('#end'), railMark = $('#railMark');
+const setRail = roller($('#railNo'), 2), setIdx = roller($('#cidxN'), 2);
+const secs = $$('[data-sec]');
+const len = drawPath.getTotalLength();
+drawPath.style.strokeDasharray = len; drawPath.style.strokeDashoffset = len;
+// 원칙 문장을 단어로 쪼개요
+(function split(node) {
+  [...node.childNodes].forEach((n) => {
+    if (n.nodeType === 3) { const f = document.createDocumentFragment(); n.textContent.split(/\s+/).filter(Boolean).forEach((w) => { const s = document.createElement('span'); s.textContent = w; f.appendChild(s); }); n.replaceWith(f); }
+    else split(n);
+  });
+})(prinSay);
+const words = $$('span', prinSay);
+const pin = (el) => { const r = el.getBoundingClientRect(); return clamp(-r.top / Math.max(1, r.height - innerHeight)); };
+let curChamp = -1, curSec = '';
+function setChamp(i) {
+  if (i === curChamp) return; curChamp = i;
+  [gname, objs, cinfoL, cinfoR].forEach((box) => [...box.children].forEach((el, k) => {
+    el.classList.toggle('is-cur', k === i); el.classList.toggle('is-prev', k < i); el.classList.toggle('is-next', k > i);
+  }));
+  setIdx(i + 1);
+}
+function frame() {
+  ticking = false;
+  const vh = innerHeight, vw = innerWidth, sy = scrollY;
+  const max = document.documentElement.scrollHeight - vh;
+  railMark.style.top = (clamp(sy / max) * 100) + '%';
+  // 보고 있는 구역 번호
+  let s = secs[0];
+  for (const el of secs) if (el.getBoundingClientRect().top <= vh * 0.5) s = el;
+  if (s.dataset.sec !== curSec) { curSec = s.dataset.sec; setRail(+curSec); }
+  // 첫 화면 틀: 스크롤하면 살짝 커지며 올라가요
+  const hp = clamp(sy / (vh * 0.9));
+  heroFrame.style.transform = `scale(${lerp(1, 1.035, hp)}) translateY(${hp * -18}px)`;
+  // 소개: 굵은 민트 선이 그려져요
+  const ir = intro.getBoundingClientRect();
+  const dp = clamp((vh * 0.92 - ir.top) / (ir.height * 0.95));
+  drawPath.style.strokeDashoffset = len * (1 - dp);
+  // 오늘의 원칙: 작은 틀이 큰 틀로 커져요
+  const pp = pin(prin), g = ease(clamp(pp / 0.6));
+  const small = vw > 860 ? { l: vw * 0.58, t: vh * 0.3, w: vw * 0.34, h: vh * 0.4 } : { l: vw * 0.08, t: vh * 0.46, w: vw * 0.84, h: vh * 0.36 };
+  const gut = Math.max(16, Math.min(56, vw * 0.04));
+  const big = { l: gut, t: 110, w: vw - gut * 2, h: vh - 110 - 60 };
+  prinFrame.style.left = lerp(small.l, big.l, g) + 'px'; prinFrame.style.top = lerp(small.t, big.t, g) + 'px';
+  prinFrame.style.width = lerp(small.w, big.w, g) + 'px'; prinFrame.style.height = lerp(small.h, big.h, g) + 'px';
+  prinFrame.style.setProperty('--g', g.toFixed(3));
+  prinIntro.style.opacity = clamp(1 - pp / 0.22); prinIntro.style.visibility = pp > 0.24 ? 'hidden' : 'visible';
+  const lit = clamp((pp - 0.42) / 0.42) * words.length;
+  words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+  // 챔피언 3개: 스크롤하면 이름과 이미지 자리가 바뀌어요
+  const cp = pin(champs);
+  setChamp(Math.min(2, Math.floor(cp * 3)));
+  $$('#cbars i').forEach((b, i) => b.style.setProperty('--f', clamp(cp * 3 - i).toFixed(3)));
+  // 끝: 계속 스크롤하면 다음 페이지
+  const ep = clamp(pin(endS) / 0.92);
+  endS.style.setProperty('--p', ep.toFixed(3));
+  $('#endPct').textContent = Math.round(ep * 100) + '%';
+  endS.classList.toggle('full', ep >= 1);
+}
+let ticking = false;
+const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+addEventListener('scroll', req, { passive: true }); addEventListener('resize', req);
+frame();
+
+/* ---------- 마우스에 반응하는 것 ---------- */
+const cur = $('#cur'), peek = $('#peek'), heroPar = $('#heroPar');
+let mx = innerWidth / 2, my = innerHeight / 2, cx = mx, cy = my, px = mx, py = my, down = false, moved = 0;
+addEventListener('pointermove', (e) => {
+  mx = e.clientX; my = e.clientY; moved = performance.now();
+  if (e.pointerType === 'mouse') cur.classList.add('on');
+  const t = e.target.closest ? e.target.closest('[data-cur]') : null;
+  cur.classList.toggle('link', !!t && t.dataset.cur === 'link');
+  cur.classList.toggle('view', !!t && t.dataset.cur === 'view');
+  const row = e.target.closest ? e.target.closest('.row') : null;
+  peek.classList.toggle('on', !!row && !row.classList.contains('open'));
+  if (row) { $('#peekL').textContent = 'Preview — ' + $('.label', row).textContent; $('#peekP').textContent = row.dataset.peek + ' 이미지가 들어갈 자리예요.'; }
+  // 글자 안 질감: 가까이 가면 드러나요
+  $$('.foil').forEach((f) => {
+    const r = f.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return;
+    const inside = mx > r.left - 80 && mx < r.right + 80 && my > r.top - 80 && my < r.bottom + 80;
+    f.style.setProperty('--mx', ((mx - r.left) / r.width * 100).toFixed(1));
+    f.style.setProperty('--my', ((my - r.top) / r.height * 100).toFixed(1));
+    f.style.setProperty('--fx', (30 + (mx / innerWidth) * 40).toFixed(1));
+    f.style.setProperty('--fy', (30 + (my / innerHeight) * 40).toFixed(1));
+    f.style.setProperty('--fr', inside ? (down ? +f.dataset.foil * 1.7 : +f.dataset.foil) + 'px' : '0px');
+  });
+  wake();
+}, { passive: true });
+addEventListener('pointerdown', () => { down = true; cur.classList.add('down'); wake(); });
+addEventListener('pointerup', () => { down = false; cur.classList.remove('down'); });
+document.addEventListener('pointerleave', () => cur.classList.remove('on'));
+
+/* ---------- 바탕 질감: 마우스가 지나가거나 끌 때만 연한 홀로그램 무늬가 드러나요 ---------- */
+const cv = $('#holo'), ctx = cv.getContext('2d');
+const mask = document.createElement('canvas'), mctx = mask.getContext('2d');
+const tex = document.createElement('canvas'); tex.width = 1000; tex.height = 625;
+(function paint() {
+  const t = tex.getContext('2d'), W = tex.width, H = tex.height;
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  t.fillStyle = '#d3e2f7'; t.fillRect(0, 0, W, H);
+  const cols = ['#8fd0ff', '#bca6ff', '#ffaedd', '#ffe89a', '#8ff0dc', '#ffffff', '#a3b8ff', '#ffc9b0', '#ffffff'];
+  for (let i = 0; i < 46; i++) {
+    const x = rnd() * W, y = rnd() * H, r = 70 + rnd() * 240, c = cols[(rnd() * cols.length) | 0];
+    const g = t.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, c + 'e6'); g.addColorStop(1, c + '00');
+    t.fillStyle = g; t.beginPath(); t.ellipse(x, y, r * (0.6 + rnd()), r * (0.35 + rnd() * 0.5), rnd() * 3.14, 0, 6.3); t.fill();
+  }
+  // 비스듬한 빛줄기
+  t.save(); t.translate(W / 2, H / 2); t.rotate(-0.5); t.globalCompositeOperation = 'soft-light';
+  for (let i = 0; i < 70; i++) {
+    const x = -W + rnd() * W * 2, w = 2 + rnd() * 46;
+    t.fillStyle = `rgba(255,255,255,${0.12 + rnd() * 0.5})`; t.fillRect(x, -H, w, H * 2);
+  }
+  t.globalCompositeOperation = 'source-over';
+  for (let i = 0; i < 26; i++) {
+    const x = -W + rnd() * W * 2;
+    t.fillStyle = `rgba(255,255,255,${0.05 + rnd() * 0.12})`; t.fillRect(x, -H, 1 + rnd() * 2, H * 2);
+  }
+  t.restore();
+  // 고운 알갱이
+  const im = t.getImageData(0, 0, W, H), d = im.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (rnd() - 0.5) * 26; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  t.putImageData(im, 0, 0);
+  const url = tex.toDataURL('image/jpeg', 0.86);
+  root.style.setProperty('--holo', `url(${url})`);
+  $('#wmImg').setAttribute('href', url);
+})();
+let cw = 0, ch = 0;
+function size() { cw = cv.width = mask.width = Math.ceil(innerWidth / 2); ch = cv.height = mask.height = Math.ceil(innerHeight / 2); }
+size(); addEventListener('resize', size);
+let running = false;
+function wake() { if (!running) { running = true; requestAnimationFrame(loop); } }
+function dab(x, y, r, a) {
+  const g = mctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, `rgba(0,0,0,${a})`); g.addColorStop(0.45, `rgba(0,0,0,${a * 0.5})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+  mctx.fillStyle = g; mctx.fillRect(x - r, y - r, r * 2, r * 2);
+}
+function loop() {
+  const now = performance.now(), idle = now - moved;
+  // 커서 고리, 따라다니는 미리 보기, 첫 화면 틀 안쪽 움직임
+  cx = lerp(cx, mx, 0.22); cy = lerp(cy, my, 0.22);
+  cur.style.transform = `translate3d(${cx}px,${cy}px,0)`;
+  peek.style.transform = `translate3d(${cx}px,${cy}px,0)`;
+  heroPar.style.transform = `translate3d(${(mx / innerWidth - 0.5) * -26}px,${(my / innerHeight - 0.5) * -16}px,0)`;
+  const o = $('.obj.is-cur');
+  if (o && !reduce) { o.style.setProperty('--ox', ((mx / innerWidth - 0.5) * 46).toFixed(1) + 'px'); o.style.setProperty('--oy', ((my / innerHeight - 0.5) * 30).toFixed(1) + 'px'); }
+  // 지나간 자리를 조금씩 지워요
+  mctx.globalCompositeOperation = 'destination-out';
+  mctx.fillStyle = `rgba(0,0,0,${down ? 0.018 : 0.04})`; mctx.fillRect(0, 0, cw, ch);
+  mctx.globalCompositeOperation = 'source-over';
+  if (idle < 60) {
+    const dx = mx - px, dy = my - py, dist = Math.hypot(dx, dy), n = Math.max(1, Math.min(14, Math.round(dist / 18)));
+    const r = down ? 170 : 96, a = down ? 0.7 : Math.min(0.5, 0.2 + dist / 300);
+    for (let i = 1; i <= n; i++) dab((px + dx * i / n) / 2, (py + dy * i / n) / 2, r, a / Math.sqrt(n));
+  }
+  px = mx; py = my;
+  ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, cw, ch);
+  if (idle < 5200) {
+    ctx.drawImage(mask, 0, 0);
+    ctx.globalCompositeOperation = 'source-in';
+    const ox = (mx / innerWidth - 0.5) * 50 + (scrollY * 0.04) % 60, oy = (my / innerHeight - 0.5) * 34;
+    ctx.drawImage(tex, -70 - ox, -50 - oy, cw + 140, ch + 100);
+    requestAnimationFrame(loop);
+  } else { mctx.clearRect(0, 0, cw, ch); running = false; }
+}
+})();
+</script>
+</body>
+</html>

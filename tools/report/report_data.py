@@ -139,6 +139,22 @@ def rank_of(mid):
     return {"tier": m.group(1), "lp": int(m.group(2)), "change": g.get("lpChange")} if m else None
 
 
+def nav_of(mid):
+    """docs/data/games.json에서 이 판 바로 앞 판과 바로 다음 판(시간 순)을 찾아요. 리포트 끝의 '다음 판'에 써요."""
+    p = os.path.join(ROOT, "docs", "data", "games.json")
+    if not os.path.exists(p):
+        return None
+    gs = sorted((g for g in json.load(open(p, encoding="utf-8")) if g.get("start")), key=lambda g: g["start"])
+    i = next((k for k, g in enumerate(gs) if g["matchId"] == mid), None)
+    if i is None:
+        return None
+
+    def brief(g):
+        return {"id": g["matchId"], "champ": g["champion"], "opp": g["opponent"], "win": g["win"],
+                "when": g["start"][5:10].replace("-", ".") + " " + g["start"][11:16]}
+    return {"prev": brief(gs[i - 1]) if i > 0 else None, "next": brief(gs[i + 1]) if i + 1 < len(gs) else None}
+
+
 # ---------- 한 판 ----------
 def build(mid, champ_id=None, lab=False):
     raw = json.load(gzip.open(os.path.join(ROOT, "raw", mid + ".json.gz"), "rt", encoding="utf-8"))
@@ -390,7 +406,7 @@ def build(mid, champ_id=None, lab=False):
     return {
         "schema": SCHEMA, "matchId": mid, "generated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "me": champ(CHAMP), "opp": champ(OPP["championName"]), "oppWith": josa(champ(OPP["championName"])["n"]),
-        "hero": hero, "flow": flow_out, "lane": lane, "deaths": deaths, "team": teams, "build": build_out,
+        "hero": hero, "nav": nav_of(mid), "flow": flow_out, "lane": lane, "deaths": deaths, "team": teams, "build": build_out,
         "feedback": FB,
         # plus: 실험 리포트에서 본 리포트로 옮긴 칸(11-16). 구간별 성적, 맞라인 차이, 첫 귀환, 피해 구성, 사이트 통계.
         "plus": {**{k: LAB[k] for k in ("phases", "minute", "back", "dmgMix")},

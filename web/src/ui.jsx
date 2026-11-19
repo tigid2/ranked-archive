@@ -1,5 +1,6 @@
 // 여러 섹션에서 같이 쓰는 작은 조각: 숫자 모양, 아이콘, 섹션 틀
 import mapUrl from '../../data/map-rift-dark.svg'
+import { useInView } from './fx.jsx'
 
 const CDN = 'https://ddragon.leagueoflegends.com/cdn/'
 
@@ -21,8 +22,9 @@ export const SECTIONS = [['01', '경기 요약'], ['02', '경기 흐름'], ['03'
 
 export function Section({ no, children }) {
   const title = Object.fromEntries(SECTIONS)[no]
+  const [ref, seen] = useInView()
   return (
-    <section className="sec" id={`s${no}`}>
+    <section className={seen ? 'sec in' : 'sec'} id={`s${no}`} ref={ref}>
       <header className="sec-head"><span className="sec-no" aria-hidden="true">{no}</span><h2>{title}</h2></header>
       {children}
     </section>

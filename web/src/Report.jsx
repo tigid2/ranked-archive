@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { usePin } from './fx.jsx'
 import { SECTIONS, SPRITE } from './ui.jsx'
 import Hero from './sections/Hero.jsx'
 import Summary from './sections/Summary.jsx'
@@ -20,9 +21,10 @@ function SiteNav() {
 }
 
 function SecNav() {
-  // 보고 있는 섹션을 메뉴에 표시해요.
+  // 보고 있는 섹션을 메뉴에 점으로 표시하고, 리포트를 얼마나 읽었는지 아래 선으로 보여 줘요.
   useEffect(() => {
-    const nav = document.querySelector('.secnav ol')
+    const bar = document.querySelector('.secnav')
+    const nav = bar.querySelector('ol')
     const links = [...nav.querySelectorAll('a')]
     const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]))
     const set = (id) => {
@@ -32,13 +34,61 @@ function SecNav() {
     }
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && set(e.target.id)),
       { rootMargin: '-40% 0px -55% 0px' })
-    document.querySelectorAll('section.sec').forEach((s) => io.observe(s))
-    return () => io.disconnect()
+    const secs = [...document.querySelectorAll('section.sec')]
+    secs.forEach((s) => io.observe(s))
+    let ticking = false
+    const frame = () => {
+      ticking = false
+      if (!secs.length) return
+      const top = secs[0].getBoundingClientRect().top + scrollY - innerHeight * 0.4
+      const last = secs[secs.length - 1].getBoundingClientRect()
+      const end = last.bottom + scrollY - innerHeight * 0.6
+      bar.style.setProperty('--read', Math.min(1, Math.max(0, (scrollY - top) / Math.max(1, end - top))).toFixed(4))
+    }
+    const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame) } }
+    addEventListener('scroll', req, { passive: true }); addEventListener('resize', req)
+    frame()
+    return () => { io.disconnect(); removeEventListener('scroll', req); removeEventListener('resize', req) }
   }, [])
   return (
     <nav className="secnav" aria-label="섹션 이동">
-      <ol>{SECTIONS.map(([n, t]) => <li key={n}><a href={`#s${n}`}><span className="num">{n}</span>{t}</a></li>)}</ol>
+      <ol>{SECTIONS.map(([n, t]) => <li key={n}><a href={`#s${n}`}><i className="sn-dot" aria-hidden="true" /><span className="num">{n}</span>{t}</a></li>)}</ol>
+      <span className="sn-read" aria-hidden="true" />
     </nav>
+  )
+}
+
+// 리포트 끝: 계속 스크롤하면 다음 판으로 넘어가요.
+function PageEnd({ next }) {
+  const [full, setFull] = useState(false)
+  const onProgress = useCallback((p, el) => {
+    const v = Math.min(1, p / 0.9)
+    el.style.setProperty('--p', v.toFixed(3))
+    const pct = el.querySelector('.pe-pct')
+    if (pct) pct.textContent = `${Math.round(v * 100)}%`
+    setFull(v >= 1)
+  }, [])
+  const ref = usePin(onProgress)
+  useEffect(() => {
+    // 공개 사이트에서는 끝까지 스크롤하면 다음 판 리포트로 넘어가요. artifact 한 파일에서는 이동하지 않아요.
+    if (!full || __SINGLE__ || !next) return undefined
+    const t = setTimeout(() => { location.href = `?id=${next.id}` }, 500)
+    return () => clearTimeout(t)
+  }, [full, next])
+  if (!next) return <div className="page-end" />
+  return (
+    <section className={full ? 'pe full' : 'pe'} ref={ref}>
+      <div className="pe-stage">
+        <div className="crosses" aria-hidden="true"><i /><i /><i /><i /><i /><span className="fx-label">KEEP SCROLLING</span></div>
+        <div className="pe-mid">
+          <span className="fx-label">다음 판 <span className="num">{next.when}</span></span>
+          <h2 className="pe-title">{next.champ} <span>vs</span> {next.opp}</h2>
+          <span className={`chip ${next.win ? 'chip-pos' : 'chip-mid'}`}>{next.win ? '승리' : '패배'}</span>
+          <div className="pe-prog"><span className="pe-bar"><i /></span><span className="pe-pct num">0%</span></div>
+          <p className="pe-note">{__SINGLE__ ? '실제 사이트에서는 여기서 다음 판 리포트로 넘어가요. 지금은 한 파일로 보는 중이라 이동하지 않아요.' : '다음 판 리포트로 넘어가요.'}</p>
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -62,8 +112,8 @@ export default function Report({ data }) {
         <Build d={data} fb={fb} />
         <Checklist fb={fb} />
         <Memo fb={fb} />
-        <div className="page-end" />
       </main>
+      <PageEnd next={data.nav && data.nav.next} />
     </>
   )
 }

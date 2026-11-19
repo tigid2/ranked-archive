@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Grid, PhaseCard, DiffCard } from './Extra.jsx'
 import { Section, Gi, signed, mmss, fix, cx } from '../ui.jsx'
 
@@ -40,8 +41,23 @@ function GoldChart({ f, dur }) {
   for (let m = 0; m <= Math.floor(xmax); m += 5) ticks.push(m)
   const oy = T + ch + 10
   const k = (v) => (v === 0 ? '0' : v > 0 ? `+${v / 1000}k` : `−${Math.abs(v) / 1000}k`)
+  // 마우스를 올리면 그 시점의 골드 차이를 보여 줘요.
+  const [hov, setHov] = useState(null)
+  const onMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    const m = ((e.clientX - r.left) * W / r.width - L) / (W - L - R) * xmax
+    if (m < -0.5 || m > xmax + 0.5) return setHov(null)
+    let best = 0
+    f.points.forEach((p, i) => { if (Math.abs(Math.min(p.min, xmax) - m) < Math.abs(Math.min(f.points[best].min, xmax) - m)) best = i })
+    setHov(best)
+  }
+  const hp = hov != null ? f.points[hov] : null
+  const hx = hp ? X(Math.min(hp.min, xmax)) : 0
+  const tipW = 168, tipX = hp ? (hx + 12 + tipW > W - R ? hx - 12 - tipW : hx + 12) : 0
+  const hm = hp ? Math.min(hp.min, xmax) : 0
   return (
-    <svg className="chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="분당 팀 골드 차이와 바텀 2대2 골드 차이">
+    <svg className={cx('chart', hp && 'is-hover')} viewBox={`0 0 ${W} ${H}`} role="img" aria-label="분당 팀 골드 차이와 바텀 2대2 골드 차이"
+      onPointerMove={onMove} onPointerLeave={() => setHov(null)}>
       <defs>
         <clipPath id="cp-pos"><rect x="0" y="0" width={W} height={Y(0).toFixed(1)} /></clipPath>
         <clipPath id="cp-neg"><rect x="0" y={Y(0).toFixed(1)} width={W} height={H} /></clipPath>
@@ -62,7 +78,7 @@ function GoldChart({ f, dur }) {
       <polygon className="area-pos" points={area} clipPath="url(#cp-pos)" />
       <polygon className="area-neg" points={area} clipPath="url(#cp-neg)" />
       <polyline className="ln-bot" points={bot} />
-      <polyline className="ln-team" points={line} />
+      <polyline className="ln-team" points={line} pathLength="1" />
       {f.myKills.map((t, i) => {
         const x = X(t / 60000)
         return <rect key={i} className="mk-kill" x={(x - 1.5).toFixed(1)} y={T - 52} width="3" height="12"><title>{mmss(t)} 내 킬</title></rect>
@@ -88,6 +104,19 @@ function GoldChart({ f, dur }) {
           </g>
         )
       })}
+      {hp && (
+        <g className="hov" pointerEvents="none">
+          <line className="hov-line" x1={hx.toFixed(1)} x2={hx.toFixed(1)} y1={T} y2={T + ch} />
+          <circle className="hov-dot hov-bot" cx={hx.toFixed(1)} cy={Y(hp.bot).toFixed(1)} r="4" />
+          <circle className="hov-dot" cx={hx.toFixed(1)} cy={Y(hp.team).toFixed(1)} r="5" />
+          <g transform={`translate(${tipX.toFixed(1)},${T + 6})`}>
+            <rect className="hov-box" width={tipW} height="66" />
+            <text className="hov-t" x="12" y="20">{Math.floor(hm)}:{String(Math.round((hm % 1) * 60)).padStart(2, '0')}</text>
+            <text className="hov-k" x="12" y="39">팀 전체</text><text className={cx('hov-v', hp.team < 0 && 'neg')} x={tipW - 12} y="39" textAnchor="end">{signed(hp.team)}</text>
+            <text className="hov-k" x="12" y="56">바텀 2대2</text><text className={cx('hov-v', hp.bot < 0 && 'neg')} x={tipW - 12} y="56" textAnchor="end">{signed(hp.bot)}</text>
+          </g>
+        </g>
+      )}
     </svg>
   )
 }

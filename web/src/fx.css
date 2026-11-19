@@ -1,0 +1,161 @@
+/* 인터랙션 시안 (2026-11-17). 본 스타일(tools/report/report.css) 위에 얹어요. */
+@property --fr { syntax: "<length>"; inherits: true; initial-value: 0px; }
+:root { --ease: cubic-bezier(.2, .8, .2, 1); }
+
+/* ---------- 공통: 숫자 굴리기, 작은 라벨, 십자 표시 줄 ---------- */
+.rd-wrap { display: inline-flex; }
+.rd { display: inline-block; height: 1em; line-height: 1; overflow: hidden; max-width: 1em; transition: max-width .7s var(--ease), opacity .5s; }
+.rd.lead { max-width: 0; opacity: 0; }  /* 앞자리 0은 숨겨요 */
+.rd-s { display: block; white-space: pre; transition: transform 1s var(--ease); }
+.fx-label { font: 700 12px/1.2 var(--font-num); letter-spacing: .08em; color: var(--text-3); }
+.crosses { display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; height: 28px; position: relative; }
+.crosses i { position: relative; width: 11px; height: 11px; justify-self: center; }
+.crosses i:first-child { justify-self: start; } .crosses i:last-of-type { justify-self: end; }
+.crosses i::before, .crosses i::after { content: ""; position: absolute; background: var(--text); }
+.crosses i::before { left: 5px; top: 0; width: 1px; height: 11px; }
+.crosses i::after { top: 5px; left: 0; height: 1px; width: 11px; }
+.crosses .fx-label { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--bg); padding: 0 14px; color: var(--text); white-space: nowrap; }
+
+/* ---------- 히어로: 결과 글자 안 질감, 점수 변화 ---------- */
+.foil { position: relative; display: inline-block; }
+.foil .foil-fill { position: absolute; inset: 0; color: transparent; background-image: var(--holo); background-size: 220% auto; background-position: calc(var(--mx, 50) * 1%) calc(var(--my, 50) * 1%);
+  -webkit-background-clip: text; background-clip: text; pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle var(--fr, 0px) at calc(var(--mx, 50) * 1%) calc(var(--my, 50) * 1%), #000 0, #000 35%, transparent 100%);
+  mask-image: radial-gradient(circle var(--fr, 0px) at calc(var(--mx, 50) * 1%) calc(var(--my, 50) * 1%), #000 0, #000 35%, transparent 100%);
+  transition: --fr .5s; }
+.hero .stripes { clip-path: inset(0 100% 0 0); animation: fx-wipe 1s .15s var(--ease) forwards; }
+@keyframes fx-wipe { to { clip-path: inset(0 3px 0 0); } }
+
+.lpx { appearance: none; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 0; width: 260px; max-width: 100%; align-items: stretch; gap: 8px; text-align: right; }
+.lpx:focus-visible { outline: 2px solid var(--mint); outline-offset: 6px; }
+.lpx-tier { display: flex; justify-content: flex-end; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: var(--on-dark-2); min-height: 22px; }
+.lpx-tier i { font-style: normal; font-family: var(--font-num); }
+.lpx-from { transition: opacity .5s; } .lpx-from.off { opacity: .55; }
+.lpx-to { opacity: .35; transition: opacity .5s, color .5s; } .lpx-to.on { opacity: 1; color: var(--on-dark); }
+.lpx-moved { opacity: 0; transform: translateY(4px); transition: opacity .4s .2s, transform .5s .2s var(--ease); }
+.lpx-moved.on { opacity: 1; transform: none; }
+.lpx-num { display: flex; justify-content: flex-end; align-items: flex-end; gap: 12px; }
+.lpx-num .lp-num { display: inline-flex; align-items: flex-end; }
+.lpx-num .lp-num small { padding-bottom: 6px; }
+.lpx-delta { font: 800 20px/1 var(--font-num); font-stretch: 112%; padding-bottom: 7px; opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .5s var(--ease); }
+.lpx-delta.on { opacity: 1; transform: none; }
+.lpx-delta.pos { color: var(--mint); } .lpx-delta.neg { color: var(--red); }
+.lpx-line { position: relative; height: 13px; margin-top: 4px; }
+.lpx-line::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 1px; background: var(--dark-line); }
+.lpx-fill { position: absolute; top: 5px; height: 3px; background: var(--mint); transition: width .8s var(--ease); }
+.lpx:not(.is-after) .lpx-fill { transition: none; }
+.lpx-mark { position: absolute; top: 0; width: 13px; height: 13px; margin-left: -6px; transition: left .8s var(--ease); }
+.lpx-mark::before, .lpx-mark::after { content: ""; position: absolute; background: var(--on-dark); }
+.lpx-mark::before { left: 6px; top: 0; width: 1px; height: 13px; } .lpx-mark::after { top: 6px; left: 0; height: 1px; width: 13px; }
+.lpx-mark.jump-up { transition: none; animation: lpx-from-start .8s var(--ease); }
+.lpx-mark.jump-down { transition: none; animation: lpx-from-end .8s var(--ease); }
+@keyframes lpx-from-start { from { left: 0%; } }
+@keyframes lpx-from-end { from { left: 100%; } }
+.lpx-ghost { position: absolute; top: 3px; width: 1px; height: 7px; background: var(--on-dark-2); }
+.lpx-ends { display: flex; justify-content: space-between; gap: 8px; font: 500 11px/1 var(--font-num); color: var(--on-dark-2); }
+@media (max-width: 640px) { .lpx { text-align: left; } .lpx-tier, .lpx-num { justify-content: flex-start; } }
+
+/* ---------- 섹션 메뉴: 현재 위치 점, 읽은 만큼 채워지는 선 ---------- */
+.secnav { position: sticky; }
+.secnav a { position: relative; border-bottom-color: transparent !important; }
+.secnav .sn-dot { height: 6px; border-radius: 50%; background: var(--text); margin-right: -8px; transform: scale(0); width: 0; transition: transform .3s var(--ease), width .3s var(--ease), margin .3s var(--ease); }
+.secnav a.on .sn-dot { transform: scale(1); width: 6px; margin-right: 0; }
+.sn-read { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--mint); transform: scaleX(var(--read, 0)); transform-origin: left; }
+
+/* ---------- 섹션 머리: 선이 왼쪽에서 그려지고 번호가 올라와요 ---------- */
+.sec-head { position: relative; border-top-color: transparent; }
+.sec-head::before { content: ""; position: absolute; left: 0; right: 0; top: calc(var(--rule) * -1); height: var(--rule); background: var(--text); transform: scaleX(0); transform-origin: left; transition: transform 1.1s var(--ease); }
+.sec.in .sec-head::before { transform: scaleX(1); }
+.sec-no { clip-path: inset(100% 0 0 0); transform: translateY(40%); transition: clip-path .8s .15s var(--ease), transform .8s .15s var(--ease); }
+.sec.in .sec-no { clip-path: inset(-10% 0 -10% 0); transform: none; }
+
+/* ---------- 막대와 차트: 화면에 들어오면 왼쪽에서 채워져요 ---------- */
+.sec .bf-bar, .sec .dmg-bar, .sec .sw-strip, .sec .mu-track, .sec .mix-bar, .sec .t-bar { clip-path: inset(0 100% 0 0); transition: clip-path 1s .2s var(--ease); }
+.sec.in .bf-bar, .sec.in .dmg-bar, .sec.in .sw-strip, .sec.in .mu-track, .sec.in .mix-bar, .sec.in .t-bar { clip-path: inset(0 0 0 0); }
+.chart .ln-team { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.8s .2s var(--ease); }
+.sec.in .chart .ln-team { stroke-dashoffset: 0; }
+.chart .area-pos, .chart .area-neg { opacity: 0; transition: opacity .9s 1s; }
+.sec.in .chart .area-pos, .sec.in .chart .area-neg { opacity: 1; }
+.chart { cursor: crosshair; touch-action: pan-y; }
+.chart .hov-line { stroke: var(--text); stroke-width: 1; }
+.chart .hov-dot { fill: var(--panel); stroke: var(--text); stroke-width: 2; }
+.chart .hov-bot { stroke: var(--text-3); }
+.chart .hov-box { fill: var(--dark); }
+.chart .hov-t { font: 800 14px var(--font-num); fill: var(--on-dark); }
+.chart .hov-k { font: 500 12px var(--font-sans); fill: var(--on-dark-2); }
+.chart .hov-v { font: 700 13px var(--font-num); fill: var(--mint); }
+.chart .hov-v.neg { fill: var(--on-dark); }
+
+/* ---------- 죽음: 지도와 줄이 서로 가리켜요 ---------- */
+.map .mp-d { cursor: pointer; transition: opacity .25s, transform .35s var(--ease); }
+.map .mp-k { transition: opacity .25s; }
+.map.has-active .mp-d:not(.on) { opacity: .28; }
+.map.has-active .mp-k { opacity: .18; }
+.map .mp-d.on { transform: scale(1.35); }
+.map .mp-ring { fill: none; stroke: var(--red); stroke-width: 2; animation: mp-ring 1.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes mp-ring { from { transform: scale(1); opacity: .9; } to { transform: scale(2.6); opacity: 0; } }
+
+.drows-h { display: flex; align-items: baseline; gap: var(--s-4); flex-wrap: wrap; margin: var(--s-6) 0 var(--s-3); }
+.drows-h .sub-h { margin: 0; }
+.drows { list-style: none; margin: 0; padding: 0; background: var(--panel); border: 1px solid var(--line); }
+.drow { border-bottom: 1px solid var(--line); transition: opacity .35s; }
+.drow:last-child { border-bottom: 0; }
+.drow.dim { opacity: .38; }
+.drow.dim:hover { opacity: .8; }
+.drow-head { appearance: none; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-align: left; width: 100%;
+  display: grid; grid-template-columns: 34px 64px 64px minmax(110px, 1fr) minmax(170px, 1.2fr) minmax(120px, 1.2fr) 28px; align-items: center; gap: var(--s-4); padding: 14px var(--s-5); transition: background .2s, padding .35s var(--ease); }
+.drow-head:hover, .drow-head:focus-visible { background: var(--bg); padding-left: calc(var(--s-5) + 8px); }
+.drow-head:focus-visible { outline: 2px solid var(--mint-ink); outline-offset: -2px; }
+.drow-head time { font: 800 22px/1 var(--font-num); font-stretch: 112%; }
+.drow-zone { font-size: 14px; color: var(--text-2); }
+.drow-kill { display: flex; align-items: center; gap: 6px; }
+.drow-kill .karrow { flex: none; width: 34px; min-width: 0; margin: 0 6px; }
+.drow-lost { font-size: 13px; }
+.drow-x { position: relative; width: 16px; height: 16px; justify-self: end; }
+.drow-x::before, .drow-x::after { content: ""; position: absolute; background: var(--text); transition: transform .4s var(--ease); }
+.drow-x::before { left: 7px; top: 0; width: 2px; height: 16px; } .drow-x::after { top: 7px; left: 0; height: 2px; width: 16px; }
+.drow.open .drow-x::before { transform: scaleY(0); }
+.drow.open .drow-head { background: var(--bg); }
+.drow-note { margin: -4px var(--s-5) 14px calc(var(--s-5) + 34px + var(--s-4)); font-size: 14px; color: var(--text-2); }
+.drow-note b { color: var(--text); font-weight: 800; margin-right: 10px; }
+.drow-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s var(--ease); }
+.drow.open .drow-body { grid-template-rows: 1fr; }
+.drow-body > div { overflow: hidden; }
+.drow-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s-5); padding: var(--s-4) var(--s-5) var(--s-5) calc(var(--s-5) + 34px + var(--s-4)); border-top: 1px solid var(--line-soft); }
+.drow-grid .dfacts, .drow-grid .roams { margin-left: 0; margin-right: 0; }
+.drow-grid .dfacts { margin-top: 0; }
+.drow-grid .dcard-dmg, .drow-grid .dcard-text { padding-left: 0; padding-right: 0; }
+.drow-grid .dcard-dmg { padding-top: 0; }
+@media (max-width: 900px) {
+  .drow-head { grid-template-columns: 30px 60px auto 1fr 24px; row-gap: 8px; }
+  .drow-zone { grid-column: 4; } .drow-kill { grid-column: 2 / 5; grid-row: 2; } .drow-lost { grid-column: 2 / 5; grid-row: 3; } .drow-x { grid-column: 5; grid-row: 1; }
+  .drow-grid { grid-template-columns: 1fr; padding-left: var(--s-5); }
+  .drow-note { margin-left: var(--s-5); }
+}
+
+/* 커서를 따라다니는 작은 지도 */
+.follower { position: fixed; left: 0; top: 0; z-index: 50; width: 168px; margin: -190px 0 0 22px; pointer-events: none; opacity: 0; scale: .8; transform-origin: 0 100%; transition: opacity .2s, scale .35s var(--ease);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%); outline: 1px solid var(--dark); }
+.follower.on { opacity: 1; scale: 1; }
+.follower .map-mini .mp-death { r: 16px; } .follower .map-mini .mp-num { font-size: 15px; }
+@media (pointer: coarse) { .follower { display: none; } }
+
+/* ---------- 리포트 끝: 계속 스크롤하면 다음 판 ---------- */
+.pe { height: 150vh; margin-top: var(--s-8); }
+.pe-stage { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; padding: calc(var(--nav-h) + var(--s-6)) max(var(--s-5), calc(50vw - var(--wrap) / 2 + var(--s-5))) var(--s-7); }
+.pe-mid { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-4); text-align: center; }
+.pe-title { font-size: clamp(36px, 6vw, 84px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
+.pe-title span { font: 500 .5em/1 var(--font-num); color: var(--text-3); letter-spacing: 0; margin: 0 .2em; }
+.pe-prog { width: min(420px, 70vw); display: flex; align-items: center; gap: 14px; margin-top: var(--s-3); }
+.pe-bar { flex: 1; height: 2px; background: var(--line); }
+.pe-bar i { display: block; height: 100%; background: var(--text); transform: scaleX(var(--p, 0)); transform-origin: left; }
+.pe-pct { font-weight: 700; font-size: 13px; min-width: 3.2em; text-align: right; }
+.pe-note { font-size: 14px; color: var(--text-2); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s var(--ease); }
+.pe.full .pe-note { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-s, .lpx-mark, .lpx-fill, .sec-head::before, .sec-no, .chart .ln-team, .chart .area-pos, .chart .area-neg, .drow-body,
+  .sec .bf-bar, .sec .dmg-bar, .sec .sw-strip, .sec .mu-track, .sec .mix-bar, .sec .t-bar { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
+  .hero .stripes { animation: none; clip-path: inset(0 3px 0 0); }
+  .map .mp-ring { animation: none; }
+}
