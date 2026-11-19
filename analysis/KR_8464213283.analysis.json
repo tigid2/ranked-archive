@@ -538,9 +538,9 @@
     {
      "who": "브라이어(적)",
      "role": "정글",
-     "minuteMark": "5:00",
+     "minuteMark": "4:38",
      "wasAt": "바텀 라인",
-     "distance": 1008
+     "distance": 1597
     }
    ],
    "damage": [
@@ -702,7 +702,7 @@
    "name": "대지 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 703
+   "myDistance30sBefore": 3382
   },
   {
    "t": "9:07",
@@ -730,7 +730,7 @@
    "name": "바다 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 7012
+   "myDistance30sBefore": 3519
   },
   {
    "t": "15:49",
@@ -744,14 +744,14 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4077
+   "myDistance30sBefore": 3446
   },
   {
    "t": "22:59",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4072
+   "myDistance30sBefore": 1780
   }
  ],
  "buildings": [
@@ -1099,19 +1099,30 @@
    "13": false,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 0.6,
+   "5~6": 0.68,
+   "6~7": 1.0,
+   "7~8": 1.0,
+   "8~9": 0.58,
+   "9~10": 1.0,
+   "10~11": 1.0,
+   "11~12": 1.0,
+   "12~13": 0.87,
+   "13~14": 0.72
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 84,
-   "opp": 73
+   "me": 97,
+   "opp": 77
   },
   "csWithoutSupport": {
-   "me": 13,
-   "opp": 4
+   "me": 0,
+   "opp": 0
   },
-  "supportAwayRanges": [
-   "12~14분"
-  ],
+  "supportAwayRanges": [],
   "botAdcKills": {
    "opp": 2,
    "me": 1,
@@ -1133,7 +1144,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
