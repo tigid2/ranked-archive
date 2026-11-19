@@ -805,7 +805,10 @@
    "alliesNear": [
     "룰루(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "케이틀린(적)",
+    "레오나(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -944,15 +947,16 @@
     "룰루(아군)"
    ],
    "enemiesNear": [
-    "아칼리(적)"
+    "아칼리(적)",
+    "케이틀린(적)"
    ],
    "roams": [
     {
      "who": "아칼리(적)",
      "role": "미드",
-     "minuteMark": "10:00",
+     "minuteMark": "10:10",
      "wasAt": "미드 라인",
-     "distance": 7764
+     "distance": 8709
     }
    ],
    "damage": [
@@ -1116,7 +1120,7 @@
    "name": "화학공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3057
+   "myDistance30sBefore": 2936
   },
   {
    "t": "8:25",
@@ -1350,19 +1354,31 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.97,
+   "4~5": 0.7,
+   "5~6": 1.0,
+   "6~7": 0.65,
+   "7~8": 1.0,
+   "8~9": 0.7,
+   "9~10": 1.0,
+   "10~11": 0.68,
+   "11~12": 0.87,
+   "12~13": 0.0,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 52,
-   "opp": 56
+   "me": 71,
+   "opp": 79
   },
   "csWithoutSupport": {
-   "me": 23,
-   "opp": 27
+   "me": 4,
+   "opp": 4
   },
   "supportAwayRanges": [
-   "3~5분",
-   "11~14분"
+   "12~14분"
   ],
   "botAdcKills": {
    "opp": 2,
@@ -1401,7 +1417,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
