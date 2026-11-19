@@ -28,6 +28,8 @@ DD_CH = json.load(open(os.path.join(DATA, "dd_champion.json"), encoding="utf-8")
 DD_IT = json.load(open(os.path.join(DATA, "dd_item.json"), encoding="utf-8"))["data"]
 DD_SP = json.load(open(os.path.join(DATA, "dd_summoner.json"), encoding="utf-8"))["data"]
 DD_RU = json.load(open(os.path.join(DATA, "dd_runesReforged.json"), encoding="utf-8"))
+_SPP = os.path.join(DATA, "dd_spells.json")  # 챔피언 스킬 이름·아이콘(tools/report/dd_spells.py로 만들어요)
+DD_SK = json.load(open(_SPP, encoding="utf-8"))["data"] if os.path.exists(_SPP) else {}
 KO2KEY = {v["name"]: k for k, v in DD_CH.items()}
 SPELL_KEY = {}
 for _k, _v in DD_SP.items():
@@ -347,8 +349,11 @@ def build(mid, champ_id=None, lab=False):
     # 1초 위치(리플레이)가 있는 판은 미니맵 리플레이와 교전 시간을 붙여요(11-19). 없으면 None.
     rp = replay_block(mid, P, ME, events, dur, S, my_deaths_ev, A)
     deaths["replay"] = rp["replay"] if rp else None
+    live_p = os.path.join(ROOT, "raw", mid + ".live.json")
+    live = json.load(open(live_p, encoding="utf-8")) if os.path.exists(live_p) else None
+    per = death_extras(P, ME, events, dur, my_deaths_ev, rp["tracks"] if rp else None, live)
     for x in death_list:
-        x.update((rp or {}).get("perDeath", {}).get(x["t"], {}))
+        x.update(per.get(x["t"], {}))
 
     # ----- 05 팀 -----
     us, th = MY_TEAM, 300 - MY_TEAM
@@ -505,9 +510,10 @@ def death_spells(x, ME):
 
 
 # ----- 04 죽음: 미니맵 리플레이 (11-19) -----
-FIGHT_R = 1000      # 내 죽음에 관여한 적이 이 거리 안에 있으면 '교전 중'으로 봐요
-FIGHT_GAP = 3       # 이 초 이하로 잠깐 멀어진 건 같은 교전으로 이어 봐요
-FIGHT_BACK = 90     # 교전 시작은 죽기 전 최대 이 초까지만 거슬러 찾아요
+FIGHT_R = 1000      # 적 챔피언이 이 거리 안에 있으면 피해·CC를 주고받은 것으로 봐요(위치로 하는 추정)
+TURRET_R = 850      # 살아 있는 적 포탑 사거리(750) + 몸 크기
+COMBAT_KEEP = 5     # 롤 규칙: 마지막 전투 상호작용 뒤 5초가 지나면 비전투 상태
+FIGHT_BACK = 300    # 교전 시작은 죽기 전 최대 이 초까지만 거슬러 찾아요
 TURRETS = {  # 포탑 자리(게임 좌표). 추정 시야에만 써요.
     100: [(981, 10441), (1512, 6699), (1169, 4287), (5846, 6396), (5048, 4812), (3651, 3696),
           (10504, 1029), (6919, 1483), (4281, 1253), (1748, 2270), (2177, 1807)],
@@ -580,8 +586,183 @@ def replay_block(mid, P, ME, events, dur, S, my_deaths_ev, A):
             dead_at[near] = round(e["timestamp"] / 1000)
     turrets = [[gx(x), gy(y), dead_at.get((x, y), dur)] for x, y in TURRETS[my_team]]
 
-    # 죽음마다: 교전 시간, 관여한 적이 다가온 시각, 맞은 큰 기술, 죽기 전 체력
-    me_tr = tracks.get(ME["participantId"], {})
+    return {"replay": {"size": S, "len": dur, "champs": champs, "tracks": out_tracks, "events": ev,
+                       "wards": wards, "turrets": turrets, "sight": round(1200 / 14990 * S * 10)},
+            "tracks": tracks}
+
+
+# ----- 04 죽음: 사망 정보(롤 Death Recap처럼) + 교전 시간 (11-20) -----
+UNIT_KO = {"MINION": "미니언", "TOWER": "포탑", "MONSTER": "몬스터"}
+UNIT_GLYPH = {"MINION": "minion", "TOWER": "tower"}
+MONSTER_KO = [("Baron", "바론", "baron"), ("Dragon", "드래곤", "dragon"), ("RiftHerald", "전령", "herald"),
+              ("Horde", "공허 유충", "grub"), ("Atakhan", "아타칸", "baron")]
+SUMM_BY_NAME = {v["id"].lower(): k for k, v in DD_SP.items()}
+
+
+def dmg_source(h, key):
+    """피해 한 줄(victimDamageReceived/Dealt) → 무엇으로 넣은 피해인지 (묶는 키, 표시 정보)"""
+    sl, sn = h.get("spellSlot"), (h.get("spellName") or "").lower()
+    sk = DD_SK.get(key or "", {})
+    if sl in SLOT:
+        k = SLOT[sl]
+        n, img = sk.get(k, (k, None))
+        return k, {"slot": k, "n": n, "img": f"{VER}/img/{img}" if img else None}
+    if sl in (4, 5) and sn:
+        sid = SUMM_BY_NAME.get(sn) or ("SummonerSmite" if "smite" in sn else None)
+        if sid:
+            return sid, {"slot": "spell", "n": DD_SP[sid]["name"], "img": f"{VER}/img/spell/{sid}.png"}
+    if h.get("basic") or "attack" in sn:
+        return "AA", {"slot": "AA", "n": "기본 공격"}
+    if (sl == 63 and sn and sn != "burning") or (sn and ("passive" in sn or "plant" in sn)):
+        n, img = sk.get("P", ("패시브", None))
+        return "P", {"slot": "P", "n": n, "img": f"{VER}/img/{img}" if img else None}
+    m = re.match(r"^(\d{4})active$", sn)
+    iid = m.group(1) if m else (str(sl) if isinstance(sl, int) and str(sl) in DD_IT else None)
+    if iid and iid in DD_IT:
+        return "I" + iid, {"slot": "item", "n": DD_IT[iid]["name"], "img": f"{VER}/img/item/{iid}.png"}
+    return "ETC", {"slot": "etc", "n": "기타 효과"}
+
+
+def _sum(h):
+    return h.get("physicalDamage", 0), h.get("magicDamage", 0), h.get("trueDamage", 0)
+
+
+def recap_rows(hits, by, key_of):
+    """피해 목록을 '누가' 단위 줄로 묶어요. 줄마다 물리/마법/고정, 무엇으로(parts), 쓴 궁·스펠(used)."""
+    rows = {}
+    for h in hits:
+        who = key_of(h)
+        if who is None:
+            continue
+        r = rows.setdefault(who[0], {**who[1], "v": 0, "ph": 0, "mg": 0, "tr": 0, "parts": {}})
+        ph, mg, tr = _sum(h)
+        r["v"] += ph + mg + tr; r["ph"] += ph; r["mg"] += mg; r["tr"] += tr
+        if who[2]:
+            pk, info = dmg_source(h, who[2])
+            pt = r["parts"].setdefault(pk, {**info, "v": 0, "ph": 0, "mg": 0, "tr": 0})
+            pt["v"] += ph + mg + tr; pt["ph"] += ph; pt["mg"] += mg; pt["tr"] += tr
+    out = []
+    for r in rows.values():
+        parts = sorted((p for p in r["parts"].values() if p["v"] > 0), key=lambda p: -p["v"])
+        r["parts"] = parts
+        r["used"] = [{"slot": p["slot"], "n": p["n"], "img": p.get("img")} for p in parts if p["slot"] in ("R", "spell")]
+        if r["v"] > 0:
+            out.append(r)
+    return sorted(out, key=lambda r: -r["v"])
+
+
+def death_recap(e, by, ME):
+    my_team = ME["teamId"]
+
+    def recv(h):
+        pid = h.get("participantId")
+        if pid in by:
+            if by[pid]["teamId"] == my_team:
+                return None  # 아군 효과로 잡힌 피해는 빼요
+            p = by[pid]
+            return pid, {"kind": "champ", "who": champ(p["championName"])}, p["championName"]
+        t = h.get("type")
+        if t == "MONSTER":
+            nm = h.get("name") or ""
+            n, g = next(((n, g) for k, n, g in MONSTER_KO if k in nm), ("정글 몬스터", "grub"))
+            return "M" + n, {"kind": "monster", "who": {"k": None, "n": n, "glyph": g}}, None
+        if t in UNIT_KO:
+            return t, {"kind": t.lower(), "who": {"k": None, "n": UNIT_KO[t], "glyph": UNIT_GLYPH[t]}}, None
+        return None
+    rows = recap_rows(e.get("victimDamageReceived") or [], by, recv)
+    dealt = e.get("victimDamageDealt")
+    me = None
+    if dealt is not None:
+        mine = recap_rows(dealt, by, lambda h: ("me", {"kind": "me", "who": champ(ME["championName"])}, ME["championName"]))
+        me = mine[0] if mine else {"kind": "me", "who": champ(ME["championName"]), "v": 0, "ph": 0, "mg": 0, "tr": 0, "parts": [], "used": []}
+        # 누구에게 얼마나 넣었는지
+        tg = {}
+        for h in dealt:
+            pid = h.get("participantId")
+            if pid in by and by[pid]["teamId"] != my_team:
+                tg[pid] = tg.get(pid, 0) + sum(_sum(h))
+        me["to"] = [{"who": champ(by[p]["championName"]), "v": v} for p, v in sorted(tg.items(), key=lambda kv: -kv[1]) if v > 0]
+    tot = [sum(r[k] for r in rows) for k in ("v", "ph", "mg", "tr")]
+    return {"total": tot[0], "ph": tot[1], "mg": tot[2], "tr": tot[3], "rows": rows, "me": me,
+            "given": (e.get("bounty") or 0) + (e.get("shutdownBounty") or 0)}
+
+
+def combat_window(D, prev_death, ME, P, events, tracks, live, dur):
+    """롤 전투 상태 규칙으로 교전 시작을 찾아요(11-20 사용자 기준).
+    전투 상호작용: 적 챔피언·미니언·몬스터·포탑과 피해를 주고받거나 CC를 걸고받음. 마지막 상호작용 뒤 5초가 지나면 비전투.
+    피해가 언제 들어갔는지는 데이터에 없어서 아래 흔적으로 추정해요.
+      - 킬·어시·오브젝트·포탑 이벤트(정확한 시각)
+      - 게임 중 기록: 5초 간격 기록에서 체력이 줄었거나 CS가 늘었으면 그 사이를 상호작용으로 봐요. 죽기 직전 1초 체력도.
+      - 1초 위치: 적 챔피언이 1000 안, 살아 있는 적 포탑 사거리 안
+    반환: (시작 초, 쓴 흔적 이름들) 또는 (None, [])"""
+    lo = max(prev_death or 0, D - FIGHT_BACK)
+    src = set()
+    used = set()
+    me, team = ME["participantId"], ME["teamId"]
+    for ev in events:
+        t = round(ev["timestamp"] / 1000)
+        if not (lo <= t <= D):
+            continue
+        ty = ev["type"]
+        if ty == "CHAMPION_KILL" and (ev.get("killerId") == me or me in (ev.get("assistingParticipantIds") or [])):
+            src.add(t); used.add("이벤트")
+        elif ty in ("ELITE_MONSTER_KILL", "BUILDING_KILL", "TURRET_PLATE_DESTROYED") and (
+                ev.get("killerId") == me or me in (ev.get("assistingParticipantIds") or [])):
+            src.add(t); used.add("이벤트")
+    if live:
+        sn = [x for x in live.get("snapshots") or [] if lo - 10 <= x["t"] <= D + 1]
+        for a, b in zip(sn, sn[1:]):
+            if a.get("dead") or b.get("dead") or b["t"] - a["t"] > 8:
+                continue
+            if b.get("hp", 100) < a.get("hp", 100) - 1 or b.get("cs", 0) > a.get("cs", 0):
+                for s2 in range(int(a["t"]) + 1, int(b["t"]) + 1):
+                    src.add(s2)
+                used.add("게임 중 기록")
+        dl = next((x for x in live.get("deaths") or [] if abs(x["t"] - D) <= 3), None)
+        hf = (dl or {}).get("hpFlow") or []
+        for a, b in zip(hf, hf[1:]):
+            if b["hp"] < a["hp"] - 1:
+                src.add(int(b["t"])); used.add("게임 중 기록")
+    if tracks:
+        mt = tracks.get(me, {})
+        foes = [p["participantId"] for p in P if p["teamId"] != team]
+        enemy_team = 300 - team
+        gone = {}
+        for ev in events:
+            if ev["type"] == "BUILDING_KILL" and ev.get("buildingType") == "TOWER_BUILDING" and ev.get("teamId") == enemy_team:
+                q = (ev["position"]["x"], ev["position"]["y"])
+                near = min(TURRETS[enemy_team], key=lambda z: (z[0] - q[0]) ** 2 + (z[1] - q[1]) ** 2)
+                gone[near] = round(ev["timestamp"] / 1000)
+        for s2 in range(lo, D + 1):
+            a = mt.get(s2)
+            if not a:
+                continue
+            hit = any((lambda b: b and (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 <= FIGHT_R ** 2)(tracks.get(p, {}).get(s2)) for p in foes)
+            if not hit:
+                hit = any(s2 < gone.get(z, dur + 1) and (a[0] - z[0]) ** 2 + (a[1] - z[1]) ** 2 <= TURRET_R ** 2 for z in TURRETS[enemy_team])
+            if hit:
+                src.add(s2); used.add("위치")
+    have_live = bool(live) and any(lo <= x["t"] < D - 2 for x in live.get("snapshots") or [])
+    if not (tracks or have_live):
+        return None, []  # 그 시간대 기록이 없으면 '계산 못 함'
+    if not tracks and "게임 중 기록" not in used:
+        used.add("게임 중 기록")
+    src.add(D)  # 죽은 순간
+    last, s2 = D, D
+    while s2 >= lo:
+        if s2 in src:
+            last = s2
+        elif last - s2 > COMBAT_KEEP:
+            break
+        s2 -= 1
+    return last, sorted(used)
+
+
+def death_extras(P, ME, events, dur, my_deaths_ev, tracks, live):
+    """죽음마다: 사망 정보, 교전 시간(롤 기준 추정), 관여한 적이 다가온 시각(위치가 있을 때)"""
+    by = {p["participantId"]: p for p in P}
+    my_team = ME["teamId"]
+    me_tr = (tracks or {}).get(ME["participantId"], {})
 
     def at(tr, s):
         for k in (0, -1, 1, -2, 2):
@@ -591,44 +772,27 @@ def replay_block(mid, P, ME, events, dur, S, my_deaths_ev, A):
 
     def dist(a, b):
         return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5 if a and b else None
-    live_by_t = {x["t"]: x.get("live") or {} for x in A["deaths"]}
-    per = {}
+    per, prev = {}, None
     for e in my_deaths_ev:
         D = round(e["timestamp"] / 1000)
+        start, how = combat_window(D, prev, ME, P, events, tracks, live, dur)
+        prev = D
         inv = [p for p in [e.get("killerId")] + e.get("assistingParticipantIds", []) if p and by[p]["teamId"] != my_team]
-        close = lambda s: any((dist(at(me_tr, s), at(tracks.get(p, {}), s)) or 1e9) <= FIGHT_R for p in inv)
-        start, gap, s = None, 0, D
-        while s >= D - FIGHT_BACK:
-            if close(s):
-                start, gap = s, 0
-            else:
-                gap += 1
-                if gap > FIGHT_GAP:
-                    break
-            s -= 1
         joins = []
-        for p in inv:
-            tr = tracks.get(p, {})
-            first = next((s2 for s2 in range((start or D) - 5, D + 1) if (dist(at(me_tr, s2), at(tr, s2)) or 1e9) <= FIGHT_R), None)
-            if first is not None:
-                joins.append({"t": first, "who": idx(p)})
-        hits = {}
-        for h in e.get("victimDamageReceived", []):
-            if h.get("type") == "OTHER" and h.get("spellSlot") in SLOT and h.get("participantId"):
-                key = (h["participantId"], h["spellSlot"])
-                hits[key] = hits.get(key, 0) + h["physicalDamage"] + h["magicDamage"] + h["trueDamage"]
-        top = sorted(hits.items(), key=lambda kv: -kv[1])[:3]
-        lv = live_by_t.get(mmss(e["timestamp"]), {})
+        if tracks:
+            for p in inv:
+                tr = tracks.get(p, {})
+                first = next((s2 for s2 in range(max((start or D) - 5, D - 90), D + 1)
+                              if (dist(at(me_tr, s2), at(tr, s2)) or 1e9) <= FIGHT_R), None)
+                if first is not None:
+                    joins.append({"t": first, "who": p - 1})
         per[mmss(e["timestamp"])] = {
             "sec": D,
-            "fight": {"from": start, "to": D} if start is not None else None,
+            "fight": {"from": start, "to": D, "how": how} if start is not None else None,
             "joins": sorted(joins, key=lambda j: j["t"]),
-            "skills": [{"who": champ(by[pid]["championName"]), "slot": SLOT[sl], "v": v} for (pid, sl), v in top],
-            "hp": [{"t": round(h["t"], 1), "hp": h["hp"]} for h in lv.get("hpFlow") or []],
+            "recap": death_recap(e, by, ME),
         }
-    return {"replay": {"size": S, "len": dur, "champs": champs, "tracks": out_tracks, "events": ev,
-                       "wards": wards, "turrets": turrets, "sight": round(1200 / 14990 * S * 10)},
-            "perDeath": per}
+    return per
 
 
 def run_analyze(mid, champ_id):
