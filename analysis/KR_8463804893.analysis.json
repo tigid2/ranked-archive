@@ -562,9 +562,9 @@
     {
      "who": "다이애나(적)",
      "role": "정글",
-     "minuteMark": "9:00",
-     "wasAt": "우리 아래쪽 정글",
-     "distance": 1961
+     "minuteMark": "8:39",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 3744
     }
    ],
    "damage": [
@@ -836,17 +836,18 @@
    "assists": [
     "바루스(적)"
    ],
-   "alliesNear": [
-    "제라스(아군)"
+   "alliesNear": [],
+   "enemiesNear": [
+    "다이애나(적)",
+    "바루스(적)"
    ],
-   "enemiesNear": [],
    "roams": [
     {
      "who": "다이애나(적)",
      "role": "정글",
-     "minuteMark": "18:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 6760
+     "minuteMark": "18:12",
+     "wasAt": "미드 라인",
+     "distance": 4680
     }
    ],
    "damage": [
@@ -983,7 +984,6 @@
     "알리스타(적)"
    ],
    "alliesNear": [
-    "사일러스(아군)",
     "리산드라(아군)"
    ],
    "enemiesNear": [
@@ -994,9 +994,9 @@
     {
      "who": "쉬바나(적)",
      "role": "탑",
-     "minuteMark": "21:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 2116
+     "minuteMark": "21:29",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 6387
     }
    ],
    "damage": [
@@ -1156,23 +1156,22 @@
    "enemiesNear": [
     "쉬바나(적)",
     "다이애나(적)",
-    "야스오(적)",
-    "알리스타(적)"
+    "야스오(적)"
    ],
    "roams": [
     {
      "who": "다이애나(적)",
      "role": "정글",
-     "minuteMark": "24:00",
-     "wasAt": "우리 본진",
-     "distance": 6939
+     "minuteMark": "24:28",
+     "wasAt": "블루팀 본진",
+     "distance": 11810
     },
     {
      "who": "쉬바나(적)",
      "role": "탑",
-     "minuteMark": "24:00",
-     "wasAt": "우리 본진",
-     "distance": 6391
+     "minuteMark": "24:28",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 5886
     }
    ],
    "damage": [
@@ -1342,7 +1341,7 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 9545
+   "myDistance30sBefore": 5740
   },
   {
    "t": "8:39",
@@ -1377,21 +1376,21 @@
    "name": "바다 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2540
+   "myDistance30sBefore": 3343
   },
   {
    "t": "20:54",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 7187
+   "myDistance30sBefore": 5383
   },
   {
    "t": "22:14",
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 3953
+   "myDistance30sBefore": 3064
   }
  ],
  "buildings": [
@@ -1731,19 +1730,30 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.65,
+   "3~4": 1.0,
+   "4~5": 1.0,
+   "5~6": 0.55,
+   "6~7": 1.0,
+   "7~8": 0.78,
+   "8~9": 0.9,
+   "9~10": 0.7,
+   "10~11": 1.0,
+   "11~12": 0.67,
+   "12~13": 0.7,
+   "13~14": 1.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 82,
-   "opp": 83
+   "me": 101,
+   "opp": 95
   },
   "csWithoutSupport": {
-   "me": 19,
-   "opp": 12
+   "me": 0,
+   "opp": 0
   },
-  "supportAwayRanges": [
-   "7~9분"
-  ],
+  "supportAwayRanges": [],
   "botAdcKills": {
    "opp": 1,
    "me": 2,
@@ -1765,7 +1775,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,

@@ -705,7 +705,9 @@
    "zone": "바텀 라인",
    "killer": "케이틀린(적)",
    "assists": [],
-   "alliesNear": [],
+   "alliesNear": [
+    "노틸러스(아군)"
+   ],
    "enemiesNear": [
     "케이틀린(적)",
     "모르가나(적)"
@@ -982,8 +984,13 @@
     "케이틀린(적)",
     "모르가나(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "제이스(아군)",
+    "노틸러스(아군)"
+   ],
    "enemiesNear": [
+    "케인(적)",
+    "직스(적)",
     "케이틀린(적)",
     "모르가나(적)"
    ],
@@ -991,16 +998,16 @@
     {
      "who": "직스(적)",
      "role": "미드",
-     "minuteMark": "7:00",
+     "minuteMark": "7:09",
      "wasAt": "미드 라인",
-     "distance": 6925
+     "distance": 6346
     },
     {
      "who": "케인(적)",
      "role": "정글",
-     "minuteMark": "7:00",
+     "minuteMark": "7:09",
      "wasAt": "우리 아래쪽 정글",
-     "distance": 3774
+     "distance": 3390
     }
    ],
    "damage": [
@@ -1172,9 +1179,9 @@
     {
      "who": "그라가스(적)",
      "role": "탑",
-     "minuteMark": "14:00",
+     "minuteMark": "14:28",
      "wasAt": "탑 라인",
-     "distance": 7129
+     "distance": 7219
     }
    ],
    "damage": [
@@ -1327,25 +1334,28 @@
    "assists": [
     "그라가스(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "노틸러스(아군)"
+   ],
    "enemiesNear": [
-    "케이틀린(적)",
-    "모르가나(적)"
+    "그라가스(적)",
+    "직스(적)",
+    "케이틀린(적)"
    ],
    "roams": [
     {
      "who": "직스(적)",
      "role": "미드",
-     "minuteMark": "19:00",
+     "minuteMark": "19:07",
      "wasAt": "바텀 라인",
-     "distance": 6699
+     "distance": 6767
     },
     {
      "who": "그라가스(적)",
      "role": "탑",
-     "minuteMark": "19:00",
-     "wasAt": "바텀 라인",
-     "distance": 6896
+     "minuteMark": "19:07",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 4101
     }
    ],
    "damage": [
@@ -1485,35 +1495,36 @@
     "모르가나(적)"
    ],
    "alliesNear": [
-    "제이스(아군)",
-    "나피리(아군)"
+    "신지드(아군)",
+    "제이스(아군)"
    ],
    "enemiesNear": [
+    "그라가스(적)",
+    "케인(적)",
     "직스(적)",
-    "케이틀린(적)",
     "모르가나(적)"
    ],
    "roams": [
     {
      "who": "케인(적)",
      "role": "정글",
-     "minuteMark": "22:00",
+     "minuteMark": "21:58",
      "wasAt": "상대 위쪽 정글",
-     "distance": 6112
+     "distance": 6110
     },
     {
      "who": "그라가스(적)",
      "role": "탑",
-     "minuteMark": "22:00",
+     "minuteMark": "21:58",
      "wasAt": "탑 라인",
-     "distance": 7338
+     "distance": 7281
     },
     {
      "who": "직스(적)",
      "role": "미드",
-     "minuteMark": "22:00",
+     "minuteMark": "21:58",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 1362
+     "distance": 1775
     }
    ],
    "damage": [
@@ -1670,17 +1681,19 @@
    "killer": "케인(적)",
    "assists": [],
    "alliesNear": [
-    "나피리(아군)",
+    "제이스(아군)",
     "노틸러스(아군)"
    ],
    "enemiesNear": [
-    "모르가나(적)"
+    "케인(적)",
+    "직스(적)",
+    "케이틀린(적)"
    ],
    "roams": [
     {
      "who": "케인(적)",
      "role": "정글",
-     "minuteMark": "29:00",
+     "minuteMark": "28:54",
      "wasAt": "상대 아래쪽 정글",
      "distance": 6361
     }
@@ -1812,6 +1825,7 @@
     "제이스(아군)"
    ],
    "enemiesNear": [
+    "그라가스(적)",
     "케인(적)",
     "케이틀린(적)",
     "모르가나(적)"
@@ -1820,9 +1834,9 @@
     {
      "who": "그라가스(적)",
      "role": "탑",
-     "minuteMark": "35:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 4625
+     "minuteMark": "34:43",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 10722
     }
    ],
    "damage": [
@@ -1968,9 +1982,9 @@
     {
      "who": "케인(적)",
      "role": "정글",
-     "minuteMark": "39:00",
-     "wasAt": "우리 본진",
-     "distance": 726
+     "minuteMark": "38:32",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 6696
     }
    ],
    "damage": [
@@ -2152,7 +2166,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2956
+   "myDistance30sBefore": 3937
   },
   {
    "t": "8:31",
@@ -2180,14 +2194,14 @@
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3813
+   "myDistance30sBefore": 3288
   },
   {
    "t": "16:44",
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3941
+   "myDistance30sBefore": 4061
   },
   {
    "t": "18:29",
@@ -2201,28 +2215,28 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2191
+   "myDistance30sBefore": 3670
   },
   {
    "t": "28:22",
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3011
+   "myDistance30sBefore": 3956
   },
   {
    "t": "34:07",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2318
+   "myDistance30sBefore": 2038
   },
   {
    "t": "36:11",
    "name": "장로 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2053
+   "myDistance30sBefore": 2052
   }
  ],
  "buildings": [
@@ -2696,20 +2710,31 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.68,
+   "3~4": 1.0,
+   "4~5": 0.98,
+   "5~6": 0.7,
+   "6~7": 0.68,
+   "7~8": 0.85,
+   "8~9": 0.47,
+   "9~10": 0.15,
+   "10~11": 0.02,
+   "11~12": 0.0,
+   "12~13": 0.0,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 12,
-   "opp": 28
+   "me": 35,
+   "opp": 63
   },
   "csWithoutSupport": {
-   "me": 73,
-   "opp": 90
+   "me": 50,
+   "opp": 55
   },
   "supportAwayRanges": [
-   "2~3분",
-   "4~6분",
-   "7~14분"
+   "8~14분"
   ],
   "botAdcKills": {
    "opp": 0,
@@ -2731,7 +2756,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,

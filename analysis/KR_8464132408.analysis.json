@@ -445,26 +445,27 @@
     "타릭(적)"
    ],
    "alliesNear": [
-    "자이라(아군)",
-    "레오나(아군)"
+    "신드라(아군)"
    ],
    "enemiesNear": [
-    "리 신(적)"
+    "야스오(적)",
+    "사미라(적)",
+    "타릭(적)"
    ],
    "roams": [
     {
      "who": "야스오(적)",
      "role": "미드",
-     "minuteMark": "3:00",
+     "minuteMark": "2:59",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 4263
+     "distance": 4606
     },
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "3:00",
+     "minuteMark": "2:59",
      "wasAt": "우리 아래쪽 정글",
-     "distance": 2367
+     "distance": 2466
     }
    ],
    "damage": [
@@ -609,7 +610,6 @@
     "타릭(적)"
    ],
    "alliesNear": [
-    "자이라(아군)",
     "레오나(아군)"
    ],
    "enemiesNear": [
@@ -747,7 +747,9 @@
    "assists": [
     "사미라(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "레오나(아군)"
+   ],
    "enemiesNear": [
     "사미라(적)",
     "타릭(적)"
@@ -892,16 +894,16 @@
     "레오나(아군)"
    ],
    "enemiesNear": [
-    "사미라(적)",
+    "리 신(적)",
     "타릭(적)"
    ],
    "roams": [
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "10:00",
+     "minuteMark": "9:52",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 4241
+     "distance": 4479
     }
    ],
    "damage": [
@@ -1044,7 +1046,6 @@
     "레오나(아군)"
    ],
    "enemiesNear": [
-    "리 신(적)",
     "사미라(적)",
     "타릭(적)"
    ],
@@ -1195,22 +1196,22 @@
    "enemiesNear": [
     "리 신(적)",
     "야스오(적)",
-    "사미라(적)"
+    "타릭(적)"
    ],
    "roams": [
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "16:00",
+     "minuteMark": "16:01",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 6293
+     "distance": 6268
     },
     {
      "who": "야스오(적)",
      "role": "미드",
-     "minuteMark": "16:00",
+     "minuteMark": "16:01",
      "wasAt": "미드 라인",
-     "distance": 6341
+     "distance": 6536
     }
    ],
    "damage": [
@@ -1439,7 +1440,7 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3817
+   "myDistance30sBefore": 2509
   },
   {
    "t": "15:35",
@@ -1710,18 +1711,31 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.47,
+   "4~5": 0.68,
+   "5~6": 1.0,
+   "6~7": 1.0,
+   "7~8": 1.0,
+   "8~9": 0.62,
+   "9~10": 0.82,
+   "10~11": 0.7,
+   "11~12": 0.92,
+   "12~13": 1.0,
+   "13~14": 0.67
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 65,
-   "opp": 51
+   "me": 95,
+   "opp": 77
   },
   "csWithoutSupport": {
-   "me": 33,
-   "opp": 35
+   "me": 3,
+   "opp": 9
   },
   "supportAwayRanges": [
-   "8~12분"
+   "3~4분"
   ],
   "botAdcKills": {
    "opp": 4,
@@ -1768,7 +1782,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
