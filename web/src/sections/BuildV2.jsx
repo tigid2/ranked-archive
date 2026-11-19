@@ -31,12 +31,12 @@ export function BuildCardV2({ S, L, d }) {
   const x = (t) => `${(100 * t) / end}%`
   const ticks = Array.from({ length: end / 300 + 1 }, (_, i) => i * 5)
   return (
-    <Card title="빌드 비교 · 개선 시안" wide>
+    <Card title="빌드 비교, 개선 시안" wide>
       <div className="b2-verdict">
         <div className={cx('b2-v', v.choiceOk ? 'is-ok' : 'is-warn')}><span className="label">고른 아이템</span><b>{v.pick}</b></div>
         <div className={cx('b2-v', v.isLate ? 'is-warn' : 'is-ok')}><span className="label">완성 속도</span><b>{v.speed}</b></div>
       </div>
-      {v.isLate && v.choiceOk && <p className="b2-hint">빌드 선택보다 <b>골드를 버는 속도</b>가 문제였을 수 있어요. 02 흐름의 CS·골드 차이에서 어느 구간부터 벌어졌는지 확인해 보세요.</p>}
+      {v.isLate && v.choiceOk && <p className="b2-hint">빌드 선택보다 <b>골드를 버는 속도</b>가 문제였을 수 있어요. 02 흐름의 CS, 골드 차이에서 어느 구간부터 벌어졌는지 확인해 보세요.</p>}
       <div className="b2-tl">
         <div className="b2-axis"><span />{<div className="b2-ticks">{ticks.map((m) => <span key={m} style={{ left: x(m * 60) }}>{m}분</span>)}</div>}</div>
         {rows.map((r) => {
@@ -55,7 +55,7 @@ export function BuildCardV2({ S, L, d }) {
               </div>
               <div className="b2-meta">
                 {r.m && df != null && <b className={cx('num', df >= 60 ? 'neg-dark' : df <= -60 ? 'pos' : 'muted')}>{Math.abs(df) < 60 ? '평균과 비슷' : `${sec(Math.abs(df))} ${df > 0 ? '늦음' : '빠름'}`}</b>}
-                <span className="small muted num">{r.m?.stat ? `선택률 ${p1(r.m.stat.pick)}% · 승률 ${p1(r.m.stat.win)}%` : '선택률 1% 미만'}</span>
+                <span className="small muted num">{r.m?.stat ? `선택률 ${p1(r.m.stat.pick)}%, 승률 ${p1(r.m.stat.win)}%` : '선택률 1% 미만'}</span>
               </div>
             </div>
           )
@@ -66,7 +66,7 @@ export function BuildCardV2({ S, L, d }) {
         <summary>다른 선택 보기</summary>
         <ul>{rows.map((r) => (
           <li key={r.label}><span className="b2-slot">{r.label}</span>{r.top.filter((o) => o.id !== r.m?.item.id).slice(0, 2).map((o) => (
-            <span key={o.id} className="bd-alt"><Ii it={o.item} size="xs" /><span className="num small">{p1(o.pick)}% · 승 {p1(o.win)}%</span></span>
+            <span key={o.id} className="bd-alt"><Ii it={o.item} size="xs" /><span className="num small">{p1(o.pick)}%, 승 {p1(o.win)}%</span></span>
           ))}</li>
         ))}</ul>
       </details>

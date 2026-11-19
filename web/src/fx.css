@@ -87,7 +87,7 @@
 .chart .hov-v.neg { fill: var(--on-dark); }
 
 /* ---------- 죽음: 지도와 줄이 서로 가리켜요 ---------- */
-.map .mp-d { cursor: pointer; transition: opacity .25s, transform .35s var(--ease); }
+.map .mp-d { cursor: pointer; transition: opacity .25s, transform .35s var(--ease); transform-box: fill-box; transform-origin: center; }  /* 크기가 바뀔 때 점 자리를 기준으로(지도 왼쪽 위로 끌려가지 않게) */
 .map .mp-k { transition: opacity .25s; }
 .map.has-active .mp-d:not(.on) { opacity: .28; }
 .map.has-active .mp-k { opacity: .18; }

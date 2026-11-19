@@ -15,13 +15,13 @@ const WHY = {
   "L1": "우리가 모은 판(챔피언당 100판 안팎)으로만 만들 수 있어서 숫자가 흔들려요. 생존 축은 아직 비어 있고, 다섯 축으로 합치면 예전에 정한 \"점수로 합치지 않기\"와도 부딪혀요.",
   "L2": "L1과 같은 이유예요. 위쪽 \"14분 라인전\" 표가 같은 질문(평균보다 잘했나)에 더 큰 표본으로 답해요.",
   "L5": "위쪽 차이 그래프(L4)와 같은 내용을 숫자로 한 번 더 보여 주는 표예요. 그래프 하나면 충분해요.",
-  "L6": "우리가 모은 100판 안팎과 비교한 거예요. 같은 질문을 사이트의 수만 판 평균(위쪽 \"14분 라인전\")으로 바꿨어요. 10분·15분 골드처럼 사이트에 없는 숫자가 꼭 필요해지면 그때 다시 꺼내요.",
+  "L6": "우리가 모은 100판 안팎과 비교한 거예요. 같은 질문을 사이트의 수만 판 평균(위쪽 \"14분 라인전\")으로 바꿨어요. 10분, 15분 골드처럼 사이트에 없는 숫자가 꼭 필요해지면 그때 다시 꺼내요.",
   "L8": "사이트에는 서폿 위치 통계가 없어서 우리 데이터로만 비교할 수 있어요. 지금 리포트의 \"아군 서폿 위치\" 칸으로 충분하다고 봐요.",
   "L11": "원딜은 시야 규칙을 보류하기로 했어요. 와드 위치도 기록에 없어서 \"어디에 박았나\"는 볼 수 없어요.",
-  "L12": "숫자가 아니라 글이 필요한 칸인데, 딥롤 페이지에서 레벨별 글을 찾지 못했어요. 숫자로 된 상성(승률, 2·3·6레벨 선점)은 위쪽 상성 칸에 넣었어요.",
+  "L12": "숫자가 아니라 글이 필요한 칸인데, 딥롤 페이지에서 레벨별 글을 찾지 못했어요. 숫자로 된 상성(승률, 2, 3, 6레벨 선점)은 위쪽 상성 칸에 넣었어요.",
   "L13": "OP.GG 상세 탭에서 이미 볼 수 있고, 원딜 피드백에서 이 숫자로 판단하는 일이 드물어요. 상대 팀 피해 구성만 빌드 칸으로 옮겼어요.",
   "L17": "같은 챔피언이면 판마다 똑같은 숫자예요. 한 판 리포트보다 챔피언 노트 페이지에 한 번만 두는 게 맞아요.",
-  "L18": "이것도 챔피언마다 정해진 숫자예요. 이 판에서 누가 가져갔는지는 지금 리포트의 흐름·팀 칸에 이미 있어요. 챔피언 노트 페이지로 보내요."
+  "L18": "이것도 챔피언마다 정해진 숫자예요. 이 판에서 누가 가져갔는지는 지금 리포트의 흐름, 팀 칸에 이미 있어요. 챔피언 노트 페이지로 보내요."
 }
 
 function Card({ id, title, sub, why, wide, children }) {
@@ -78,7 +78,7 @@ function LengthCard({ S }) {
 function ObjCard({ S }) {
   const o = S?.objectives
   return (
-    <Card id="L18" title="첫 킬·첫 포탑·첫 용" why={WHY.L18}>
+    <Card id="L18" title="첫 킬, 첫 포탑, 첫 용" why={WHY.L18}>
       {o ? (
         <table className="tbl lab-tbl"><thead><tr><th></th><th>이 판</th><th>가져갔을 때 승률</th><th>뺏겼을 때 승률</th></tr></thead>
           <tbody>{o.map((x) => <tr key={x.name}><td>{x.name}</td><td>{x.mine ? <span className="pos">가져감</span> : <span className="muted">뺏김</span>}</td><td className={cx('num', x.mine && 'l14-me')}>{pct(x.winWith)}</td><td className={cx('num', !x.mine && 'l14-me')}>{pct(x.winWithout)}</td></tr>)}</tbody>
@@ -145,7 +145,7 @@ function LaneBenchCard({ L }) {
   return (
     <Card id="L6b" title="10/15분 지표 (우리가 모은 판과 비교)" wide why={WHY.L6}>
       {ms.length ? <div className="pct-list">{ms.map((m) => <RangeRow key={m.key} m={m} />)}</div> : <Empty text="기준 데이터가 없어요." />}
-      {L.bench.available && <p className="lab-note">기준: {L.bench.tiers?.join('·')} {L.bench.games}판, 패치 {L.bench.patches?.join(', ')}</p>}
+      {L.bench.available && <p className="lab-note">기준: {L.bench.tiers?.join(', ')} {L.bench.games}판, 패치 {L.bench.patches?.join(', ')}</p>}
     </Card>
   )
 }
@@ -228,7 +228,7 @@ function TeamDetailCard({ L }) {
 // ---------------------------------------------------------------- 페이지
 export default function Lab({ data }) {
   const L = data.lab, S = L.site
-  useEffect(() => { document.title = `실험 · ${data.me.n} 리포트` }, [data])
+  useEffect(() => { document.title = `실험 - ${data.me.n} 리포트` }, [data])
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: SPRITE }} style={{ display: 'contents' }} />

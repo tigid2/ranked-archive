@@ -31,7 +31,7 @@ def load_dd(folder):
             for r in slot["runes"]:
                 DD["rune"][r["id"]] = r["name"]
     DD["shard"] = {5008: "적응형 능력치", 5005: "공격 속도", 5007: "스킬 가속", 5002: "방어력", 5003: "마법 저항력",
-                   5001: "체력 증가(성장)", 5011: "체력", 5010: "이동 속도", 5013: "강인함·둔화 저항"}
+                   5001: "체력 증가(성장)", 5011: "체력", 5010: "이동 속도", 5013: "강인함, 둔화 저항"}
 
 
 def cname(c):
@@ -138,7 +138,7 @@ def analyze(raw, champ_id, live=None, track=None):
             p = by[pid]
             side = "나" if pid == my else ("아군" if p["teamId"] == team else "적")
             return f"{cname(p['championName'])}({side})"
-        return "미니언·포탑"
+        return "미니언, 포탑"
 
     def pf(minute, pid):
         if 0 <= minute < len(frames):

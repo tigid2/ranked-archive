@@ -140,7 +140,7 @@ export function Lane14Card({ S, L, d }) {
       <Ci c={c} size="sm" />
       {b ? (<>
         <b className="num">{sec(b.t)}</b>
-        <span className="muted small num">골드 약 {num(b.gold)}{b.death ? ' · 죽어서 귀환' : ''}</span>
+        <span className="muted small num">골드 약 {num(b.gold)}{b.death ? ', 죽어서 귀환' : ''}</span>
         <span className="back-items">{b.items.map((it, i) => <Ii key={i} it={it} size="xs" />)}</span>
       </>) : <span className="muted">찾지 못함</span>}
     </div>
@@ -186,7 +186,7 @@ export function BuildCard({ S, L, d }) {
     return <span className={cx('small', df > 0 ? 'neg-dark' : 'pos')}>{sec(Math.abs(df))} {df > 0 ? '늦음' : '빠름'}</span>
   }
   const others = (top, mineId) => top.filter((o) => o.id !== mineId).slice(0, 2).map((o) => (
-    <span key={o.id} className="bd-alt"><Ii it={o.item} size="xs" /><span className="num small">{p1(o.pick)}% · 승 {p1(o.win)}%</span></span>
+    <span key={o.id} className="bd-alt"><Ii it={o.item} size="xs" /><span className="num small">{p1(o.pick)}%, 승 {p1(o.win)}%</span></span>
   ))
   const row = (label, m, top) => (
     <tr key={label}>
@@ -194,7 +194,7 @@ export function BuildCard({ S, L, d }) {
       {m ? (<>
         <td><span className="bd-item"><Ii it={m.item} size="sm" /><b>{m.item.n}</b></span></td>
         <td className="num"><b>{sec(m.time)}</b> <span className="muted small">/ 평균 {m.stat?.min ?? '–'}분대</span><br />{m.stat && late(m.time, m.stat.min)}</td>
-        <td className="num">{m.stat ? <>{p1(m.stat.pick)}%{m.rank && <span className="muted small"> · {m.rank}번째로 많음</span>}</> : <span className="muted small">1% 미만</span>}</td>
+        <td className="num">{m.stat ? <>{p1(m.stat.pick)}%{m.rank && <span className="muted small">, {m.rank}번째로 많음</span>}</> : <span className="muted small">1% 미만</span>}</td>
         <td className="num">{m.stat ? `${p1(m.stat.win)}%` : '–'}</td>
       </>) : <td colSpan="4" className="muted">이 판에서는 완성하지 못했어요</td>}
       <td><div className="bd-alts">{others(top, m?.item.id)}</div></td>
@@ -227,7 +227,7 @@ export function BuildExtras({ S, L }) {
         <div>
           <span className="label">구매 순서</span>
           <div className="bd-order">{o.mine.map((it, i) => <span key={i}>{i > 0 && <i aria-hidden="true">→</i>}<Ii it={it} size="sm" /></span>)}</div>
-          <p className="small">{o.stat ? <><b className="num">{p1(o.stat.pick)}%</b>가 고른 순서 ({o.rank}번째로 많음) · 승률 <b className="num">{p1(o.stat.win)}%</b></> : <span className="muted">많이 가는 순서 6개 안에 없어요</span>}</p>
+          <p className="small">{o.stat ? <><b className="num">{p1(o.stat.pick)}%</b>가 고른 순서 ({o.rank}번째로 많음), 승률 <b className="num">{p1(o.stat.win)}%</b></> : <span className="muted">많이 가는 순서 6개 안에 없어요</span>}</p>
         </div>
       )}
       <div>
@@ -240,12 +240,12 @@ export function BuildExtras({ S, L }) {
       <div>
         <span className="label">소환사 주문</span>
         <div className="bd-runes">{sp.mineSpells.map((x) => <Pi key={x.key} p={x} cls="ic ic-sm" />)}</div>
-        <p className="small">{sp.mine ? <><b className="num">{p1(sp.mine.pick)}%</b>가 고른 조합 · 승률 <b className="num">{p1(sp.mine.win)}%</b></> : <span className="muted">선택률 1% 미만</span>}</p>
+        <p className="small">{sp.mine ? <><b className="num">{p1(sp.mine.pick)}%</b>가 고른 조합, 승률 <b className="num">{p1(sp.mine.win)}%</b></> : <span className="muted">선택률 1% 미만</span>}</p>
       </div>
       <div>
         <span className="label">상대 팀 피해 구성</span>
         <div className="mix-bar is-theirs bd-mix">{[mx.phys, mx.magic, mx.true].map((v, i) => <span key={i} className={`mx-${i}`} style={{ width: `${(100 * v) / tot}%` }} />)}</div>
-        <p className="small num">물리 {Math.round((100 * mx.phys) / tot)}% · 마법 {Math.round((100 * mx.magic) / tot)}% · 고정 {Math.round((100 * mx.true) / tot)}%</p>
+        <p className="small num">물리 {Math.round((100 * mx.phys) / tot)}%, 마법 {Math.round((100 * mx.magic) / tot)}%, 고정 {Math.round((100 * mx.true) / tot)}%</p>
       </div>
     </div>
   )

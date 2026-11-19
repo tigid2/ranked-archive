@@ -1,11 +1,15 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import { Section, Ci, LostList, Pi, MAP_IMG, src, num, signed, cx } from '../ui.jsx'
+import { Section, Ci, Faces, LostList, Pi, MAP_IMG, src, num, signed, cx } from '../ui.jsx'
 
-// 04 죽음 (11-20): 왼쪽 무대(기본 / 리플레이), 가운데 죽음 목록(개선점 한 줄), 오른쪽 사망 정보(롤 Death Recap처럼),
-// 아래 숫자 띠(전체 요약 또는 고른 죽음).
+// 04 죽음 (11-20 시안 3)
+// 기본: 왼쪽 지도 + 오른쪽 죽음 목록. 죽음을 고르면 목록 위에 죽음 정보 칸(근처 챔피언, 골드, 스펠, 합류한 적, 받은 피해, 상황과 근거).
+// 리플레이: 왼쪽 미니맵 리플레이와 그 아래 숫자 칸, 오른쪽 위 죽음 번호 칸(교전 시간, 킬과 어시스트 초상화, 교전 보기),
+// 그 아래 왼쪽은 받은 피해(롤 사망 정보처럼), 오른쪽은 상황과 근거.
+// 가운뎃점(·)은 화면 글자에 쓰지 않아요(사용자 요청).
 
 const ms = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
 const SPELL_WORD = { held: '안 씀', used_before: '씀', already_down: '없음', uncertain: '판단 보류' }
+const killers = (x) => [x.killer, ...x.assists].map((c) => c.n).join(', ')
 
 // ---------- 기본: 모든 죽음 번호와 킬 ----------
 function OverviewMap({ m, active, onPick }) {
@@ -18,11 +22,11 @@ function OverviewMap({ m, active, onPick }) {
           transform={`rotate(45 ${p.x} ${p.y})`}><title>{p.t} {p.solid ? '킬' : '어시스트'}</title></rect>
       ))}
       {m.deaths.map((p) => (
-        <g key={p.no} className={cx('mp-d', active === p.no && 'on')} onClick={() => onPick(p.no)} style={{ cursor: 'pointer' }}>
+        <g key={p.no} className={cx('mp-d', active === p.no && 'on')} onClick={() => onPick(p.no)} role="button" aria-label={`${p.no}번째 죽음 ${p.t}`}>
           <title>{p.t} {p.no}번째 죽음</title>
-          <circle className="mp-death" cx={p.x} cy={p.y} r={p.key ? 15 : 12} />
-          {p.key && <circle cx={p.x} cy={p.y} r="19" fill="none" stroke="var(--red)" strokeWidth="1.5" />}
-          <text className="mp-num" x={p.x} y={p.y + 4.5} textAnchor="middle">{p.no}</text>
+          {active === p.no && <circle className="mp-sel" cx={p.x} cy={p.y} r="21" />}
+          <circle className="mp-death" cx={p.x} cy={p.y} r="14" />
+          <text className="mp-num" x={p.x} y={p.y + 5} textAnchor="middle">{p.no}</text>
         </g>
       ))}
     </svg>
@@ -78,7 +82,7 @@ const PI = {
   pause: <><rect x="6" y="4.5" width="4" height="15" /><rect x="14" y="4.5" width="4" height="15" /></>,
   back: <><path d="M11 6 L4 12 L11 18 Z" /><path d="M20 6 L13 12 L20 18 Z" /></>,
   fwd: <><path d="M4 6 L11 12 L4 18 Z" /><path d="M13 6 L20 12 L13 18 Z" /></>,
-  again: <><path d="M5 12 a7 7 0 1 0 2.1 -5" fill="none" stroke="currentColor" strokeWidth="2.2" /><path d="M3.5 3.5 L8.6 4.2 L6.4 8.8 Z" /></>,
+  x: <path d="M5 5 L19 19 M19 5 L5 19" fill="none" stroke="currentColor" strokeWidth="2.2" />,
 }
 const Icon = ({ n }) => <svg className="rp-i" viewBox="0 0 24 24" aria-hidden="true">{PI[n]}</svg>
 const SPEEDS = [0.5, 1, 2, 4, 8]
@@ -103,7 +107,7 @@ function Timeline({ rp, t, scene, fights, onSeek, onScrub }) {
     }
     return { ...e, row: e.us ? 'us' : 'them', what: `${e.us ? '우리' : '상대'} ${OBJ_NAME[e.g] || ''}` }
   }), [rp])
-  const near = hover != null ? marks.filter((m) => Math.abs(m.t - hover) <= L / 120 + 4).slice(0, 4) : []
+  const near = hover != null ? marks.filter((m) => Math.abs(m.t - hover) <= L / 160 + 4).slice(0, 4) : []
   const drag = (ev) => {
     ev.preventDefault()
     ref.current.setPointerCapture(ev.pointerId)
@@ -154,7 +158,8 @@ function Mark({ m, left, onSeek }) {
   )
 }
 
-function Replay({ rp, scene, vision, setVision, fights }) {
+// side(playScene)와 under를 받아서, 지도 오른쪽과 지도 아래에 그려요. 교전 보기 버튼은 side 안(죽음 번호 칸)에 있어요.
+function Replay({ rp, scene, vision, setVision, fights, side, under }) {
   const T = useTracks(rp)
   const S = rp.size
   const [t, setT] = useState(scene ? Math.max(scene.from - 5, 0) : 0)
@@ -165,12 +170,13 @@ function Replay({ rp, scene, vision, setVision, fights }) {
   const raf = useRef(0)
   const last = useRef(0)
 
+  // 교전 보기: 교전 5초 전부터 재생하고, 죽은 뒤 3초에 멈춰요.
   const playScene = () => {
     if (!scene) return
     setT(Math.max(scene.from - 5, 0)); stopAt.current = scene.to + 3; setPlay(true)
   }
-  // 죽음을 고르면 교전 5초 전으로 가서 재생하고, 죽은 뒤 3초에 멈춰요.
-  useEffect(() => { if (scene) { setSpeed(1); playScene() } }, [scene && scene.to])
+  // 죽음 바로가기를 누르면 교전 5초 전으로만 옮겨요(자동 재생은 하지 않음).
+  useEffect(() => { if (scene) { setPlay(false); stopAt.current = null; setT(Math.max(scene.from - 5, 0)) } }, [scene && scene.to])
 
   useEffect(() => {
     if (!play) return
@@ -199,7 +205,7 @@ function Replay({ rp, scene, vision, setVision, fights }) {
   }
   const si = SPEEDS.indexOf(speed)
   const keys = (e) => {
-    if (e.target.closest('.tl')) return
+    if (e.target.closest('.tl') || e.target.closest('.rx-side')) return
     if (e.key === ' ' || e.key === 'k') { e.preventDefault(); toggle() }
     else if (e.key === 'ArrowLeft' || e.key === 'j') { e.preventDefault(); seek(t - 10) }
     else if (e.key === 'ArrowRight' || e.key === 'l') { e.preventDefault(); seek(t + 10) }
@@ -207,7 +213,7 @@ function Replay({ rp, scene, vision, setVision, fights }) {
 
   const C = rp.champs
   const pos = C.map((_, i) => posAt(T, i, t))
-  // 추정 시야: 살아 있는 우리 팀 주변, 켜져 있는 우리 와드, 남아 있는 우리 포탑 (벽·수풀은 계산하지 않아요)
+  // 추정 시야: 살아 있는 우리 팀 주변, 켜져 있는 우리 와드, 남아 있는 우리 포탑 (벽, 수풀은 계산하지 않아요)
   const src_ = []
   C.forEach((c, i) => { if (c.us && pos[i]) src_.push([pos[i][0], pos[i][1], rp.sight / 10]) })
   rp.wards.forEach(([a, b, x, y, r]) => { if (t >= a && t < b) src_.push([x / 10, y / 10, r / 10]) })
@@ -228,65 +234,72 @@ function Replay({ rp, scene, vision, setVision, fights }) {
   const inFight = scene && t >= scene.from && t <= scene.to
 
   return (
-    <div className="rp" tabIndex={0} onKeyDown={keys} aria-label="리플레이. 스페이스 재생·멈춤, 화살표 10초 이동">
-      <div className="rp-screen" onClick={toggle}>
-        <svg className="map rp-map" viewBox={`0 0 ${S} ${S}`} role="img" aria-label={`리플레이 ${ms(t)}`}>
-          <defs>
-            <clipPath id="rp-tk"><circle r="11" /></clipPath>
-            <clipPath id="rp-tk-me"><circle r="13" /></clipPath>
-            {vision && (
-              <mask id="rp-vis">
-                <rect width={S} height={S} fill="#fff" />
-                {src_.map(([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="#000" />)}
-              </mask>
-            )}
-          </defs>
-          <image href={MAP_IMG} x="0" y="0" width={S} height={S} />
-          {vision && <rect width={S} height={S} className="rp-fog" mask="url(#rp-vis)" />}
-          {vision && rp.wards.filter(([a, b]) => t >= a && t < b).map(([, , x, y], i) => <circle key={`w${i}`} className="rp-ward" cx={x / 10} cy={y / 10} r="2.5" />)}
-          {evNow.map((e, i) => {
-            const x = e.x / 10, y = e.y / 10
-            if (e.k === 'kill') {
-              return e.us
-                ? <rect key={i} className="mp-kill" x={x - 6} y={y - 6} width="12" height="12" transform={`rotate(45 ${x} ${y})`} />
-                : <path key={i} className="rp-x" d={`M${x - 7} ${y - 7}L${x + 7} ${y + 7}M${x + 7} ${y - 7}L${x - 7} ${y + 7}`} />
-            }
-            return <use key={i} href={`#i-${e.g}`} x={x - 10} y={y - 10} width="20" height="20" className={e.us ? 'rp-obj-us' : 'rp-obj-them'} />
-          })}
-          {C.map((c, i) => {
-            const p = pos[i]
-            if (!p) return null
-            const r = c.me ? 13 : 11
-            const out = vision && !c.us && !seen(p)
-            return (
-              <g key={i} transform={`translate(${p[0].toFixed(1)} ${p[1].toFixed(1)})`} className={cx('rp-tok', c.us ? 'us' : 'them', c.me && 'me', out && 'out')}>
-                {rings.has(i) && <circle className="rp-pulse" r={r + 8} />}
-                <image href={src(c.img)} x={-r} y={-r} width={r * 2} height={r * 2} clipPath={`url(#rp-tk${c.me ? '-me' : ''})`} />
-                <circle className="rp-ring" r={r} />
-                <title>{c.n}{out ? ' (시야 밖으로 추정)' : ''}</title>
-              </g>
-            )
-          })}
-          {labels.map((l) => <Label key={l.key} x={l.at[0]} y={l.at[1]} S={S} text={l.text} tone={l.tone} />)}
-        </svg>
-        <span className="rp-clock">{ms(t)}{inFight && <i>교전 중</i>}</span>
-        {flash && <span className="rp-flash"><Icon n={flash} /></span>}
+    <div className="rx" tabIndex={-1} onKeyDown={keys}>
+      <div className="d3-main">
+        <div className="d3-stage">
+          <div className="d3-frame rp" tabIndex={0} aria-label="리플레이. 스페이스로 재생과 멈춤, 화살표로 10초 이동">
+            <div className="rp-screen" onClick={toggle}>
+              <svg className="map rp-map" viewBox={`0 0 ${S} ${S}`} role="img" aria-label={`리플레이 ${ms(t)}`}>
+                <defs>
+                  <clipPath id="rp-tk"><circle r="11" /></clipPath>
+                  <clipPath id="rp-tk-me"><circle r="13" /></clipPath>
+                  {vision && (
+                    <mask id="rp-vis">
+                      <rect width={S} height={S} fill="#fff" />
+                      {src_.map(([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="#000" />)}
+                    </mask>
+                  )}
+                </defs>
+                <image href={MAP_IMG} x="0" y="0" width={S} height={S} />
+                {vision && <rect width={S} height={S} className="rp-fog" mask="url(#rp-vis)" />}
+                {vision && rp.wards.filter(([a, b]) => t >= a && t < b).map(([, , x, y], i) => <circle key={`w${i}`} className="rp-ward" cx={x / 10} cy={y / 10} r="2.5" />)}
+                {evNow.map((e, i) => {
+                  const x = e.x / 10, y = e.y / 10
+                  if (e.k === 'kill') {
+                    return e.us
+                      ? <rect key={i} className="mp-kill" x={x - 6} y={y - 6} width="12" height="12" transform={`rotate(45 ${x} ${y})`} />
+                      : <path key={i} className="rp-x" d={`M${x - 7} ${y - 7}L${x + 7} ${y + 7}M${x + 7} ${y - 7}L${x - 7} ${y + 7}`} />
+                  }
+                  return <use key={i} href={`#i-${e.g}`} x={x - 10} y={y - 10} width="20" height="20" className={e.us ? 'rp-obj-us' : 'rp-obj-them'} />
+                })}
+                {C.map((c, i) => {
+                  const p = pos[i]
+                  if (!p) return null
+                  const r = c.me ? 13 : 11
+                  const out = vision && !c.us && !seen(p)
+                  return (
+                    <g key={i} transform={`translate(${p[0].toFixed(1)} ${p[1].toFixed(1)})`} className={cx('rp-tok', c.us ? 'us' : 'them', c.me && 'me', out && 'out')}>
+                      {rings.has(i) && <circle className="rp-pulse" r={r + 8} />}
+                      <image href={src(c.img)} x={-r} y={-r} width={r * 2} height={r * 2} clipPath={`url(#rp-tk${c.me ? '-me' : ''})`} />
+                      <circle className="rp-ring" r={r} />
+                      <title>{c.n}{out ? ' (시야 밖)' : ''}</title>
+                    </g>
+                  )
+                })}
+                {labels.map((l) => <Label key={l.key} x={l.at[0]} y={l.at[1]} S={S} text={l.text} tone={l.tone} />)}
+              </svg>
+              <span className="rp-clock">{ms(t)}{inFight && <i>교전 중</i>}</span>
+              {flash && <span className="rp-flash"><Icon n={flash} /></span>}
+            </div>
+          </div>
+          {under}
+        </div>
+        <div className="d3-side rx-side">{side(playScene)}</div>
       </div>
-      <div className="rp-dock">
+      <div className="rp-dock rx-dock">
         <Timeline rp={rp} t={t} scene={scene} fights={fights} onSeek={seek} onScrub={(v) => { setPlay(false); seek(v) }} />
         <div className="rp-ctrl">
           <button type="button" className="rp-b" onClick={() => seek(t - 10)} title="10초 뒤로 (←)"><Icon n="back" /></button>
           <button type="button" className="rp-b rp-main" onClick={toggle} title={play ? '멈춤 (스페이스)' : '재생 (스페이스)'}><Icon n={play ? 'pause' : 'play'} /></button>
           <button type="button" className="rp-b" onClick={() => seek(t + 10)} title="10초 앞으로 (→)"><Icon n="fwd" /></button>
           <span className="rp-time"><b>{ms(t)}</b> / {ms(rp.len)}</span>
-          {scene && <button type="button" className="rp-again" onClick={playScene}><Icon n="again" />교전 다시 보기</button>}
           <span className="rp-right">
             <span className="rp-speed" role="group" aria-label="재생 속도">
               <button type="button" disabled={si <= 0} onClick={() => setSpeed(SPEEDS[si - 1])} aria-label="느리게">−</button>
               <b>{speed}×</b>
               <button type="button" disabled={si >= SPEEDS.length - 1} onClick={() => setSpeed(SPEEDS[si + 1])} aria-label="빠르게">+</button>
             </span>
-            <label className="rp-vis"><input type="checkbox" checked={vision} onChange={(e) => setVision(e.target.checked)} />추정 시야</label>
+            <label className="rp-vis"><input type="checkbox" checked={vision} onChange={(e) => setVision(e.target.checked)} />시야</label>
           </span>
         </div>
       </div>
@@ -294,22 +307,99 @@ function Replay({ rp, scene, vision, setVision, fights }) {
   )
 }
 
-// ---------- 가운데 죽음 목록 ----------
+// ---------- 기본: 죽음 목록 한 줄 ----------
 function Row({ x, line, on, onPick }) {
   return (
     <li>
-      <button type="button" className={cx('d2-row', on && 'on')} onClick={onPick} aria-pressed={on}>
-        <span className="dno">{x.no}</span>
+      <button type="button" className={cx('d3-row', on && 'on')} onClick={onPick} aria-pressed={on}>
+        <span className="d3-rno">{x.no}</span>
         <time>{x.t}</time>
-        <span className="d2-kill"><Ci c={x.killer} size="sm" />{x.assists.map((a, i) => <Ci key={i} c={a} size="xs" />)}</span>
-        <span className="d2-lost">{x.lostAfter.length > 0 ? <LostList lost={x.lostAfter} /> : <span className="muted">손해 없음</span>}</span>
-        {line && <span className="d2-next"><b>개선점</b>{line}</span>}
+        <span className="d3-kill"><Ci c={x.killer} size="sm" />{x.assists.map((a, i) => <Ci key={i} c={a} size="xs" />)}</span>
+        <span className="d3-lost">{x.lostAfter.length > 0 ? <LostList lost={x.lostAfter} /> : <span className="muted">손해 없음</span>}</span>
+        {line && <span className="d3-next"><b>개선점</b>{line}</span>}
       </button>
     </li>
   )
 }
 
-// ---------- 오른쪽 사망 정보 (롤 Death Recap처럼) ----------
+// ---------- 기본: 죽음 정보 칸 (예전 죽음 정보와 같은 내용) ----------
+function DeathSpells({ s }) {
+  const icon = (sp) => <Pi p={sp} cls="ic ic-xs" />
+  if (!s) return <span className="no-rec">확인 못 함</span>
+  if (s.state !== 'each') {
+    return <>{s.list.map((sp) => <Fragment key={sp.key}>{icon(sp)}</Fragment>)}<span className="no-rec">{s.state === 'none' ? '기록 없음' : '확인 못 함'}</span></>
+  }
+  return s.list.map((sp) => (
+    <span key={sp.key} className="d-spell">
+      {icon(sp)}
+      {sp.verdict ? <span className={`chip chip-${sp.tone}`}>{sp.label}</span> : <span className="no-rec">확인 못 함</span>}
+    </span>
+  ))
+}
+
+function DamageBar({ dmg }) {
+  const tot = dmg.reduce((s, x) => s + x.v, 0) || 1
+  return (
+    <div className="dmg">
+      <div className="dmg-bar">
+        {dmg.map((x, i) => <span key={i} className={`dmg-seg dmg-${i}`} style={{ width: `${(x.v / tot * 100).toFixed(1)}%` }} title={`${x.who.n} ${num(x.v)}`} />)}
+      </div>
+      <ul className="dmg-list">
+        {dmg.map((x, i) => <li key={i}><Ci c={x.who} size="xs" title={x.who.n} /><span>{x.who.n}</span><b>{num(x.v)}</b></li>)}
+      </ul>
+    </div>
+  )
+}
+
+function Why({ note }) {
+  if (!note || !note.what) return null
+  return (
+    <div className="dcard-text">
+      <p><b>상황</b><span>{note.what}</span></p>
+      {note.evidence && <p><b>근거</b><span>{note.evidence}</span></p>}
+    </div>
+  )
+}
+
+function DeathCard({ X, note, onClose }) {
+  return (
+    <div className="d3-card">
+      <button type="button" className="d3-x" onClick={onClose} aria-label="죽음 정보 닫기"><Icon n="x" /></button>
+      <div className="d3-card-h">
+        <span className="d3-cno">{X.no}</span>
+        <span className="d3-faces"><Ci c={X.killer} size="lg" />{X.assists.map((a, i) => <Ci key={i} c={a} size="sm" />)}</span>
+        <div>
+          <h3>{killers(X)}에게 죽음</h3>
+          <p className="d3-meta"><span>{X.t}</span><span>{X.phase}</span><span>{X.zone}</span></p>
+        </div>
+      </div>
+      <div className="d3-info">
+        <div>
+          <dl className="dfacts">
+            <div><dt>근처 아군</dt><dd><Faces list={X.alliesNear} /></dd></div>
+            <div><dt>근처 적</dt><dd><Faces list={X.enemiesNear} /></dd></div>
+            <div><dt>보유 골드</dt><dd className="num">{X.gold != null ? num(X.gold) : '계산 불가'}</dd></div>
+            <div><dt>스펠</dt><dd className="d-spells"><DeathSpells s={X.spells} /></dd></div>
+            <div><dt>팀 골드 차이</dt><dd className={cx('num', X.teamGoldDiff < 0 && 'neg')}>{signed(X.teamGoldDiff)}</dd></div>
+            <div><dt title="죽은 뒤 90초 안에 잃은 포탑과 오브젝트">손해</dt><dd><LostList lost={X.lostAfter} /></dd></div>
+          </dl>
+          {X.roams.length > 0 && (
+            <ul className="roams">
+              <li className="roams-h">합류한 적</li>
+              {X.roams.map((r, i) => <li key={i}><Ci c={r.who} size="xs" /><span><span className="num">{r.minuteMark}</span> {r.wasAt}</span></li>)}
+            </ul>
+          )}
+        </div>
+        <div>
+          <div className="dcard-dmg"><span className="label">받은 피해</span><DamageBar dmg={X.damage} /></div>
+          <Why note={note} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------- 리플레이: 사망 정보 (롤 Death Recap처럼) ----------
 const SLOT_TXT = { AA: '평타', etc: '기타', item: '템', spell: '스펠' }
 
 function Split({ r, max, me }) {
@@ -322,10 +412,11 @@ function Split({ r, max, me }) {
 }
 
 function SkillIc({ p }) {
-  if (p.img) return <span className="dr-sk"><img src={src(p.img)} alt="" />{['Q', 'W', 'E', 'R', 'P'].includes(p.slot) && <em>{p.slot}</em>}</span>
-  return <span className="dr-sk dr-sk-txt">{SLOT_TXT[p.slot] || p.slot}</span>
+  if (p.img) return <span className="dr-sk" title={p.n}><img src={src(p.img)} alt={p.n} />{['Q', 'W', 'E', 'R', 'P'].includes(p.slot) && <em>{p.slot}</em>}</span>
+  return <span className="dr-sk dr-sk-txt" title={p.n}>{SLOT_TXT[p.slot] || p.slot}</span>
 }
 
+// 기술 이름은 길어서 쓰지 않아요. 아이콘과 Q/W/E/R, 평타/기타 표시로 알 수 있어요.
 function Parts({ parts, me, to }) {
   const max = Math.max(1, ...parts.map((p) => p.v))
   return (
@@ -333,7 +424,7 @@ function Parts({ parts, me, to }) {
       {parts.length === 0 && <p className="muted small">세부 기록이 없어요.</p>}
       {parts.map((p, i) => (
         <div key={i} className="dr-part">
-          <SkillIc p={p} /><span className="dr-pn">{p.n}</span><Split r={p} max={max} me={me} /><b>{num(p.v)}</b>
+          <SkillIc p={p} /><Split r={p} max={max} me={me} /><b>{num(p.v)}</b>
         </div>
       ))}
       {to && to.length > 0 && <div className="dr-to"><span className="label">넣은 대상</span>{to.map((x, i) => <span key={i}><Ci c={x.who} size="xs" />{num(x.v)}</span>)}</div>}
@@ -341,6 +432,7 @@ function Parts({ parts, me, to }) {
   )
 }
 
+// 원 그래프의 고정 피해 칸도 막대와 같은 빗금(SVG 무늬)으로 칠해요.
 function Ring({ r }) {
   const R = 30, L = 2 * Math.PI * R, tot = r.ph + r.mg + r.tr || 1
   let off = 0
@@ -352,6 +444,11 @@ function Ring({ r }) {
   }
   return (
     <svg className="dr-ring" viewBox="0 0 72 72" aria-hidden="true">
+      <defs>
+        <pattern id="dr-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="5" height="5" fill="#d9dce1" /><rect width="1.6" height="5" fill="#1a1b1e" />
+        </pattern>
+      </defs>
       <g transform="rotate(-90 36 36)">{seg(r.ph, 'ph')}{seg(r.mg, 'mg')}{seg(r.tr, 'tr')}</g>
       <text x="36" y="41" textAnchor="middle">{num(r.total)}</text>
     </svg>
@@ -359,7 +456,7 @@ function Ring({ r }) {
 }
 
 function MySpells({ s }) {
-  if (!s || s.state !== 'each') return <span className="muted small">{s && s.state === 'none' ? '스펠 기록 없음' : '스펠 확인 못 함'}</span>
+  if (!s || s.state !== 'each') return <span className="muted small">{s && s.state === 'none' ? '기록 없음' : '확인 못 함'}</span>
   return s.list.map((sp) => (
     <span key={sp.key} className={cx('dr-ms', sp.verdict === 'held' && 'bad', sp.verdict === 'used_before' && 'used')} title={`${sp.n} ${SPELL_WORD[sp.verdict] || '확인 못 함'}`}>
       <Pi p={sp} cls="dr-ms-ic" /><small>{SPELL_WORD[sp.verdict] || '?'}</small>
@@ -367,7 +464,7 @@ function MySpells({ s }) {
   ))
 }
 
-function Recap({ r, fight, spells, many }) {
+function Recap({ r }) {
   const [open, setOpen] = useState(null)
   useEffect(() => setOpen(null), [r])
   const max = Math.max(1, ...r.rows.map((x) => x.v), r.me ? r.me.v : 0)
@@ -376,15 +473,12 @@ function Recap({ r, fight, spells, many }) {
   return (
     <div className="dr">
       <div className="dr-head">
-        {many
-          ? <div className="dr-time"><span className="label">죽음 {many}번 동안</span><b>받은 피해</b></div>
-          : <div className="dr-time">
-              <span className="label">교전 시간</span>
-              {fight ? <><b className="num">{fight.to - fight.from}<small>초</small></b><span className="dr-range">{ms(fight.from)}~{ms(fight.to)}</span></>
-                : <b className="muted">계산 못 함</b>}
-            </div>}
+        <div className="dr-time">
+          <span className="label">받은 피해</span>
+          <b className="num">{num(r.total)}</b>
+          <ul className="dr-legend"><li><i className="ph" />물리</li><li><i className="mg" />마법</li><li><i className="tr" />고정</li></ul>
+        </div>
         <Ring r={r} />
-        <ul className="dr-legend"><li><i className="ph" />물리</li><li><i className="mg" />마법</li><li><i className="tr" />고정</li></ul>
       </div>
       <ol className="dr-rows">
         {r.rows.map((x, i) => {
@@ -393,10 +487,10 @@ function Recap({ r, fight, spells, many }) {
           return (
             <li key={i} className={cx(on && 'on')}>
               <button type="button" className="dr-row" disabled={!can} onClick={() => setOpen(on ? null : i)} aria-expanded={can ? on : undefined}>
-                <Ci c={x.who} size="sm" />
+                <Ci c={x.who} size="md" />
                 <span className="dr-v"><b>{num(x.v)}</b><Split r={x} max={max} /></span>
                 <span className="dr-used">{x.used.map((u, k) => <SkillIc key={k} p={u} />)}</span>
-                {can && <span className="dr-chev" aria-hidden="true">{on ? '−' : '+'}</span>}
+                <span className="dr-chev" aria-hidden="true">{can ? (on ? '−' : '+') : ''}</span>
               </button>
               {on && <Parts parts={x.parts} />}
             </li>
@@ -407,153 +501,140 @@ function Recap({ r, fight, spells, many }) {
       <div className={cx('dr-mine', open === 'me' && 'on')}>
         {me ? (
           <button type="button" className="dr-row" onClick={() => setOpen(open === 'me' ? null : 'me')} aria-expanded={open === 'me'}>
-            <Ci c={me.who} size="sm" />
+            <Ci c={me.who} size="md" />
             <span className="dr-v"><span className="label">내가 넣은 피해</span><b>{num(me.v)}</b><Split r={me} max={max} me /></span>
-            <span className="dr-used">{!many && <MySpells s={spells} />}{myR && <SkillIc p={myR} />}</span>
+            <span className="dr-used">{myR && <SkillIc p={myR} />}</span>
             <span className="dr-chev" aria-hidden="true">{open === 'me' ? '−' : '+'}</span>
           </button>
-        ) : <p className="muted small">내가 넣은 피해 기록이 없어요.</p>}
+        ) : <p className="dr-zero"><span className="label">내가 넣은 피해</span><b>0</b></p>}
         {open === 'me' && me && <Parts parts={me.parts} me to={me.to} />}
       </div>
-      <p className="dr-foot">챔피언을 누르면 어떤 기술로 피해를 줬는지 보여요.{!many && fight && ' 교전 시간은 롤 전투 상태 기준(마지막 상호작용 뒤 5초)으로 추정했어요.'}</p>
     </div>
   )
 }
 
-// 여러 죽음의 사망 정보를 하나로 합쳐요(아무것도 고르지 않았을 때).
-function mergeRecaps(list) {
-  const add = (a, b) => { a.v += b.v; a.ph += b.ph; a.mg += b.mg; a.tr += b.tr }
-  const mergeParts = (into, parts) => parts.forEach((p) => {
-    const k = p.slot + p.n
-    if (!into[k]) into[k] = { ...p, v: 0, ph: 0, mg: 0, tr: 0 }
-    add(into[k], p)
-  })
-  const rows = {}, mp = {}, to = {}
-  let me = null
-  const out = { v: 0, ph: 0, mg: 0, tr: 0 }
-  list.forEach((r) => {
-    if (!r) return
-    add(out, { v: r.total, ph: r.ph, mg: r.mg, tr: r.tr })
-    r.rows.forEach((x) => {
-      const k = x.kind + x.who.n
-      if (!rows[k]) rows[k] = { ...x, v: 0, ph: 0, mg: 0, tr: 0, _p: {}, _u: {} }
-      add(rows[k], x); mergeParts(rows[k]._p, x.parts); x.used.forEach((u) => { rows[k]._u[u.n] = u })
-    })
-    if (r.me) {
-      if (!me) me = { ...r.me, v: 0, ph: 0, mg: 0, tr: 0 }
-      add(me, r.me); mergeParts(mp, r.me.parts)
-      ;(r.me.to || []).forEach((x) => { to[x.who.n] = { who: x.who, v: ((to[x.who.n] || {}).v || 0) + x.v } })
-    }
-  })
-  out.total = out.v
-  out.rows = Object.values(rows).map((x) => ({ ...x, parts: Object.values(x._p).sort((a, b) => b.v - a.v), used: Object.values(x._u) }))
-    .sort((a, b) => b.v - a.v)
-  out.me = me && { ...me, parts: Object.values(mp).sort((a, b) => b.v - a.v), to: Object.values(to).sort((a, b) => b.v - a.v) }
-  return out
+// 리플레이 지도 아래: 교전 구간, 스펠, 골드, 손해
+function ReplayNums({ X }) {
+  const cells = [
+    ['교전 구간', X.fight ? <span className="num sm">{ms(X.fight.from)}~{ms(X.fight.to)}</span> : <span className="muted">계산 못 함</span>],
+    ['스펠', <span className="rx-spells"><MySpells s={X.spells} /></span>],
+    ['보유 골드', <span className="num">{X.gold != null ? num(X.gold) : '—'}</span>],
+    ['적에게 준 골드', X.recap ? <span className="num">+{num(X.recap.given)}</span> : <span className="muted">—</span>],
+    ['팀 골드 차이', <span className={cx('num', X.teamGoldDiff < 0 && 'neg')}>{signed(X.teamGoldDiff)}</span>],
+    ['죽은 뒤 손해', X.lostAfter.length ? <LostList lost={X.lostAfter} /> : <span className="muted">없음</span>],
+  ]
+  return (
+    <div className="rx-nums">
+      {cells.map((c, i) => <div key={i}><span className="label">{c[0]}</span><div className="d3-v">{c[1]}</div></div>)}
+    </div>
+  )
 }
 
-function Strip({ cells }) {
-  return <div className="d2-strip">{cells.map((c, i) => <div key={i}><span className="label">{c[0]}</span><div className="d2-v">{c[1]}</div></div>)}</div>
+// 리플레이 오른쪽: 위 = 죽음 번호 칸, 아래 왼쪽 = 받은 피해, 아래 오른쪽 = 상황과 근거
+function ReplaySide({ X, note, onPlay }) {
+  return (
+    <div className="rx-in">
+      <div className="rx-top">
+        <span className="rx-no">{String(X.no).padStart(2, '0')}</span>
+        <div className="rx-ft">
+          <span className="label">교전 시간</span>
+          {X.fight ? <b className="num">{X.fight.to - X.fight.from}<small>초</small></b> : <b className="muted">계산 못 함</b>}
+        </div>
+        <span className="rx-faces" aria-label={`${killers(X)}에게 죽음`}>
+          <Ci c={X.killer} size="lg" />{X.assists.map((a, i) => <Ci key={i} c={a} size="md" />)}
+        </span>
+        <button type="button" className="rx-play" onClick={onPlay}>교전 보기</button>
+      </div>
+      <div className="rx-body">
+        <div className="rx-dmg">
+          {X.recap ? <Recap r={X.recap} /> : <p className="muted">사망 정보 기록이 없어요.</p>}
+        </div>
+        <div className="rx-story">
+          {note && note.what
+            ? <dl className="rx-why">
+                <div><dt>상황</dt><dd className="rx-what">{note.what}</dd></div>
+                {note.evidence && <div><dt>근거</dt><dd>{note.evidence}</dd></div>}
+              </dl>
+            : <p className="muted">이 죽음의 상황 설명은 아직 없어요.</p>}
+          <p className="rx-near">
+            <span>근처 아군</span>{X.alliesNear.length ? X.alliesNear.map((c, i) => <Ci key={i} c={c} size="sm" />) : <em>없음</em>}
+            <span>근처 적</span>{X.enemiesNear.map((c, i) => <Ci key={i} c={c} size="sm" />)}
+          </p>
+          {note && note.next && <div className="rx-next"><span className="pill">개선점</span><p>{note.next}</p></div>}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default function Deaths({ d, fb }) {
   const D = d.deaths
   const rp = D.replay
-  const byT = Object.fromEntries(D.list.map((x) => [x.t, x]))
-  const keyList = fb ? fb.keyDeaths.filter((kd) => byT[kd.t]) : []
-  const kdOf = Object.fromEntries(keyList.map((kd) => [kd.t, kd]))
-  const other = (fb && fb.otherDeaths) || {}
-  const [sel, setSel] = useState(null)
+  // 죽음마다 상황, 근거, 개선점. 피드백 글이 없는 판은 시안 확인용 예시(demoNotes)만 있어요.
+  const notes = useMemo(() => {
+    const o = {}
+    if (fb) {
+      ;(fb.keyDeaths || []).forEach((k) => { o[k.t] = k })
+      Object.entries(fb.otherDeaths || {}).forEach(([t, line]) => { if (!o[t]) o[t] = { next: line } })
+    } else if (D.demoNotes) Object.assign(o, D.demoNotes)
+    return o
+  }, [fb, D])
   const [mode, setMode] = useState('all')
+  const [sel, setSel] = useState(null)      // 기본 모드에서 고른 죽음
+  const [cur, setCur] = useState(1)         // 리플레이 모드에서 보는 죽음
   const [vision, setVision] = useState(true)
   const X = sel != null ? D.list.find((x) => x.no === sel) : null
-  const pick = (no) => {
-    if (no === sel) { setSel(null); setMode('all'); return }
-    setSel(no)
-    if (rp) setMode('replay')
-  }
-  const keySet = new Set(keyList.map((k) => k.t))
-  const mapM = { ...D.map, deaths: D.map.deaths.map((p) => ({ ...p, key: keySet.has(p.t) })) }
-  const lineOf = (x) => (kdOf[x.t] && kdOf[x.t].next) || other[x.t] || null
-  const keyRows = D.list.filter((x) => keySet.has(x.t))
-  const restRows = D.list.filter((x) => !keySet.has(x.t))
-  const scene = X && X.fight ? { ...X.fight, joins: X.joins || [] } : X && X.sec ? { from: X.sec - 10, to: X.sec, joins: X.joins || [] } : null
+  const R = D.list.find((x) => x.no === cur) || D.list[0]
+  const pick = (no) => setSel(no === sel ? null : no)
+  const toReplay = () => { setMode('replay'); setCur(1) }
+  const scene = R && R.fight ? { ...R.fight, joins: R.joins || [] } : R && R.sec ? { from: R.sec - 10, to: R.sec, joins: R.joins || [] } : null
   const fights = D.list.map((x) => x.fight || (x.sec != null ? { from: x.sec, to: x.sec } : null)).filter(Boolean)
-  const allRecap = useMemo(() => mergeRecaps(D.list.map((x) => x.recap)), [D])
-  const kd = X && kdOf[X.t]
+  const isReplay = mode === 'replay' && rp && R
 
-  const cells = X
-    ? [
-        ['보유 골드', <span className="num">{X.gold != null ? num(X.gold) : '—'}</span>],
-        ['적에게 준 골드', X.recap ? <span className="num">+{num(X.recap.given)}</span> : <span className="muted">—</span>],
-        ['팀 골드 차이', <span className={cx('num', X.teamGoldDiff < 0 && 'neg')}>{signed(X.teamGoldDiff)}</span>],
-        ['죽은 뒤 손해', X.lostAfter.length ? <LostList lost={X.lostAfter} /> : <span className="muted">없음</span>],
-      ]
-    : [
-        ['데스', <span className="num red">{D.total}</span>],
-        ...D.phases.map((p) => [p.name, <span className="num">{p.n}<small>번</small></span>]),
-        ['혼자 죽음', <span className="num">{D.alone}<small>번</small></span>],
-        ['죽은 뒤 손해', <span className="num">{D.lostN}<small>번</small></span>],
-      ]
+  const cells = [
+    ['데스', <span className="num red">{D.total}</span>],
+    ...D.phases.map((p) => [p.name, <span className="num">{p.n}<small>번</small></span>]),
+    ['혼자 죽음', <span className="num">{D.alone}<small>번</small></span>],
+    ['죽은 뒤 손해', <span className="num">{D.lostN}<small>번</small></span>],
+  ]
 
   return (
     <Section no="04">
-      <div className="d2">
-        <div className="d2-top">
-          <span className="d2-count">{X ? <>죽음 <b>{X.no}</b> / {D.total}</> : <>죽음 전체 <b>{D.total}</b></>}</span>
-          <span className="d2-seg">
-            {D.list.map((x) => <button key={x.t} type="button" className={cx(sel === x.no && 'on', keySet.has(x.t) && 'key')} onClick={() => pick(x.no)} aria-label={`${x.no}번째 죽음 ${x.t}`} />)}
-          </span>
-          <span className="d2-meta">{X ? `${X.t} · ${X.phase} · ${X.zone}` : D.zones.filter((z) => z.n).map((z) => `${z.name} ${z.n}`).join(' · ')}</span>
-        </div>
-        {X && (
-          <h3 className="d2-head">
-            <Ci c={X.killer} size="sm" />{X.killer.n}{X.assists.length > 0 && <>·{X.assists.map((a) => a.n).join('·')}</>}에게 죽음
-            <span className="d2-near">근처 아군 {X.alliesNear.length} · 적 {X.enemiesNear.length}</span>
-          </h3>
-        )}
-        <div className="d2-main">
-          <div className="d2-stage">
-            <div className="d2-tabs">
-              <button type="button" className={cx(mode === 'all' && 'on')} onClick={() => setMode('all')}>기본</button>
-              {rp && <button type="button" className={cx(mode === 'replay' && 'on')} onClick={() => setMode('replay')}>리플레이</button>}
-            </div>
-            <div className="d2-frame">
-              {mode === 'replay' && rp
-                ? <Replay rp={rp} scene={scene} vision={vision} setVision={setVision} fights={fights} />
-                : <OverviewMap m={mapM} active={sel} onPick={pick} />}
-            </div>
-            {mode === 'replay' && rp && vision && <p className="d2-note">어두운 곳은 우리 팀 시야 밖으로 추정한 곳이에요(벽·수풀은 계산 안 함). 시야 밖의 적은 흐리게 보여요.</p>}
-            {mode === 'all' && (
-              <ul className="legend legend-map">
-                <li><span className="lg lg-mdeath" />죽은 곳</li><li><span className="lg lg-mkill" />킬</li><li><span className="lg lg-massist" />어시스트</li>
-                {keyList.length > 0 && <li>큰 원 = 주요 죽음</li>}
-              </ul>
-            )}
+      <div className={cx('d3', isReplay && 'is-replay')}>
+        <div className="d3-bar">
+          <div className="d3-tabs">
+            <button type="button" className={cx(mode === 'all' && 'on')} onClick={() => setMode('all')}>기본</button>
+            {rp && <button type="button" className={cx(mode === 'replay' && 'on')} onClick={toReplay}>리플레이</button>}
           </div>
-          <div className="d2-list">
-            {keyRows.length > 0 && <>
-              <h4 className="d2-lh">주요 죽음</h4>
-              <ol>{keyRows.map((x) => <Row key={x.t} x={x} line={lineOf(x)} on={sel === x.no} onPick={() => pick(x.no)} />)}</ol>
-            </>}
-            {restRows.length > 0 && <>
-              <h4 className="d2-lh">{keyRows.length ? '다른 죽음' : `죽음 ${D.total}`}</h4>
-              <ol>{restRows.map((x) => <Row key={x.t} x={x} line={lineOf(x)} on={sel === x.no} onPick={() => pick(x.no)} />)}</ol>
-            </>}
-            {kd && kd.what && (
-              <div className="d2-why">
-                <p><b>상황</b>{kd.what}</p>
-                {kd.evidence && <p><b>근거</b>{kd.evidence}</p>}
+          {isReplay && (
+            <div className="d3-jump" role="group" aria-label="죽음 바로가기">
+              {D.list.map((x) => <button key={x.t} type="button" className={cx(cur === x.no && 'on')} onClick={() => setCur(x.no)} aria-pressed={cur === x.no} title={`${x.no}번째 죽음 ${x.t}`}>{x.no}</button>)}
+            </div>
+          )}
+        </div>
+        {isReplay ? (
+          <Replay rp={rp} scene={scene} vision={vision} setVision={setVision} fights={fights}
+            under={<ReplayNums X={R} />}
+            side={(play) => <ReplaySide X={R} note={notes[R.t]} onPlay={play} />} />
+        ) : (
+          <>
+            <div className="d3-main">
+              <div className="d3-stage">
+                <div className="d3-frame"><OverviewMap m={D.map} active={sel} onPick={pick} /></div>
+                <ul className="legend legend-map">
+                  <li><span className="lg lg-mdeath" />죽은 곳</li><li><span className="lg lg-mkill" />킬</li><li><span className="lg lg-massist" />어시스트</li>
+                </ul>
               </div>
-            )}
-            {!X && <p className="muted small d2-hint">{rp ? '죽음을 고르면 그 교전을 리플레이로 다시 보여 줘요. 한 번 더 누르면 전체로 돌아가요.' : '죽음을 고르면 그 죽음의 사망 정보가 오른쪽에 나와요.'}</p>}
-          </div>
-          <div className="d2-recap">
-            {X ? (X.recap ? <Recap r={X.recap} fight={X.fight} spells={X.spells} /> : <p className="muted small">사망 정보 기록이 없어요.</p>)
-              : <Recap r={allRecap} many={D.total} />}
-          </div>
-        </div>
-        <Strip cells={cells} />
+              <div className="d3-side">
+                {X && <DeathCard X={X} note={notes[X.t]} onClose={() => setSel(null)} />}
+                <ol className="d3-list">
+                  {D.list.map((x) => <Row key={x.t} x={x} line={notes[x.t] && notes[x.t].next} on={sel === x.no} onPick={() => pick(x.no)} />)}
+                </ol>
+              </div>
+            </div>
+            <div className="d3-strip">{cells.map((c, i) => <div key={i}><span className="label">{c[0]}</span><div className="d3-v">{c[1]}</div></div>)}</div>
+          </>
+        )}
       </div>
     </Section>
   )

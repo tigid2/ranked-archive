@@ -45,7 +45,7 @@ export function Memo({ fb }) {
     <Section no="08">
       <div className="memo">
         {m.principle ? (
-          <p><strong>오늘의 원칙 {m.principle}</strong>{m.kept ? ` · ${m.kept}` : ''}{m.scene ? ` — ${m.scene}` : ''}</p>
+          <p><strong>오늘의 원칙 {m.principle}</strong>{m.kept ? `, ${m.kept}` : ''}{m.scene ? ` — ${m.scene}` : ''}</p>
         ) : null}
         {qs.map((x, i) => (
           <p key={i}><strong>{x.q}</strong><br />{x.a || '아직 답이 없어요.'}</p>
