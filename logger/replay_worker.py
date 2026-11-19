@@ -288,10 +288,12 @@ def decode(cfg, rofl, out_path):
     with open(rofl, "rb") as f:
         head = f.read(64)
     ver = head[15:15 + head[14]].decode("ascii", "replace")
-    tables = os.path.join(ddir, f"tables_{ver}.json")
-    if not os.path.exists(tables):
+    tables = find_tables(ddir, ver)
+    if not tables:
         log(f"  패치 {ver} 표가 아직 없어요. 이 판은 미니맵 기록만 써요. (새 패치 표를 만들 때 이 리플레이를 써요)")
         return None
+    if os.path.basename(tables) != f"tables_{ver}.json":
+        log(f"  {ver} 표가 따로 없어서 같은 패치의 {os.path.basename(tables)}로 디코딩해 봐요(핫픽스 빌드). 결과가 이상하면 건너뛰어요.")
     wait_not_in_game()
     try:
         if ddir not in sys.path:
@@ -302,6 +304,41 @@ def decode(cfg, rofl, out_path):
         log("  디코딩 실패:\n" + traceback.format_exc()[-1500:])
         return None
     return ver
+
+
+def find_tables(ddir, ver):
+    """tables_<빌드>.json. 없으면 같은 패치(앞 두 자리, 예: 16.23)의 표 중 가장 최근 것(핫픽스는 보통 표가 같아요)."""
+    exact = os.path.join(ddir, f"tables_{ver}.json")
+    if os.path.exists(exact):
+        return exact
+    short = ".".join(ver.split(".")[:2]) + "."
+    same = sorted(glob.glob(os.path.join(ddir, f"tables_{short}*.json")), key=os.path.getmtime, reverse=True)
+    return same[0] if same else None
+
+
+def retry_no_tables(cfg, st):
+    """표가 없어서 건너뛴 판(no-tables): 그 뒤에 표가 생겼으면 받아 둔 리플레이로 다시 디코딩해서 올려요.
+    LCU 전적과 24시간 제한 없이 replay_state.json의 downloaded만 봐요."""
+    for gid, info in list(st["done"].items()):
+        dl = st["downloaded"].get(gid)
+        if info.get("result") != "no-tables" or not dl or not os.path.exists(dl["path"]):
+            continue
+        if not find_tables(cfg["decoder_dir"], str(dl.get("patch", ""))):
+            continue
+        mid = f"{os.path.basename(dl['path']).split('-')[0]}_{gid}"
+        log(f"{mid} 새 표가 생겨서 다시 디코딩해요.")
+        os.makedirs(OUT_DIR, exist_ok=True)
+        out = os.path.join(OUT_DIR, f"{mid}.pos.json.gz")
+        t0 = time.time()
+        if not decode(cfg, dl["path"], out):
+            continue
+        add_timing(out, {"retry": True, "decodeSec": round(time.time() - t0, 1), "decodedAt": time.time()})
+        if not upload(cfg, out, mid):
+            return
+        os.remove(out)
+        st["done"][gid] = {"result": "uploaded", "at": time.time(), "retry": True}
+        save_state(st)
+        log(f"{mid} 올렸어요(다시 디코딩).")
 
 
 def add_timing(out_path, timing):
@@ -425,6 +462,10 @@ def main(check=False, after_game=False):
                   f"{md.get('state') if isinstance(md, dict) else code}")
         return
     st = load_state()
+    try:
+        retry_no_tables(cfg, st)
+    except Exception:
+        log("다시 디코딩 중 오류:\n" + traceback.format_exc())
     now = time.time()
     todo = [g for g in games if str(g["gameId"]) not in st["done"]
             and now - (g.get("gameCreation", 0) / 1000) < cfg["replay_lookback_hours"] * 3600]
