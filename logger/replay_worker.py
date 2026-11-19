@@ -295,7 +295,7 @@ def decode(cfg, rofl, out_path):
     if os.path.basename(tables) != f"tables_{ver}.json":
         log(f"  {ver} 표가 따로 없어서 같은 패치의 {os.path.basename(tables)}로 디코딩해 봐요(핫픽스 빌드). 결과가 이상하면 건너뛰어요.")
     wait_not_in_game()
-    if not ensure_module("zstandard"):
+    if not has_zstd() and not ensure_module("zstandard"):
         return None
     try:
         if ddir not in sys.path:
@@ -306,6 +306,15 @@ def decode(cfg, rofl, out_path):
         log("  디코딩 실패:\n" + traceback.format_exc()[-1500:])
         return None
     return ver
+
+
+def has_zstd():
+    """디코더는 zstandard 또는 파이썬 3.14+ 기본 모듈 compression.zstd 중 하나만 있으면 돼요."""
+    import importlib.util
+    try:
+        return bool(importlib.util.find_spec("zstandard") or importlib.util.find_spec("compression.zstd"))
+    except ModuleNotFoundError:
+        return False
 
 
 def ensure_module(name):
@@ -481,11 +490,7 @@ def main(check=False, after_game=False):
         print("클라이언트 연결: 됨")
         print("리플레이 폴더:", replay_dir(lcu))
         print("디코더 폴더:", cfg["decoder_dir"], "있음" if os.path.isdir(cfg["decoder_dir"]) else "없음")
-        try:
-            import zstandard  # noqa: F401
-            print("zstandard: 있음")
-        except ImportError:
-            print("zstandard: 없음 (디코딩할 때 자동으로 설치해요)")
+        print("zstd 압축 풀기:", "됨" if has_zstd() else "안 됨 (zstandard 설치 필요)")
         print("디코더 표:", [os.path.basename(p) for p in glob.glob(os.path.join(cfg["decoder_dir"], "tables_*.json"))])
         print(f"최근 솔로 랭크 {len(games)}판:")
         for g in games:
