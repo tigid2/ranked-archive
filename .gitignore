@@ -17,3 +17,9 @@ web/node_modules/
 web/dist-single/
 tools/report/lab-data/
 tools/report/private-data/
+
+# 피드백 글: 공개 판(tools/report/public.json)만 저장소에 올려요. 나머지는 PC 작업 폴더 ranked-archive-workfiles\feedback 에 두고,
+# 리포트를 만들 때 tools/report/private-feedback/ 에 복사해서 써요. 새 공개 판은 아래에 ! 줄을 더해요.
+feedback/*
+!feedback/KR_8448036968.json
+tools/report/private-feedback/

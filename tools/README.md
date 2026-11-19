@@ -7,7 +7,7 @@
 |---|---|
 | `raw/` | 경기 원본(`*.json.gz`), 직접 넣은 게임 중 기록(`*.live.json`), 리플레이 1초 위치(`*.pos.json.gz`, PC의 `replay_worker.py`가 올림) |
 | `analysis/` | `analyze.py` 분석 결과(`*.analysis.json`) |
-| `feedback/` | 판별 피드백 글(`<경기ID>.json`) |
+| `feedback/` | 공개 판의 판별 피드백 글(`<경기ID>.json`). 공개하지 않는 판의 피드백은 저장소에 올리지 않아요. 원본은 PC `ranked-archive-workfiles\feedback\`에 두고, 리포트를 만들 때 `tools/report/private-feedback/`(저장소 제외)에 복사해서 써요. |
 | `data/` | Data Dragon 데이터(`dd_*.json`), 리포트 지도 `map-rift-dark.svg`(사용자가 확정한 다크 미니맵), 오브젝트 아이콘 원본 `icons/*.svg`(사용자가 그림. 바꾸면 `python3 tools/make_sprite.py`로 화면 아이콘 묶음에 반영), 예전 흑백 지도 `map11_gray.png`(build2.py만 씀) |
 | `tools/report/` | 리포트 데이터 만들기 `report_data.py`, artifact용 한 파일 `single.py`, 스타일 `report.css`(React 화면도 이 파일을 그대로 써요), 예전 생성기 `build2.py` |
 | `web/` | React 리포트 화면(Vite). 빌드하면 `docs/report/`에 저장돼요. 실험 리포트는 `web/src/lab/`, 데이터는 `tools/report/lab_data.py`와 `site_data.py`(통계 사이트 숫자). 공개 사이트에는 안 나오고 artifact 한 파일로만 봐요. |

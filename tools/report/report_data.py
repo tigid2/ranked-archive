@@ -143,7 +143,10 @@ def rank_of(mid):
 def build(mid, champ_id=None, lab=False):
     raw = json.load(gzip.open(os.path.join(ROOT, "raw", mid + ".json.gz"), "rt", encoding="utf-8"))
     A = json.load(open(os.path.join(ROOT, "analysis", mid + ".analysis.json"), encoding="utf-8"))
+    # 공개 판 피드백은 feedback/, 공개하지 않는 판은 tools/report/private-feedback/(저장소에 안 올림, 원본은 PC 작업 폴더)
     fb_path = os.path.join(ROOT, "feedback", mid + ".json")
+    if not os.path.exists(fb_path):
+        fb_path = os.path.join(ROOT, "tools", "report", "private-feedback", mid + ".json")
     FB = json.load(open(fb_path, encoding="utf-8")) if os.path.exists(fb_path) else None
     CHAMP = champ_id or A["champion"]
 
