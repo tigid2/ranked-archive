@@ -301,7 +301,7 @@ def build(mid, champ_id=None, lab=False):
         "botAdcKills": L["botAdcKills"] if L else None,
         "soloKills": {"me": solo(my_pid, opp_pid), "opp": solo(opp_pid, my_pid)},
         "first2": tsec(lv["2"]["me"]) < tsec(lv["2"]["opp"]) if "2" in lv and lv["2"]["me"] and lv["2"]["opp"] else None,
-        "maxCsAdv": A["basic"].get("maxCsAdvantage", 0),
+        "maxCsAdv": round(A["basic"].get("maxCsAdvantage") or 0),  # 라이엇 값이 32.00000002980232 같은 소수라서 정수로
         "levels": [{"lv": n, "me": v["me"], "opp": v["opp"],
                     "meAhead": tsec(v["me"]) < tsec(v["opp"]), "oppAhead": tsec(v["opp"]) < tsec(v["me"])}
                    for n, v in lv.items() if v["me"] and v["opp"]],  # 둘 중 하나라도 못 찍은 레벨(짧은 판의 11레벨 등)은 빼요

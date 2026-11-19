@@ -123,6 +123,7 @@ export function usePin(onProgress) {
   const ref = useRef(null)
   useEffect(() => {
     const el = ref.current
+    if (!el) return undefined  // 다음 판이 없는 최신 판은 이 구역이 없어요
     let ticking = false
     const frame = () => {
       ticking = false
