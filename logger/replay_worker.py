@@ -295,6 +295,8 @@ def decode(cfg, rofl, out_path):
     if os.path.basename(tables) != f"tables_{ver}.json":
         log(f"  {ver} 표가 따로 없어서 같은 패치의 {os.path.basename(tables)}로 디코딩해 봐요(핫픽스 빌드). 결과가 이상하면 건너뛰어요.")
     wait_not_in_game()
+    if not ensure_module("zstandard"):
+        return None
     try:
         if ddir not in sys.path:
             sys.path.insert(0, ddir)
@@ -304,6 +306,32 @@ def decode(cfg, rofl, out_path):
         log("  디코딩 실패:\n" + traceback.format_exc()[-1500:])
         return None
     return ver
+
+
+def ensure_module(name):
+    """디코더에 필요한 부품이 없으면 이 프로그램을 돌리는 파이썬에 바로 설치해요(install.bat을 안 돌렸거나 다른 파이썬일 때)."""
+    import importlib
+    try:
+        importlib.import_module(name)
+        return True
+    except ImportError:
+        pass
+    log(f"  {name}이(가) 없어서 설치할게요({sys.executable}).")
+    try:
+        r = subprocess.run([sys.executable, "-m", "pip", "install", "--user", "--quiet", name],
+                           capture_output=True, text=True, timeout=300,
+                           creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        importlib.invalidate_caches()
+        import site
+        if site.getusersitepackages() not in sys.path:
+            sys.path.append(site.getusersitepackages())
+        importlib.import_module(name)
+        log(f"  {name} 설치 끝.")
+        return True
+    except Exception as e:
+        out = (getattr(locals().get("r"), "stderr", "") or "")[-500:]
+        log(f"  {name} 설치 실패({e}). install.bat을 한 번 실행해 주세요.\n{out}")
+        return False
 
 
 def find_tables(ddir, ver):
@@ -453,6 +481,11 @@ def main(check=False, after_game=False):
         print("클라이언트 연결: 됨")
         print("리플레이 폴더:", replay_dir(lcu))
         print("디코더 폴더:", cfg["decoder_dir"], "있음" if os.path.isdir(cfg["decoder_dir"]) else "없음")
+        try:
+            import zstandard  # noqa: F401
+            print("zstandard: 있음")
+        except ImportError:
+            print("zstandard: 없음 (디코딩할 때 자동으로 설치해요)")
         print("디코더 표:", [os.path.basename(p) for p in glob.glob(os.path.join(cfg["decoder_dir"], "tables_*.json"))])
         print(f"최근 솔로 랭크 {len(games)}판:")
         for g in games:
