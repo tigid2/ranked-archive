@@ -635,7 +635,9 @@
    "assists": [
     "블리츠크랭크(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "뽀삐(아군)"
+   ],
    "enemiesNear": [
     "루시안(적)",
     "블리츠크랭크(적)"
@@ -771,7 +773,9 @@
    "assists": [
     "루시안(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "뽀삐(아군)"
+   ],
    "enemiesNear": [
     "루시안(적)",
     "블리츠크랭크(적)"
@@ -914,14 +918,17 @@
    "alliesNear": [
     "뽀삐(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "나서스(적)",
+    "루시안(적)"
+   ],
    "roams": [
     {
      "who": "나서스(적)",
      "role": "탑",
-     "minuteMark": "28:00",
+     "minuteMark": "27:56",
      "wasAt": "탑 라인",
-     "distance": 3922
+     "distance": 4586
     }
    ],
    "damage": [
@@ -1066,30 +1073,27 @@
    ],
    "alliesNear": [
     "샤코(아군)",
-    "올라프(아군)",
-    "아칼리(아군)",
     "뽀삐(아군)"
    ],
    "enemiesNear": [
     "나서스(적)",
     "리 신(적)",
-    "요네(적)",
-    "루시안(적)"
+    "요네(적)"
    ],
    "roams": [
     {
      "who": "요네(적)",
      "role": "미드",
-     "minuteMark": "32:00",
+     "minuteMark": "32:18",
      "wasAt": "미드 라인",
      "distance": 10735
     },
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "32:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 3951
+     "minuteMark": "32:18",
+     "wasAt": "탑 라인",
+     "distance": 2513
     }
    ],
    "damage": [
@@ -1420,7 +1424,7 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3269
+   "myDistance30sBefore": 3733
   },
   {
    "t": "8:37",
@@ -1448,14 +1452,14 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3558
+   "myDistance30sBefore": 3431
   },
   {
    "t": "18:52",
    "name": "화학공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3752
+   "myDistance30sBefore": 4415
   },
   {
    "t": "19:45",
@@ -1469,28 +1473,28 @@
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 445
+   "myDistance30sBefore": 827
   },
   {
    "t": "24:50",
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 7750
+   "myDistance30sBefore": 4805
   },
   {
    "t": "30:18",
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3532
+   "myDistance30sBefore": 5558
   },
   {
    "t": "31:25",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1106
+   "myDistance30sBefore": 2412
   }
  ],
  "buildings": [
@@ -1953,20 +1957,31 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 0.6,
+   "5~6": 0.83,
+   "6~7": 0.7,
+   "7~8": 0.38,
+   "8~9": 0.93,
+   "9~10": 0.52,
+   "10~11": 1.0,
+   "11~12": 0.7,
+   "12~13": 0.98,
+   "13~14": 0.5
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 42,
-   "opp": 50
+   "me": 74,
+   "opp": 87
   },
   "csWithoutSupport": {
-   "me": 43,
-   "opp": 37
+   "me": 11,
+   "opp": 0
   },
   "supportAwayRanges": [
-   "4~6분",
-   "7~9분",
-   "12~14분"
+   "7~8분"
   ],
   "botAdcKills": {
    "opp": 1,
@@ -1985,7 +2000,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 71,
