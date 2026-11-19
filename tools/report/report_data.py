@@ -45,11 +45,11 @@ SHARD = {5005: ("공격 속도", "StatModsAttackSpeedIcon.png"), 5008: ("적응�
          5013: ("강인함/둔화 저항", "StatModsTenacityIcon.png"), 5002: ("방어력", "StatModsArmorIcon.png"),
          5003: ("마법 저항력", "StatModsMagicResIcon.png")}
 NONCHAMP = {"미니언": "minion", "바론": "baron", "포탑": "tower", "드래곤": "dragon", "전령": "herald"}
-OBJ_KO = {"DRAGON": "드래곤", "BARON_NASHOR": "바론", "RIFTHERALD": "전령", "HORDE": "공허 유충", "ATAKHAN": "아타칸"}
+OBJ_KO = {"DRAGON": "드래곤", "BARON_NASHOR": "바론", "RIFTHERALD": "전령", "HORDE": "공허 유충"}
 DRAKE_KO = {"WATER_DRAGON": "바다", "EARTH_DRAGON": "대지", "FIRE_DRAGON": "화염", "AIR_DRAGON": "바람",
             "HEXTECH_DRAGON": "마법공학", "CHEMTECH_DRAGON": "화학공학", "ELDER_DRAGON": "장로"}
 OBJ_ICON = {"DRAGON": "dragon", "BARON_NASHOR": "baron", "RIFTHERALD": "herald", "HORDE": "grub",
-            "TOWER": "tower", "INHIB": "inhib", "ATAKHAN": "atakhan"}
+            "TOWER": "tower", "INHIB": "inhib"}
 ORDER = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"]
 POS_KO = {"TOP": "탑", "JUNGLE": "정글", "MIDDLE": "미드", "BOTTOM": "원딜", "UTILITY": "서폿"}
 
@@ -188,8 +188,8 @@ def build(mid, champ_id=None, lab=False):
     objs = []
     for e in events:
         if e["type"] == "ELITE_MONSTER_KILL":
-            if e.get("killerTeamId") not in (100, 200):
-                continue
+            if e.get("killerTeamId") not in (100, 200) or e["monsterType"] not in OBJ_ICON:
+                continue  # 아이콘이 없는 몬스터(예전 아타칸 등)는 빼요
             n = OBJ_KO.get(e["monsterType"], e["monsterType"])
             if e["monsterType"] == "DRAGON":
                 n = DRAKE_KO.get(e.get("monsterSubType"), "") + " 드래곤"
