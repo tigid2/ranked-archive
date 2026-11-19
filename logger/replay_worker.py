@@ -400,15 +400,22 @@ def upload(cfg, out_path, mid):
         headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json",
                  "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "lol-replay-worker",
                  "Content-Type": "application/json"})
-    try:
-        with urllib.request.urlopen(req, timeout=30, context=WEB_CTX):
-            return True
-    except urllib.error.HTTPError as e:
-        if e.code == 422:   # 이미 올라가 있어요
-            return True
-        log(f"  깃허브 업로드 실패({e.code}). 다음에 다시 시도할게요.")
-    except Exception as e:
-        log(f"  깃허브 업로드 실패({e}). 다음에 다시 시도할게요.")
+    # 409는 같은 순간에 다른 기록이 올라가며 부딪힌 경우라서, 잠깐 기다렸다 다시 해요.
+    for attempt in range(1, 5):
+        try:
+            with urllib.request.urlopen(req, timeout=30, context=WEB_CTX):
+                return True
+        except urllib.error.HTTPError as e:
+            if e.code == 422:   # 이미 올라가 있어요
+                return True
+            err, again = e.code, e.code == 409 or e.code >= 500
+        except Exception as e:
+            err, again = e, True
+        if not again or attempt == 4:
+            break
+        log(f"  깃허브 업로드 실패({err}). {attempt * 10}초 뒤 다시 해 볼게요.")
+        time.sleep(attempt * 10)
+    log(f"  깃허브 업로드 실패({err}). 다음에 다시 시도할게요.")
     return False
 
 
