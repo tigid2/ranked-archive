@@ -552,16 +552,19 @@
     "브랜드(적)"
    ],
    "alliesNear": [
-    "신지드(아군)"
+    "그레이브즈(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "리 신(적)",
+    "브랜드(적)"
+   ],
    "roams": [
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "3:00",
-     "wasAt": "상대 아래쪽 정글",
-     "distance": 6006
+     "minuteMark": "3:15",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 4111
     }
    ],
    "damage": [
@@ -698,21 +701,20 @@
    "killer": "리 신(적)",
    "assists": [],
    "alliesNear": [
-    "신지드(아군)"
+    "그레이브즈(아군)",
+    "아칼리(아군)"
    ],
    "enemiesNear": [
     "리 신(적)",
-    "벡스(적)",
-    "이즈리얼(적)",
-    "브랜드(적)"
+    "이즈리얼(적)"
    ],
    "roams": [
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "10:00",
+     "minuteMark": "9:57",
      "wasAt": "바텀 라인",
-     "distance": 1803
+     "distance": 1781
     }
    ],
    "damage": [
@@ -847,9 +849,9 @@
     {
      "who": "사이온(적)",
      "role": "탑",
-     "minuteMark": "11:00",
-     "wasAt": "탑 라인",
-     "distance": 12491
+     "minuteMark": "11:17",
+     "wasAt": "블루팀 본진",
+     "distance": 13554
     }
    ],
    "damage": [
@@ -999,28 +1001,27 @@
    ],
    "alliesNear": [
     "그레이브즈(아군)",
-    "아칼리(아군)",
     "신지드(아군)"
    ],
    "enemiesNear": [
     "리 신(적)",
-    "이즈리얼(적)",
-    "브랜드(적)"
+    "벡스(적)",
+    "이즈리얼(적)"
    ],
    "roams": [
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "15:00",
+     "minuteMark": "15:02",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 4906
+     "distance": 4865
     },
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "15:00",
+     "minuteMark": "15:02",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 6281
+     "distance": 6070
     }
    ],
    "damage": [
@@ -1171,9 +1172,10 @@
     "브랜드(적)"
    ],
    "alliesNear": [
-    "모데카이저(아군)"
+    "신지드(아군)"
    ],
    "enemiesNear": [
+    "사이온(적)",
     "이즈리얼(적)",
     "브랜드(적)"
    ],
@@ -1181,9 +1183,9 @@
     {
      "who": "사이온(적)",
      "role": "탑",
-     "minuteMark": "17:00",
+     "minuteMark": "17:03",
      "wasAt": "우리 아래쪽 정글",
-     "distance": 3774
+     "distance": 3773
     }
    ],
    "damage": [
@@ -1328,28 +1330,28 @@
     "사이온(적)"
    ],
    "alliesNear": [
-    "모데카이저(아군)"
+    "그레이브즈(아군)",
+    "아칼리(아군)"
    ],
    "enemiesNear": [
     "사이온(적)",
     "벡스(적)",
-    "이즈리얼(적)",
-    "브랜드(적)"
+    "이즈리얼(적)"
    ],
    "roams": [
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "18:00",
+     "minuteMark": "17:55",
      "wasAt": "바텀 라인",
-     "distance": 2016
+     "distance": 1608
     },
     {
      "who": "사이온(적)",
      "role": "탑",
-     "minuteMark": "18:00",
+     "minuteMark": "17:55",
      "wasAt": "바텀 라인",
-     "distance": 1769
+     "distance": 1450
     }
    ],
    "damage": [
@@ -1488,10 +1490,10 @@
    "assists": [],
    "alliesNear": [
     "모데카이저(아군)",
-    "그레이브즈(아군)",
-    "아칼리(아군)"
+    "그레이브즈(아군)"
    ],
    "enemiesNear": [
+    "사이온(적)",
     "이즈리얼(적)",
     "브랜드(적)"
    ],
@@ -1624,15 +1626,21 @@
    "zone": "우리 본진",
    "killer": "벡스(적)",
    "assists": [],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "모데카이저(아군)",
+    "그레이브즈(아군)",
+    "아칼리(아군)"
+   ],
+   "enemiesNear": [
+    "벡스(적)"
+   ],
    "roams": [
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "22:00",
+     "minuteMark": "21:57",
      "wasAt": "미드 라인",
-     "distance": 3617
+     "distance": 3999
     }
    ],
    "damage": [
@@ -1751,7 +1759,7 @@
     "그레이브즈(아군)"
    ],
    "enemiesNear": [
-    "사이온(적)",
+    "리 신(적)",
     "벡스(적)",
     "이즈리얼(적)"
    ],
@@ -1759,9 +1767,9 @@
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "25:00",
-     "wasAt": "블루팀 본진",
-     "distance": 12468
+     "minuteMark": "25:14",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 9170
     }
    ],
    "damage": [
@@ -1959,7 +1967,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3683
+   "myDistance30sBefore": 3501
   },
   {
    "t": "18:36",
@@ -1973,14 +1981,14 @@
    "name": "화학공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 7903
+   "myDistance30sBefore": 6858
   },
   {
    "t": "22:45",
    "name": "바론",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 6783
+   "myDistance30sBefore": 6426
   }
  ],
  "buildings": [
@@ -2365,18 +2373,31 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.67,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.63,
+   "7~8": 0.68,
+   "8~9": 1.0,
+   "9~10": 1.0,
+   "10~11": 0.68,
+   "11~12": 0.58,
+   "12~13": 0.78,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 57,
-   "opp": 67
+   "me": 68,
+   "opp": 78
   },
   "csWithoutSupport": {
-   "me": 16,
-   "opp": 15
+   "me": 5,
+   "opp": 4
   },
   "supportAwayRanges": [
-   "11~14분"
+   "13~14분"
   ],
   "botAdcKills": {
    "opp": 3,
@@ -2411,7 +2432,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 71,
