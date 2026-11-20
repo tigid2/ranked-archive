@@ -817,6 +817,7 @@ def sec_deaths():
 </article>''')
     rows = []
     for t, txt in FB["otherDeaths"].items():
+        txt = txt["what"] if isinstance(txt, dict) else txt
         x = D[t]
         rows.append(f'<tr><td><span class="dnum">{idx.get(t, "")}</span></td><td class="num">{t}</td><td>{chip_phase(tsec(t))}</td>'
                     f'<td class="faces">{cimg(key_of(x["killer"]), "xs")}{faces(x["assists"]) if x["assists"] else ""}</td>'

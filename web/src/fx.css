@@ -89,7 +89,7 @@
 /* ---------- 죽음: 지도와 줄이 서로 가리켜요 ---------- */
 .map .mp-d { cursor: pointer; transition: opacity .25s, transform .35s var(--ease); transform-box: fill-box; transform-origin: center; }  /* 크기가 바뀔 때 점 자리를 기준으로(지도 왼쪽 위로 끌려가지 않게) */
 .map .mp-k { transition: opacity .25s; }
-.map.has-active .mp-d:not(.on) { opacity: .28; }
+.map.has-active:not(.map-deaths) .mp-d:not(.on) { opacity: .28; }  /* 04 죽음 지도는 불투명 연한 칠(report.css) */
 .map.has-active .mp-k { opacity: .18; }
 .map .mp-d.on { transform: scale(1.35); }
 .map .mp-ring { fill: none; stroke: var(--red); stroke-width: 2; animation: mp-ring 1.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }

@@ -520,6 +520,11 @@ TURRETS = {  # 포탑 자리(게임 좌표). 추정 시야에만 써요.
     200: [(4318, 13875), (7943, 13411), (10481, 13650), (8955, 8510), (9767, 10113), (11134, 11207),
           (13866, 4505), (13327, 8226), (13624, 10572), (12611, 13084), (13052, 12612)],
 }
+# 본진은 항상 보여요: 우물(소환 단상)과 넥서스 자리(게임 좌표, 시야 반경). 추정 시야에만 써요.
+BASE_SIGHT = {
+    100: [(400, 420, 2000), (1550, 1660, 1200)],
+    200: [(14340, 14390, 2000), (13325, 13350, 1200)],
+}
 SLOT = {0: "Q", 1: "W", 2: "E", 3: "R"}
 
 
@@ -587,7 +592,8 @@ def replay_block(mid, P, ME, events, dur, S, my_deaths_ev, A):
     turrets = [[gx(x), gy(y), dead_at.get((x, y), dur)] for x, y in TURRETS[my_team]]
 
     return {"replay": {"size": S, "len": dur, "champs": champs, "tracks": out_tracks, "events": ev,
-                       "wards": wards, "turrets": turrets, "sight": round(1200 / 14990 * S * 10)},
+                       "wards": wards, "turrets": turrets, "sight": round(1200 / 14990 * S * 10),
+                       "base": [[gx(x), gy(y), round(r / 14990 * S * 10)] for x, y, r in BASE_SIGHT[my_team]]},
             "tracks": tracks}
 
 
