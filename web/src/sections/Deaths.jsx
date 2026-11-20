@@ -6,7 +6,7 @@ import { Section, Ci, LostList, Pi, MAP_IMG, src, num, signed, cx } from '../ui.
 // 리플레이: 왼쪽 미니맵 리플레이와 그 아래 숫자 칸, 오른쪽 위 죽음 번호 칸(교전 시간, 킬과 어시스트 초상화, 교전 보기),
 // 그 아래 왼쪽은 받은 피해(롤 사망 정보처럼), 오른쪽은 상황과 근거.
 // 가운뎃점(·)은 화면 글자에 쓰지 않아요(사용자 요청).
-// 죽음 번호: 고른(보고 있는) 죽음 = 주황 칠, 나머지 = 흰 바탕. 주요 죽음(피드백의 keyDeaths)은 칠과 상관없이 오른쪽 위 작은 검은 점으로 구별해요.
+// 죽음 번호: 주요 죽음(피드백의 keyDeaths) = 주황 칠, 나머지 = 흰 바탕 + 주황 테두리 (11-20 시안 5 방식으로 되돌림, 새 방식은 나중에 다시 정해요)
 
 const ms = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
 const SPELL_WORD = { held: '미사용', used_before: '사용', already_down: '없음', uncertain: '판단 보류' }
@@ -28,9 +28,12 @@ function OverviewMap({ m, active, onPick, keyNos }) {
         <g key={p.no} className={cx('mp-d', active === p.no && 'on', keyNos.has(p.no) && 'key')} onClick={() => onPick(p.no)} role="button" aria-label={`${p.no}번째 죽음 ${p.t}${keyNos.has(p.no) ? ' 주요 죽음' : ''}`}>
           <title>{p.t} {p.no}번째 죽음{keyNos.has(p.no) ? ' (주요 죽음)' : ''}</title>
           {active === p.no && <circle className="mp-sel" cx={p.x} cy={p.y} r="21" />}
-          <circle className="mp-death" cx={p.x} cy={p.y} r="14" />
-          <text className="mp-num" x={p.x} y={p.y + 5} textAnchor="middle">{p.no}</text>
-          {keyNos.has(p.no) && <circle className="mp-key" cx={p.x + 10} cy={p.y - 10} r="4.5" />}
+          {/* 고르지 않은 죽음은 흐리게 그리되, 아래에 불투명한 받침 원을 깔아서 킬 표시가 비치지 않게 해요 */}
+          <circle className="mp-back" cx={p.x} cy={p.y} r="15.25" />
+          <g className="mp-body">
+            <circle className="mp-death" cx={p.x} cy={p.y} r="14" />
+            <text className="mp-num" x={p.x} y={p.y + 5} textAnchor="middle">{p.no}</text>
+          </g>
         </g>
       ))}
     </svg>
@@ -205,8 +208,8 @@ function Mark({ m, left, onSeek }) {
   )
 }
 
-// 지도 위 재생 막대(유튜브처럼): 지도 아래쪽에 마우스를 올리면 나와요. 교전 구간은 빨강, 내가 죽어 있던 시간은 연한 주황. 오브젝트는 표시하지 않아요.
-function MiniBar({ L, t, fights, dead, show, onScrub, onDrag }) {
+// 지도 위 재생 막대(유튜브처럼): 지도 아래쪽에 마우스를 올리면 나와요. 교전 구간만 연한 주황으로, 오브젝트는 표시하지 않아요.
+function MiniBar({ L, t, fights, show, onScrub, onDrag }) {
   const ref = useRef(null)
   const [hover, setHover] = useState(null)
   const toT = (cx_) => {
@@ -229,7 +232,6 @@ function MiniBar({ L, t, fights, dead, show, onScrub, onDrag }) {
         onPointerMove={(e) => setHover(toT(e.clientX))} onPointerLeave={() => setHover(null)}>
         <div className="rp-mini-track">
           <span className="rp-mini-done" style={{ width: pct(t) }} />
-          {dead.map((f, i) => <span key={`d${i}`} className="rp-mini-dead" style={{ left: pct(f.t), width: pct(f.end - f.t) }} />)}
           {fights.map((f, i) => <span key={i} className="rp-mini-fight" style={{ left: pct(f.from), width: `max(3px, ${pct(f.to - f.from)})` }} />)}
         </div>
         <span className="rp-mini-head" style={{ left: pct(t) }} />
@@ -327,7 +329,7 @@ function Replay({ rp, scene, joins, vision, setVision, fights, side, under }) {
   })
   const meI = C.findIndex((c) => c.me)
   deadList.filter((d) => d.who === meI && t >= d.t && t < d.t + 4).forEach((d) => labels.push({ key: `d${d.t}`, at: [d.x, d.y], text: `사망 ${ms(d.t)}`, tone: 'red' }))
-  const myDead = useMemo(() => deadList.filter((d) => C[d.who].me), [deadList])
+
   const rings = new Set(labels.map((l) => l.ring).filter((r) => r != null))
   const inFight = scene && t >= scene.from && t <= scene.to
 
@@ -384,7 +386,7 @@ function Replay({ rp, scene, joins, vision, setVision, fights, side, under }) {
               </svg>
               {inFight && <span className="rp-tag">교전 중</span>}
               {flash && <span className="rp-flash"><Icon n={flash} /></span>}
-              <MiniBar L={rp.len} t={t} fights={fights} dead={myDead} show={nearBottom || dragging}
+              <MiniBar L={rp.len} t={t} fights={fights} show={nearBottom || dragging}
                 onDrag={(v) => { setDragging(v); if (v) setPlay(false) }} onScrub={seek} />
             </div>
             {/* 재생 조작: 지도 바로 아래 한 줄 */}
@@ -423,7 +425,7 @@ function Row({ x, note, isKey, on, onPick }) {
   return (
     <li>
       <button type="button" className={cx('d3-row', on && 'on')} onClick={onPick} aria-pressed={on}>
-        <span className={cx('dno', isKey && 'key', on && 'on')} title={isKey ? '주요 죽음' : undefined}>{x.no}</span>
+        <span className={cx('dno', isKey && 'key')} title={isKey ? '주요 죽음' : undefined}>{x.no}</span>
         <time>{x.t}</time>
         <span className="d3-kill"><Ci c={x.killer} size="sm" />{x.assists.map((a, i) => <Ci key={i} c={a} size="xs" />)}</span>
         <span className="d3-lost">{x.lostAfter.length > 0 ? <LostList lost={noTime(x.lostAfter)} /> : <span className="muted">손해 없음</span>}</span>
@@ -454,10 +456,10 @@ function DeathCard({ X, note, isKey, onClose, hidden }) {
     <div className={cx('d3-card', hidden && 'is-hidden')} aria-hidden={hidden || undefined}>
       <button type="button" className="d3-x" onClick={onClose} aria-label="죽음 정보 닫기" tabIndex={hidden ? -1 : 0}><Icon n="x" /></button>
       <div className="d3-card-h">
-        <span className={cx('dno', 'dno-lg', 'on', isKey && 'key')}>{X.no}</span>
+        <span className={cx('dno', 'dno-lg', isKey && 'key')}>{X.no}</span>
         <span className="d3-faces"><Ci c={X.killer} size="lg" />{X.assists.map((a, i) => <Ci key={i} c={a} size="sm" />)}</span>
         <div>
-          {isKey && <span className="d3-keytag"><i className="kdot" aria-hidden="true" />주요 죽음</span>}
+          {isKey && <span className="d3-keytag">주요 죽음</span>}
           {/* 제목 = 왜 죽었는지(피드백 글의 title). 없으면 누구에게 죽었는지 */}
           <h3>{(note && note.title) || `${killers(X)}에게 죽음`}</h3>
           <p className="d3-meta"><span>{X.t}</span><span>{X.phase}</span><span>{X.zone}</span></p>
@@ -468,7 +470,7 @@ function DeathCard({ X, note, isKey, onClose, hidden }) {
         <div><dt>근처 적</dt><dd>{X.enemiesNear.length ? X.enemiesNear.map((c, i) => <Ci key={i} c={c} size="sm" />) : <span className="muted">없음</span>}</dd></div>
         <div><dt>보유 골드</dt><dd className="num">{X.gold != null ? num(X.gold) : '—'}</dd></div>
         <div><dt>스펠</dt><dd className="rx-spells"><MySpells s={X.spells} /></dd></div>
-        <div><dt>팀 골드 차이</dt><dd className={cx('num', X.teamGoldDiff < 0 && 'neg')}>{signed(X.teamGoldDiff)}</dd></div>
+        <div><dt>팀 골드 차이</dt><dd className={cx('num', 'gd', X.teamGoldDiff > 0 ? 'gd-us' : X.teamGoldDiff < 0 ? 'gd-them' : '')}>{signed(X.teamGoldDiff)}</dd></div>
         <div><dt title="죽은 뒤 90초 안에 잃은 포탑과 오브젝트">죽은 뒤 손해</dt><dd>{X.lostAfter.length ? <LostList lost={noTime(X.lostAfter)} /> : <span className="muted">없음</span>}</dd></div>
       </dl>
       <div className="d3-body">
@@ -612,8 +614,8 @@ function ReplayNums({ X }) {
     ['교전 구간', X.fight ? <span className="num sm">{ms(X.fight.from)}~{ms(X.fight.to)}</span> : <span className="muted">계산 못 함</span>],
     ['스펠', <span className="rx-spells"><MySpells s={X.spells} /></span>],
     ['보유 골드', <span className="num">{X.gold != null ? num(X.gold) : '—'}</span>],
-    ['적에게 준 골드', X.recap ? <span className="num">+{num(X.recap.given)}</span> : <span className="muted">—</span>],
-    ['팀 골드 차이', <span className={cx('num', X.teamGoldDiff < 0 && 'neg')}>{signed(X.teamGoldDiff)}</span>],
+    ['적에게 준 골드', X.recap ? <span className="num">{num(X.recap.given)}</span> : <span className="muted">—</span>],
+    ['팀 골드 차이', <span className={cx('num', 'gd', X.teamGoldDiff > 0 ? 'gd-us' : X.teamGoldDiff < 0 ? 'gd-them' : '')}>{signed(X.teamGoldDiff)}</span>],
     ['죽은 뒤 손해', X.lostAfter.length ? <LostList lost={noTime(X.lostAfter)} /> : <span className="muted">없음</span>],
   ]
   return (
@@ -630,9 +632,9 @@ function ReplaySide({ X, note, isKey, meC, onPlay }) {
       <div className="rx-top">
         <div className="rx-head">
           <div className="rx-id">
-            <span className={cx('dno', 'on', isKey && 'key')}>{X.no}</span>
+            <span className={cx('dno', isKey && 'key')}>{X.no}</span>
             <span className="rx-t">{X.t}</span>
-            {isKey && <span className="d3-keytag"><i className="kdot" aria-hidden="true" />주요 죽음</span>}
+            {isKey && <span className="d3-keytag">주요 죽음</span>}
           </div>
           <div className="rx-who">
             <span className="rx-faces" aria-label={`${killers(X)}에게 죽음`}>
@@ -714,7 +716,7 @@ export default function Deaths({ d, fb }) {
 
   return (
     <Section no="04">
-      <div className={cx('d3', isReplay && 'is-replay')}>
+      <div className={cx('d3', isReplay && 'is-replay', keyNos.size > 0 && 'has-key')}>
         <div className="d3-bar">
           <div className="d3-tabs">
             <button type="button" className={cx(mode === 'all' && 'on')} onClick={() => setMode('all')}>기본</button>
