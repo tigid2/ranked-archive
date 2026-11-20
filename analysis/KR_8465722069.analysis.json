@@ -730,17 +730,18 @@
    "killer": "마스터 이(적)",
    "assists": [],
    "alliesNear": [
-    "브라이어(아군)",
-    "신드라(아군)"
+    "브라이어(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "마스터 이(적)"
+   ],
    "roams": [
     {
      "who": "마스터 이(적)",
      "role": "정글",
-     "minuteMark": "10:00",
+     "minuteMark": "10:05",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 3039
+     "distance": 2735
     }
    ],
    "damage": [
@@ -867,8 +868,15 @@
    "assists": [
     "진(적)"
    ],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "브라이어(아군)",
+    "쓰레쉬(아군)"
+   ],
+   "enemiesNear": [
+    "마스터 이(적)",
+    "진(적)",
+    "제라스(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -1006,10 +1014,12 @@
     "진(적)"
    ],
    "alliesNear": [
-    "신드라(아군)"
+    "브라이어(아군)",
+    "쓰레쉬(아군)"
    ],
    "enemiesNear": [
-    "진(적)"
+    "진(적)",
+    "제라스(적)"
    ],
    "roams": [],
    "damage": [
@@ -1339,7 +1349,7 @@
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 10859
+   "myDistance30sBefore": 1181
   },
   {
    "t": "15:54",
@@ -1353,49 +1363,49 @@
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4756
+   "myDistance30sBefore": 4491
   },
   {
    "t": "21:55",
    "name": "바론",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 3826
+   "myDistance30sBefore": 1223
   },
   {
    "t": "22:42",
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 7446
+   "myDistance30sBefore": 7271
   },
   {
    "t": "31:26",
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2123
+   "myDistance30sBefore": 3299
   },
   {
    "t": "33:26",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2218
+   "myDistance30sBefore": 2063
   },
   {
    "t": "36:52",
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3854
+   "myDistance30sBefore": 5087
   },
   {
    "t": "39:42",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3386
+   "myDistance30sBefore": 3520
   }
  ],
  "buildings": [
@@ -1933,18 +1943,30 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.95,
+   "4~5": 0.67,
+   "5~6": 0.85,
+   "6~7": 0.6,
+   "7~8": 1.0,
+   "8~9": 1.0,
+   "9~10": 0.72,
+   "10~11": 0.55,
+   "11~12": 0.17,
+   "12~13": 0.0,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 51,
-   "opp": 43
+   "me": 73,
+   "opp": 51
   },
   "csWithoutSupport": {
-   "me": 53,
-   "opp": 20
+   "me": 31,
+   "opp": 12
   },
   "supportAwayRanges": [
-   "5~7분",
    "11~14분"
   ],
   "botAdcKills": {
@@ -1980,7 +2002,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 71,
