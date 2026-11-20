@@ -419,9 +419,12 @@
    "assists": [
     "레오나(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "하이머딩거(아군)"
+   ],
    "enemiesNear": [
-    "카이사(적)"
+    "카이사(적)",
+    "레오나(적)"
    ],
    "roams": [],
    "damage": [
@@ -831,20 +834,22 @@
     "레오나(적)"
    ],
    "alliesNear": [
+    "녹턴(아군)",
     "아칼리(아군)",
     "하이머딩거(아군)"
    ],
    "enemiesNear": [
     "조이(적)",
+    "카이사(적)",
     "레오나(적)"
    ],
    "roams": [
     {
      "who": "조이(적)",
      "role": "미드",
-     "minuteMark": "8:00",
+     "minuteMark": "7:50",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 2213
+     "distance": 4674
     }
    ],
    "damage": [
@@ -995,7 +1000,10 @@
    "alliesNear": [
     "하이머딩거(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "카이사(적)",
+    "레오나(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -1130,14 +1138,18 @@
    "alliesNear": [
     "하이머딩거(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "아무무(적)",
+    "조이(적)",
+    "레오나(적)"
+   ],
    "roams": [
     {
      "who": "아무무(적)",
      "role": "정글",
-     "minuteMark": "13:00",
+     "minuteMark": "12:53",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 3665
+     "distance": 3791
     }
    ],
    "damage": [
@@ -1269,20 +1281,20 @@
    "killer": "아무무(적)",
    "assists": [],
    "alliesNear": [
-    "티모(아군)",
-    "녹턴(아군)"
+    "티모(아군)"
    ],
    "enemiesNear": [
     "아무무(적)",
+    "조이(적)",
     "카이사(적)"
    ],
    "roams": [
     {
      "who": "아무무(적)",
      "role": "정글",
-     "minuteMark": "15:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 773
+     "minuteMark": "14:44",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 3368
     }
    ],
    "damage": [
@@ -1436,7 +1448,7 @@
    "name": "바다 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3569
+   "myDistance30sBefore": 3432
   },
   {
    "t": "8:29",
@@ -1464,7 +1476,7 @@
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3499
+   "myDistance30sBefore": 3101
   }
  ],
  "buildings": [
@@ -1718,21 +1730,30 @@
    "13": true,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.75,
+   "3~4": 0.92,
+   "4~5": 1.0,
+   "5~6": 0.63,
+   "6~7": 1.0,
+   "7~8": 1.0,
+   "8~9": 0.53,
+   "9~10": 0.72,
+   "10~11": 0.75,
+   "11~12": 0.8,
+   "12~13": 1.0,
+   "13~14": 0.78
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 45,
-   "opp": 50
+   "me": 89,
+   "opp": 108
   },
   "csWithoutSupport": {
-   "me": 44,
-   "opp": 58
+   "me": 0,
+   "opp": 0
   },
-  "supportAwayRanges": [
-   "2~4분",
-   "8~12분",
-   "13~14분"
-  ],
+  "supportAwayRanges": [],
   "botAdcKills": {
    "opp": 0,
    "me": 6,
@@ -1765,7 +1786,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 138,
