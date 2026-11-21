@@ -706,10 +706,18 @@ export default function Deaths({ d, fb }) {
   const [jump, setJump] = useState(0)        // 죽음 바로가기를 누른 횟수 (누를 때만 재생 위치를 옮겨요)
   const goDeath = (no) => { setCur(no); setJump((j) => j + 1) }
   const toReplay = () => { setMode('replay'); goDeath(1) }
-  // 재생 위치에 맞는 죽음: 다음에 올 죽음이에요. 죽고 3초 뒤까지는 그 죽음, 마지막 죽음 뒤로는 마지막 죽음.
+  // 재생 위치에 맞는 죽음: 다음에 올 죽음이에요. 죽고 HOLD초 뒤까지는 그 죽음을 보여 주는데,
+  // 그 전이라도 다음 죽음이 더 가까워지면(두 죽음의 한가운데를 넘으면) 다음 죽음으로 넘어가요.
+  // 마지막 죽음 뒤로는 마지막 죽음.
+  const HOLD = 30
   const deathAt = (t) => {
     const xs = D.list.filter((x) => x.sec != null)
-    return (xs.find((x) => t <= x.sec + 3) || xs[xs.length - 1] || D.list[0]).no
+    for (let i = 0; i < xs.length; i++) {
+      const next = xs[i + 1]
+      const keep = next ? Math.min(HOLD, (next.sec - xs[i].sec) / 2) : Infinity
+      if (t <= xs[i].sec + keep) return xs[i].no
+    }
+    return (xs[xs.length - 1] || D.list[0]).no
   }
   const onTime = (t) => setCur(deathAt(t))
   const scene = R && R.fight ? { ...R.fight, joins: R.joins || [] } : R && R.sec ? { from: R.sec - 10, to: R.sec, joins: R.joins || [] } : null
