@@ -940,7 +940,10 @@
    "alliesNear": [
     "쓰레쉬(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "애쉬(적)",
+    "레오나(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -1224,19 +1227,22 @@
     "레오나(적)"
    ],
    "alliesNear": [
-    "로크(아군)"
+    "그레이브즈(아군)",
+    "로크(아군)",
+    "쓰레쉬(아군)"
    ],
    "enemiesNear": [
     "피들스틱(적)",
-    "애쉬(적)"
+    "애쉬(적)",
+    "레오나(적)"
    ],
    "roams": [
     {
      "who": "피들스틱(적)",
      "role": "정글",
-     "minuteMark": "18:00",
+     "minuteMark": "17:45",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 1934
+     "distance": 3312
     }
    ],
    "damage": [
@@ -1388,24 +1394,31 @@
     "피들스틱(적)",
     "레오나(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "올라프(아군)",
+    "그레이브즈(아군)",
+    "쓰레쉬(아군)"
+   ],
    "enemiesNear": [
-    "피들스틱(적)"
+    "아칼리(적)",
+    "피들스틱(적)",
+    "애쉬(적)",
+    "레오나(적)"
    ],
    "roams": [
     {
      "who": "아칼리(적)",
      "role": "탑",
-     "minuteMark": "24:00",
+     "minuteMark": "23:59",
      "wasAt": "탑 라인",
-     "distance": 6916
+     "distance": 6843
     },
     {
      "who": "피들스틱(적)",
      "role": "정글",
-     "minuteMark": "24:00",
+     "minuteMark": "23:59",
      "wasAt": "상대 위쪽 정글",
-     "distance": 2186
+     "distance": 2766
     }
    ],
    "damage": [
@@ -1558,12 +1571,10 @@
    "alliesNear": [
     "올라프(아군)",
     "그레이브즈(아군)",
+    "로크(아군)",
     "쓰레쉬(아군)"
    ],
    "enemiesNear": [
-    "아칼리(적)",
-    "피들스틱(적)",
-    "애니비아(적)",
     "애쉬(적)",
     "레오나(적)"
    ],
@@ -1706,7 +1717,6 @@
    ],
    "alliesNear": [],
    "enemiesNear": [
-    "피들스틱(적)",
     "애니비아(적)",
     "애쉬(적)",
     "레오나(적)"
@@ -1715,16 +1725,16 @@
     {
      "who": "애니비아(적)",
      "role": "미드",
-     "minuteMark": "33:00",
+     "minuteMark": "33:27",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 6343
+     "distance": 4961
     },
     {
      "who": "아칼리(적)",
      "role": "탑",
-     "minuteMark": "33:00",
-     "wasAt": "바텀 라인",
-     "distance": 7528
+     "minuteMark": "33:27",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 3926
     }
    ],
    "damage": [
@@ -1888,15 +1898,21 @@
    "assists": [
     "애쉬(적)"
    ],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "그레이브즈(아군)"
+   ],
+   "enemiesNear": [
+    "피들스틱(적)",
+    "애니비아(적)",
+    "애쉬(적)"
+   ],
    "roams": [
     {
      "who": "애니비아(적)",
      "role": "미드",
-     "minuteMark": "36:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 5484
+     "minuteMark": "35:54",
+     "wasAt": "미드 라인",
+     "distance": 8436
     }
    ],
    "damage": [
@@ -2043,23 +2059,29 @@
    ],
    "alliesNear": [
     "그레이브즈(아군)",
-    "로크(아군)"
+    "쓰레쉬(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "아칼리(적)",
+    "피들스틱(적)",
+    "애니비아(적)",
+    "애쉬(적)",
+    "레오나(적)"
+   ],
    "roams": [
     {
      "who": "아칼리(적)",
      "role": "탑",
-     "minuteMark": "38:00",
+     "minuteMark": "37:58",
      "wasAt": "레드팀 본진",
-     "distance": 5104
+     "distance": 6456
     },
     {
      "who": "애니비아(적)",
      "role": "미드",
-     "minuteMark": "38:00",
+     "minuteMark": "37:58",
      "wasAt": "미드 라인",
-     "distance": 3573
+     "distance": 5012
     }
    ],
    "damage": [
@@ -2305,7 +2327,7 @@
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4819
+   "myDistance30sBefore": 6766
   },
   {
    "t": "8:13",
@@ -2333,14 +2355,14 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2932
+   "myDistance30sBefore": 3085
   },
   {
    "t": "17:49",
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3568
+   "myDistance30sBefore": 3567
   },
   {
    "t": "19:45",
@@ -2354,42 +2376,42 @@
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3230
+   "myDistance30sBefore": 5601
   },
   {
    "t": "28:25",
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3798
+   "myDistance30sBefore": 4160
   },
   {
    "t": "33:41",
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2933
+   "myDistance30sBefore": 980
   },
   {
    "t": "35:58",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 6669
+   "myDistance30sBefore": 713
   },
   {
    "t": "40:45",
    "name": "장로 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1580
+   "myDistance30sBefore": 1176
   },
   {
    "t": "45:19",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4835
+   "myDistance30sBefore": 10156
   }
  ],
  "buildings": [
@@ -2948,18 +2970,31 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.5,
+   "3~4": 1.0,
+   "4~5": 0.7,
+   "5~6": 1.0,
+   "6~7": 1.0,
+   "7~8": 0.7,
+   "8~9": 1.0,
+   "9~10": 1.0,
+   "10~11": 0.6,
+   "11~12": 0.0,
+   "12~13": 0.47,
+   "13~14": 1.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 66,
-   "opp": 74
+   "me": 71,
+   "opp": 82
   },
   "csWithoutSupport": {
-   "me": 21,
-   "opp": 22
+   "me": 16,
+   "opp": 14
   },
   "supportAwayRanges": [
-   "10~13분"
+   "11~13분"
   ],
   "botAdcKills": {
    "opp": 2,
@@ -2986,7 +3021,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
