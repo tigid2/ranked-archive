@@ -492,14 +492,16 @@
     "제라스(적)"
    ],
    "alliesNear": [],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "그레이브즈(적)"
+   ],
    "roams": [
     {
      "who": "그레이브즈(적)",
      "role": "정글",
-     "minuteMark": "3:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 3358
+     "minuteMark": "2:38",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 6298
     }
    ],
    "damage": [
@@ -631,11 +633,9 @@
    "killer": "제라스(적)",
    "assists": [],
    "alliesNear": [
-    "오공(아군)",
     "레오나(아군)"
    ],
    "enemiesNear": [
-    "벡스(적)",
     "이즈리얼(적)",
     "제라스(적)"
    ],
@@ -765,17 +765,21 @@
    "assists": [
     "제라스(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "레오나(아군)"
+   ],
    "enemiesNear": [
-    "그레이브즈(적)"
+    "그레이브즈(적)",
+    "벡스(적)",
+    "제라스(적)"
    ],
    "roams": [
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "12:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 4191
+     "minuteMark": "11:48",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 4039
     }
    ],
    "damage": [
@@ -915,14 +919,18 @@
    "alliesNear": [
     "레오나(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "벡스(적)",
+    "이즈리얼(적)",
+    "제라스(적)"
+   ],
    "roams": [
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "13:00",
+     "minuteMark": "12:59",
      "wasAt": "바텀 라인",
-     "distance": 6342
+     "distance": 6340
     }
    ],
    "damage": [
@@ -1059,6 +1067,7 @@
     "레오나(아군)"
    ],
    "enemiesNear": [
+    "벡스(적)",
     "이즈리얼(적)",
     "제라스(적)"
    ],
@@ -1066,9 +1075,9 @@
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "15:00",
-     "wasAt": "미드 라인",
-     "distance": 4123
+     "minuteMark": "14:40",
+     "wasAt": "바텀 라인",
+     "distance": 7796
     }
    ],
    "damage": [
@@ -1211,8 +1220,11 @@
    "assists": [
     "제라스(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "레오나(아군)"
+   ],
    "enemiesNear": [
+    "사일러스(적)",
     "이즈리얼(적)",
     "제라스(적)"
    ],
@@ -1358,21 +1370,26 @@
    "alliesNear": [
     "요네(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "사일러스(적)",
+    "그레이브즈(적)",
+    "벡스(적)",
+    "이즈리얼(적)"
+   ],
    "roams": [
     {
      "who": "그레이브즈(적)",
      "role": "정글",
-     "minuteMark": "21:00",
+     "minuteMark": "20:49",
      "wasAt": "우리 본진",
-     "distance": 3389
+     "distance": 3219
     },
     {
      "who": "벡스(적)",
      "role": "미드",
-     "minuteMark": "21:00",
+     "minuteMark": "20:49",
      "wasAt": "우리 본진",
-     "distance": 3150
+     "distance": 3187
     }
    ],
    "damage": [
@@ -1561,7 +1578,7 @@
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3397
+   "myDistance30sBefore": 3797
   },
   {
    "t": "8:52",
@@ -1589,14 +1606,14 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 10934
+   "myDistance30sBefore": 8246
   },
   {
    "t": "17:14",
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 7856
+   "myDistance30sBefore": 6964
   },
   {
    "t": "19:45",
@@ -1970,18 +1987,30 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.55,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.93,
+   "7~8": 0.75,
+   "8~9": 0.67,
+   "9~10": 1.0,
+   "10~11": 0.72,
+   "11~12": 0.45,
+   "12~13": 0.05,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 45,
-   "opp": 69
+   "me": 63,
+   "opp": 92
   },
   "csWithoutSupport": {
-   "me": 34,
-   "opp": 47
+   "me": 16,
+   "opp": 24
   },
   "supportAwayRanges": [
-   "6~8분",
    "11~14분"
   ],
   "botAdcKills": {
@@ -2005,7 +2034,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
