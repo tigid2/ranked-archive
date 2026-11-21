@@ -57,8 +57,9 @@ def main(mid):
     P(f"피드백 글 있음: {fb}")
 
     P("\n## 10명")
-    for p in raw["match"]["info"]["participants"]:
-        P(f"{'우리' if p['teamId'] == raw['match']['info']['participants'][0]['teamId'] else '상대'} {p['championName']:<12} {p['teamPosition']:<8} {p['kills']}/{p['deaths']}/{p['assists']}  피해 {p['totalDamageDealtToChampions']:,}  CS {p['totalMinionsKilled'] + p['neutralMinionsKilled']}  시야 {p['visionScore']}")
+    # 우리 팀 = 내 승패와 같은 팀 (예전에는 첫 번째 참가자 팀을 '우리'로 봐서, 레드 팀일 때 뒤집혀 나왔어요. 11-22)
+    for p in sorted(raw["match"]["info"]["participants"], key=lambda p: p["win"] != ana["win"]):
+        P(f"{'우리' if p['win'] == ana['win'] else '상대'} {p['championName']:<12} {p['teamPosition']:<8} {p['kills']}/{p['deaths']}/{p['assists']}  피해 {p['totalDamageDealtToChampions']:,}  CS {p['totalMinionsKilled'] + p['neutralMinionsKilled']}  시야 {p['visionScore']}")
 
     L = rep["lane"]
     P("\n## 라인전")

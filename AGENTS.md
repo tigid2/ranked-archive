@@ -14,8 +14,9 @@
 2. `python3 tools/report/fb_brief.py <ID> > /tmp/brief.txt` 를 실행하고 **이 파일 하나만** 읽어요. 데이터 구조를 이리저리 조회하지 않아요.
 3. 피드백 글을 쓸 때 `knowledge/rules.md`는 통째로 읽지 않고 "글쓰기", "메모", "체크리스트"와 그 판에 필요한 장만 찾아 읽어요. 예시 피드백 파일은 읽지 않아요(형식은 아래).
 4. 피드백을 `tools/report/private-feedback/<ID>.json`(공개 판은 `feedback/`)에 쓴 뒤 `bash tools/report/make_report.sh <ID>` **한 번만** 실행해요(데이터, 화면 빌드, 한 파일 리포트를 한꺼번에).
-5. Playwright로 글자와 오류만 확인하고(스크린샷 X) `publish_files`로 올려요. 비공개 판 피드백은 PC `ranked-archive-workfiles\feedback\`에도 저장해요.
-- 피드백 파일 형식: `summary`, `keyFixes[{title, body}]`(2개), `checklist[{mark: good|mid|bad|memo, name, why}]`(원딜 9개, 이름은 rules.md 체크리스트 그대로), `laneText`, `moments[{t, text, key?, crit?: good|bad}]`, `keyDeaths[{t, what, evidence, next}]`, `otherDeaths {}`, `build{아이템, 룬, 소환사 주문, gapAfter}`, `takeaway`, `memo{principle, kept, scene, questions[{q, a}], free}`, `swings{"<flow swings m0>": 글}`, `focus`.
+5. `python3 tools/report/check_page.py <ID>`로 글자와 오류만 확인하고(스크린샷 X, 확인 스크립트를 새로 쓰지 않아요) `publish_files`로 올려요. 비공개 판 피드백은 PC `ranked-archive-workfiles\feedback\`에도 저장해요.
+- 이 형식만 보고 쓰고, 화면 코드(`web/src/`)를 찾아보지 않아요.
+- 피드백 파일 형식: `summary`, `keyFixes[{title, body}]`(2개), `checklist[{mark: good|mid|bad|memo, name, why}]`(원딜 9개, 이름은 rules.md 체크리스트 그대로), `laneText`, `moments[{t, text, key?, crit?: good|bad}]`, `keyDeaths[{t, what, evidence, next}]`, `otherDeaths{"m:ss": 상황 한 줄}`(keyDeaths에 없는 죽음), `build{아이템, 룬, 소환사 주문, gapAfter}`, `takeaway`, `memo{principle, kept, scene, questions[{q, a}], free}`, `swings{"0": 글}`(키는 brief "변곡" 줄의 시작 분을 글자로, 예: "0", "25"), `focus`.
 
 롤 솔로 랭크 한 판마다 자세한 피드백을 만들어 쌓는 개인 프로젝트예요. 사용자는 플래티넘 원딜, 1차 목표는 에메랄드예요.
 

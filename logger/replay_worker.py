@@ -18,6 +18,7 @@ python replay_worker.py --after-game  방금 끝난 판이 전적에 보일 때�
 python replay_worker.py --check  클라이언트 연결, 리플레이 폴더, 최근 판 상태만 보여 줘요(아무것도 받지 않아요)
 """
 import base64
+import http.client
 import glob
 import json
 import os
@@ -131,6 +132,10 @@ class LCU:
                 return e.code, json.loads(txt)
             except Exception:
                 return e.code, txt
+        except (urllib.error.URLError, http.client.HTTPException, OSError):
+            # 게임이 끝난 직후 클라이언트가 다시 뜨는 동안에는 연결이 끊길 수 있어요.
+            # 예전에는 여기서 프로그램이 멈춰서 그 판의 위치 파일이 안 올라갔어요(11-22). 이제 '연결 안 됨'(0)으로 보고 다시 기다려요.
+            return 0, None
 
     def get(self, path):
         return self.req("GET", path)
