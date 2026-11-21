@@ -153,9 +153,5 @@
 .pe-note { font-size: 14px; color: var(--text-2); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s var(--ease); }
 .pe.full .pe-note { opacity: 1; transform: none; }
 
-@media (prefers-reduced-motion: reduce) {
-  .rd-s, .lpx-mark, .lpx-fill, .sec-head::before, .sec-no, .chart .ln-team, .chart .area-pos, .chart .area-neg, .drow-body,
-  .sec .bf-bar, .sec .dmg-bar, .sec .sw-strip, .sec .mu-track, .sec .mix-bar, .sec .t-bar { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
-  .hero .stripes { animation: none; clip-path: inset(0 3px 0 0); }
-  .map .mp-ring { animation: none; }
-}
+/* 컴퓨터의 '움직임 줄이기' 설정을 따르던 칸은 지웠어요. 설정과 상관없이 모든 인터랙션을 보여 줘요(11-22). */
+

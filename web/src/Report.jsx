@@ -79,6 +79,7 @@ function PageEnd({ next }) {
   return (
     <section className={full ? 'pe full' : 'pe'} ref={ref}>
       <div className="pe-stage">
+        <div className="crosses" aria-hidden="true"><i /><i /><i /><i /><i /><span className="fx-label">KEEP SCROLLING</span></div>
         <div className="pe-mid">
           <span className="fx-label">다음 판 <span className="num">{next.when}</span></span>
           <h2 className="pe-title">{next.champ} <span>vs</span> {next.opp}</h2>

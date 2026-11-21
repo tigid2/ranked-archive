@@ -291,10 +291,7 @@ section { position: relative; }
 @property --fr { syntax: "<length>"; inherits: true; initial-value: 0px; }
 @property --cut { syntax: "<length>"; inherits: true; initial-value: 34px; }
 
-@media (prefers-reduced-motion: reduce) {
-  .display .ln > span, .gword span, .rd-s, .obj { transition-duration: .01s !important; transition-delay: 0s !important; }
-  .js .display:not(.in) .ln > span { transform: none; }
-}
+/* 컴퓨터의 '움직임 줄이기' 설정과 상관없이 모든 인터랙션을 보여 줘요(11-22). */
 </style>
 </head>
 <body>
@@ -469,7 +466,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const ease = (t) => 1 - Math.pow(1 - t, 3);
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduce = false;  // 컴퓨터 설정과 상관없이 모든 인터랙션을 보여 줘요(11-22)
 const root = document.documentElement;
 root.classList.add('js');
 

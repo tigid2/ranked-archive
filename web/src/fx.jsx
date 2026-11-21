@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './fx.css'
 
-export const reduceMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
+// 컴퓨터의 '움직임 줄이기'(애니메이션 효과 끄기) 설정과 상관없이 모든 인터랙션을 보여 줘요(사용자 요청, 11-22 다시 확인).
+export const reduceMotion = () => false
 
 // 페이지가 다 뜬 뒤(그림, 글꼴까지) 잠깐 쉬고 true가 돼요.
 // 예전에는 4MB짜리 한 파일 리포트가 뜨는 동안 숫자와 점수 움직임이 다 끝나 버려서 볼 수가 없었어요(11-22).
