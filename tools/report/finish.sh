@@ -11,7 +11,8 @@ if [ -f "feedback/$ID.json" ]; then FB="feedback/$ID.json"; PRIV=0; else FB="too
 python3 -c "import json,sys; json.load(open(sys.argv[1], encoding='utf-8'))" "$FB" || { echo "피드백 JSON 형식 오류"; exit 1; }
 DOTS=$( (grep -o '·' "$FB" || true) | wc -l); [ "$DOTS" -eq 0 ] || echo "주의: 피드백에 가운뎃점 ${DOTS}개"
 
-for i in $(seq 1 120); do [ -f /tmp/web_ready ] && break; sleep 1; done
+# prep.sh가 뒤에서 빌드 중일 때만 기다려요(최대 2분)
+for i in $(seq 1 120); do { [ -f /tmp/web_ready ] || [ ! -f /tmp/web_building ]; } && break; sleep 1; done
 if [ ! -f /tmp/web_ready ]; then   # prep.sh 없이 왔거나 뒤 빌드가 실패했으면 여기서 빌드해요
   (cd web && { [ -d node_modules ] || npm ci --silent; } && npm run build:single --silent) >/dev/null
   python3 -c "import brotli" 2>/dev/null || pip install -q --break-system-packages brotli

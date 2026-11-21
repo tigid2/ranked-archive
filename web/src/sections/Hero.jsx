@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Ci, ItemsRow, Loadout, num, signed, fix, cx } from '../ui.jsx'
-import { Roll, Count, Foil, reduceMotion } from '../fx.jsx'
+import { Roll, Count, Foil, reduceMotion, useReady } from '../fx.jsx'
 
 // 이 판 전 점수 → 이 판 뒤 점수. 100점을 넘기면 한 단계 올라가고, 0점 아래로 내려가면 한 단계 내려가요.
 const TIERS = ['아이언', '브론즈', '실버', '골드', '플래티넘', '에메랄드', '다이아몬드']
@@ -25,18 +25,17 @@ function LpChange({ rank }) {
   // 단계: 0 = 이 판 전, 1 = 줄 끝까지(승급/강등일 때만), 2 = 이 판 뒤
   const [ph, setPh] = useState(still ? 2 : 0)
   const [run, setRun] = useState(0)
+  const ready = useReady()  // 페이지가 다 뜬 뒤에 움직여요
   useEffect(() => {
-    if (still) return undefined
+    if (still || !ready) return undefined
     setPh(0)
     const ts = b.moved
       ? [setTimeout(() => setPh(1), 700), setTimeout(() => setPh(2), 1500)]
       : [setTimeout(() => setPh(2), 700)]
     return () => ts.forEach(clearTimeout)
-  }, [run]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [run, ready]) // eslint-disable-line react-hooks/exhaustive-deps
   const after = ph === 2
   const lp = after ? rank.lp : b.lp
-  const pos = ph === 0 ? b.lp : ph === 1 ? (b.moved === 'up' ? 100 : 0) : rank.lp
-  const jump = ph === 2 && b.moved  // 줄 반대쪽 끝에서 다시 시작
   const gain = rank.change > 0
   return (
     <button type="button" className={cx('hero-lp lpx', after && 'is-after')} onClick={() => setRun((n) => n + 1)} title="누르면 점수 변화를 다시 보여 줘요">
@@ -50,10 +49,7 @@ function LpChange({ rank }) {
       </span>
       <span className="lpx-line" aria-hidden="true">
         <span className="lpx-fill" style={{ left: `${Math.min(b.moved ? (b.moved === 'up' ? 0 : rank.lp) : Math.min(b.lp, rank.lp), 100)}%`, width: `${after ? (b.moved ? (b.moved === 'up' ? rank.lp : 100 - rank.lp) : Math.abs(rank.change)) : 0}%` }} />
-        <span className={cx('lpx-mark', jump && `jump-${b.moved}`)} style={{ left: `${pos}%` }} />
-        <span className="lpx-ghost" style={{ left: `${b.lp}%` }} />
       </span>
-      <span className="lpx-ends" aria-hidden="true"><span>0</span><span>이 판 전 {b.lp} → 이 판 뒤 {rank.lp}</span><span>100</span></span>
     </button>
   )
 }
@@ -101,11 +97,11 @@ export default function Hero({ d }) {
       <div className="tiles">
         <Tile label="KDA" value={<>{k}<i>/</i><span className="death">{de}</span><i>/</i>{a}</>}
           sub={`평점 ${fix(h.kdaRatio, 2)}`} cmp={`킬 관여 ${h.kp}%`} />
-        <Tile label="CS" value={<Count to={h.cs} />} sub={`분당 ${fix(h.csPerMin, 1)}`} cmp={`${opp} ${h.oppCs}`} />
-        <Tile label="챔피언 피해" value={<Count to={h.dmg} fmt={num} />} sub={`팀 내 ${h.dmgShare}%`} cmp={`${opp} ${num(h.oppDmg)}`} />
-        <Tile label="골드" value={<Count to={h.gold} fmt={num} />} sub={`분당 ${fix(h.goldPerMin, 0)}`} cmp={`${opp} ${num(h.oppGold)}`} />
+        <Tile label="CS" value={<Count to={h.cs} />} sub={`분당 ${fix(h.csPerMin, 1)}`} />
+        <Tile label="챔피언 피해" value={<Count to={h.dmg} fmt={num} />} sub={`팀 내 ${h.dmgShare}%`} />
+        <Tile label="골드" value={<Count to={h.gold} fmt={num} />} sub={`분당 ${fix(h.goldPerMin, 0)}`} />
         <Tile label="15분 맞라인 골드" value={<span className={h.lane15.gold < 0 ? 'neg' : ''}>{signed(h.lane15.gold)}</span>}
-          sub={`${d.oppWith} 비교`} cmp={`CS ${signed(h.lane15.cs)}`} />
+          sub={`${d.oppWith} 비교`} />
         <Tile label="시야 점수" value={<Count to={h.vision} />} sub={`와드 ${h.wards}개 설치`} cmp={`제어 와드 ${h.controlWards}개`} />
       </div>
     </section>

@@ -8,8 +8,8 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 ID="${1:-$(ls raw/ | grep -E '^KR_[0-9]+\.json\.gz$' | sed 's/\.json\.gz//' | sort -t_ -k2 -n | tail -1)}"
 
-rm -f /tmp/web_ready
-setsid nohup bash -c '(cd web && { [ -d node_modules ] || npm ci --silent; } && npm run build:single --silent) \
+rm -f /tmp/web_ready; touch /tmp/web_building
+setsid nohup bash -c 'trap "rm -f /tmp/web_building" EXIT; (cd web && { [ -d node_modules ] || npm ci --silent; } && npm run build:single --silent) \
   && { python3 -c "import brotli" 2>/dev/null || pip install -q --break-system-packages brotli; } && touch /tmp/web_ready' \
   >/tmp/web_build.log 2>&1 </dev/null &
 

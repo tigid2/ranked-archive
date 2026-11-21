@@ -15,10 +15,11 @@
 2. **피드백 쓰기 한 번:** 출력 끝에 적힌 경로(비공개 판은 `tools/report/private-feedback/<ID>.json`)에 Write로 써요. 고칠 게 생겨도 sed로 따로 고치지 말고 처음부터 맞게 써요.
 3. **마무리 한 번:** `bash tools/report/finish.sh <ID>` — 검사, 데이터, 한 파일 리포트, 글자/오류 확인, PC 저장용 사본까지 해요. 마지막 줄이 "확인 끝: 문제 없음"이 아니면 그때만 고쳐요.
 4. **올리기 한 번(동시에):** `publish_files`(새 판은 slug 없이, 제목은 finish.sh가 알려 준 것) + 비공개 판은 `device_commit_files`로 finish.sh가 알려 준 PC 경로에 저장. PC 폴더가 연결돼 있지 않으면 시작할 때 폴더 허용을 한 번에 부탁해요.
+- **(11-22) 다음 리포트 한 번만:** 피드백을 쓰기 전에 `notes/death-pattern-plan-1122.md`의 1차 범위(죽음 유형 꼬리표, 반복 실수 하나)를 먼저 반영해요. 화면 표현은 사용자가 고른 것, 안 골랐으면 A+B. 반영이 끝나면 이 줄을 지우고 형식 설명에 새 칸을 넣어요.
 - 다시 만들기(이미 올린 판)만 `list_artifacts`로 slug를 찾고 `get_artifact`, `list_files` 뒤에 올려요.
 - 메모리 파일과 프로젝트 요약 문서는 리포트만 만들 때 읽지 않아요.
 - 이 형식만 보고 쓰고, 화면 코드(`web/src/`)를 찾아보지 않아요.
-- 피드백 파일 형식: `summary`, `keyFixes[{title, body}]`(2개), `checklist[{mark: good|mid|bad|memo, name, why}]`(원딜 9개, 이름은 rules.md 체크리스트 그대로), `laneText`, `moments[{t, text, key?, crit?: good|bad}]`, `keyDeaths[{t, what, evidence, next}]`, `otherDeaths{"m:ss": 상황 한 줄}`(keyDeaths에 없는 죽음), `build{아이템, 룬, 소환사 주문, gapAfter}`, `takeaway`, `memo{principle, kept, scene, questions[{q, a}], free}`, `swings{"0": 글}`(키는 brief "변곡" 줄의 시작 분을 글자로, 예: "0", "25"), `focus`.
+- 피드백 파일 형식: `summary`, `keyFixes[{title, body}]`(2개), `checklist[{mark: good|mid|bad|memo, name, why}]`(원딜 9개, 이름은 rules.md 체크리스트 그대로), `laneText`, `moments[{t, text, key?, crit?: good|bad}]`(crit 색 글씨는 판을 가른 아주 큰 이득/손해에만, 한 판에 0~2개), `keyDeaths[{t, what, evidence, next}]`, `otherDeaths{"m:ss": 상황 한 줄}`(keyDeaths에 없는 죽음), `build{아이템, 룬, 소환사 주문, gapAfter}`, `takeaway`, `memo{principle, kept, scene, questions[{q, a}], free}`, `swings{"0": 글}`(키는 brief "변곡" 줄의 시작 분을 글자로, 예: "0", "25"), `focus`.
 
 롤 솔로 랭크 한 판마다 자세한 피드백을 만들어 쌓는 개인 프로젝트예요. 사용자는 플래티넘 원딜, 1차 목표는 에메랄드예요.
 

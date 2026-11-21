@@ -5,6 +5,32 @@ import './fx.css'
 
 export const reduceMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// 페이지가 다 뜬 뒤(그림, 글꼴까지) 잠깐 쉬고 true가 돼요.
+// 예전에는 4MB짜리 한 파일 리포트가 뜨는 동안 숫자와 점수 움직임이 다 끝나 버려서 볼 수가 없었어요(11-22).
+let readyP = null
+function pageReady() {
+  if (!readyP) {
+    readyP = new Promise((res) => {
+      const go = () => {
+        const f = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()
+        f.then(() => setTimeout(res, 400))
+      }
+      if (document.readyState === 'complete') go()
+      else window.addEventListener('load', go, { once: true })
+    })
+  }
+  return readyP
+}
+export function useReady() {
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    let on = true
+    pageReady().then(() => on && setReady(true))
+    return () => { on = false }
+  }, [])
+  return ready
+}
+
 // 화면에 한 번이라도 들어왔는지
 export function useInView(margin = '0px 0px -12% 0px') {
   const ref = useRef(null)
@@ -35,7 +61,9 @@ export function Roll({ value, digits }) {
 
 // 0에서 목표 숫자까지 올라가는 숫자
 export function Count({ to, fmt = (n) => String(n), ms = 900 }) {
-  const [ref, seen] = useInView('0px')
+  const [ref, inView] = useInView('0px')
+  const ready = useReady()
+  const seen = inView && ready
   const [v, setV] = useState(reduceMotion() ? to : 0)
   useEffect(() => {
     if (!seen || reduceMotion()) return undefined
