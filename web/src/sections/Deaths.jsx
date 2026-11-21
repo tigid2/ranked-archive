@@ -242,7 +242,7 @@ function MiniBar({ L, t, fights, show, onScrub, onDrag }) {
 }
 
 // side(playScene)와 under를 받아서, 지도 오른쪽과 지도 아래에 그려요. 교전 보기 버튼은 side 안(죽음 번호 칸)에 있어요.
-function Replay({ rp, scene, joins, vision, setVision, fights, side, under }) {
+function Replay({ rp, scene, jump, onTime, joins, vision, setVision, fights, side, under }) {
   const T = useTracks(rp)
   const S = rp.size
   const [t, setT] = useState(scene ? Math.max(scene.from - 5, 0) : 0)
@@ -261,7 +261,14 @@ function Replay({ rp, scene, joins, vision, setVision, fights, side, under }) {
     setT(Math.max(scene.from - 5, 0)); stopAt.current = scene.to + 3; setPlay(true)
   }
   // 죽음 바로가기를 누르면 교전 5초 전으로만 옮겨요(자동 재생은 하지 않음).
-  useEffect(() => { if (scene) { setPlay(false); stopAt.current = null; setT(Math.max(scene.from - 5, 0)) } }, [scene && scene.to])
+  // 재생 막대를 움직여서 보는 죽음이 바뀔 때는 옮기지 않아요(jump는 바로가기를 누를 때만 바뀌어요, 11-22).
+  const fromJump = useRef(true)
+  useEffect(() => { if (scene) { fromJump.current = true; setPlay(false); stopAt.current = null; setT(Math.max(scene.from - 5, 0)) } }, [jump])
+  // 재생하거나 막대를 움직이면 지금 시간을 알려서, 그 시간에 맞는 죽음 정보를 보여 줘요.
+  useEffect(() => {
+    if (fromJump.current) { fromJump.current = false; return }
+    if (onTime) onTime(t)
+  }, [t])
 
   useEffect(() => {
     if (!play) return
@@ -696,7 +703,15 @@ export default function Deaths({ d, fb }) {
   const X = sel != null ? D.list.find((x) => x.no === sel) : null
   const R = D.list.find((x) => x.no === cur) || D.list[0]
   const pick = (no) => setSel(no === sel ? null : no)
-  const toReplay = () => { setMode('replay'); setCur(1) }
+  const [jump, setJump] = useState(0)        // 죽음 바로가기를 누른 횟수 (누를 때만 재생 위치를 옮겨요)
+  const goDeath = (no) => { setCur(no); setJump((j) => j + 1) }
+  const toReplay = () => { setMode('replay'); goDeath(1) }
+  // 재생 위치에 맞는 죽음: 다음에 올 죽음이에요. 죽고 3초 뒤까지는 그 죽음, 마지막 죽음 뒤로는 마지막 죽음.
+  const deathAt = (t) => {
+    const xs = D.list.filter((x) => x.sec != null)
+    return (xs.find((x) => t <= x.sec + 3) || xs[xs.length - 1] || D.list[0]).no
+  }
+  const onTime = (t) => setCur(deathAt(t))
   const scene = R && R.fight ? { ...R.fight, joins: R.joins || [] } : R && R.sec ? { from: R.sec - 10, to: R.sec, joins: R.joins || [] } : null
   const fights = D.list.map((x) => x.fight || (x.sec != null ? { from: x.sec, to: x.sec } : null)).filter(Boolean)
   // 접근 이름표: 살펴보는 구간 첫 초에 이미 가까이 있던 적은 빼요(그건 접근이 아니라 원래 붙어 있던 것)
@@ -724,12 +739,12 @@ export default function Deaths({ d, fb }) {
           </div>
           {isReplay && (
             <div className="d3-jump" role="group" aria-label="죽음 바로가기">
-              {D.list.map((x) => <button key={x.t} type="button" className={cx('dno', keyNos.has(x.no) && 'key', cur === x.no && 'on')} onClick={() => setCur(x.no)} aria-pressed={cur === x.no} title={`${x.no}번째 죽음 ${x.t}${keyNos.has(x.no) ? ' (주요 죽음)' : ''}`}>{x.no}</button>)}
+              {D.list.map((x) => <button key={x.t} type="button" className={cx('dno', keyNos.has(x.no) && 'key', cur === x.no && 'on')} onClick={() => goDeath(x.no)} aria-pressed={cur === x.no} title={`${x.no}번째 죽음 ${x.t}${keyNos.has(x.no) ? ' (주요 죽음)' : ''}`}>{x.no}</button>)}
             </div>
           )}
         </div>
         {isReplay ? (
-          <Replay rp={rp} scene={scene} joins={joins} vision={vision} setVision={setVision} fights={fights}
+          <Replay rp={rp} scene={scene} jump={jump} onTime={onTime} joins={joins} vision={vision} setVision={setVision} fights={fights}
             under={<ReplayNums X={R} />}
             side={(play) => <ReplaySide X={R} note={notes[R.t]} isKey={keyNos.has(R.no)} meC={rp.champs.find((c) => c.me)} onPlay={play} />} />
         ) : (

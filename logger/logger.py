@@ -72,7 +72,7 @@ DEFAULT_CONFIG = {
     "save_debug_images": True,
     "minimap_check": True,
     "minimap_checks_per_second": 1,
-    "minimap_fight_checks_per_second": 3,   # 아이콘이 겹쳐 있을 때(싸울 때)는 잠깐 더 자주 읽어요
+    "minimap_fight_checks_per_second": 1,   # 11-22부터 쓰지 않아요(겹칠 때도 1초에 1번). 아래 MM_FIGHT_FAST 참고
     "minimap_side": "right",
 }
 
@@ -736,6 +736,7 @@ MM_TRACK_MINSCORE = 0.30    # 보이는 부분이 그 챔피언과 이만큼도 
 # 이어 붙인 자리는 "추정"이에요. 점수를 55로 적어서 analyze.py의 "보였다" 기준(60)에 들어가지 않게 해요.
 # 추정한 자리를 다시 다음 추정의 출발점으로 쓰지 않아요(추정이 꼬리를 물고 이어지지 않게).
 MM_TRACK_TAG = 55
+MM_FIGHT_FAST = False       # True로 바꾸면 예전처럼 겹칠 때 config의 minimap_fight_checks_per_second로 더 자주 읽어요
 MM_FAST_SEC = 10.0          # 아이콘이 겹친 걸 본 뒤 이 시간(초) 동안 더 자주 읽어요
 MM_RAW_EVERY = 180.0        # 확인용으로 아무 표시도 없는 미니맵 그림을 이 간격(초)으로 저장해요
 
@@ -1826,7 +1827,9 @@ def main():
     last_spell = 0
     mm = None
     mm_gap = 1.0 / max(0.2, float(cfg["minimap_checks_per_second"]))
-    mm_fast_gap = min(mm_gap, 1.0 / max(0.2, float(cfg.get("minimap_fight_checks_per_second", 3))))
+    # 11-22: 겹칠 때 더 자주 읽기를 껐어요. 거의 항상 겹침으로 잡혀서 게임 내내 1초에 약 2.4번 읽고 있었고,
+    # 리포트는 미니맵 기록을 쓰지 않아요(위치는 리플레이 1초 위치). config.json에 예전 값 3이 남아 있어도 1초에 1번이에요.
+    mm_fast_gap = mm_gap if not MM_FIGHT_FAST else min(mm_gap, 1.0 / max(0.2, float(cfg.get("minimap_fight_checks_per_second", 3))))
     last_mm = 0
     while True:
         try:
