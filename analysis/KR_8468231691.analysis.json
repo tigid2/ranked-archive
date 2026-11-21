@@ -564,20 +564,19 @@
     "룰루(적)"
    ],
    "alliesNear": [
-    "스카너(아군)",
-    "레오나(아군)"
+    "스카너(아군)"
    ],
    "enemiesNear": [
-    "스몰더(적)",
+    "브라이어(적)",
     "룰루(적)"
    ],
    "roams": [
     {
      "who": "브라이어(적)",
      "role": "정글",
-     "minuteMark": "7:00",
-     "wasAt": "상대 아래쪽 정글",
-     "distance": 3195
+     "minuteMark": "6:50",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 3740
     }
    ],
    "damage": [
@@ -727,15 +726,17 @@
     "레오나(아군)"
    ],
    "enemiesNear": [
+    "사이온(적)",
+    "스몰더(적)",
     "룰루(적)"
    ],
    "roams": [
     {
      "who": "사이온(적)",
      "role": "탑",
-     "minuteMark": "9:00",
+     "minuteMark": "8:55",
      "wasAt": "블루팀 본진",
-     "distance": 10357
+     "distance": 12927
     }
    ],
    "damage": [
@@ -886,8 +887,11 @@
     "스몰더(적)",
     "룰루(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "레오나(아군)"
+   ],
    "enemiesNear": [
+    "브라이어(적)",
     "스몰더(적)",
     "룰루(적)"
    ],
@@ -895,9 +899,9 @@
     {
      "who": "브라이어(적)",
      "role": "정글",
-     "minuteMark": "13:00",
+     "minuteMark": "12:59",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 7086
+     "distance": 7031
     }
    ],
    "damage": [
@@ -1041,21 +1045,23 @@
     "스몰더(적)"
    ],
    "alliesNear": [
-    "비에고(아군)",
     "스카너(아군)",
-    "아리(아군)",
-    "레오나(아군)"
+    "아리(아군)"
    ],
    "enemiesNear": [
-    "브라이어(적)"
+    "사이온(적)",
+    "브라이어(적)",
+    "카사딘(적)",
+    "스몰더(적)",
+    "룰루(적)"
    ],
    "roams": [
     {
      "who": "카사딘(적)",
      "role": "미드",
-     "minuteMark": "17:00",
+     "minuteMark": "17:02",
      "wasAt": "미드 라인",
-     "distance": 4675
+     "distance": 4232
     }
    ],
    "damage": [
@@ -1190,22 +1196,20 @@
    "assists": [],
    "alliesNear": [
     "스카너(아군)",
-    "아리(아군)",
     "레오나(아군)"
    ],
    "enemiesNear": [
     "브라이어(적)",
     "카사딘(적)",
-    "스몰더(적)",
-    "룰루(적)"
+    "스몰더(적)"
    ],
    "roams": [
     {
      "who": "카사딘(적)",
      "role": "미드",
-     "minuteMark": "19:00",
-     "wasAt": "바텀 라인",
-     "distance": 8852
+     "minuteMark": "19:25",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 4096
     }
    ],
    "damage": [
@@ -1333,12 +1337,13 @@
     "룰루(적)"
    ],
    "alliesNear": [
-    "비에고(아군)",
     "스카너(아군)",
+    "아리(아군)",
     "레오나(아군)"
    ],
    "enemiesNear": [
     "사이온(적)",
+    "브라이어(적)",
     "카사딘(적)",
     "스몰더(적)",
     "룰루(적)"
@@ -1347,9 +1352,9 @@
     {
      "who": "브라이어(적)",
      "role": "정글",
-     "minuteMark": "21:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 5688
+     "minuteMark": "21:07",
+     "wasAt": "위쪽 강가(바론 쪽)",
+     "distance": 4220
     }
    ],
    "damage": [
@@ -1506,9 +1511,9 @@
     {
      "who": "카사딘(적)",
      "role": "미드",
-     "minuteMark": "23:00",
+     "minuteMark": "23:27",
      "wasAt": "바텀 라인",
-     "distance": 5318
+     "distance": 5262
     }
    ],
    "damage": [
@@ -1649,23 +1654,25 @@
    ],
    "enemiesNear": [
     "사이온(적)",
+    "브라이어(적)",
     "카사딘(적)",
-    "스몰더(적)"
+    "스몰더(적)",
+    "룰루(적)"
    ],
    "roams": [
     {
      "who": "카사딘(적)",
      "role": "미드",
-     "minuteMark": "25:00",
+     "minuteMark": "24:43",
      "wasAt": "우리 본진",
-     "distance": 1872
+     "distance": 2506
     },
     {
      "who": "사이온(적)",
      "role": "탑",
-     "minuteMark": "25:00",
+     "minuteMark": "24:43",
      "wasAt": "우리 본진",
-     "distance": 1829
+     "distance": 2251
     }
    ],
    "damage": [
@@ -1900,14 +1907,14 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 3504
+   "myDistance30sBefore": 3114
   },
   {
    "t": "15:46",
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3602
+   "myDistance30sBefore": 3392
   },
   {
    "t": "16:27",
@@ -1921,21 +1928,21 @@
    "name": "바다 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 963
+   "myDistance30sBefore": 5677
   },
   {
    "t": "23:53",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3577
+   "myDistance30sBefore": 5136
   },
   {
    "t": "26:44",
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 9721
+   "myDistance30sBefore": 5627
   }
  ],
  "buildings": [
@@ -2332,19 +2339,33 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.65,
+   "3~4": 1.0,
+   "4~5": 0.17,
+   "5~6": 0.93,
+   "6~7": 0.05,
+   "7~8": 0.08,
+   "8~9": 0.35,
+   "9~10": 0.72,
+   "10~11": 0.78,
+   "11~12": 1.0,
+   "12~13": 0.1,
+   "13~14": 0.73
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 38,
-   "opp": 38
+   "me": 45,
+   "opp": 45
   },
   "csWithoutSupport": {
-   "me": 42,
-   "opp": 50
+   "me": 35,
+   "opp": 43
   },
   "supportAwayRanges": [
-   "5~9분",
-   "12~14분"
+   "4~5분",
+   "6~9분",
+   "12~13분"
   ],
   "botAdcKills": {
    "opp": 2,
@@ -2375,7 +2396,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
