@@ -41,7 +41,9 @@ python3 tools/report/report_data.py KR_8448036968        # 한 판만
 # React 화면 (web/ 에서). 처음 한 번 npm ci
 cd web && npm ci && npm run build && cd ..                # GitHub Pages용 → docs/report/
 cd web && npm run build:single && cd ..                   # artifact용 틀 → web/dist-single/
-python3 tools/report/single.py KR_8448036968              # artifact에 올릴 한 파일 → tools/report/KR_8448036968_single.html
+python3 tools/report/single.py KR_8448036968              # artifact에 올릴 한 파일 → tools/report/KR_8448036968_single.html (아이콘은 16개씩 동시에 받아요)
+python3 tools/report/fb_brief.py KR_8448036968            # 피드백 쓰기 전에 볼 한 장짜리 숫자 요약 (글자 출력)
+bash tools/report/make_report.sh KR_8448036968            # 피드백까지 넣은 뒤 데이터+화면 빌드+한 파일 리포트를 한 번에
 python3 tools/report/report_data.py --lab KR_8448036968   # 실험 리포트 데이터 → tools/report/lab-data/ (저장소에 안 올림)
 python3 tools/report/single.py KR_8448036968 --lab        # 실험 리포트 한 파일 → tools/report/KR_8448036968_lab_single.html (artifact로만 봐요)
 

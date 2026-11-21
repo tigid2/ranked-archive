@@ -8,6 +8,7 @@ React 앱을 한 파일로 빌드한 것(web/dist-single/index.html)에 그 판�
   python3 tools/report/single.py KR_8448036968            # 결과: tools/report/KR_8448036968_single.html
 """
 import base64, io, json, os, re, sys, urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
@@ -33,7 +34,6 @@ def refs(x, out):
 
 def fetch(ref):
     """CDN 경로 → 미러에서 받기. 예: '16.22.1/img/item/1055.png' → 'latest/img/item/1055.png', 'img/perk-images/..' → 그대로"""
-    os.makedirs(CACHE, exist_ok=True)
     local = os.path.join(CACHE, "r_" + ref.replace("/", "_"))
     if not os.path.exists(local):
         rel = re.sub(r"^\d+\.\d+\.\d+/", "latest/", ref)
@@ -64,6 +64,7 @@ def font_faces(text):
 
 
 def main(mid, out=None, lab=False):
+    os.makedirs(CACHE, exist_ok=True)
     if not os.path.exists(APP):
         sys.exit("web/dist-single/index.html이 없어요. 먼저 (cd web && npm run build:single) 을 실행해 주세요.")
     app = open(APP, encoding="utf-8").read()
@@ -71,7 +72,10 @@ def main(mid, out=None, lab=False):
     if not lab and not os.path.exists(os.path.join(src, mid + ".json")):
         src = os.path.join(HERE, "private-data")  # 비공개 판(public.json에 없는 판)
     data = json.load(open(os.path.join(src, mid + ".json"), encoding="utf-8"))
-    assets = {r: u for r in sorted(refs(data, set())) if (u := fetch(r))}
+    # 아이콘은 동시에 받아요. 새 작업 공간에서는 캐시가 비어 있어서, 하나씩 받으면 100개 넘게 약 30초가 걸렸어요(11-21).
+    names = sorted(refs(data, set()))
+    with ThreadPoolExecutor(16) as ex:
+        assets = {r: u for r, u in zip(names, ex.map(fetch, names)) if u}
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     js = ("<script>window.__REPORT__=" + blob.replace("</", "<\\/") + ";window.__ASSETS__="
           + json.dumps(assets, separators=(",", ":")) + (";window.__LAB__=true" if lab else "") + ";</script>")
