@@ -8,8 +8,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 mid = sys.argv[1]
 page_path = os.path.join(HERE, f"{mid}_single.html")
 want = list(sys.argv[2:])
-for d in ("private-feedback", "feedback"):
-    fp = os.path.join(HERE, d, mid + ".json")
+for fp in (os.path.join(HERE, "private-feedback", mid + ".json"), os.path.join(HERE, "..", "..", "feedback", mid + ".json")):
     if os.path.exists(fp):
         fb = json.load(open(fp, encoding="utf-8"))
         want += [k["title"] for k in fb.get("keyFixes", [])]

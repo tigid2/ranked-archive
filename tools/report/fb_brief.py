@@ -44,7 +44,7 @@ def main(mid):
     rep, ana, raw, live = load(mid)
     P = print
     h = rep["hero"]
-    pub = mid in json.load(open(os.path.join(HERE, "public.json"), encoding="utf-8")) if os.path.exists(os.path.join(HERE, "public.json")) else False
+    pub = mid in json.load(open(os.path.join(HERE, "public.json"), encoding="utf-8")).get("public", []) if os.path.exists(os.path.join(HERE, "public.json")) else False  # 11-22: 예전엔 늘 False
     m = h["match"]
     P(f"# {mid}  {rep['me']['n']} vs {rep['opp']['n']}  {h['when']}  {'승리' if h['win'] else '패배'}  {mmss(h['durationSec'])}  패치 {h['patch']}  공개 {pub}")
     P(f"랭크 {h['rank']['tier']} {h['rank']['lp']}LP ({h['rank']['change']:+})  서폿 {m['duo']['n']} / 상대 서폿 {m['eduo']['n']}")
@@ -54,7 +54,8 @@ def main(mid):
         pv = rep["nav"]["prev"]
         P(f"이전 판: {pv['champ']} vs {pv['opp']} {pv['when']} {'승' if pv['win'] else '패'}")
     fb = os.path.exists(os.path.join(ROOT, "feedback", mid + ".json")) or os.path.exists(os.path.join(HERE, "private-feedback", mid + ".json"))
-    P(f"피드백 글 있음: {fb}")
+    P(f"피드백 글 있음: {fb}  1초 위치(리플레이): {'있음' if os.path.exists(os.path.join(ROOT, 'raw', mid + '.pos.json.gz')) else '없음'}")
+    P(f"artifact 제목: 리포트 - {rep['me']['n']} vs {rep['opp']['n']} · {h['when']} {'승리' if h['win'] else '패배'}")
 
     P("\n## 10명")
     # 우리 팀 = 내 승패와 같은 팀 (예전에는 첫 번째 참가자 팀을 '우리'로 봐서, 레드 팀일 때 뒤집혀 나왔어요. 11-22)

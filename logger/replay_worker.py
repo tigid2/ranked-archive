@@ -116,8 +116,24 @@ class LCU:
     def __init__(self, port, password):
         self.base = f"https://127.0.0.1:{port}"
         self.auth = "Basic " + base64.b64encode(f"riot:{password}".encode()).decode()
+        self.cfg = None          # find_lcu가 채워요. 있으면 연결이 끊겼을 때 접속 정보를 새로 찾아요.
+        self.refreshed = 0.0
 
     def req(self, method, path, body=None):
+        code, data = self._req(method, path, body)
+        if code == 0 and self.cfg is not None and time.time() - self.refreshed > 30:
+            # 게임이 끝나면 클라이언트가 다시 켜지면서 포트와 비밀번호가 바뀔 수 있어요.
+            # 예전에는 바뀌기 전 정보로 30분 동안 묻다가 그 판을 놓쳤어요(11-22 02:58). 이제 새로 찾아서 한 번 더 물어요.
+            self.refreshed = time.time()
+            new = find_lcu(self.cfg)
+            if new and (new.base, new.auth) != (self.base, self.auth):
+                self.base, self.auth = new.base, new.auth
+                log("  롤 클라이언트가 다시 켜져서 접속 정보를 새로 찾았어요.")
+            if new:
+                code, data = self._req(method, path, body)
+        return code, data
+
+    def _req(self, method, path, body=None):
         r = urllib.request.Request(self.base + path, method=method,
                                    data=json.dumps(body).encode() if body is not None else None,
                                    headers={"Authorization": self.auth, "Accept": "application/json",
@@ -160,14 +176,18 @@ def find_lcu(cfg):
             if part.startswith("--remoting-auth-token="):
                 token = part.split("=", 1)[1]
         if "port" in locals() and "token" in locals():
-            return LCU(port, token)
+            lcu = LCU(port, token)
+            lcu.cfg = cfg
+            return lcu
     except Exception:
         pass
     for p in cands:
         try:
             with open(p, encoding="utf-8") as f:
                 _, _, port, pw, _ = f.read().strip().split(":")
-            return LCU(port, pw)
+            lcu = LCU(port, pw)
+            lcu.cfg = cfg
+            return lcu
         except Exception:
             continue
     return None
@@ -205,7 +225,7 @@ def replay_state(lcu, g):
     incompatible, missingOrExpired, lost, error(못 받음)"""
     gid = g["gameId"]
     code, data = lcu.get(f"/lol-replays/v1/metadata/{gid}")
-    if code == 404 or not isinstance(data, dict):
+    if code == 404 or not isinstance(data, dict) or not data.get("state"):
         # 클라이언트가 아직 이 판을 모르면 등록해요(전적 화면을 열면 클라이언트가 하는 일과 같아요)
         lcu.post(f"/lol-replays/v1/metadata/{gid}/create-gameversion/{g.get('gameVersion', '')}"
                  f"/gametype/{g.get('gameType', 'MATCHED_GAME')}/queueId/{g.get('queueId', SOLO_QUEUE)}")
@@ -223,13 +243,15 @@ def in_game():
 
 
 def wait_not_in_game():
-    """게임 중에는 받기·디코딩을 미뤄요(게임 렉 방지). 게임이 끝나면 이어서 해요."""
+    """게임 중에는 받기·디코딩을 미뤄요(게임 렉 방지). 게임이 끝나면 이어서 해요. 기다린 초를 돌려줘요."""
     told = False
+    t0 = time.time()
     while in_game():
         if not told:
             log("  게임 중이라 끝날 때까지 기다릴게요.")
             told = True
         time.sleep(30)
+    return time.time() - t0
 
 
 def wait_new_game(lcu, since, minutes=10):
@@ -254,7 +276,8 @@ def fetch_replay(lcu, g, cfg, timing):
     asked = 0
     last = None
     while time.time() < end_wait:
-        wait_not_in_game()
+        # 게임 중에 기다린 시간은 제한 시간에 넣지 않아요(11-22: 게임 한 판을 기다리다 30분이 다 지나서 놓쳤어요).
+        end_wait += wait_not_in_game()
         st = replay_state(lcu, g)
         if st != last:
             log(f"  {gid} 리플레이 상태: {st}")
@@ -480,11 +503,22 @@ def process(lcu, g, cfg, st):
 def main(check=False, after_game=False):
     started = time.time()
     lock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        lock.bind(("127.0.0.1", LOCK_PORT))
-    except OSError:
-        print("이미 실행 중이에요.")
-        return
+    # 이미 다른 리플레이 작업이 돌고 있으면, 예전에는 바로 끝나서 방금 끝난 판을 다음 판까지 놓쳤어요(11-22 02:56).
+    # 이제 앞 작업이 끝날 때까지 최대 90분 기다렸다가 이어서 해요. 점검(--check)은 기다리지 않아요.
+    told = False
+    lock_end = time.time() + (0 if check else 90 * 60)
+    while True:
+        try:
+            lock.bind(("127.0.0.1", LOCK_PORT))
+            break
+        except OSError:
+            if time.time() > lock_end:
+                print("이미 실행 중이에요.")
+                return
+            if not told:
+                log("앞의 리플레이 작업이 아직 돌고 있어요. 끝나면 이어서 할게요.")
+                told = True
+            time.sleep(30)
     cfg = load_config()
     if not cfg["replay_check"] and not check:
         return

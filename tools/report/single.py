@@ -6,6 +6,7 @@ React 앱을 한 파일로 빌드한 것(web/dist-single/index.html)에 그 판�
 사용 (저장소 맨 위에서):
   (cd web && npm run build:single)                       # 화면 코드가 바뀌었을 때만
   python3 tools/report/single.py KR_8448036968            # 결과: tools/report/KR_8448036968_single.html
+  python3 tools/report/single.py --make-base-font          # 미리 줄여 둔 한글 글꼴을 다시 만들 때만(글꼴을 바꿨을 때)
 """
 import base64, io, json, os, re, sys, urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -37,6 +38,7 @@ def fetch(ref):
     local = os.path.join(CACHE, "r_" + ref.replace("/", "_"))
     if not os.path.exists(local):
         rel = re.sub(r"^\d+\.\d+\.\d+/", "latest/", ref)
+        rel = rel.replace("champion/FiddleSticks.png", "champion/Fiddlesticks.png")  # 미러 파일 이름이 달라요(11-22)
         try:
             with urllib.request.urlopen(MIRROR + rel, timeout=20) as r:
                 open(local, "wb").write(r.read())
@@ -46,18 +48,52 @@ def fetch(ref):
     return "data:image/png;base64," + base64.b64encode(open(local, "rb").read()).decode()
 
 
-def font_faces(text):
-    """페이지에 쓰인 글자만 남긴 글꼴을 data: 주소로 만들어요."""
+BASE_FONT = os.path.join(FONT_DIR, "PretendardBase.woff2")
+EXTRA = "−±→←↑↓…–—"
+
+
+def base_chars():
+    """미리 줄여 둔 글꼴에 든 글자: 자주 쓰는 한글 2,350자 + 한글 표준 기호(한자 제외) + 영문/숫자 + EXTRA."""
+    cs = set(chr(c) for c in range(32, 127)) | set(EXTRA)
+    for b1 in list(range(0xA1, 0xAD)) + list(range(0xB0, 0xC9)):
+        for b2 in range(0xA1, 0xFF):
+            try:
+                cs.add(bytes([b1, b2]).decode("euc-kr"))
+            except UnicodeDecodeError:
+                pass
+    return cs
+
+
+def subset_font(path, text):
     from fontTools import subset
-    text = text + "".join(chr(c) for c in range(32, 127)) + "−±→…—"
+    opts = subset.Options(); opts.flavor = "woff2"; opts.layout_features = ["*"]
+    f = subset.load_font(os.path.join(FONT_DIR, path), opts)
+    s = subset.Subsetter(opts); s.populate(text=text); s.subset(f)
+    bio = io.BytesIO(); subset.save_font(f, bio, opts)
+    return bio.getvalue()
+
+
+def make_base_font():
+    """PretendardBase.woff2를 한 번 만들어 저장소에 넣어 둬요(11-22). 판마다 글꼴을 줄이는 데 약 6초가 들었어요."""
+    data = subset_font("PretendardVariable.woff2", "".join(sorted(base_chars())))
+    open(BASE_FONT, "wb").write(data)
+    print(f"{os.path.relpath(BASE_FONT, ROOT)}: {len(data) // 1024} KB")
+
+
+def font_faces(text):
+    """페이지에 쓰인 글자가 담긴 글꼴을 data: 주소로 만들어요.
+    페이지 글자가 모두 미리 줄여 둔 글꼴(PretendardBase.woff2)에 있으면 그걸 그대로 써요(글꼴 줄이기 생략, 약 6초 절약).
+    하나라도 없으면 예전처럼 페이지에 쓰인 글자만 남겨 새로 줄여요."""
+    text = text + "".join(chr(c) for c in range(32, 127)) + EXTRA
+    need = {c for c in text if ord(c) >= 32}
     faces = []
     for fam, path, rng in [("Pretendard Variable", "PretendardVariable.woff2", "45 920"),
                            ("Archivo", "archivo-latin-wdth-normal.woff2", "100 900")]:
-        opts = subset.Options(); opts.flavor = "woff2"; opts.layout_features = ["*"]
-        f = subset.load_font(os.path.join(FONT_DIR, path), opts)
-        s = subset.Subsetter(opts); s.populate(text=text); s.subset(f)
-        bio = io.BytesIO(); subset.save_font(f, bio, opts)
-        b64 = base64.b64encode(bio.getvalue()).decode()
+        if fam.startswith("Pretendard") and os.path.exists(BASE_FONT) and need <= base_chars():
+            data = open(BASE_FONT, "rb").read()
+        else:
+            data = subset_font(path, text)
+        b64 = base64.b64encode(data).decode()
         st = "font-stretch:62% 125%;" if fam == "Archivo" else ""
         faces.append(f"@font-face{{font-family:'{fam}';src:url(data:font/woff2;base64,{b64}) format('woff2');font-weight:{rng};{st}font-display:swap}}")
     return "".join(faces)
@@ -93,5 +129,7 @@ def main(mid, out=None, lab=False):
 
 if __name__ == "__main__":
     # python3 tools/report/single.py <경기ID> [저장할 곳] [--lab]   --lab: 실험 페이지로
+    if "--make-base-font" in sys.argv:
+        make_base_font(); sys.exit()
     a = [x for x in sys.argv[1:] if x != "--lab"]
     main(a[0], a[1] if len(a) > 1 else None, lab="--lab" in sys.argv)

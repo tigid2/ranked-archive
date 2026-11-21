@@ -9,12 +9,14 @@
 5. **리포트를 달라고 하면 피드백 글까지 끝낸 뒤 한 번에 줘요.** artifact 제목은 "리포트 - 내 챔피언 vs 상대 챔피언 · 월.일 시:분 승리/패배"(제목만 예외로 가운뎃점을 써요), 답 맨 마지막 줄에 그 이름만 적어요.
 6. **PC 폴더와 저장소 쓰기 같은 허용은 작업을 시작할 때 한 번에 요청해요.** 막히면 거부됐다고 알리기만 하지 말고 필요한 허용을 부탁해요.
 
-## 리포트 만들기 순서 (토큰 아끼는 순서, 11-21)
-1. `git clone --depth 20` → `raw/`에서 최신 경기 ID 확인 → `python3 tools/report/report_data.py <ID>`
-2. `python3 tools/report/fb_brief.py <ID> > /tmp/brief.txt` 를 실행하고 **이 파일 하나만** 읽어요. 데이터 구조를 이리저리 조회하지 않아요.
-3. 피드백 글을 쓸 때 `knowledge/rules.md`는 통째로 읽지 않고 "글쓰기", "메모", "체크리스트"와 그 판에 필요한 장만 찾아 읽어요. 예시 피드백 파일은 읽지 않아요(형식은 아래).
-4. 피드백을 `tools/report/private-feedback/<ID>.json`(공개 판은 `feedback/`)에 쓴 뒤 `bash tools/report/make_report.sh <ID>` **한 번만** 실행해요(데이터, 화면 빌드, 한 파일 리포트를 한꺼번에).
-5. `python3 tools/report/check_page.py <ID>`로 글자와 오류만 확인하고(스크린샷 X, 확인 스크립트를 새로 쓰지 않아요) `publish_files`로 올려요. 비공개 판 피드백은 PC `ranked-archive-workfiles\feedback\`에도 저장해요.
+## 리포트 만들기 순서 (명령 4번, 11-22)
+단계(도구 호출) 하나마다 기본 지침을 통째로 다시 읽어서, 단계 수가 토큰과 시간을 가장 많이 좌우해요. 아래 순서를 늘리지 않아요.
+1. **준비 한 번:** `git clone -q --depth 20 https://github.com/tigid2/ranked-archive.git && cd ranked-archive && sed -n '/^## 항상/,/^롤 솔로/p' AGENTS.md && bash tools/report/prep.sh [ID]` — 이 출력 하나에 최신 판 ID, 공개 여부, 리플레이 위치 유무, artifact 제목, 피드백용 요약, 그 판 역할에 맞는 규칙 장이 다 있어요. `rules.md`, 요약 파일, 화면 코드(`web/src/`)를 따로 읽지 않아요. 화면 빌드는 prep.sh가 뒤에서 미리 해요.
+2. **피드백 쓰기 한 번:** 출력 끝에 적힌 경로(비공개 판은 `tools/report/private-feedback/<ID>.json`)에 Write로 써요. 고칠 게 생겨도 sed로 따로 고치지 말고 처음부터 맞게 써요.
+3. **마무리 한 번:** `bash tools/report/finish.sh <ID>` — 검사, 데이터, 한 파일 리포트, 글자/오류 확인, PC 저장용 사본까지 해요. 마지막 줄이 "확인 끝: 문제 없음"이 아니면 그때만 고쳐요.
+4. **올리기 한 번(동시에):** `publish_files`(새 판은 slug 없이, 제목은 finish.sh가 알려 준 것) + 비공개 판은 `device_commit_files`로 finish.sh가 알려 준 PC 경로에 저장. PC 폴더가 연결돼 있지 않으면 시작할 때 폴더 허용을 한 번에 부탁해요.
+- 다시 만들기(이미 올린 판)만 `list_artifacts`로 slug를 찾고 `get_artifact`, `list_files` 뒤에 올려요.
+- 메모리 파일과 프로젝트 요약 문서는 리포트만 만들 때 읽지 않아요.
 - 이 형식만 보고 쓰고, 화면 코드(`web/src/`)를 찾아보지 않아요.
 - 피드백 파일 형식: `summary`, `keyFixes[{title, body}]`(2개), `checklist[{mark: good|mid|bad|memo, name, why}]`(원딜 9개, 이름은 rules.md 체크리스트 그대로), `laneText`, `moments[{t, text, key?, crit?: good|bad}]`, `keyDeaths[{t, what, evidence, next}]`, `otherDeaths{"m:ss": 상황 한 줄}`(keyDeaths에 없는 죽음), `build{아이템, 룬, 소환사 주문, gapAfter}`, `takeaway`, `memo{principle, kept, scene, questions[{q, a}], free}`, `swings{"0": 글}`(키는 brief "변곡" 줄의 시작 분을 글자로, 예: "0", "25"), `focus`.
 
