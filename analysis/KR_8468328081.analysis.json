@@ -557,7 +557,8 @@
    ],
    "enemiesNear": [
     "사일러스(적)",
-    "루시안(적)"
+    "루시안(적)",
+    "세나(적)"
    ],
    "roams": [],
    "damage": [
@@ -698,6 +699,7 @@
     "자이라(아군)"
    ],
    "enemiesNear": [
+    "루시안(적)",
     "세나(적)"
    ],
    "roams": [],
@@ -835,15 +837,19 @@
    "zone": "아래쪽 강가(드래곤 쪽)",
    "killer": "이렐리아(적)",
    "assists": [],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "우디르(아군)"
+   ],
+   "enemiesNear": [
+    "이렐리아(적)"
+   ],
    "roams": [
     {
      "who": "이렐리아(적)",
      "role": "탑",
-     "minuteMark": "24:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 4436
+     "minuteMark": "24:09",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 68
     }
    ],
    "damage": [
@@ -1126,7 +1132,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 1499
+   "myDistance30sBefore": 2917
   },
   {
    "t": "8:31",
@@ -1154,7 +1160,7 @@
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3427
+   "myDistance30sBefore": 2692
   },
   {
    "t": "15:31",
@@ -1168,21 +1174,21 @@
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3555
+   "myDistance30sBefore": 3952
   },
   {
    "t": "22:19",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1899
+   "myDistance30sBefore": 2789
   },
   {
    "t": "24:23",
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": true,
-   "myDistance30sBefore": 5787
+   "myDistance30sBefore": 8178
   }
  ],
  "buildings": [
@@ -1559,20 +1565,31 @@
    "13": true,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.73,
+   "4~5": 0.92,
+   "5~6": 1.0,
+   "6~7": 0.65,
+   "7~8": 1.0,
+   "8~9": 0.43,
+   "9~10": 0.77,
+   "10~11": 0.98,
+   "11~12": 0.72,
+   "12~13": 1.0,
+   "13~14": 0.5
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 60,
-   "opp": 46
+   "me": 90,
+   "opp": 78
   },
   "csWithoutSupport": {
-   "me": 38,
-   "opp": 42
+   "me": 8,
+   "opp": 10
   },
   "supportAwayRanges": [
-   "3~5분",
-   "8~10분",
-   "13~14분"
+   "8~9분"
   ],
   "botAdcKills": {
    "opp": 3,
@@ -1603,7 +1620,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 71,
