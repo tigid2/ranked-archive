@@ -541,6 +541,7 @@
     "노틸러스(적)"
    ],
    "alliesNear": [
+    "초가스(아군)",
     "소나(아군)"
    ],
    "enemiesNear": [
@@ -552,9 +553,9 @@
     {
      "who": "브라이어(적)",
      "role": "정글",
-     "minuteMark": "6:00",
+     "minuteMark": "6:22",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 4707
+     "distance": 4451
     }
    ],
    "damage": [
@@ -706,15 +707,16 @@
    "enemiesNear": [
     "브라이어(적)",
     "사일러스(적)",
-    "카이사(적)"
+    "카이사(적)",
+    "노틸러스(적)"
    ],
    "roams": [
     {
      "who": "사일러스(적)",
      "role": "미드",
-     "minuteMark": "11:00",
+     "minuteMark": "10:32",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 1434
+     "distance": 2470
     }
    ],
    "damage": [
@@ -850,6 +852,7 @@
     "사일러스(적)"
    ],
    "alliesNear": [
+    "초가스(아군)",
     "카타리나(아군)"
    ],
    "enemiesNear": [
@@ -862,16 +865,16 @@
     {
      "who": "가렌(적)",
      "role": "탑",
-     "minuteMark": "19:00",
-     "wasAt": "탑 라인",
-     "distance": 7671
+     "minuteMark": "19:18",
+     "wasAt": "미드 라인",
+     "distance": 4966
     },
     {
      "who": "사일러스(적)",
      "role": "미드",
-     "minuteMark": "19:00",
-     "wasAt": "바텀 라인",
-     "distance": 7363
+     "minuteMark": "19:18",
+     "wasAt": "블루팀 본진",
+     "distance": 7617
     }
    ],
    "damage": [
@@ -1007,12 +1010,12 @@
     "노틸러스(적)"
    ],
    "alliesNear": [
+    "초가스(아군)",
     "카타리나(아군)",
     "소나(아군)"
    ],
    "enemiesNear": [
     "가렌(적)",
-    "브라이어(적)",
     "사일러스(적)",
     "노틸러스(적)"
    ],
@@ -1020,9 +1023,9 @@
     {
      "who": "가렌(적)",
      "role": "탑",
-     "minuteMark": "21:00",
+     "minuteMark": "21:21",
      "wasAt": "탑 라인",
-     "distance": 9383
+     "distance": 9381
     }
    ],
    "damage": [
@@ -1265,14 +1268,14 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2052
+   "myDistance30sBefore": 1908
   },
   {
    "t": "16:17",
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4138
+   "myDistance30sBefore": 9058
   },
   {
    "t": "17:44",
@@ -1286,14 +1289,14 @@
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4064
+   "myDistance30sBefore": 4265
   },
   {
    "t": "24:42",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 6226
+   "myDistance30sBefore": 3799
   }
  ],
  "buildings": [
@@ -1583,18 +1586,33 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 0.42,
+   "5~6": 1.0,
+   "6~7": 1.0,
+   "7~8": 1.0,
+   "8~9": 0.08,
+   "9~10": 0.52,
+   "10~11": 0.73,
+   "11~12": 0.1,
+   "12~13": 1.0,
+   "13~14": 1.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 66,
-   "opp": 63
+   "me": 72,
+   "opp": 73
   },
   "csWithoutSupport": {
-   "me": 21,
-   "opp": 31
+   "me": 15,
+   "opp": 21
   },
   "supportAwayRanges": [
-   "8~12분"
+   "4~5분",
+   "8~9분",
+   "11~12분"
   ],
   "botAdcKills": {
    "opp": 2,
@@ -1617,7 +1635,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
