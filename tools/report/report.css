@@ -826,16 +826,15 @@ p { margin: 0; }
 .rp-label-red rect { fill: var(--red); }
 .rp-label-red text { fill: #fff; }
 
-/* 04 죽음: 반복 실수(11-22 A+B안) */
-.d3-pat { display: flex; align-items: center; gap: var(--s-5); padding: var(--s-5) var(--s-6); margin-bottom: var(--s-5); border: 1px solid var(--line); border-left: 4px solid var(--red); border-radius: 12px; background: var(--panel); }
-.d3-pat-n { flex: none; font: 800 52px/1 var(--font-num); color: var(--red-ink); }
-.d3-pat-n small { font-size: 26px; color: var(--text-3); margin-left: 2px; }
-.d3-pat-t h3 { margin: var(--s-2) 0; font-size: 22px; line-height: 1.35; }
-.d3-pat-t p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--text); }
-.d3-pat-t p b { font-size: 13px; color: var(--mint-ink); margin-right: var(--s-2); }
-.d3-pat-tag { font-size: 13px; font-weight: 700; color: var(--text-2); display: inline-flex; align-items: center; gap: var(--s-2); }
-.dtag { font-style: normal; font-size: 12px; font-weight: 700; line-height: 1; padding: 4px 8px; border-radius: 999px; background: var(--bg); color: var(--text-2); border: 1px solid var(--line); }
-.dtag.on { background: var(--red); border-color: var(--red); color: #fff; }
+/* 04 죽음: 반복 실수 (11-22 다시 만듦. 디자인 시스템대로 각진 패널, 1px 선, 그림자 없음. 빨강은 죽음 숫자와 유형 칩에만) */
+.d3-pat { display: grid; grid-template-columns: 200px 1fr; padding: 0; margin-bottom: var(--s-5); }
+.d3-pat-n { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-2); padding: var(--s-5); border-right: 1px solid var(--line); }
+.d3-pat-n .num { font-size: 56px; font-weight: 800; line-height: 1; color: var(--red-ink); }
+.d3-pat-n .num small { font-size: 20px; font-weight: 700; color: var(--text-3); margin-left: var(--s-1); }
+.d3-pat-body { padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-4); }
+.d3-pat-body h3 { font-size: 22px; font-weight: 800; line-height: 1.35; letter-spacing: -0.02em; }
+.d3-pat-hits { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
+.d3-pat-hits li { display: inline-flex; align-items: center; gap: var(--s-2); font-weight: 800; font-size: 16px; }
+.d3-pat .d3-nextbox { padding-top: var(--s-4); }
 .d3-tags { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: var(--s-2); }
-.dno.dim { opacity: .35; }
-.dno.pat { box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 25%, transparent); }
+@media (max-width: 760px) { .d3-pat { grid-template-columns: 1fr; } .d3-pat-n { border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; align-items: center; flex-wrap: wrap; } }

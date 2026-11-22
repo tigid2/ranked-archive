@@ -426,17 +426,21 @@ function Replay({ rp, scene, jump, onTime, joins, vision, setVision, fights, sid
   )
 }
 
-// ---------- 반복 실수 한 줄 (11-22 A안): 04 맨 위에 큰 숫자 + 무엇을 반복했는지 + 개선점 하나 ----------
-function Pattern({ p }) {
-  // count는 "8번 중 4번"처럼 써요 → 화면은 4/8 (반복한 횟수 / 전체 죽음)
-  const [of, n] = String(p.count).match(/\d+/g) || []
+// ---------- 반복 실수 (11-22 다시 만듦): 패널 하나, 왼쪽 = 몇 번 중 몇 번, 오른쪽 = 무엇을 반복했는지 + 해당 죽음 + 개선점 ----------
+function Pattern({ p, list, keyNos }) {
+  const [of, n] = String(p.count).match(/\d+/g) || []   // count는 "4번 중 3번" → 3 / 4
+  const hits = list.filter((x) => (p.times || []).includes(x.t))
   return (
-    <div className="d3-pat">
-      <div className="d3-pat-n num">{of ? <>{n}<small>/{of}</small></> : p.count}</div>
-      <div className="d3-pat-t">
-        <span className="d3-pat-tag">반복 실수 <i className="dtag on">{p.tag}</i></span>
+    <div className="panel d3-pat">
+      <div className="d3-pat-n">
+        <span className="label">반복 실수</span>
+        <div className="num">{n ?? p.count}{of && <small>/ {of}번</small>}</div>
+        <span className="chip chip-bad">{p.tag}</span>
+      </div>
+      <div className="d3-pat-body">
         <h3>{p.title}</h3>
-        {p.next && <p><b>개선점</b>{p.next}</p>}
+        <ul className="d3-pat-hits">{hits.map((x) => <li key={x.t}><span className={cx('dno', keyNos.has(x.no) && 'key')}>{x.no}</span><span className="num">{x.t}</span></li>)}</ul>
+        {p.next && <div className="d3-row2 d3-nextbox"><span className="d3-lab">개선점</span><p>{p.next}</p></div>}
       </div>
     </div>
   )
@@ -449,12 +453,12 @@ function Row({ x, note, isKey, on, onPick, pat }) {
   return (
     <li>
       <button type="button" className={cx('d3-row', on && 'on')} onClick={onPick} aria-pressed={on}>
-        <span className={cx('dno', isKey && 'key', pat && pat.has(x.no) && 'pat', pat && !pat.has(x.no) && 'dim')} title={isKey ? '주요 죽음' : undefined}>{x.no}</span>
+        <span className={cx('dno', isKey && 'key')} title={isKey ? '주요 죽음' : undefined}>{x.no}</span>
         <time>{x.t}</time>
         <span className="d3-kill"><Ci c={x.killer} size="sm" />{x.assists.map((a, i) => <Ci key={i} c={a} size="xs" />)}</span>
         <span className="d3-lost">{x.lostAfter.length > 0 ? <LostList lost={noTime(x.lostAfter)} /> : <span className="muted">손해 없음</span>}</span>
         {line && <span className={cx('d3-next', line[0] === '상황' && 'is-what')}><b>{line[0]}</b>{line[1]}</span>}
-        {tagsOf(x, note).length > 0 && <span className="d3-tags">{tagsOf(x, note).map((g) => <i key={g} className={cx('dtag', pat && pat.tag === g && 'on')}>{g}</i>)}</span>}
+        {tagsOf(x, note).length > 0 && <span className="d3-tags">{tagsOf(x, note).map((g) => <span key={g} className={cx('chip', pat && pat.tag === g ? 'chip-bad' : 'chip-line')}>{g}</span>)}</span>}
       </button>
     </li>
   )
@@ -766,7 +770,7 @@ export default function Deaths({ d, fb }) {
 
   return (
     <Section no="04">
-      {fb && fb.deathPattern && <Pattern p={fb.deathPattern} />}
+      {fb && fb.deathPattern && <Pattern p={fb.deathPattern} list={D.list} keyNos={keyNos} />}
       <div className={cx('d3', isReplay && 'is-replay', keyNos.size > 0 && 'has-key')}>
         <div className="d3-bar">
           <div className="d3-tabs">
@@ -775,7 +779,7 @@ export default function Deaths({ d, fb }) {
           </div>
           {isReplay && (
             <div className="d3-jump" role="group" aria-label="죽음 바로가기">
-              {D.list.map((x) => <button key={x.t} type="button" className={cx('dno', keyNos.has(x.no) && 'key', cur === x.no && 'on', pat && pat.has(x.no) && 'pat', pat && !pat.has(x.no) && 'dim')} onClick={() => goDeath(x.no)} aria-pressed={cur === x.no} title={`${x.no}번째 죽음 ${x.t}${keyNos.has(x.no) ? ' (주요 죽음)' : ''}`}>{x.no}</button>)}
+              {D.list.map((x) => <button key={x.t} type="button" className={cx('dno', keyNos.has(x.no) && 'key', cur === x.no && 'on')} onClick={() => goDeath(x.no)} aria-pressed={cur === x.no} title={`${x.no}번째 죽음 ${x.t}${keyNos.has(x.no) ? ' (주요 죽음)' : ''}`}>{x.no}</button>)}
             </div>
           )}
         </div>

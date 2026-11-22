@@ -10,6 +10,8 @@
 6. **PC 폴더와 저장소 쓰기 같은 허용은 작업을 시작할 때 한 번에 요청해요.** 막히면 거부됐다고 알리기만 하지 말고 필요한 허용을 부탁해요.
 7. **화면의 인터랙션은 컴퓨터의 '움직임 줄이기' 설정과 상관없이 모두 보여요.** `prefers-reduced-motion`으로 끄는 코드를 넣지 않아요(11-22 사용자가 다시 확인).
 8. **디자인을 지우라고 하면 사용자가 말한 범위만 지워요.** 비슷한 요소가 다른 곳에 있어도 묻기 전에는 건드리지 않아요(11-22: 점수 줄의 + 표시만 말했는데 맨 아래 + 줄까지 지웠다가 되돌림).
+9. **디자인 요소를 더하거나 바꿀 때는 먼저 `tools/report/report.css` 맨 위 디자인 시스템 설명과 기존 부품(`.panel`, `.chip`, `.dno`, `.d3-nextbox`)을 보고 그것으로 만들어요.** 각진 모서리, 그림자 없음, 빨강은 죽음에만 써요. 둥근 캡슐, 한쪽 세로 강조선, 흐리게/연한 테두리 같은 새 변형을 만들지 않아요(11-22 사용자 지적).
+10. **글은 주어를 살린 완전한 문장으로 써요.** "자세한 건 04에 있어요"처럼 다른 칸을 가리키기만 하는 줄임말을 쓰지 않아요. 제목도 무엇을 하라는지 읽히게 써요(11-22 사용자 지적).
 
 ## 리포트 만들기 순서 (명령 4번, 11-22)
 단계(도구 호출) 하나마다 기본 지침을 통째로 다시 읽어서, 단계 수가 토큰과 시간을 가장 많이 좌우해요. 아래 순서를 늘리지 않아요.
@@ -20,7 +22,7 @@
 - 다시 만들기(이미 올린 판)만 `list_artifacts`로 slug를 찾고 `get_artifact`, `list_files` 뒤에 올려요.
 - 메모리 파일과 프로젝트 요약 문서는 리포트만 만들 때 읽지 않아요.
 - 이 형식만 보고 쓰고, 화면 코드(`web/src/`)를 찾아보지 않아요.
-- 피드백 파일 형식: `summary`, `keyFixes[{title, body}]`(2개), `checklist[{mark: good|mid|bad|memo, name, why}]`(원딜 9개, 이름은 rules.md 체크리스트 그대로), `laneText`, `moments[{t, text, key?, crit?: good|bad}]`(crit 색 글씨는 판을 가른 아주 큰 이득/손해에만, 한 판에 0~2개), `deathPattern{tag, title, count: "4번 중 3번", times, next}`(brief "유형별 개수"에서 3번 이상 또는 3번 중 2번인 유형이 있을 때만, 없으면 빼요. 개선점은 여기 하나만), `keyDeaths[{t, tag, what, evidence, next?}]`(반복 실수에 든 죽음은 next 없이), `otherDeaths{"m:ss": {tag, what}}`(keyDeaths에 없는 죽음, tag는 brief 유형 중 하나), `build{아이템, 룬, 소환사 주문, gapAfter}`, `takeaway`, `memo{principle, kept, scene, questions[{q, a}], free}`, `swings{"0": 글}`(키는 brief "변곡" 줄의 시작 분을 글자로, 예: "0", "25"), `focus`.
+- 피드백 파일 형식: `summary`, `keyFixes[{title, body}]`(2개), `checklist[{mark: good|mid|bad|memo, name, why}]`(원딜 9개, 이름은 rules.md 체크리스트 그대로), `laneText`, `moments[{t, text, key?, crit?: good|bad}]`(crit 색 글씨는 판을 가른 아주 큰 이득/손해에만, 한 판에 0~2개), `deathPattern{tag, title, count: "4번 중 3번", times, next}`(brief "유형별 개수"에서 3번 이상 또는 3번 중 2번인 유형이 있을 때만, 없으면 빼요), `keyDeaths[{t, tag, what, evidence, next}]`(모든 죽음을 여기에, 상황/근거/개선점 셋 다 써요. 11-22 사용자), `otherDeaths{}`(비워 둬요), tag는 brief 유형 중 하나, `build{아이템, 룬, 소환사 주문, gapAfter}`, `takeaway`, `memo{principle, kept, scene, questions[{q, a}], free}`, `swings{"0": 글}`(키는 brief "변곡" 줄의 시작 분을 글자로, 예: "0", "25"), `focus`.
 
 롤 솔로 랭크 한 판마다 자세한 피드백을 만들어 쌓는 개인 프로젝트예요. 사용자는 플래티넘 원딜, 1차 목표는 에메랄드예요.
 
