@@ -354,6 +354,11 @@ def build(mid, champ_id=None, lab=False):
     per = death_extras(P, ME, events, dur, my_deaths_ev, rp["tracks"] if rp else None, live)
     for x in death_list:
         x.update(per.get(x["t"], {}))
+    death_tags(death_list, A["deaths"], P, ME, my_kills_ev + my_assist_ev, objs)
+    deaths["tagCount"] = {}
+    for x in death_list:
+        for tg in x["tags"]:
+            deaths["tagCount"][tg] = deaths["tagCount"].get(tg, 0) + 1
 
     # ----- 05 팀 -----
     us, th = MY_TEAM, 300 - MY_TEAM
@@ -489,6 +494,38 @@ def swings(flow, dur, my_kills_ev, my_deaths_ev, th=1500):
 SPELL_VERDICT = {"held": ("미사용", "bad"), "used_before": ("사용", "line"),
                  "already_down": ("없음", "line"), "uncertain": ("판단 보류", "unknown")}
 NO_RESULT = {None, "not_visible", "unknown"}
+
+
+DEATH_TAGS = ["점멸 없음", "서폿 없음", "킬 직후", "정글 개입", "수적 열세", "혼자 죽음", "오브젝트 직전"]
+
+
+def death_tags(death_list, raw, P, ME, my_ka_ev, objs):
+    """죽음 유형 꼬리표(11-22 계획 1차). 데이터로 확인되는 것만 붙여요. 추측은 붙이지 않아요.
+    서폿 없음은 라인전 구간에서 근처 아군에 우리 서폿이 없을 때만이에요."""
+    ej = next((p for p in P if p["teamId"] != ME["teamId"] and p["teamPosition"] == "JUNGLE"), None)
+    duo = next((p for p in P if p["teamId"] == ME["teamId"] and p["teamPosition"] == "UTILITY"), None)
+    ej_n = champ(ej["championName"])["n"] if ej else None
+    duo_n = champ(duo["championName"])["n"] if duo else None
+    nm = lambda lab: lab.split("(")[0]
+    big = {"DRAGON", "RIFTHERALD", "BARON_NASHOR", "ELDER_DRAGON"}
+    for x, r in zip(death_list, raw):
+        s = tsec(x["t"]) * 1000
+        tags = []
+        if any(sp["key"] == "SummonerFlash" and sp.get("verdict") == "already_down" for sp in x["spells"]["list"]):
+            tags.append("점멸 없음")
+        if x["phase"] == "라인전" and duo_n and duo_n not in [nm(a) for a in r["alliesNear"]]:
+            tags.append("서폿 없음")
+        if any(s - 30000 <= e["timestamp"] <= s for e in my_ka_ev):
+            tags.append("킬 직후")
+        if ej_n and (ej_n in [nm(r["killer"])] + [nm(a) for a in r["assists"]] or any(nm(j["who"]) == ej_n for j in r["roams"])):
+            tags.append("정글 개입")
+        if len(r["enemiesNear"]) - len(r["alliesNear"]) >= 2:
+            tags.append("수적 열세")
+        if not r["alliesNear"]:
+            tags.append("혼자 죽음")
+        if any(o["kind"] in big and s < o["t"] <= s + 60000 for o in objs):
+            tags.append("오브젝트 직전")
+        x["tags"] = tags
 
 
 def death_spells(x, ME):

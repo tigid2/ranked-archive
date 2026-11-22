@@ -12,6 +12,7 @@ const ms = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2
 const SPELL_WORD = { held: '미사용', used_before: '사용', already_down: '없음', uncertain: '판단 보류' }
 const killers = (x) => [x.killer, ...x.assists].map((c) => c.n).join(', ')
 // 죽은 뒤 손해: 정확한 시각(29:38 등)은 빼고 무엇을 잃었는지만
+const tagsOf = (x, note) => (note && note.tag ? [note.tag] : x.tags || [])
 const noTime = (lost) => lost.map((v) => v.replace(/^\d+:\d{2}\s*/, ''))
 
 // ---------- 기본: 모든 죽음 번호와 킬 ----------
@@ -425,18 +426,35 @@ function Replay({ rp, scene, jump, onTime, joins, vision, setVision, fights, sid
   )
 }
 
+// ---------- 반복 실수 한 줄 (11-22 A안): 04 맨 위에 큰 숫자 + 무엇을 반복했는지 + 개선점 하나 ----------
+function Pattern({ p }) {
+  // count는 "8번 중 4번"처럼 써요 → 화면은 4/8 (반복한 횟수 / 전체 죽음)
+  const [of, n] = String(p.count).match(/\d+/g) || []
+  return (
+    <div className="d3-pat">
+      <div className="d3-pat-n num">{of ? <>{n}<small>/{of}</small></> : p.count}</div>
+      <div className="d3-pat-t">
+        <span className="d3-pat-tag">반복 실수 <i className="dtag on">{p.tag}</i></span>
+        <h3>{p.title}</h3>
+        {p.next && <p><b>개선점</b>{p.next}</p>}
+      </div>
+    </div>
+  )
+}
+
 // ---------- 기본: 죽음 목록 한 줄 ----------
-function Row({ x, note, isKey, on, onPick }) {
+function Row({ x, note, isKey, on, onPick, pat }) {
   // 줄마다 개선점 한 줄. 개선점이 없는 죽음(주요 죽음이 아닌 것)은 상황 한 줄을 회색 제목으로 보여요.
   const line = note && (note.next ? ['개선점', note.next] : note.what ? ['상황', note.what] : null)
   return (
     <li>
       <button type="button" className={cx('d3-row', on && 'on')} onClick={onPick} aria-pressed={on}>
-        <span className={cx('dno', isKey && 'key')} title={isKey ? '주요 죽음' : undefined}>{x.no}</span>
+        <span className={cx('dno', isKey && 'key', pat && pat.has(x.no) && 'pat', pat && !pat.has(x.no) && 'dim')} title={isKey ? '주요 죽음' : undefined}>{x.no}</span>
         <time>{x.t}</time>
         <span className="d3-kill"><Ci c={x.killer} size="sm" />{x.assists.map((a, i) => <Ci key={i} c={a} size="xs" />)}</span>
         <span className="d3-lost">{x.lostAfter.length > 0 ? <LostList lost={noTime(x.lostAfter)} /> : <span className="muted">손해 없음</span>}</span>
         {line && <span className={cx('d3-next', line[0] === '상황' && 'is-what')}><b>{line[0]}</b>{line[1]}</span>}
+        {tagsOf(x, note).length > 0 && <span className="d3-tags">{tagsOf(x, note).map((g) => <i key={g} className={cx('dtag', pat && pat.tag === g && 'on')}>{g}</i>)}</span>}
       </button>
     </li>
   )
@@ -696,6 +714,15 @@ export default function Deaths({ d, fb }) {
     const ts = new Set(((fb && fb.keyDeaths) || []).map((k) => k.t))
     return new Set(D.list.filter((x) => ts.has(x.t)).map((x) => x.no))
   }, [fb, D])
+  // 반복 실수에 든 죽음 번호(B안: 같은 유형만 진하게, 나머지는 흐리게)
+  const pat = useMemo(() => {
+    const p = fb && fb.deathPattern
+    if (!p) return null
+    const ts = new Set(p.times || [])
+    const set = new Set(D.list.filter((x) => ts.has(x.t)).map((x) => x.no))
+    set.tag = p.tag
+    return set
+  }, [fb, D])
   const [mode, setMode] = useState('all')
   const [sel, setSel] = useState(null)      // 기본 모드에서 고른 죽음
   const [cur, setCur] = useState(1)         // 리플레이 모드에서 보는 죽음
@@ -739,6 +766,7 @@ export default function Deaths({ d, fb }) {
 
   return (
     <Section no="04">
+      {fb && fb.deathPattern && <Pattern p={fb.deathPattern} />}
       <div className={cx('d3', isReplay && 'is-replay', keyNos.size > 0 && 'has-key')}>
         <div className="d3-bar">
           <div className="d3-tabs">
@@ -747,7 +775,7 @@ export default function Deaths({ d, fb }) {
           </div>
           {isReplay && (
             <div className="d3-jump" role="group" aria-label="죽음 바로가기">
-              {D.list.map((x) => <button key={x.t} type="button" className={cx('dno', keyNos.has(x.no) && 'key', cur === x.no && 'on')} onClick={() => goDeath(x.no)} aria-pressed={cur === x.no} title={`${x.no}번째 죽음 ${x.t}${keyNos.has(x.no) ? ' (주요 죽음)' : ''}`}>{x.no}</button>)}
+              {D.list.map((x) => <button key={x.t} type="button" className={cx('dno', keyNos.has(x.no) && 'key', cur === x.no && 'on', pat && pat.has(x.no) && 'pat', pat && !pat.has(x.no) && 'dim')} onClick={() => goDeath(x.no)} aria-pressed={cur === x.no} title={`${x.no}번째 죽음 ${x.t}${keyNos.has(x.no) ? ' (주요 죽음)' : ''}`}>{x.no}</button>)}
             </div>
           )}
         </div>
@@ -772,7 +800,7 @@ export default function Deaths({ d, fb }) {
                   </div>
                 )}
                 <ol className="d3-list">
-                  {D.list.map((x) => <Row key={x.t} x={x} note={notes[x.t]} isKey={keyNos.has(x.no)} on={sel === x.no} onPick={() => pick(x.no)} />)}
+                  {D.list.map((x) => <Row key={x.t} x={x} note={notes[x.t]} isKey={keyNos.has(x.no)} on={sel === x.no} onPick={() => pick(x.no)} pat={pat} />)}
                 </ol>
               </div>
             </div>

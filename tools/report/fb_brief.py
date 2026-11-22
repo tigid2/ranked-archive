@@ -86,10 +86,12 @@ def main(mid):
 
     D = rep["deaths"]
     P(f"\n## 죽음 {D['total']}번  구간 {[(p['name'], p['n']) for p in D['phases']]}  혼자 {D['alone']}  죽은 뒤 손해 {D['lostN']}  합류 {D['roamN']}")
+    tc = D.get("tagCount") or {}
+    P("유형별 개수(반복 실수 = 3번 이상, 또는 3번 중 2번): " + ("  ".join(f"{k} {v}" for k, v in sorted(tc.items(), key=lambda kv: -kv[1])) or "없음"))
     lived = {round(x["t"]): x for x in (live or {}).get("deaths", [])}
     for x in D["list"]:
         r = x.get("recap") or {}
-        P(f"\n[{x['no']}] {x['t']} {x['phase']} {x['zone']}  킬 {x['killer']['n']}  도움 {names(x['assists'])}")
+        P(f"\n[{x['no']}] {x['t']} {x['phase']} {x['zone']}  킬 {x['killer']['n']}  도움 {names(x['assists'])}" + (f"  유형 {x['tags']}" if x.get('tags') else ""))
         P(f"  근처 아군 {names(x['alliesNear'])} / 적 {names(x['enemiesNear'])}  골드 {x['gold']}  팀골드 {x['teamGoldDiff']:+,}  죽은 뒤 손해 {x['lostAfter'] or '없음'}")
         P("  스펠: " + ", ".join(f"{s['n']} {s.get('label', '')}({s.get('verdict')})" for s in x["spells"]["list"]) if x["spells"].get("list") else f"  스펠: {x['spells'].get('state')}")
         P("  합류: " + ("  ".join(f"{a['who']['n']} {a['minuteMark']}에 {a['wasAt']}" for a in x.get("roams", [])) or "없음"))
