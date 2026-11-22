@@ -25,7 +25,8 @@ function OverviewMap({ m, active, onPick, keyNos }) {
         <rect key={`k${i}`} className={p.solid ? 'mp-kill' : 'mp-assist'} x={p.x - 6.5} y={p.y - 6.5} width="13" height="13"
           transform={`rotate(45 ${p.x} ${p.y})`}><title>{p.t} {p.solid ? '킬' : '어시스트'}</title></rect>
       ))}
-      {m.deaths.map((p) => (
+      {/* 고른 죽음은 맨 마지막에 그려요. SVG는 나중에 그린 것이 앞에 와서, 다른 죽음에 가려지지 않아요(11-22) */}
+      {[...m.deaths].sort((a, b) => (a.no === active) - (b.no === active)).map((p) => (
         <g key={p.no} className={cx('mp-d', active === p.no && 'on', keyNos.has(p.no) && 'key')} onClick={() => onPick(p.no)} role="button" aria-label={`${p.no}번째 죽음 ${p.t}${keyNos.has(p.no) ? ' 주요 죽음' : ''}`}>
           <title>{p.t} {p.no}번째 죽음{keyNos.has(p.no) ? ' (주요 죽음)' : ''}</title>
           {active === p.no && <circle className="mp-sel" cx={p.x} cy={p.y} r="21" />}
@@ -427,7 +428,7 @@ function Replay({ rp, scene, jump, onTime, joins, vision, setVision, fights, sid
 }
 
 // ---------- 반복 실수 (11-22 다시 만듦): 패널 하나, 왼쪽 = 몇 번 중 몇 번, 오른쪽 = 무엇을 반복했는지 + 해당 죽음 + 개선점 ----------
-function Pattern({ p, list, keyNos }) {
+function Pattern({ p, list, keyNos, onOpen }) {
   const [of, n] = String(p.count).match(/\d+/g) || []   // count는 "4번 중 3번" → 3 / 4
   const hits = list.filter((x) => (p.times || []).includes(x.t))
   return (
@@ -439,7 +440,11 @@ function Pattern({ p, list, keyNos }) {
       </div>
       <div className="d3-pat-body">
         <h3>{p.title}</h3>
-        <ul className="d3-pat-hits">{hits.map((x) => <li key={x.t}><span className={cx('dno', keyNos.has(x.no) && 'key')}>{x.no}</span><span className="num">{x.t}</span></li>)}</ul>
+        <ul className="d3-pat-hits">{hits.map((x) => (
+          <li key={x.t}><button type="button" onClick={() => onOpen(x.no)} aria-label={`${x.no}번째 죽음 ${x.t} 보기`}>
+            <span className={cx('dno', keyNos.has(x.no) && 'key')}>{x.no}</span><span className="num">{x.t}</span>
+          </button></li>
+        ))}</ul>
         {p.next && <div className="d3-row2 d3-nextbox"><span className="d3-lab">개선점</span><p>{p.next}</p></div>}
       </div>
     </div>
@@ -760,6 +765,13 @@ export default function Deaths({ d, fb }) {
     return (x.joins || []).filter((j) => j.t > w0)
   }), [D])
   const isReplay = mode === 'replay' && rp && R
+  // 반복 실수 칸에서 죽음을 누르면: 지금 보고 있는 모드(기본/리플레이)에서 목록의 그 죽음을 누른 것과 같게 펼쳐요
+  const boxRef = useRef(null)
+  const openDeath = (no) => {
+    if (isReplay) goDeath(no)
+    else setSel(no)
+    if (boxRef.current) boxRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   const cells = [
     ['데스', <span className="num">{D.total}</span>, 'hot'],
@@ -770,8 +782,8 @@ export default function Deaths({ d, fb }) {
 
   return (
     <Section no="04">
-      {fb && fb.deathPattern && <Pattern p={fb.deathPattern} list={D.list} keyNos={keyNos} />}
-      <div className={cx('d3', isReplay && 'is-replay', keyNos.size > 0 && 'has-key')}>
+      {fb && fb.deathPattern && <Pattern p={fb.deathPattern} list={D.list} keyNos={keyNos} onOpen={openDeath} />}
+      <div ref={boxRef} className={cx('d3', isReplay && 'is-replay', keyNos.size > 0 && 'has-key')}>
         <div className="d3-bar">
           <div className="d3-tabs">
             <button type="button" className={cx(mode === 'all' && 'on')} onClick={() => setMode('all')}>기본</button>

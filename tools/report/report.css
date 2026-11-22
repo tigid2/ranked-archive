@@ -209,7 +209,7 @@ p { margin: 0; }
 .lg-team { height: 0; width: 16px; border-top: 2.5px solid var(--text); }
 .lg-bot { height: 0; width: 16px; border-top: 2px dashed var(--text-3); }
 .lg-death, .lg-mdeath { background: var(--red); }
-.lg-mdeath { border-radius: 50%; }
+.lg-mdeath { border-radius: 50%; background: var(--panel); border: 2px solid var(--red); }  /* 11-22: 지도 죽음 표시와 같게 */
 .lg-death { width: 10px; height: 10px; }
 .lg-kill { background: var(--mint-ink); width: 3px; height: 12px; }
 .lg-mkill { background: var(--mint); outline: 1px solid var(--dark); width: 10px; height: 10px; transform: rotate(45deg); }  /* 지도와 같은 쨍한 민트. 흰 바탕에서 보이게 다크 1px 테두리 */
@@ -280,8 +280,9 @@ p { margin: 0; }
 @media (max-width: 900px) { .death-top { grid-template-columns: 1fr; } }
 .map-panel { padding: var(--s-4); }
 .map { width: 100%; height: auto; display: block; background: var(--dark); }
-.map .mp-death { fill: var(--red); }
-.map .mp-num { font: 800 12px var(--font-num); fill: var(--on-accent); }
+.map .mp-death { fill: var(--panel); stroke: var(--text); stroke-width: 2.5; }
+.map .mp-d.key .mp-death { stroke: var(--red); }
+.map .mp-num { font: 800 12px var(--font-num); fill: var(--red-ink); }
 .map .mp-kill { fill: var(--mint); }  /* 다크 지도 위라서 쨍한 민트(길 색과 5.8:1). 진한 민트는 2.0:1이라 안 보여요 */
 .map .mp-assist { fill: none; stroke: var(--mint); stroke-width: 2.8; }
 .legend-map { margin-top: var(--s-3); }
@@ -534,20 +535,17 @@ p { margin: 0; }
 
 /* 기본 지도: 고른 죽음은 흰 테두리 원. 크기 변화는 점 자리를 기준으로(fx.css) */
 .map .mp-d { cursor: pointer; }
-.map .mp-d:hover .mp-death { fill: #ff7a55; }
+.map .mp-d:hover .mp-death { fill: var(--bg); }
 .map .mp-sel { fill: none; stroke: #fff; stroke-width: 2.5; }
 /* 주요 죽음 = 주황 칠, 나머지 = 흰 바탕 + 주황 테두리 + 주황 글자 */
-.d3.has-key .map-deaths .mp-d:not(.key) .mp-death { fill: #fff; stroke: var(--red); stroke-width: 2.5; }
-.d3.has-key .map-deaths .mp-d:not(.key) .mp-num { fill: var(--red-ink); }
-.d3.has-key .map-deaths .mp-d:not(.key):hover .mp-death { fill: #ffe6de; }
 /* 하나를 고르면 나머지 죽음은 흐리게(예전과 같은 모습). 받침 원은 흐려지지 않아서 아래 킬 표시가 비치지 않아요 */
 .map .mp-back { fill: #1a1b1e; opacity: 0; pointer-events: none; }
 .map-deaths.has-active .mp-d:not(.on) .mp-back { opacity: 1; }
 .map-deaths.has-active .mp-d:not(.on) .mp-body { opacity: .28; }
 .map-deaths .mp-body { transition: opacity .25s; }
 /* 죽음 번호 표시 (목록, 바로가기, 죽음 칸, 리플레이): 주요 죽음 = 주황 칠 + 흰 글자, 나머지 = 흰 바탕 + 주황 테두리 */
-.dno { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--red); background: var(--panel); color: var(--red-ink); font: 800 16px/1 var(--font-num); padding: 0; }
-.dno.key { background: var(--red); color: #fff; }
+.dno { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--text); background: var(--panel); color: var(--red-ink); font: 800 16px/1 var(--font-num); padding: 0; }
+.dno.key { border-color: var(--red); }  /* 11-22: 빨강은 글씨와 테두리에만. 주요 죽음 = 빨간 테두리, 나머지 = 검은 테두리 */
 .dno-lg { width: 56px; height: 56px; font-size: 26px; border-width: 2.5px; }
 .d3-keytag { display: block; margin-bottom: var(--s-1); font: 800 13px var(--font-sans); color: var(--red-ink); }
 /* 팀 골드 차이: 우리 팀이 앞서면 민트, 상대가 앞서면 상대 팀 회색 */
@@ -619,8 +617,7 @@ p { margin: 0; }
 .d3-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 1px solid var(--line); }
 .d3-strip > div { padding: var(--s-5) var(--pad); border-right: 1px solid var(--line); min-width: 0; }
 .d3-strip > div:last-child { border-right: 0; }
-.d3-strip > div.hot { background: var(--red); border-right-color: var(--red); }
-.d3-strip > div.hot .label, .d3-strip > div.hot .num { color: #fff; }
+.d3-strip > div.hot .label, .d3-strip > div.hot .num { color: var(--red-ink); }  /* 11-22: 빨간 면 대신 흰 바탕에 빨간 글씨 */
 .d3-v .num.red { color: var(--red); }
 
 /* ---------- 리플레이 ---------- */
@@ -826,15 +823,22 @@ p { margin: 0; }
 .rp-label-red rect { fill: var(--red); }
 .rp-label-red text { fill: #fff; }
 
-/* 04 죽음: 반복 실수 (11-22 다시 만듦. 디자인 시스템대로 각진 패널, 1px 선, 그림자 없음. 빨강은 죽음 숫자와 유형 칩에만) */
+/* 04 죽음: 반복 실수 (11-22 다시 만듦. 디자인 시스템대로 각진 패널, 1px 선, 그림자 없음. 빨강은 글씨와 테두리에만) */
 .d3-pat { display: grid; grid-template-columns: 200px 1fr; padding: 0; margin-bottom: var(--s-5); }
 .d3-pat-n { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-2); padding: var(--s-5); border-right: 1px solid var(--line); }
-.d3-pat-n .num { font-size: 56px; font-weight: 800; line-height: 1; color: var(--red-ink); }
-.d3-pat-n .num small { font-size: 20px; font-weight: 700; color: var(--text-3); margin-left: var(--s-1); }
+.d3-pat-n .num { font-size: 52px; font-weight: 600; line-height: 1; color: var(--red-ink); }
+.d3-pat-n .num small { font-size: 18px; font-weight: 500; color: var(--text-3); margin-left: var(--s-1); }
 .d3-pat-body { padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-4); }
-.d3-pat-body h3 { font-size: 22px; font-weight: 800; line-height: 1.35; letter-spacing: -0.02em; }
-.d3-pat-hits { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
-.d3-pat-hits li { display: inline-flex; align-items: center; gap: var(--s-2); font-weight: 800; font-size: 16px; }
+.d3-pat-body h3 { font-size: 21px; font-weight: 600; line-height: 1.4; letter-spacing: -0.015em; }
+.d3-pat-hits { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); }
+.d3-pat-hits button { display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-2) var(--s-1) var(--s-1); border: 0; background: none; font: 500 15px var(--font-num); color: var(--text); cursor: pointer; }
+.d3-pat-hits button:hover { background: var(--bg); }
+.d3-pat-hits button:focus-visible { outline: 2px solid var(--mint-ink); outline-offset: 2px; }
+.d3-pat-hits .dno { font-weight: 600; }
 .d3-pat .d3-nextbox { padding-top: var(--s-4); }
+.d3-pat .d3-nextbox .d3-lab { font-weight: 600; }
+.d3-row2.d3-nextbox.d3-pat-next p, .d3-pat .d3-row2.d3-nextbox p { font-size: 16px; font-weight: 400; }
+.d3-pat .chip, .d3 .chip-bad { font-weight: 600; }
+.d3-pat .chip-bad, .d3 .chip-bad { background: var(--panel); border-color: var(--red); color: var(--red-ink); }  /* 죽음 쪽 칩은 빨간 면 대신 테두리와 글씨만 */
 .d3-tags { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: var(--s-2); }
 @media (max-width: 760px) { .d3-pat { grid-template-columns: 1fr; } .d3-pat-n { border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; align-items: center; flex-wrap: wrap; } }
