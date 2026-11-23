@@ -828,9 +828,7 @@
    "assists": [
     "룰루(적)"
    ],
-   "alliesNear": [
-    "소라카(아군)"
-   ],
+   "alliesNear": [],
    "enemiesNear": [
     "카이사(적)",
     "룰루(적)"
@@ -1078,7 +1076,7 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3125
+   "myDistance30sBefore": 2419
   },
   {
    "t": "17:40",
@@ -1092,42 +1090,42 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4628
+   "myDistance30sBefore": 4184
   },
   {
    "t": "25:37",
    "name": "대지 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2400
+   "myDistance30sBefore": 3715
   },
   {
    "t": "27:36",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3558
+   "myDistance30sBefore": 3475
   },
   {
    "t": "31:01",
    "name": "대지 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1862
+   "myDistance30sBefore": 3984
   },
   {
    "t": "34:28",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2912
+   "myDistance30sBefore": 3510
   },
   {
    "t": "36:22",
    "name": "대지 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1622
+   "myDistance30sBefore": 3567
   }
  ],
  "buildings": [
@@ -1573,19 +1571,30 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 0.63,
+   "5~6": 0.68,
+   "6~7": 1.0,
+   "7~8": 0.82,
+   "8~9": 0.87,
+   "9~10": 1.0,
+   "10~11": 1.0,
+   "11~12": 0.7,
+   "12~13": 0.65,
+   "13~14": 1.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 67,
-   "opp": 93
+   "me": 81,
+   "opp": 108
   },
   "csWithoutSupport": {
-   "me": 14,
-   "opp": 15
+   "me": 0,
+   "opp": 0
   },
-  "supportAwayRanges": [
-   "7~9분"
-  ],
+  "supportAwayRanges": [],
   "botAdcKills": {
    "opp": 0,
    "me": 2,
@@ -1602,7 +1611,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
