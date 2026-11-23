@@ -585,9 +585,9 @@
     {
      "who": "올라프(적)",
      "role": "정글",
-     "minuteMark": "13:00",
-     "wasAt": "미드 라인",
-     "distance": 1028
+     "minuteMark": "12:34",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 2706
     }
    ],
    "damage": [
@@ -725,22 +725,25 @@
     "럭스(아군)"
    ],
    "enemiesNear": [
-    "루시안(적)"
+    "올라프(적)",
+    "루시안(적)",
+    "자야(적)",
+    "알리스타(적)"
    ],
    "roams": [
     {
      "who": "올라프(적)",
      "role": "정글",
-     "minuteMark": "19:00",
-     "wasAt": "블루팀 본진",
-     "distance": 5890
+     "minuteMark": "19:06",
+     "wasAt": "탑 라인",
+     "distance": 2578
     },
     {
      "who": "알리스타(적)",
      "role": "서폿",
-     "minuteMark": "19:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 628
+     "minuteMark": "19:06",
+     "wasAt": "탑 라인",
+     "distance": 432
     }
    ],
    "damage": [
@@ -909,9 +912,9 @@
     {
      "who": "올라프(적)",
      "role": "정글",
-     "minuteMark": "23:00",
-     "wasAt": "우리 본진",
-     "distance": 562
+     "minuteMark": "22:32",
+     "wasAt": "바텀 라인",
+     "distance": 2808
     }
    ],
    "damage": [
@@ -1148,7 +1151,7 @@
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4519
+   "myDistance30sBefore": 4272
   },
   {
    "t": "15:46",
@@ -1162,7 +1165,7 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4252
+   "myDistance30sBefore": 2805
   },
   {
    "t": "20:25",
@@ -1176,21 +1179,21 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 11120
+   "myDistance30sBefore": 10325
   },
   {
    "t": "26:23",
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 9586
+   "myDistance30sBefore": 9191
   },
   {
    "t": "27:13",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 1230
+   "myDistance30sBefore": 2767
   }
  ],
  "buildings": [
@@ -1535,5 +1538,5 @@
   "5": 1,
   "10": 1
  },
- "positionSource": "minute"
+ "positionSource": "replay"
 }
