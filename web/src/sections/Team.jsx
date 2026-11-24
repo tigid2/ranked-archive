@@ -1,6 +1,6 @@
 import { Section, Loadout, ItemsRow, BfRow, num, fix, cx } from '../ui.jsx'
 
-function TeamTable({ t, maxDmg }) {
+export function TeamTable({ t, maxDmg }) {
   const top = (on) => (on ? 't-top' : '')
   return (
     <div className={cx('team', t.ours ? 'team-ours' : 'team-theirs')}>

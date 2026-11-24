@@ -130,7 +130,7 @@ def main(mid, out=None, lab=False, draft=False):
 
 
 if __name__ == "__main__":
-    # python3 tools/report/single.py <경기ID> [저장할 곳] [--lab|--draft]   --lab: 실험 페이지로, --draft: 01, 02 새 배치 시안(본 리포트 데이터 그대로)
+    # python3 tools/report/single.py <경기ID> [저장할 곳] [--lab|--draft]   --lab: 실험 페이지로, --draft: 01~07 새 배치 시안(본 리포트 데이터 그대로)
     if "--make-base-font" in sys.argv:
         make_base_font(); sys.exit()
     a = [x for x in sys.argv[1:] if x not in ("--lab", "--draft")]

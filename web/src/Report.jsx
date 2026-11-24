@@ -95,6 +95,7 @@ function PageEnd({ next }) {
 // over: 실험 시안(lab/Draft.jsx)이 섹션 몇 개만 바꿔 끼울 때 써요. 공개 사이트는 넘기지 않아요.
 export default function Report({ data, over = {} }) {
   const S01 = over.Summary || Summary, S02 = over.Flow || Flow
+  const S03 = over.Lane || Lane, S05 = over.Team || Team, S06 = over.Build || Build, S07 = over.Checklist || Checklist
   const fb = data.feedback || null
   useEffect(() => {
     document.title = `${data.me.n} ${data.hero.win ? '승리' : '패배'} 리포트`
@@ -108,11 +109,11 @@ export default function Report({ data, over = {} }) {
         <SecNav />
         <S01 fb={fb} d={data} />
         <S02 d={data} fb={fb} />
-        <Lane d={data} fb={fb} />
-        <Deaths d={data} fb={fb} />
-        <Team d={data} />
-        <Build d={data} fb={fb} />
-        <Checklist fb={fb} />
+        <S03 d={data} fb={fb} />
+        <Deaths d={data} fb={fb} {...(over.deaths || {})} />
+        <S05 d={data} />
+        <S06 d={data} fb={fb} />
+        <S07 fb={fb} />
         <Memo fb={fb} />
       </main>
       <PageEnd next={data.nav && data.nav.next} />

@@ -1,20 +1,15 @@
 // 01 요약, 02 경기 흐름 새 배치 시안(11-24, 계획 문서 '칸 다시 묶기' 탭의 새 배치 표대로).
 // artifact 한 파일(window.__DRAFT__)에서만 보여요. 나머지 섹션은 본 리포트 그대로예요.
 // 사용자가 확인하면 sections/Summary.jsx, sections/Flow.jsx로 옮겨요.
-// 맨 아래 실험 막대: Soft Y2K 세 곳(빛 번짐, 맨 위 띠 망점, 교차 표시 + 대 ✦)을 켜고 끌 수 있어요. 시스템 규칙을 바꾸는 거라 시안에서만 써요.
-import { useEffect, useMemo, useState } from 'react'
+// 03~07 시안은 DraftRest.jsx(11-24, 5단계). Soft Y2K 실험 세 곳은 쓰지 않기로 해서 뺐어요(11-24 사용자).
+import { useMemo, useState } from 'react'
 import Report from '../Report.jsx'
 import { Section, Lede, Pending, Gi, signed, num, mmss, fix, cx } from '../ui.jsx'
 import { styleAxes } from '../sections/Extra.jsx'
 import { Radar } from './charts.jsx'
+import { Lane2, Team2, Build2, Check2 } from './DraftRest.jsx'
 import './draft.css'
 
-// 마우스 자리를 CSS 변수로 넘겨요(빛 번짐 실험이 써요. 실험을 끄면 아무 일도 안 해요).
-const glow = (e) => {
-  const r = e.currentTarget.getBoundingClientRect()
-  e.currentTarget.style.setProperty('--gx', `${e.clientX - r.left}px`)
-  e.currentTarget.style.setProperty('--gy', `${e.clientY - r.top}px`)
-}
 const Xm = () => <i className="xm" aria-hidden="true" />
 
 // ================================================================ 01 요약
@@ -66,12 +61,12 @@ function Summary2({ fb, d }) {
       <div className="bento s2">
         {fb ? (
           <>
-            <div className="cell glowable s2-lede" onPointerMove={glow}><Xm /><Lede text={fb.summary} /></div>
+            <div className="cell s2-lede"><Xm /><Lede text={fb.summary} /></div>
             <div className="cell s2-fixes"><Xm />
               <p className="s2-goal"><span className="chip chip-pos">다음 판 목표</span><b>{fb.takeaway}</b></p>
               <ol className="fixes">
                 {fb.keyFixes.map((f, i) => (
-                  <li key={i} className="fix glowable" onPointerMove={glow}><span className="fix-no">{i + 1}</span><div><h3>{f.title}</h3><p>{f.body}</p></div></li>
+                  <li key={i} className="fix"><span className="fix-no">{i + 1}</span><div><h3>{f.title}</h3><p>{f.body}</p></div></li>
                 ))}
               </ol>
             </div>
@@ -364,9 +359,9 @@ function Moments({ moments, hl, setHl }) {
   return (
     <ol className={cx('bento f2-mo-grid', `cols-${cols}`)}>
       {moments.map((m, i) => (
-        <li key={i} className={cx('cell glowable', m.key && 'm-key', m.crit && `m-crit-${m.crit}`, hl === i && 'on')}
+        <li key={i} className={cx('cell', m.key && 'm-key', m.crit && `m-crit-${m.crit}`, hl === i && 'on')}
           style={i === moments.length - 1 && moments.length % cols ? { gridColumn: `span ${cols - (moments.length - 1) % cols}` } : undefined}
-          onPointerEnter={() => setHl(i)} onPointerLeave={() => setHl(null)} onPointerMove={glow}>
+          onPointerEnter={() => setHl(i)} onPointerLeave={() => setHl(null)}>
           <Xm />
           <span className="f2-mo-no num">{i + 1}</span>
           <time className="num">{m.t}</time>
@@ -420,31 +415,6 @@ function Flow2({ d, fb }) {
   )
 }
 
-// ================================================================ 실험 막대
-function LabBar() {
-  const [glowOn, setGlow] = useState(false)
-  const [dots, setDots] = useState(false)
-  const [star, setStar] = useState(false)
-  useEffect(() => {
-    const b = document.body.classList
-    b.toggle('y2k-glow', glowOn); b.toggle('y2k-dots', dots); b.toggle('y2k-star', star)
-  }, [glowOn, dots, star])
-  const Tg = ({ on, set, a, b }) => (
-    <div className="lab-tabs">
-      <button className={cx(!on && 'on')} onClick={() => set(false)}>{a}</button>
-      <button className={cx(on && 'on')} onClick={() => set(true)}>{b}</button>
-    </div>
-  )
-  return (
-    <aside className="dlab" aria-label="시안 실험">
-      <span className="fx-label">SOFT Y2K 실험</span>
-      <div><span className="small">마우스 빛</span><Tg on={glowOn} set={setGlow} a="없음" b="민트 → 연보라" /></div>
-      <div><span className="small">맨 위 띠</span><Tg on={dots} set={setDots} a="줄무늬" b="망점" /></div>
-      <div><span className="small">교차 표시</span><Tg on={star} set={setStar} a="+" b="✦" /></div>
-    </aside>
-  )
-}
-
 export default function Draft({ data }) {
-  return <Report data={data} over={{ Summary: Summary2, Flow: Flow2, after: <LabBar /> }} />
+  return <Report data={data} over={{ Summary: Summary2, Flow: Flow2, Lane: Lane2, Team: Team2, Build: Build2, Checklist: Check2, deaths: { autoOpen: true } }} />
 }

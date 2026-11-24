@@ -706,7 +706,8 @@ function ReplaySide({ X, note, isKey, meC, onPlay }) {
   )
 }
 
-export default function Deaths({ d, fb }) {
+// autoOpen: 죽음이 3번 이하인 판은 첫 죽음(주요 죽음이 있으면 그것) 정보 칸을 처음부터 펼쳐요. 시안(lab/Draft.jsx)만 넘겨요.
+export default function Deaths({ d, fb, autoOpen }) {
   const D = d.deaths
   const rp = D.replay
   // 죽음마다 상황, 근거, 개선점. 피드백 글이 없는 판은 시안 확인용 예시(demoNotes)만 있어요.
@@ -733,7 +734,7 @@ export default function Deaths({ d, fb }) {
     return set
   }, [fb, D])
   const [mode, setMode] = useState('all')
-  const [sel, setSel] = useState(null)      // 기본 모드에서 고른 죽음
+  const [sel, setSel] = useState(() => (autoOpen && D.list.length && D.list.length <= 3 ? ([...keyNos][0] ?? D.list[0].no) : null))      // 기본 모드에서 고른 죽음
   const [cur, setCur] = useState(1)         // 리플레이 모드에서 보는 죽음
   const [vision, setVision] = useState(true)
   const X = sel != null ? D.list.find((x) => x.no === sel) : null

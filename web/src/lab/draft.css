@@ -129,32 +129,132 @@
 .f2-mo-grid .m-crit-good .f2-mo-t { color: var(--mint-ink); }
 @media (max-width: 1000px) { .f2-mo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .f2-mo-grid > .cell:nth-child(4n) { border-right: 1px solid var(--line); } .f2-mo-grid > .cell:nth-child(2n) { border-right: 0; } }
 
-/* ---------- 실험 막대 ---------- */
-.dlab { position: fixed; left: 16px; bottom: 16px; z-index: 60; background: var(--dark); color: var(--on-dark); padding: 12px 14px; display: grid; gap: 8px; }
-.dlab .fx-label { color: var(--on-dark-2); }
-.dlab > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.dlab .lab-tabs { margin: 0; }
-.dlab .lab-tabs button { background: transparent; color: var(--on-dark-2); border-color: var(--dark-line); padding: 4px 10px; }
-.dlab .lab-tabs button.on { background: var(--on-dark); color: var(--ink); border-color: var(--on-dark); }
 
-/* ---------- Soft Y2K 실험 1: 마우스를 올리면 민트에서 연보라로 번지는 빛 (시안에서만) ---------- */
-.glowable { position: relative; }
-.y2k-glow .glowable::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s;
-  background: radial-gradient(circle 220px at var(--gx, 50%) var(--gy, 50%), rgba(63, 224, 230, .38), rgba(196, 178, 255, .28) 45%, transparent 75%); }
-.y2k-glow .glowable:hover::before { opacity: 1; }
-.y2k-glow .glowable > *:not(.xm) { position: relative; }
-.y2k-glow .f2-mo-grid > .cell.on, .y2k-glow .s2-bar.on { background: transparent; }
-.y2k-glow .s2-bar.on { background: linear-gradient(90deg, rgba(63, 224, 230, .22), rgba(196, 178, 255, .22)); }
+/* ================= 03~07 시안 (11-24, 5단계). 부품은 위 벤토(.bento, .cell, .xm)와 report.css의 .chip, .bf, .sup-strip, .itl, .runes, .spells, .skills ================= */
+.bento + .bento, .t2-key + .team, .bento + .team { margin-top: var(--s-4); }
 
-/* ---------- 실험 2: 맨 위 승리/패배 띠를 망점이 번지는 밝은 면으로 ---------- */
-.y2k-dots .hero .stripes { transform: none; clip-path: none; animation: none; width: min(560px, 70%); height: 36px; margin-bottom: var(--s-4);
-  background: radial-gradient(circle at center, var(--stripe) 0 2.6px, transparent 3px) 0 0 / 8px 8px;
-  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 18%, transparent 100%); mask-image: linear-gradient(90deg, #000 0, #000 18%, transparent 100%);
-  -webkit-mask-size: 0% 100%; mask-size: 0% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; animation: dots-spread 1.4s .15s var(--ease) forwards; }
-.y2k-dots .hero .stripes::after { content: ""; display: block; height: 100%; background: radial-gradient(circle at center, var(--stripe) 0 1.4px, transparent 1.8px) 4px 4px / 8px 8px; }
-@keyframes dots-spread { to { -webkit-mask-size: 100% 100%; mask-size: 100% 100%; } }
+/* ---------- 03 라인전: 7+5 / 5+7 / 5+7 ---------- */
+.l2-lede { grid-column: span 7; padding: var(--s-6); }
+.l2-numcell, .l2-vs, .l2-sup { grid-column: span 5; }
+.l2-lvcell, .l2-14 { grid-column: span 7; }
+.l2-14.is-full { grid-column: 1 / -1; }
+.l2 > .l2-numcell, .l2 > .l2-lvcell, .l2 > .l2-14 { border-right: 0; }
+.l2 > .l2-sup, .l2 > .l2-14 { border-bottom: 0; }
+.l2-lede-t { font-size: 20px; line-height: 1.75; font-weight: 500; letter-spacing: -0.015em; }
+.l2-nums dt small { display: block; font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.l2-nums dl > div { align-items: center; }
+.l2-vs .bf-head { margin-bottom: var(--s-3); }
+.l2-back { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--line); }
+.l2-back-row { display: flex; align-items: center; gap: var(--s-2); padding: 6px 0; flex-wrap: wrap; }
+.l2-back-row > b { font-size: 16px; }
+.l2-lv { display: grid; border-top: 1px solid var(--line); }
+.l2-lv-col { display: flex; flex-direction: column; gap: 6px; padding: var(--s-4) var(--s-4) var(--s-2); border-left: 1px solid var(--line); }
+.l2-lv-col:first-child { border-left: 0; padding-left: 0; }
+.l2-lv-n { font: 800 15px/1 var(--font-num); } .l2-lv-n small { font: 600 12px var(--font-sans); color: var(--text-3); margin-left: 2px; }
+.l2-lv-big { font: 800 40px/1 var(--font-num); font-stretch: 112%; margin-top: 6px; }
+.l2-lv-col.is-me .l2-lv-big { color: var(--mint-ink); }
+.l2-lv-who { font-size: 13px; font-weight: 700; color: var(--text-2); }
+.l2-lv-t { margin: 6px 0 0; display: grid; gap: 2px; }
+.l2-lv-t > div { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-3); padding: 3px 6px; }
+.l2-lv-t dd { margin: 0; font-weight: 600; }
+.l2-lv-col.is-me .l2-lv-t > div.on { background: var(--mint); color: var(--on-accent); font-weight: 800; }
+.l2-lv-col.is-opp .l2-lv-t > div.on { background: var(--opp); color: #fff; font-weight: 800; }
+.l2-lv-st { margin-top: auto; padding-top: var(--s-3); display: grid; gap: 6px; color: var(--text-2); }
+.l2-sup-lg { margin-top: 8px; }
+.l2-sup-cs { margin: var(--s-4) 0 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+.l2-sup-cs > div { padding-top: var(--s-3); }
+.l2-sup-cs > div + div { border-left: 1px solid var(--line); padding-left: var(--s-4); }
+.l2-sup-cs dt { font-size: 13px; color: var(--text-2); }
+.l2-sup-cs dd { margin: 4px 0 0; }
+.l2-sup-cs dd b { font: 800 32px/1 var(--font-num); font-stretch: 112%; }
+.l2-sup-cs dd i, .l2-nums dd i { font-style: normal; color: var(--text-3); margin: 0 6px; font-size: 22px; }
+.l2-k-me, .l2-k-opp { width: 10px; height: 10px; border-radius: 50%; background: var(--mint); outline: 1px solid var(--dark); }
+.l2-k-opp { background: var(--opp); outline: 0; margin-left: 8px; }
+.l2-14 .s2-key-avg { margin-left: 8px; }
+.l2-dots { display: grid; }
+.l2-dot-row { display: grid; grid-template-columns: 150px 1fr 64px 64px 64px; column-gap: var(--s-3); align-items: center; padding: 9px 0; border-top: 1px solid var(--line-soft); }
+.l2-dot-row > b, .l2-dot-row > span.num, .l2-dot-h > .label { text-align: right; }
+.l2-dot-row > b { font-size: 18px; }
+.l2-dot-h { border-top: 0; padding: 0 0 4px; }
+.l2-dot-scale { display: grid; grid-template-columns: 1fr 1fr 1fr; color: var(--text-3); }
+.l2-dot-scale span:nth-child(2) { text-align: center; } .l2-dot-scale span:nth-child(3) { text-align: right; }
+.l2-dot-k { font-size: 14px; font-weight: 700; display: flex; flex-direction: column; }
+.l2-dot-k small { font-size: 11px; font-weight: 500; color: var(--text-3); }
+.l2-dot-track { position: relative; height: 18px; background: linear-gradient(var(--bg), var(--bg)) center / 100% 4px no-repeat; }
+.l2-dot-avg { position: absolute; left: 50%; top: -3px; bottom: -3px; border-left: 1.5px dashed var(--text-3); }
+.l2-dot { position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%; transform: translate(-50%, -50%); }
+.l2-dot.opp { background: var(--opp); width: 11px; height: 11px; }
+.l2-dot.me { outline: 1px solid var(--dark); z-index: 1; }
+.l2-dot.me.good { background: var(--mint); } .l2-dot.me.low { background: var(--dark); }
+@media (max-width: 1100px) { .l2 > .cell { grid-column: 1 / -1 !important; border-right: 0; } }
 
-/* ---------- 실험 3: 교차 표시 + 대신 ✦ ---------- */
-.y2k-star .xm, .y2k-star .crosses i { background: var(--text); clip-path: polygon(50% 0, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0 50%, 42% 42%); width: 15px; height: 15px; }
-.y2k-star .xm { left: -8px; top: -8px; }
-.y2k-star .xm::before, .y2k-star .xm::after, .y2k-star .crosses i::before, .y2k-star .crosses i::after { display: none; }
+/* ---------- 05 팀: 비교 10칸(5열 2줄) ---------- */
+.t2 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.t2 > .cell { padding: var(--s-4) var(--s-5); display: flex; flex-direction: column; gap: 8px; }
+.t2 > .cell:nth-child(5n) { border-right: 0; }
+.t2 > .cell:nth-child(n+6) { border-bottom: 0; }
+.t2 .label { display: inline-flex; align-items: center; gap: 6px; }
+.t2-v { display: flex; align-items: baseline; justify-content: space-between; }
+.t2-v b { font: 800 30px/1 var(--font-num); font-stretch: 112%; color: var(--text-3); }
+.t2-v i { font-style: normal; color: var(--text-3); font-size: 18px; }
+.t2 .mine .t2-a, .t2 .theirs .t2-b { color: var(--text); }
+.t2 .mine .t2-a { color: var(--mint-ink); }
+.t2-bar { height: 6px; }
+.t2 .mine .bf-a { background: var(--mint); } .t2 .theirs .bf-b { background: var(--opp); }
+.t2-key { margin: var(--s-2) 0 var(--s-4); }
+
+/* ---------- 06 빌드: 12 / 8+4 / 12 / 6+6 ---------- */
+.bd2-time, .bd2-buys { grid-column: 1 / -1; }
+.bd2-cmp { grid-column: span 8; } .bd2-side { grid-column: span 4; }
+.bd2-rune, .bd2-spell { grid-column: span 6; }
+.bd2 > .bd2-time, .bd2 > .bd2-side, .bd2 > .bd2-buys, .bd2 > .bd2-spell { border-right: 0; }
+.bd2 > .bd2-rune, .bd2 > .bd2-spell { border-bottom: 0; }
+.bd2-k-gap { width: 16px; height: 3px; background: var(--red); }
+.bd2-itl .bd2-row-me { height: 104px; }
+.bd2-it time { top: calc(100% + 4px); font-size: 12px; font-weight: 700; color: var(--text); }
+.bd2-avg { position: absolute; top: calc(100% + 20px); white-space: nowrap; font: 600 11px/1 var(--font-sans); color: var(--text-3); }
+.bd2-avg.late { color: var(--text); font-weight: 800; }
+.bd2-avg.pos { color: var(--mint-ink); font-weight: 800; }
+.bd2-itl .bd2-row-me .itl-it { top: 40%; }
+.bd2-itl .bd2-row-me .itl-track::before { top: 40%; }
+.bd2-itl .bd2-row-me .itl-gap { top: calc(40% - 1px); }
+.bd2-note { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--line); font-size: 15px; line-height: 1.65; max-width: 980px; }
+.bd2-tbl td { vertical-align: middle; }
+.bd2-boot { display: block; color: var(--text-3); font-weight: 500; }
+.bd2-pick { white-space: nowrap; }
+.bd2-pbar { display: inline-block; width: 64px; height: 6px; background: var(--bg); position: relative; margin-right: 8px; vertical-align: middle; }
+.bd2-pbar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--mint); }
+.bd2-side { display: flex; flex-direction: column; gap: var(--s-5); }
+.bd2-side-b { display: grid; gap: 8px; }
+.bd2-side-b + .bd2-side-b { padding-top: var(--s-5); border-top: 1px solid var(--line); }
+.bd2-big { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.bd2-big > b { font: 800 40px/1 var(--font-num); font-stretch: 112%; } .bd2-big > b small { font-size: 18px; }
+.bd2-rp { display: block; font: 700 12px/1 var(--font-num); color: var(--text-3); }
+.r-big .bd2-rp { margin-left: auto; margin-right: var(--s-4); font-size: 16px; color: var(--text); }
+.bd2-sp { margin-top: var(--s-3); }
+.bd2-gap { margin-top: var(--s-5); }
+
+/* ---------- 07 체크리스트: 9칸 띠 + 카드 3열 ---------- */
+.c2-band { display: flex; align-items: stretch; gap: var(--s-5); margin-bottom: var(--s-4); }
+.c2-strip { flex: 1; display: grid; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.c2-s { height: 56px; display: flex; flex-direction: column; justify-content: space-between; padding: 8px 10px; cursor: default; background: var(--panel); border: 1px solid var(--line); transition: transform .2s var(--ease); }
+.c2-s span { font: 800 13px/1 var(--font-num); }
+.c2-s em { font-style: normal; font-size: 12px; font-weight: 700; }
+.c2-good { background: var(--mint); border-color: var(--mint); color: var(--on-accent); }
+.c2-mid { background: var(--line); border-color: var(--line); color: var(--text-2); }
+.c2-bad { background: var(--red); border-color: var(--red); color: #fff; }
+.c2-memo { color: var(--text-3); }
+.c2-s.on { outline: 2px solid var(--dark); outline-offset: 1px; }
+.c2-cnt { display: flex; align-items: center; gap: var(--s-4); list-style: none; margin: 0; padding: 0 0 0 var(--s-5); border-left: 1px solid var(--line); }
+.c2-cnt li { display: flex; align-items: center; gap: 8px; }
+.c2-cnt b { font: 800 28px/1 var(--font-num); font-stretch: 112%; }
+.c2-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.c2-cards > .cell { display: flex; flex-direction: column; gap: 8px; transition: background .2s; }
+.c2-cards > .cell:nth-child(3n) { border-right: 0; }
+.c2-cards > .cell:nth-last-child(-n+3) { border-bottom: 0; }
+.c2-cards > .cell.on { background: var(--bg); }
+.c2-h { display: flex; justify-content: space-between; align-items: center; min-height: 22px; }
+.c2-no { font-size: 13px; font-weight: 800; color: var(--text-3); }
+.c2-cards h3 { font-size: 16px; font-weight: 800; }
+.c2-cards p { font-size: 14px; line-height: 1.6; color: var(--text-2); }
+@media (max-width: 1000px) { .c2-band { flex-direction: column; } .c2-cnt { border-left: 0; padding: 0; } .c2-cards { grid-template-columns: 1fr; } .c2-cards > .cell { border-right: 0; } }
