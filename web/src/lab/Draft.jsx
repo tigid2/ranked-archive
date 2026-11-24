@@ -53,7 +53,7 @@ function FocusNums({ fo, text }) {
   )
 }
 
-function Summary2({ fb, d }) {
+export function Summary2({ fb, d }) {
   const axes = styleAxes(d?.plus?.site)
   const [on, setOn] = useState(null)
   const fo = d.flow.focus
@@ -373,7 +373,7 @@ function Moments({ moments, hl, setHl }) {
   )
 }
 
-function Flow2({ d, fb }) {
+export function Flow2({ d, fb }) {
   const f = d.flow
   const dur = d.hero.durationSec
   const [tab, setTab] = useState('team')

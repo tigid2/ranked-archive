@@ -1,0 +1,20 @@
+/* 세 버전 비교(lab/Compare.jsx). 디자인 시스템 v5 부품만 써요: 다크 면, 2px 머리줄, 각진 모서리, 그림자 없음. */
+.cmp-intro { background: var(--panel); border: 1px solid var(--line); padding: var(--s-5) var(--s-6); margin-top: var(--s-5); display: grid; gap: var(--s-2); }
+.cmp-intro p { font-size: 15px; }
+.cmp-nav a .muted { font-weight: 500; font-size: 12px; margin-left: 2px; }
+
+.cmp-group { scroll-margin-top: calc(var(--nav-h) + 16px); }
+.cmp-band { display: grid; grid-template-columns: auto 200px 1fr; align-items: center; gap: var(--s-5);
+  background: var(--dark); color: var(--on-dark); padding: var(--s-4) var(--s-6); margin-top: var(--s-8);
+  scroll-margin-top: calc(var(--nav-h) + 16px); }
+.cmp-group > .cmp-band:first-child { margin-top: 136px; }
+.cmp-v { font-size: 40px; font-weight: 800; line-height: 1; font-stretch: 80%; }
+.cmp-name { display: grid; gap: 2px; }
+.cmp-name b { font-size: 18px; font-weight: 800; }
+.cmp-band .muted { color: var(--on-dark-2); font-size: 13px; }
+.cmp-note { font-size: 15px; line-height: 1.55; color: var(--on-dark); }
+.cmp-band.is-missing { background: var(--panel); color: var(--text-3); border: 1px solid var(--line); }
+.cmp-band.is-missing .muted { color: var(--text-3); }
+.cmp-band.is-missing .cmp-note { color: var(--text-3); }
+.cmp-band + .sec { margin-top: var(--s-5); }
+@media (max-width: 900px) { .cmp-band { grid-template-columns: auto 1fr; } .cmp-note { grid-column: 1 / -1; } }

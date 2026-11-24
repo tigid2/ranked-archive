@@ -20,7 +20,9 @@ async function start() {
   const q = new URLSearchParams(location.search)
   // 실험 리포트는 artifact용 한 파일(window.__LAB__)에서만 보여요. 공개 사이트 빌드에는 실험 화면 코드가 들어가지 않아요.
   // 01, 02 새 배치 시안(11-24)은 window.__DRAFT__ 한 파일에서만 보여요.
-  const View = (__SINGLE__ && window.__DRAFT__) ? (await import('./lab/Draft.jsx')).default
+  // 세 버전 비교(11-24)는 window.__COMPARE__ 한 파일에서만 보여요.
+  const View = (__SINGLE__ && window.__COMPARE__) ? (await import('./lab/Compare.jsx')).default
+    : (__SINGLE__ && window.__DRAFT__) ? (await import('./lab/Draft.jsx')).default
     : (__SINGLE__ && window.__LAB__) ? (await import('./lab/Lab.jsx')).default : Report
   if (window.__REPORT__) {
     root.render(<View data={window.__REPORT__} />)
