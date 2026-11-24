@@ -1,0 +1,2685 @@
+{
+ "matchId": "KR_8472067918",
+ "version": "16.23.841.3489",
+ "durationSec": 1885,
+ "win": false,
+ "champion": "아리",
+ "position": "미드",
+ "opponent": "조이",
+ "duo": "카이사",
+ "enemyDuo": "트위치",
+ "basic": {
+  "kda": [
+   5,
+   9,
+   4
+  ],
+  "cs": 203,
+  "csPerMin": 6.5,
+  "gold": 11099,
+  "goldPerMin": 353,
+  "damage": 26604,
+  "damageShare": 22,
+  "damageTaken": 27991,
+  "killParticipation": 26,
+  "vision": 17,
+  "wardsPlaced": 5,
+  "wardsKilled": 1,
+  "controlWards": 0,
+  "turretDamage": 539,
+  "cs10": 69,
+  "soloKills": 1,
+  "skillshotsHit": 99,
+  "skillshotsDodged": 24,
+  "maxCsAdvantage": 46.400000005960464,
+  "teamDamagePct": 0.2216963350754664
+ },
+ "teams": [
+  {
+   "team": "우리",
+   "pos": "탑",
+   "champ": "야스오",
+   "me": false,
+   "kda": [
+    0,
+    14,
+    6
+   ],
+   "cs": 183,
+   "gold": 8974,
+   "damage": 16320,
+   "vision": 23
+  },
+  {
+   "team": "우리",
+   "pos": "정글",
+   "champ": "녹턴",
+   "me": false,
+   "kda": [
+    15,
+    9,
+    9
+   ],
+   "cs": 185,
+   "gold": 15924,
+   "damage": 47309,
+   "vision": 23
+  },
+  {
+   "team": "우리",
+   "pos": "미드",
+   "champ": "아리",
+   "me": true,
+   "kda": [
+    5,
+    9,
+    4
+   ],
+   "cs": 203,
+   "gold": 11099,
+   "damage": 26604,
+   "vision": 17
+  },
+  {
+   "team": "우리",
+   "pos": "원딜",
+   "champ": "카이사",
+   "me": false,
+   "kda": [
+    11,
+    12,
+    7
+   ],
+   "cs": 161,
+   "gold": 14286,
+   "damage": 17873,
+   "vision": 22
+  },
+  {
+   "team": "우리",
+   "pos": "서폿",
+   "champ": "쓰레쉬",
+   "me": false,
+   "kda": [
+    4,
+    14,
+    14
+   ],
+   "cs": 25,
+   "gold": 9830,
+   "damage": 11895,
+   "vision": 82
+  },
+  {
+   "team": "상대",
+   "pos": "탑",
+   "champ": "트런들",
+   "me": false,
+   "kda": [
+    13,
+    3,
+    12
+   ],
+   "cs": 221,
+   "gold": 17153,
+   "damage": 37207,
+   "vision": 25
+  },
+  {
+   "team": "상대",
+   "pos": "정글",
+   "champ": "릴리아",
+   "me": false,
+   "kda": [
+    7,
+    8,
+    12
+   ],
+   "cs": 211,
+   "gold": 13282,
+   "damage": 15979,
+   "vision": 32
+  },
+  {
+   "team": "상대",
+   "pos": "미드",
+   "champ": "조이",
+   "me": false,
+   "kda": [
+    11,
+    6,
+    13
+   ],
+   "cs": 159,
+   "gold": 12301,
+   "damage": 32862,
+   "vision": 23
+  },
+  {
+   "team": "상대",
+   "pos": "원딜",
+   "champ": "트위치",
+   "me": false,
+   "kda": [
+    24,
+    10,
+    8
+   ],
+   "cs": 154,
+   "gold": 18776,
+   "damage": 29752,
+   "vision": 23
+  },
+  {
+   "team": "상대",
+   "pos": "서폿",
+   "champ": "세라핀",
+   "me": false,
+   "kda": [
+    3,
+    8,
+    34
+   ],
+   "cs": 46,
+   "gold": 12262,
+   "damage": 21749,
+   "vision": 81
+  }
+ ],
+ "flow": [
+  {
+   "min": 0,
+   "teamGoldDiff": 0,
+   "gold": 500,
+   "cs": 0,
+   "level": 1,
+   "currentGold": 500,
+   "laneGoldDiff": 0,
+   "laneCsDiff": 0,
+   "laneXpDiff": 0,
+   "botGoldDiff": 0,
+   "roleGoldDiff": {
+    "top": 0,
+    "jg": 0,
+    "mid": 0,
+    "bot": 0
+   }
+  },
+  {
+   "min": 1,
+   "teamGoldDiff": -5,
+   "gold": 500,
+   "cs": 0,
+   "level": 1,
+   "currentGold": 0,
+   "laneGoldDiff": -5,
+   "laneCsDiff": 0,
+   "laneXpDiff": 0,
+   "botGoldDiff": 0,
+   "roleGoldDiff": {
+    "top": 0,
+    "jg": 0,
+    "mid": -5,
+    "bot": 0
+   }
+  },
+  {
+   "min": 2,
+   "teamGoldDiff": 10,
+   "gold": 817,
+   "cs": 12,
+   "level": 2,
+   "currentGold": 317,
+   "laneGoldDiff": 69,
+   "laneCsDiff": 4,
+   "laneXpDiff": 62,
+   "botGoldDiff": 20,
+   "roleGoldDiff": {
+    "top": -28,
+    "jg": 55,
+    "mid": 69,
+    "bot": -86
+   }
+  },
+  {
+   "min": 3,
+   "teamGoldDiff": -26,
+   "gold": 1029,
+   "cs": 15,
+   "level": 3,
+   "currentGold": 79,
+   "laneGoldDiff": -21,
+   "laneCsDiff": -2,
+   "laneXpDiff": -310,
+   "botGoldDiff": -484,
+   "roleGoldDiff": {
+    "top": -28,
+    "jg": 381,
+    "mid": -21,
+    "bot": -358
+   }
+  },
+  {
+   "min": 4,
+   "teamGoldDiff": -737,
+   "gold": 1387,
+   "cs": 27,
+   "level": 4,
+   "currentGold": 437,
+   "laneGoldDiff": 112,
+   "laneCsDiff": 4,
+   "laneXpDiff": -310,
+   "botGoldDiff": -386,
+   "roleGoldDiff": {
+    "top": -641,
+    "jg": 231,
+    "mid": 112,
+    "bot": -439
+   }
+  },
+  {
+   "min": 5,
+   "teamGoldDiff": -729,
+   "gold": 1633,
+   "cs": 35,
+   "level": 5,
+   "currentGold": 83,
+   "laneGoldDiff": 154,
+   "laneCsDiff": 7,
+   "laneXpDiff": -217,
+   "botGoldDiff": -422,
+   "roleGoldDiff": {
+    "top": -635,
+    "jg": 251,
+    "mid": 154,
+    "bot": -499
+   }
+  },
+  {
+   "min": 6,
+   "teamGoldDiff": -751,
+   "gold": 1843,
+   "cs": 40,
+   "level": 6,
+   "currentGold": 43,
+   "laneGoldDiff": 12,
+   "laneCsDiff": 0,
+   "laneXpDiff": -217,
+   "botGoldDiff": -557,
+   "roleGoldDiff": {
+    "top": -581,
+    "jg": 320,
+    "mid": 12,
+    "bot": -502
+   }
+  },
+  {
+   "min": 7,
+   "teamGoldDiff": -1507,
+   "gold": 2093,
+   "cs": 45,
+   "level": 7,
+   "currentGold": 293,
+   "laneGoldDiff": -58,
+   "laneCsDiff": -5,
+   "laneXpDiff": -248,
+   "botGoldDiff": -693,
+   "roleGoldDiff": {
+    "top": -1300,
+    "jg": 397,
+    "mid": -58,
+    "bot": -546
+   }
+  },
+  {
+   "min": 8,
+   "teamGoldDiff": -1867,
+   "gold": 2709,
+   "cs": 56,
+   "level": 8,
+   "currentGold": 909,
+   "laneGoldDiff": 354,
+   "laneCsDiff": 1,
+   "laneXpDiff": 269,
+   "botGoldDiff": -234,
+   "roleGoldDiff": {
+    "top": -1278,
+    "jg": -254,
+    "mid": 354,
+    "bot": -689
+   }
+  },
+  {
+   "min": 9,
+   "teamGoldDiff": -2427,
+   "gold": 2872,
+   "cs": 58,
+   "level": 8,
+   "currentGold": 672,
+   "laneGoldDiff": 293,
+   "laneCsDiff": -3,
+   "laneXpDiff": 22,
+   "botGoldDiff": -352,
+   "roleGoldDiff": {
+    "top": -1703,
+    "jg": -307,
+    "mid": 293,
+    "bot": -710
+   }
+  },
+  {
+   "min": 10,
+   "teamGoldDiff": -2343,
+   "gold": 3213,
+   "cs": 69,
+   "level": 8,
+   "currentGold": 163,
+   "laneGoldDiff": -54,
+   "laneCsDiff": -5,
+   "laneXpDiff": -711,
+   "botGoldDiff": -768,
+   "roleGoldDiff": {
+    "top": -1771,
+    "jg": 292,
+    "mid": -54,
+    "bot": -810
+   }
+  },
+  {
+   "min": 11,
+   "teamGoldDiff": -2853,
+   "gold": 3408,
+   "cs": 73,
+   "level": 9,
+   "currentGold": 358,
+   "laneGoldDiff": -63,
+   "laneCsDiff": -6,
+   "laneXpDiff": -649,
+   "botGoldDiff": -1162,
+   "roleGoldDiff": {
+    "top": -2175,
+    "jg": 714,
+    "mid": -63,
+    "bot": -1329
+   }
+  },
+  {
+   "min": 12,
+   "teamGoldDiff": -2631,
+   "gold": 4212,
+   "cs": 73,
+   "level": 9,
+   "currentGold": 112,
+   "laneGoldDiff": 523,
+   "laneCsDiff": -8,
+   "laneXpDiff": -793,
+   "botGoldDiff": -656,
+   "roleGoldDiff": {
+    "top": -2774,
+    "jg": 790,
+    "mid": 523,
+    "bot": -1170
+   }
+  },
+  {
+   "min": 13,
+   "teamGoldDiff": -3740,
+   "gold": 4501,
+   "cs": 81,
+   "level": 9,
+   "currentGold": 401,
+   "laneGoldDiff": 316,
+   "laneCsDiff": -11,
+   "laneXpDiff": -1044,
+   "botGoldDiff": -1284,
+   "roleGoldDiff": {
+    "top": -2898,
+    "jg": 476,
+    "mid": 316,
+    "bot": -1634
+   }
+  },
+  {
+   "min": 14,
+   "teamGoldDiff": -4111,
+   "gold": 4726,
+   "cs": 87,
+   "level": 9,
+   "currentGold": 626,
+   "laneGoldDiff": -96,
+   "laneCsDiff": -11,
+   "laneXpDiff": -1769,
+   "botGoldDiff": -1666,
+   "roleGoldDiff": {
+    "top": -2844,
+    "jg": 540,
+    "mid": -96,
+    "bot": -1711
+   }
+  },
+  {
+   "min": 15,
+   "teamGoldDiff": -4444,
+   "gold": 5011,
+   "cs": 95,
+   "level": 10,
+   "currentGold": 911,
+   "laneGoldDiff": -69,
+   "laneCsDiff": -11,
+   "laneXpDiff": -1748,
+   "botGoldDiff": -1199,
+   "roleGoldDiff": {
+    "top": -3734,
+    "jg": 686,
+    "mid": -69,
+    "bot": -1327
+   }
+  },
+  {
+   "min": 16,
+   "teamGoldDiff": -6482,
+   "gold": 5242,
+   "cs": 102,
+   "level": 10,
+   "currentGold": 1142,
+   "laneGoldDiff": -228,
+   "laneCsDiff": -13,
+   "laneXpDiff": -1885,
+   "botGoldDiff": -1667,
+   "roleGoldDiff": {
+    "top": -4837,
+    "jg": 583,
+    "mid": -228,
+    "bot": -2000
+   }
+  },
+  {
+   "min": 17,
+   "teamGoldDiff": -4617,
+   "gold": 5667,
+   "cs": 108,
+   "level": 11,
+   "currentGold": 517,
+   "laneGoldDiff": -563,
+   "laneCsDiff": -15,
+   "laneXpDiff": -2814,
+   "botGoldDiff": -1214,
+   "roleGoldDiff": {
+    "top": -4487,
+    "jg": 1486,
+    "mid": -563,
+    "bot": -1053
+   }
+  },
+  {
+   "min": 18,
+   "teamGoldDiff": -4304,
+   "gold": 6711,
+   "cs": 108,
+   "level": 11,
+   "currentGold": 861,
+   "laneGoldDiff": -94,
+   "laneCsDiff": -18,
+   "laneXpDiff": -2816,
+   "botGoldDiff": -447,
+   "roleGoldDiff": {
+    "top": -4362,
+    "jg": 1173,
+    "mid": -94,
+    "bot": -1021
+   }
+  },
+  {
+   "min": 19,
+   "teamGoldDiff": -3957,
+   "gold": 7217,
+   "cs": 127,
+   "level": 12,
+   "currentGold": 1367,
+   "laneGoldDiff": 247,
+   "laneCsDiff": -2,
+   "laneXpDiff": -1922,
+   "botGoldDiff": 80,
+   "roleGoldDiff": {
+    "top": -4755,
+    "jg": 1389,
+    "mid": 247,
+    "bot": -838
+   }
+  },
+  {
+   "min": 20,
+   "teamGoldDiff": -5687,
+   "gold": 7396,
+   "cs": 131,
+   "level": 12,
+   "currentGold": 1546,
+   "laneGoldDiff": -237,
+   "laneCsDiff": -3,
+   "laneXpDiff": -2125,
+   "botGoldDiff": -858,
+   "roleGoldDiff": {
+    "top": -5540,
+    "jg": 1494,
+    "mid": -237,
+    "bot": -1404
+   }
+  },
+  {
+   "min": 21,
+   "teamGoldDiff": -6042,
+   "gold": 7729,
+   "cs": 141,
+   "level": 12,
+   "currentGold": 738,
+   "laneGoldDiff": -602,
+   "laneCsDiff": 3,
+   "laneXpDiff": -2120,
+   "botGoldDiff": -1151,
+   "roleGoldDiff": {
+    "top": -5786,
+    "jg": 1942,
+    "mid": -602,
+    "bot": -1596
+   }
+  },
+  {
+   "min": 22,
+   "teamGoldDiff": -6201,
+   "gold": 8030,
+   "cs": 149,
+   "level": 13,
+   "currentGold": 1040,
+   "laneGoldDiff": -626,
+   "laneCsDiff": 3,
+   "laneXpDiff": -2397,
+   "botGoldDiff": -1221,
+   "roleGoldDiff": {
+    "top": -6030,
+    "jg": 2437,
+    "mid": -626,
+    "bot": -1982
+   }
+  },
+  {
+   "min": 23,
+   "teamGoldDiff": -6031,
+   "gold": 8540,
+   "cs": 151,
+   "level": 13,
+   "currentGold": 250,
+   "laneGoldDiff": -729,
+   "laneCsDiff": 5,
+   "laneXpDiff": -2592,
+   "botGoldDiff": -1107,
+   "roleGoldDiff": {
+    "top": -5876,
+    "jg": 2617,
+    "mid": -729,
+    "bot": -2043
+   }
+  },
+  {
+   "min": 24,
+   "teamGoldDiff": -4481,
+   "gold": 8934,
+   "cs": 162,
+   "level": 13,
+   "currentGold": 644,
+   "laneGoldDiff": -462,
+   "laneCsDiff": 16,
+   "laneXpDiff": -2094,
+   "botGoldDiff": -668,
+   "roleGoldDiff": {
+    "top": -5478,
+    "jg": 3153,
+    "mid": -462,
+    "bot": -1694
+   }
+  },
+  {
+   "min": 25,
+   "teamGoldDiff": -6779,
+   "gold": 9381,
+   "cs": 170,
+   "level": 14,
+   "currentGold": 1091,
+   "laneGoldDiff": -885,
+   "laneCsDiff": 24,
+   "laneXpDiff": -2178,
+   "botGoldDiff": -2595,
+   "roleGoldDiff": {
+    "top": -5814,
+    "jg": 2729,
+    "mid": -885,
+    "bot": -2809
+   }
+  },
+  {
+   "min": 26,
+   "teamGoldDiff": -6467,
+   "gold": 9735,
+   "cs": 177,
+   "level": 14,
+   "currentGold": 1445,
+   "laneGoldDiff": -653,
+   "laneCsDiff": 31,
+   "laneXpDiff": -1391,
+   "botGoldDiff": -2742,
+   "roleGoldDiff": {
+    "top": -6003,
+    "jg": 3329,
+    "mid": -653,
+    "bot": -3140
+   }
+  },
+  {
+   "min": 27,
+   "teamGoldDiff": -5777,
+   "gold": 10111,
+   "cs": 186,
+   "level": 15,
+   "currentGold": 622,
+   "laneGoldDiff": -400,
+   "laneCsDiff": 40,
+   "laneXpDiff": -869,
+   "botGoldDiff": -2450,
+   "roleGoldDiff": {
+    "top": -5891,
+    "jg": 3615,
+    "mid": -400,
+    "bot": -3101
+   }
+  },
+  {
+   "min": 28,
+   "teamGoldDiff": -8139,
+   "gold": 10284,
+   "cs": 186,
+   "level": 15,
+   "currentGold": 794,
+   "laneGoldDiff": -499,
+   "laneCsDiff": 40,
+   "laneXpDiff": -1330,
+   "botGoldDiff": -3774,
+   "roleGoldDiff": {
+    "top": -6554,
+    "jg": 3525,
+    "mid": -499,
+    "bot": -4611
+   }
+  },
+  {
+   "min": 29,
+   "teamGoldDiff": -9074,
+   "gold": 10580,
+   "cs": 193,
+   "level": 15,
+   "currentGold": 1090,
+   "laneGoldDiff": -630,
+   "laneCsDiff": 37,
+   "laneXpDiff": -1608,
+   "botGoldDiff": -4187,
+   "roleGoldDiff": {
+    "top": -6809,
+    "jg": 3612,
+    "mid": -630,
+    "bot": -5247
+   }
+  },
+  {
+   "min": 30,
+   "teamGoldDiff": -9481,
+   "gold": 10862,
+   "cs": 199,
+   "level": 15,
+   "currentGold": 1368,
+   "laneGoldDiff": -470,
+   "laneCsDiff": 43,
+   "laneXpDiff": -1316,
+   "botGoldDiff": -3737,
+   "roleGoldDiff": {
+    "top": -7231,
+    "jg": 3558,
+    "mid": -470,
+    "bot": -5338
+   }
+  },
+  {
+   "min": 31,
+   "teamGoldDiff": -10732,
+   "gold": 11047,
+   "cs": 203,
+   "level": 16,
+   "currentGold": 1552,
+   "laneGoldDiff": -467,
+   "laneCsDiff": 46,
+   "laneXpDiff": -1017,
+   "botGoldDiff": -4070,
+   "roleGoldDiff": {
+    "top": -7730,
+    "jg": 3158,
+    "mid": -467,
+    "bot": -5693
+   }
+  },
+  {
+   "min": 32,
+   "teamGoldDiff": -13661,
+   "gold": 11099,
+   "cs": 203,
+   "level": 16,
+   "currentGold": 1604,
+   "laneGoldDiff": -1202,
+   "laneCsDiff": 44,
+   "laneXpDiff": -1908,
+   "botGoldDiff": -5692,
+   "roleGoldDiff": {
+    "top": -8179,
+    "jg": 2642,
+    "mid": -1202,
+    "bot": -6922
+   }
+  }
+ ],
+ "levels": {
+  "2": {
+   "me": "1:27",
+   "opp": "1:33"
+  },
+  "3": {
+   "me": "2:08",
+   "opp": "2:02"
+  },
+  "6": {
+   "me": "5:16",
+   "opp": "5:03"
+  },
+  "11": {
+   "me": "16:56",
+   "opp": "13:46"
+  }
+ },
+ "deaths": [
+  {
+   "t": "9:44",
+   "tMs": 584252,
+   "zone": "미드 라인",
+   "killer": "조이(적)",
+   "assists": [],
+   "alliesNear": [],
+   "enemiesNear": [
+    "조이(적)"
+   ],
+   "roams": [],
+   "damage": [
+    [
+     "조이(적)",
+     1250
+    ],
+    [
+     "미니언",
+     152
+    ]
+   ],
+   "topSpells": [
+    [
+     "zoeqrecast",
+     573
+    ],
+    [
+     "zoee",
+     203
+    ],
+    [
+     "기본 공격",
+     154
+    ]
+   ],
+   "approxGold": 920,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "9:44",
+    "end": "9:53",
+    "weKilled": 1,
+    "weLost": 1,
+    "size": 2
+   },
+   "lostAfter": [
+    "9:44 공허 유충",
+    "9:48 공허 유충"
+   ],
+   "teamGoldDiff": -2427,
+   "live": {
+    "gold": 925,
+    "hpFlow": [
+     {
+      "t": 575.1,
+      "hp": 73
+     },
+     {
+      "t": 576.2,
+      "hp": 73
+     },
+     {
+      "t": 577.3,
+      "hp": 75
+     },
+     {
+      "t": 578.3,
+      "hp": 72
+     },
+     {
+      "t": 579.4,
+      "hp": 62
+     },
+     {
+      "t": 580.4,
+      "hp": 60
+     },
+     {
+      "t": 581.5,
+      "hp": 58
+     },
+     {
+      "t": 582.6,
+      "hp": 11
+     },
+     {
+      "t": 583.6,
+      "hp": 3
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.08,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.08,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "조이(적)",
+      "killer": true,
+      "seenFor": 20.9,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": false,
+     "lastSeenAgo": 89.5,
+     "lastSeenZone": "아래쪽 강가(드래곤 쪽)"
+    },
+    "fog": {
+     "share": 0.72,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "11:34",
+   "tMs": 694529,
+   "zone": "상대 아래쪽 정글",
+   "killer": "세라핀(적)",
+   "assists": [
+    "트위치(적)"
+   ],
+   "alliesNear": [],
+   "enemiesNear": [
+    "릴리아(적)"
+   ],
+   "roams": [
+    {
+     "who": "세라핀(적)",
+     "role": "서폿",
+     "minuteMark": "11:00",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 2479
+    }
+   ],
+   "damage": [
+    [
+     "트위치(적)",
+     1035
+    ],
+    [
+     "세라핀(적)",
+     684
+    ]
+   ],
+   "topSpells": [
+    [
+     "twitchbasicattack",
+     521
+    ],
+    [
+     "seraphineq",
+     324
+    ],
+    [
+     "seraphinepassive",
+     238
+    ]
+   ],
+   "approxGold": 820,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "11:31",
+    "end": "11:34",
+    "weKilled": 2,
+    "weLost": 1,
+    "size": 3
+   },
+   "lostAfter": [],
+   "teamGoldDiff": -2853,
+   "live": {
+    "gold": 811,
+    "hpFlow": [
+     {
+      "t": 685.2,
+      "hp": 95
+     },
+     {
+      "t": 686.2,
+      "hp": 95
+     },
+     {
+      "t": 687.2,
+      "hp": 68
+     },
+     {
+      "t": 688.3,
+      "hp": 64
+     },
+     {
+      "t": 689.4,
+      "hp": 38
+     },
+     {
+      "t": 690.4,
+      "hp": 32
+     },
+     {
+      "t": 691.4,
+      "hp": 11
+     },
+     {
+      "t": 692.5,
+      "hp": 20
+     },
+     {
+      "t": 693.6,
+      "hp": 16
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.01,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.01,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "세라핀(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 5.0,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "트위치(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 2.7,
+      "status": "notSeen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": false,
+     "lastSeenAgo": 36.5,
+     "lastSeenZone": "아래쪽 강가(드래곤 쪽)"
+    },
+    "fog": {
+     "share": 0.69,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "13:46",
+   "tMs": 826700,
+   "zone": "미드 라인",
+   "killer": "조이(적)",
+   "assists": [],
+   "alliesNear": [
+    "쓰레쉬(아군)"
+   ],
+   "enemiesNear": [
+    "조이(적)",
+    "세라핀(적)"
+   ],
+   "roams": [],
+   "damage": [
+    [
+     "조이(적)",
+     329
+    ],
+    [
+     "기타",
+     251
+    ]
+   ],
+   "topSpells": [
+    [
+     "summonerdot",
+     165
+    ],
+    [
+     "zoepassive",
+     119
+    ],
+    [
+     "기본 공격",
+     26
+    ]
+   ],
+   "approxGold": 580,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "13:46",
+    "end": "13:46",
+    "weKilled": 0,
+    "weLost": 1,
+    "size": 1
+   },
+   "lostAfter": [],
+   "teamGoldDiff": -3740,
+   "live": {
+    "gold": 599,
+    "hpFlow": [
+     {
+      "t": 817.2,
+      "hp": 33
+     },
+     {
+      "t": 818.2,
+      "hp": 33
+     },
+     {
+      "t": 819.3,
+      "hp": 33
+     },
+     {
+      "t": 820.4,
+      "hp": 33
+     },
+     {
+      "t": 821.4,
+      "hp": 34
+     },
+     {
+      "t": 822.5,
+      "hp": 34
+     },
+     {
+      "t": 823.5,
+      "hp": 34
+     },
+     {
+      "t": 824.6,
+      "hp": 20
+     },
+     {
+      "t": 825.7,
+      "hp": 4
+     },
+     {
+      "t": 826.7,
+      "hp": 2
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.15,
+      "verdict": "already_down",
+      "afterDeath": null
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.15,
+      "verdict": "used_before",
+      "afterDeath": null
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "조이(적)",
+      "killer": true,
+      "seenFor": 7.0,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": false,
+     "lastSeenAgo": 60.7,
+     "lastSeenZone": "미드 라인"
+    },
+    "fog": {
+     "share": 0.82,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "16:15",
+   "tMs": 975832,
+   "zone": "미드 라인",
+   "killer": "조이(적)",
+   "assists": [],
+   "alliesNear": [],
+   "enemiesNear": [
+    "조이(적)"
+   ],
+   "roams": [],
+   "damage": [
+    [
+     "조이(적)",
+     1341
+    ]
+   ],
+   "topSpells": [
+    [
+     "zoee",
+     466
+    ],
+    [
+     "zoeqrecast",
+     443
+    ],
+    [
+     "기본 공격",
+     168
+    ]
+   ],
+   "approxGold": 1250,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "16:15",
+    "end": "17:47",
+    "weKilled": 5,
+    "weLost": 6,
+    "size": 11
+   },
+   "lostAfter": [],
+   "teamGoldDiff": -6482,
+   "live": {
+    "gold": 1276,
+    "hpFlow": [
+     {
+      "t": 966.6,
+      "hp": 72
+     },
+     {
+      "t": 967.7,
+      "hp": 72
+     },
+     {
+      "t": 968.8,
+      "hp": 72
+     },
+     {
+      "t": 969.8,
+      "hp": 72
+     },
+     {
+      "t": 970.9,
+      "hp": 73
+     },
+     {
+      "t": 971.9,
+      "hp": 79
+     },
+     {
+      "t": 973.0,
+      "hp": 54
+     },
+     {
+      "t": 974.0,
+      "hp": 50
+     },
+     {
+      "t": 975.1,
+      "hp": 50
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.09,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.09,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "조이(적)",
+      "killer": true,
+      "seenFor": 29.8,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": false,
+     "lastSeenAgo": 0.3,
+     "lastSeenZone": "아래쪽 강가(드래곤 쪽)"
+    },
+    "fog": {
+     "share": 0.89,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "17:10",
+   "tMs": 1030971,
+   "zone": "미드 라인",
+   "killer": "조이(적)",
+   "assists": [
+    "트런들(적)",
+    "세라핀(적)"
+   ],
+   "alliesNear": [
+    "야스오(아군)",
+    "쓰레쉬(아군)"
+   ],
+   "enemiesNear": [
+    "트런들(적)",
+    "조이(적)",
+    "세라핀(적)"
+   ],
+   "roams": [
+    {
+     "who": "트런들(적)",
+     "role": "탑",
+     "minuteMark": "17:00",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 2046
+    },
+    {
+     "who": "세라핀(적)",
+     "role": "서폿",
+     "minuteMark": "17:00",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 1540
+    }
+   ],
+   "damage": [
+    [
+     "세라핀(적)",
+     701
+    ],
+    [
+     "조이(적)",
+     674
+    ],
+    [
+     "트런들(적)",
+     528
+    ]
+   ],
+   "topSpells": [
+    [
+     "기본 공격",
+     509
+    ],
+    [
+     "seraphineq",
+     345
+    ],
+    [
+     "trundletrollsmash",
+     293
+    ]
+   ],
+   "approxGold": 700,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "16:15",
+    "end": "17:47",
+    "weKilled": 5,
+    "weLost": 6,
+    "size": 11
+   },
+   "lostAfter": [],
+   "teamGoldDiff": -4617,
+   "live": {
+    "gold": 1460,
+    "hpFlow": [
+     {
+      "t": 1021.5,
+      "hp": 85
+     },
+     {
+      "t": 1022.5,
+      "hp": 65
+     },
+     {
+      "t": 1023.5,
+      "hp": 62
+     },
+     {
+      "t": 1024.6,
+      "hp": 60
+     },
+     {
+      "t": 1025.6,
+      "hp": 61
+     },
+     {
+      "t": 1026.6,
+      "hp": 30
+     },
+     {
+      "t": 1027.7,
+      "hp": 23
+     },
+     {
+      "t": 1028.8,
+      "hp": 3
+     },
+     {
+      "t": 1029.9,
+      "hp": 5
+     },
+     {
+      "t": 1030.9,
+      "hp": 2
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.19,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.19,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "조이(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 10.1,
+      "status": "notSeen"
+     },
+     {
+      "name": "트런들(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 67.1,
+      "status": "notSeen"
+     },
+     {
+      "name": "세라핀(적)",
+      "killer": false,
+      "seenFor": 10.1,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": false,
+     "lastSeenAgo": 55.5,
+     "lastSeenZone": "아래쪽 강가(드래곤 쪽)"
+    },
+    "fog": {
+     "share": 0.84,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "19:52",
+   "tMs": 1192608,
+   "zone": "우리 위쪽 정글",
+   "killer": "조이(적)",
+   "assists": [
+    "릴리아(적)",
+    "트위치(적)",
+    "세라핀(적)"
+   ],
+   "alliesNear": [
+    "녹턴(아군)",
+    "카이사(아군)",
+    "쓰레쉬(아군)"
+   ],
+   "enemiesNear": [
+    "조이(적)",
+    "트위치(적)",
+    "세라핀(적)"
+   ],
+   "roams": [
+    {
+     "who": "릴리아(적)",
+     "role": "정글",
+     "minuteMark": "19:00",
+     "wasAt": "바텀 라인",
+     "distance": 7927
+    },
+    {
+     "who": "세라핀(적)",
+     "role": "서폿",
+     "minuteMark": "19:00",
+     "wasAt": "미드 라인",
+     "distance": 3257
+    }
+   ],
+   "damage": [
+    [
+     "조이(적)",
+     1284
+    ],
+    [
+     "릴리아(적)",
+     615
+    ],
+    [
+     "트위치(적)",
+     9
+    ]
+   ],
+   "topSpells": [
+    [
+     "zoeqrecast",
+     581
+    ],
+    [
+     "zoee",
+     525
+    ],
+    [
+     "기본 공격",
+     412
+    ]
+   ],
+   "approxGold": 1520,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "19:52",
+    "end": "20:14",
+    "weKilled": 2,
+    "weLost": 4,
+    "size": 6
+   },
+   "lostAfter": [
+    "20:34 미드 1차 포탑"
+   ],
+   "teamGoldDiff": -3957,
+   "live": {
+    "gold": 1529,
+    "hpFlow": [
+     {
+      "t": 1183.6,
+      "hp": 100
+     },
+     {
+      "t": 1184.6,
+      "hp": 100
+     },
+     {
+      "t": 1185.6,
+      "hp": 98
+     },
+     {
+      "t": 1186.7,
+      "hp": 98
+     },
+     {
+      "t": 1187.8,
+      "hp": 91
+     },
+     {
+      "t": 1188.9,
+      "hp": 87
+     },
+     {
+      "t": 1189.9,
+      "hp": 69
+     },
+     {
+      "t": 1190.9,
+      "hp": 67
+     },
+     {
+      "t": 1191.9,
+      "hp": 66
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.01,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.01,
+      "verdict": "used_before",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "조이(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 11.8,
+      "status": "notSeen"
+     },
+     {
+      "name": "릴리아(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 72.8,
+      "status": "notSeen"
+     },
+     {
+      "name": "트위치(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 8.6,
+      "status": "notSeen"
+     },
+     {
+      "name": "세라핀(적)",
+      "killer": false,
+      "seenFor": 6.5,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": true,
+     "lastSeenAgo": 72.8,
+     "lastSeenZone": "상대 아래쪽 정글"
+    },
+    "fog": {
+     "share": 0.76,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "22:23",
+   "tMs": 1343778,
+   "zone": "우리 아래쪽 정글",
+   "killer": "트위치(적)",
+   "assists": [
+    "조이(적)",
+    "세라핀(적)"
+   ],
+   "alliesNear": [
+    "야스오(아군)",
+    "쓰레쉬(아군)"
+   ],
+   "enemiesNear": [
+    "세라핀(적)"
+   ],
+   "roams": [
+    {
+     "who": "세라핀(적)",
+     "role": "서폿",
+     "minuteMark": "22:00",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 1324
+    }
+   ],
+   "damage": [
+    [
+     "조이(적)",
+     814
+    ],
+    [
+     "트위치(적)",
+     702
+    ]
+   ],
+   "topSpells": [
+    [
+     "twitchfullautomatic",
+     699
+    ],
+    [
+     "zoee",
+     639
+    ],
+    [
+     "기본 공격",
+     175
+    ]
+   ],
+   "approxGold": 1240,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "21:16",
+    "end": "22:41",
+    "weKilled": 4,
+    "weLost": 6,
+    "size": 10
+   },
+   "lostAfter": [
+    "22:42 화염 드래곤"
+   ],
+   "teamGoldDiff": -6201,
+   "live": {
+    "gold": 1474,
+    "hpFlow": [
+     {
+      "t": 1334.5,
+      "hp": 64
+     },
+     {
+      "t": 1335.5,
+      "hp": 68
+     },
+     {
+      "t": 1336.6,
+      "hp": 68
+     },
+     {
+      "t": 1337.7,
+      "hp": 69
+     },
+     {
+      "t": 1338.8,
+      "hp": 69
+     },
+     {
+      "t": 1339.8,
+      "hp": 50
+     },
+     {
+      "t": 1340.8,
+      "hp": 46
+     },
+     {
+      "t": 1341.9,
+      "hp": 46
+     },
+     {
+      "t": 1342.9,
+      "hp": 46
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.18,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.18,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "트위치(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 8.1,
+      "status": "notSeen"
+     },
+     {
+      "name": "조이(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 8.9,
+      "status": "notSeen"
+     },
+     {
+      "name": "세라핀(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 14.2,
+      "status": "notSeen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": false,
+     "lastSeenAgo": 38.5,
+     "lastSeenZone": "바텀 라인"
+    },
+    "fog": {
+     "share": 0.79,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "27:45",
+   "tMs": 1665870,
+   "zone": "위쪽 강가(바론 쪽)",
+   "killer": "트위치(적)",
+   "assists": [
+    "릴리아(적)",
+    "세라핀(적)"
+   ],
+   "alliesNear": [
+    "야스오(아군)",
+    "녹턴(아군)",
+    "카이사(아군)",
+    "쓰레쉬(아군)"
+   ],
+   "enemiesNear": [
+    "릴리아(적)"
+   ],
+   "roams": [
+    {
+     "who": "릴리아(적)",
+     "role": "정글",
+     "minuteMark": "27:00",
+     "wasAt": "위쪽 강가(바론 쪽)",
+     "distance": 1109
+    },
+    {
+     "who": "세라핀(적)",
+     "role": "서폿",
+     "minuteMark": "27:00",
+     "wasAt": "미드 라인",
+     "distance": 2662
+    }
+   ],
+   "damage": [
+    [
+     "릴리아(적)",
+     1486
+    ],
+    [
+     "트위치(적)",
+     774
+    ],
+    [
+     "세라핀(적)",
+     211
+    ]
+   ],
+   "topSpells": [
+    [
+     "twitchfullautomatic",
+     769
+    ],
+    [
+     "lilliaq",
+     381
+    ],
+    [
+     "lilliap",
+     367
+    ]
+   ],
+   "approxGold": 750,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "27:41",
+    "end": "27:47",
+    "weKilled": 1,
+    "weLost": 5,
+    "size": 6
+   },
+   "lostAfter": [
+    "28:05 미드 2차 포탑",
+    "28:14 미드 3차 포탑",
+    "28:17 미드 억제기",
+    "28:46 화염 드래곤"
+   ],
+   "teamGoldDiff": -5777,
+   "live": {
+    "gold": 763,
+    "hpFlow": [
+     {
+      "t": 1656.5,
+      "hp": 79
+     },
+     {
+      "t": 1657.5,
+      "hp": 47
+     },
+     {
+      "t": 1658.5,
+      "hp": 40
+     },
+     {
+      "t": 1659.6,
+      "hp": 37
+     },
+     {
+      "t": 1660.7,
+      "hp": 35
+     },
+     {
+      "t": 1661.7,
+      "hp": 35
+     },
+     {
+      "t": 1662.7,
+      "hp": 27
+     },
+     {
+      "t": 1663.8,
+      "hp": 28
+     },
+     {
+      "t": 1664.9,
+      "hp": 28
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.12,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.12,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "트위치(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 34.3,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "릴리아(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 34.3,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     },
+     {
+      "name": "세라핀(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 3.0,
+      "status": "unknown",
+      "why": "근처에 누구인지 못 정한 상대 아이콘이 있었음"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": true,
+     "lastSeenAgo": 34.3,
+     "lastSeenZone": "위쪽 강가(바론 쪽)"
+    },
+    "fog": {
+     "share": 0.82,
+     "trusted": false
+    }
+   }
+  },
+  {
+   "t": "31:02",
+   "tMs": 1862403,
+   "zone": "우리 본진",
+   "killer": "릴리아(적)",
+   "assists": [
+    "조이(적)",
+    "세라핀(적)"
+   ],
+   "alliesNear": [
+    "야스오(아군)",
+    "카이사(아군)"
+   ],
+   "enemiesNear": [
+    "트런들(적)",
+    "릴리아(적)",
+    "조이(적)",
+    "트위치(적)",
+    "세라핀(적)"
+   ],
+   "roams": [
+    {
+     "who": "릴리아(적)",
+     "role": "정글",
+     "minuteMark": "31:00",
+     "wasAt": "우리 본진",
+     "distance": 1054
+    },
+    {
+     "who": "세라핀(적)",
+     "role": "서폿",
+     "minuteMark": "31:00",
+     "wasAt": "우리 본진",
+     "distance": 1191
+    }
+   ],
+   "damage": [
+    [
+     "조이(적)",
+     1478
+    ],
+    [
+     "릴리아(적)",
+     378
+    ],
+    [
+     "세라핀(적)",
+     125
+    ]
+   ],
+   "topSpells": [
+    [
+     "zoee",
+     647
+    ],
+    [
+     "zoew",
+     404
+    ],
+    [
+     "lilliaq",
+     333
+    ]
+   ],
+   "approxGold": 1550,
+   "shutdownGiven": 0,
+   "fight": {
+    "start": "31:01",
+    "end": "31:11",
+    "weKilled": 0,
+    "weLost": 4,
+    "size": 4
+   },
+   "lostAfter": [
+    "31:06 미드 쌍둥이 포탑",
+    "31:15 미드 쌍둥이 포탑"
+   ],
+   "teamGoldDiff": -10732,
+   "live": {
+    "gold": 1557,
+    "hpFlow": [
+     {
+      "t": 1852.5,
+      "hp": 80
+     },
+     {
+      "t": 1853.6,
+      "hp": 83
+     },
+     {
+      "t": 1854.6,
+      "hp": 83
+     },
+     {
+      "t": 1855.6,
+      "hp": 83
+     },
+     {
+      "t": 1856.7,
+      "hp": 83
+     },
+     {
+      "t": 1857.7,
+      "hp": 73
+     },
+     {
+      "t": 1858.8,
+      "hp": 45
+     },
+     {
+      "t": 1859.9,
+      "hp": 47
+     },
+     {
+      "t": 1861.0,
+      "hp": 48
+     },
+     {
+      "t": 1862.1,
+      "hp": 48
+     }
+    ],
+    "spells": [
+     {
+      "key": "SummonerTeleport",
+      "state": "cooldown",
+      "age": 0.51,
+      "verdict": "already_down",
+      "afterDeath": "cooldown"
+     },
+     {
+      "key": "SummonerFlash",
+      "state": "cooldown",
+      "age": 0.51,
+      "verdict": "used_before",
+      "afterDeath": "cooldown"
+     }
+    ]
+   },
+   "minimap": {
+    "recorded": true,
+    "enemies": [
+     {
+      "name": "릴리아(적)",
+      "killer": true,
+      "seenFor": 0,
+      "lastSeenAgo": 7.6,
+      "status": "notSeen"
+     },
+     {
+      "name": "조이(적)",
+      "killer": false,
+      "seenFor": 0,
+      "lastSeenAgo": 8.4,
+      "status": "notSeen"
+     },
+     {
+      "name": "세라핀(적)",
+      "killer": false,
+      "seenFor": 29.5,
+      "lastSeenAgo": 0,
+      "status": "seen"
+     }
+    ],
+    "enemyJungle": {
+     "name": "릴리아(적)",
+     "inKill": true,
+     "lastSeenAgo": 7.6,
+     "lastSeenZone": "우리 본진"
+    },
+    "fog": {
+     "share": 0.48,
+     "trusted": false
+    }
+   }
+  }
+ ],
+ "minimap": {
+  "available": true,
+  "fitPoints": 112,
+  "fitErrMedian": 76,
+  "unitsPerPx": 42.2,
+  "iconSize": 18,
+  "msAvg": 89,
+  "droppedDetections": 218
+ },
+ "myKills": [
+  {
+   "t": "7:40",
+   "victim": "조이(적)",
+   "zone": "미드 라인",
+   "withAllies": [],
+   "solo": true
+  },
+  {
+   "t": "11:31",
+   "victim": "트위치(적)",
+   "zone": "상대 아래쪽 정글",
+   "withAllies": [
+    "쓰레쉬(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "11:34",
+   "victim": "세라핀(적)",
+   "zone": "상대 아래쪽 정글",
+   "withAllies": [
+    "카이사(아군)",
+    "쓰레쉬(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "17:08",
+   "victim": "트런들(적)",
+   "zone": "미드 라인",
+   "withAllies": [
+    "야스오(아군)",
+    "카이사(아군)",
+    "쓰레쉬(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "22:09",
+   "victim": "세라핀(적)",
+   "zone": "우리 아래쪽 정글",
+   "withAllies": [
+    "녹턴(아군)"
+   ],
+   "solo": false
+  }
+ ],
+ "objectives": [
+  {
+   "t": "9:44",
+   "name": "공허 유충",
+   "ours": false,
+   "iWasDead": true,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "9:48",
+   "name": "공허 유충",
+   "ours": false,
+   "iWasDead": true,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "9:53",
+   "name": "공허 유충",
+   "ours": true,
+   "iWasDead": true,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "11:20",
+   "name": "바다 드래곤",
+   "ours": true,
+   "iWasDead": false,
+   "myDistance30sBefore": 1382
+  },
+  {
+   "t": "16:35",
+   "name": "바람 드래곤",
+   "ours": true,
+   "iWasDead": true,
+   "myDistance30sBefore": 4328
+  },
+  {
+   "t": "19:45",
+   "name": "전령",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "22:42",
+   "name": "화염 드래곤",
+   "ours": false,
+   "iWasDead": true,
+   "myDistance30sBefore": 4781
+  },
+  {
+   "t": "27:30",
+   "name": "바론",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 2532
+  },
+  {
+   "t": "28:46",
+   "name": "화염 드래곤",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 6112
+  }
+ ],
+ "buildings": [
+  {
+   "t": "11:32",
+   "name": "탑 1차 포탑",
+   "ours": false
+  },
+  {
+   "t": "15:32",
+   "name": "탑 2차 포탑",
+   "ours": false
+  },
+  {
+   "t": "15:58",
+   "name": "바텀 1차 포탑",
+   "ours": false
+  },
+  {
+   "t": "19:13",
+   "name": "바텀 2차 포탑",
+   "ours": false
+  },
+  {
+   "t": "20:34",
+   "name": "미드 1차 포탑",
+   "ours": false
+  },
+  {
+   "t": "23:50",
+   "name": "탑 1차 포탑",
+   "ours": true
+  },
+  {
+   "t": "27:27",
+   "name": "미드 1차 포탑",
+   "ours": true
+  },
+  {
+   "t": "28:05",
+   "name": "미드 2차 포탑",
+   "ours": false
+  },
+  {
+   "t": "28:14",
+   "name": "미드 3차 포탑",
+   "ours": false
+  },
+  {
+   "t": "28:17",
+   "name": "미드 억제기",
+   "ours": false
+  },
+  {
+   "t": "30:48",
+   "name": "탑 3차 포탑",
+   "ours": false
+  },
+  {
+   "t": "30:55",
+   "name": "탑 억제기",
+   "ours": false
+  },
+  {
+   "t": "31:01",
+   "name": "바텀 3차 포탑",
+   "ours": false
+  },
+  {
+   "t": "31:06",
+   "name": "미드 쌍둥이 포탑",
+   "ours": false
+  },
+  {
+   "t": "31:15",
+   "name": "미드 쌍둥이 포탑",
+   "ours": false
+  }
+ ],
+ "fights": [
+  {
+   "start": "2:19",
+   "kills": "2:1",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "바텀 라인",
+   "teamGoldDiffBefore": 10
+  },
+  {
+   "start": "6:16",
+   "kills": "2:3",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "바텀 라인",
+   "teamGoldDiffBefore": -751
+  },
+  {
+   "start": "7:40",
+   "kills": "3:3",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -1507
+  },
+  {
+   "start": "9:44",
+   "kills": "1:1",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -2427
+  },
+  {
+   "start": "10:24",
+   "kills": "3:3",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "바텀 라인",
+   "teamGoldDiffBefore": -2343
+  },
+  {
+   "start": "11:31",
+   "kills": "2:1",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "상대 아래쪽 정글",
+   "teamGoldDiffBefore": -2853
+  },
+  {
+   "start": "14:14",
+   "kills": "2:2",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": -4111
+  },
+  {
+   "start": "15:19",
+   "kills": "1:3",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": -4444
+  },
+  {
+   "start": "16:15",
+   "kills": "5:6",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -6482
+  },
+  {
+   "start": "19:52",
+   "kills": "2:4",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "우리 위쪽 정글",
+   "teamGoldDiffBefore": -3957
+  },
+  {
+   "start": "21:16",
+   "kills": "4:6",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "우리 아래쪽 정글",
+   "teamGoldDiffBefore": -6042
+  },
+  {
+   "start": "24:00",
+   "kills": "0:4",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": -4481
+  },
+  {
+   "start": "24:54",
+   "kills": "3:3",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "미드 라인",
+   "teamGoldDiffBefore": -4481
+  },
+  {
+   "start": "27:41",
+   "kills": "1:5",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "위쪽 강가(바론 쪽)",
+   "teamGoldDiffBefore": -5777
+  },
+  {
+   "start": "29:32",
+   "kills": "0:2",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": -9074
+  },
+  {
+   "start": "31:01",
+   "kills": "0:4",
+   "iWasIn": true,
+   "iDied": true,
+   "zone": "우리 본진",
+   "teamGoldDiffBefore": -10732
+  }
+ ],
+ "items": {
+  "me": [
+   {
+    "t": "11:45",
+    "item": "악의",
+    "gold": 2700
+   },
+   {
+    "t": "16:20",
+    "item": "마법사의 신발",
+    "gold": 1100
+   },
+   {
+    "t": "22:27",
+    "item": "그림자불꽃",
+    "gold": 3200
+   }
+  ],
+  "opp": [
+   {
+    "t": "10:14",
+    "item": "마법사의 신발",
+    "gold": 1100
+   },
+   {
+    "t": "14:11",
+    "item": "루덴의 메아리",
+    "gold": 2750
+   },
+   {
+    "t": "20:29",
+    "item": "리치베인",
+    "gold": 2900
+   },
+   {
+    "t": "25:01",
+    "item": "마법공학 로켓 벨트",
+    "gold": 2650
+   }
+  ],
+  "final": [
+   "부서진 팔목 보호대",
+   "빛나는 티끌",
+   "도란의 반지",
+   "주문투척자의 신발",
+   "그림자불꽃",
+   "악의",
+   "예언자의 렌즈"
+  ]
+ },
+ "bankedGold": [
+  {
+   "min": 20,
+   "currentGold": 1546
+  },
+  {
+   "min": 31,
+   "currentGold": 1552
+  },
+  {
+   "min": 32,
+   "currentGold": 1604
+  }
+ ],
+ "runes": {
+  "primary": "지배",
+  "secondary": "마법",
+  "picks": [
+   {
+    "rune": "감전",
+    "vars": [
+     1849,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "피의 맛",
+    "vars": [
+     1065,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "섬뜩한 기념품",
+    "vars": [
+     9,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "궁극의 사냥꾼",
+    "vars": [
+     5,
+     31,
+     0
+    ]
+   },
+   {
+    "rune": "마나순환 팔찌",
+    "vars": [
+     250,
+     1410,
+     0
+    ]
+   },
+   {
+    "rune": "깨달음",
+    "vars": [
+     6,
+     0,
+     0
+    ]
+   }
+  ],
+  "shards": [
+   "공격 속도",
+   "적응형 능력치",
+   "체력 증가(성장)"
+  ]
+ },
+ "spells": [
+  {
+   "name": "순간이동",
+   "casts": 4
+  },
+  {
+   "name": "점멸",
+   "casts": 6
+  }
+ ],
+ "skills": {
+  "casts": [
+   116,
+   145,
+   32,
+   36
+  ],
+  "immobilizations": 15,
+  "skillshotsHit": 99,
+  "skillshotsDodged": 24
+ },
+ "pings": {
+  "onMyWayPings": 7,
+  "enemyMissingPings": 0,
+  "getBackPings": 10,
+  "assistMePings": 2,
+  "allInPings": 0,
+  "pushPings": 0,
+  "needVisionPings": 0,
+  "enemyVisionPings": 4,
+  "holdPings": 0,
+  "dangerPings": 0,
+  "retreatPings": 0,
+  "visionClearedPings": 0,
+  "basicPings": 0,
+  "commandPings": 5
+ },
+ "wardTimeline": {
+  "0": 1,
+  "5": 1,
+  "10": 2,
+  "15": 1
+ },
+ "positionSource": "minute"
+}
