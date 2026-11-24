@@ -2,7 +2,8 @@
 import { cx, num } from '../ui.jsx'
 
 // 다섯 축 그래프. 축 값은 0~100(기준 판 중 이 판보다 못한 판의 비율). 50 = 기준 중앙값.
-export function Radar({ axes }) {
+// plain: 그래프 안에 숫자를 빼요(01 새 배치, 숫자는 옆 막대에만). on: 강조할 축 번호
+export function Radar({ axes, plain, on }) {
   const W = 320, C = W / 2, R = 108
   const n = axes.length
   const pt = (i, v) => {
@@ -18,13 +19,13 @@ export function Radar({ axes }) {
       <polygon points={ring(50)} className="rd-mid" />
       {axes.map((_, i) => { const [x, y] = pt(i, 100); return <line key={i} x1={C} y1={C} x2={x} y2={y} className="rd-ring" /> })}
       {have.length >= 3 && <polygon points={poly} className="rd-me" />}
-      {have.map(([a, i]) => { const [x, y] = pt(i, a.value); return <circle key={i} cx={x} cy={y} r="3.5" className="rd-dot" /> })}
+      {have.map(([a, i]) => { const [x, y] = pt(i, a.value); return <circle key={i} cx={x} cy={y} r={on === i ? 6 : 3.5} className={cx('rd-dot', on === i && 'on')} /> })}
       {axes.map((a, i) => {
         const [x, y] = pt(i, 128)
         return (
-          <g key={a.axis} className={cx('rd-label', a.value == null && 'is-none')}>
-            <text x={x} y={y - 7} textAnchor="middle" className="rd-axis">{a.axis}</text>
-            <text x={x} y={y + 11} textAnchor="middle" className="rd-val num">{a.value == null ? '모으는 중' : (a.text ?? `${a.value}`)}</text>
+          <g key={a.axis} className={cx('rd-label', a.value == null && 'is-none', on === i && 'on')}>
+            <text x={x} y={plain ? y + 4 : y - 7} textAnchor="middle" className="rd-axis">{a.axis}</text>
+            {!plain && <text x={x} y={y + 11} textAnchor="middle" className="rd-val num">{a.value == null ? '모으는 중' : (a.text ?? `${a.value}`)}</text>}
           </g>
         )
       })}

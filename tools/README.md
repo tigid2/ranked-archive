@@ -48,6 +48,7 @@ bash tools/report/prep.sh [KR_...]                        # 리포트 준비 한
 bash tools/report/finish.sh KR_...                        # 피드백을 쓴 뒤 마무리 한 번에: 검사, 한 파일 리포트, 글자/오류 확인, PC 저장용 사본
 python3 tools/report/report_data.py --lab KR_8448036968   # 실험 리포트 데이터 → tools/report/lab-data/ (저장소에 안 올림)
 python3 tools/report/single.py KR_8448036968 --lab        # 실험 리포트 한 파일 → tools/report/KR_8448036968_lab_single.html (artifact로만 봐요)
+python3 tools/report/single.py KR_8468231691 --draft      # 01, 02 새 배치 시안(web/src/lab/Draft.jsx, 11-24) → tools/report/KR_8468231691_draft_single.html (artifact로만 봐요, 데이터는 본 리포트 그대로)
 
 # 기준 데이터: 저장소 원본 경기로 뽑기 시험(키 필요 없음) / 쌓인 줄로 요약만 다시 만들기
 python3 scripts/benchmarks.py test

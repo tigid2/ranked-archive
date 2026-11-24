@@ -99,7 +99,7 @@ def font_faces(text):
     return "".join(faces)
 
 
-def main(mid, out=None, lab=False):
+def main(mid, out=None, lab=False, draft=False):
     os.makedirs(CACHE, exist_ok=True)
     if not os.path.exists(APP):
         sys.exit("web/dist-single/index.html이 없어요. 먼저 (cd web && npm run build:single) 을 실행해 주세요.")
@@ -114,7 +114,7 @@ def main(mid, out=None, lab=False):
         assets = {r: u for r, u in zip(names, ex.map(fetch, names)) if u}
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     js = ("<script>window.__REPORT__=" + blob.replace("</", "<\\/") + ";window.__ASSETS__="
-          + json.dumps(assets, separators=(",", ":")) + (";window.__LAB__=true" if lab else "") + ";</script>")
+          + json.dumps(assets, separators=(",", ":")) + (";window.__LAB__=true" if lab else "") + (";window.__DRAFT__=true" if draft else "") + ";</script>")
     title = f'{data["me"]["n"]} {"승리" if data["hero"]["win"] else "패배"} 리포트'
     html = app.replace("<title>경기 리포트</title>", f"<title>{title}</title>")
     html = html.replace("/*FONTS*/", font_faces(app + blob))
@@ -122,14 +122,16 @@ def main(mid, out=None, lab=False):
     if lab:
         title = "실험 · " + title
         html = html.replace(f"<title>{title[5:]}</title>", f"<title>{title}</title>")
-    out = out or os.path.join(HERE, mid + ("_lab" if lab else "") + "_single.html")
+    if draft:
+        html = html.replace(f"<title>{title}</title>", f"<title>시안 · {title}</title>")
+    out = out or os.path.join(HERE, mid + ("_lab" if lab else "_draft" if draft else "") + "_single.html")
     open(out, "w", encoding="utf-8").write(html)
     print(f"{os.path.relpath(out, ROOT)}: 아이콘 {len(assets)}개, {len(html) // 1024} KB")
 
 
 if __name__ == "__main__":
-    # python3 tools/report/single.py <경기ID> [저장할 곳] [--lab]   --lab: 실험 페이지로
+    # python3 tools/report/single.py <경기ID> [저장할 곳] [--lab|--draft]   --lab: 실험 페이지로, --draft: 01, 02 새 배치 시안(본 리포트 데이터 그대로)
     if "--make-base-font" in sys.argv:
         make_base_font(); sys.exit()
-    a = [x for x in sys.argv[1:] if x != "--lab"]
-    main(a[0], a[1] if len(a) > 1 else None, lab="--lab" in sys.argv)
+    a = [x for x in sys.argv[1:] if x not in ("--lab", "--draft")]
+    main(a[0], a[1] if len(a) > 1 else None, lab="--lab" in sys.argv, draft="--draft" in sys.argv)

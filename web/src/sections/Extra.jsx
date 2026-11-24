@@ -24,18 +24,23 @@ export const Grid = ({ children }) => <div className="lab-grid x-grid">{children
 // 플레이 스타일: 14분 숫자를 같은 챔피언 평균의 몇 배인지로 그려요. 평균 = 가운데 점선, 평균의 2배 = 바깥 끝.
 // 사이트는 평균만 주므로 "상위 몇 %"가 아니에요. 한 판짜리라 출렁임이 커서 2배에서 잘라요.
 const STYLE = [['성장', ['14분 CS']], ['전투', ['분당 챔피언 피해']], ['관여', ['14분 전 킬', '14분 전 도움']], ['생존', ['14분 전 죽음']], ['압박', ['포탑 방패']]]
-export function StyleCard({ S, d }) {
+// 축 다섯 개 값. 01 새 배치 시안(lab/Draft.jsx)도 같이 써요.
+export function styleAxes(S) {
   const rows = S?.lane14?.rows
   if (!rows) return null
   const by = Object.fromEntries(rows.map((r) => [r.label, r]))
-  const axes = STYLE.map(([axis, keys]) => {
+  return STYLE.map(([axis, keys]) => {
     const rs = keys.map((k) => by[k]).filter(Boolean)
-    if (!rs.length) return { axis, value: null }
+    if (!rs.length) return { axis, value: null, keys }
     const me = rs.reduce((a, r) => a + r.me, 0), avg = rs.reduce((a, r) => a + r.avg, 0)
     let x = rs[0].dir < 0 ? (me === 0 ? 2 : avg / me) : (avg ? me / avg : 1)
     x = Math.min(2, Math.max(0, x))
-    return { axis, value: Math.round(x * 50), text: `${x.toFixed(1)}배`, me, avg }
+    return { axis, value: Math.round(x * 50), x, text: `${x.toFixed(1)}배`, me, avg, keys, dir: rs[0].dir }
   })
+}
+export function StyleCard({ S, d }) {
+  const axes = styleAxes(S)
+  if (!axes) return null
   return (
     <Card title="플레이 스타일" sub={`14분까지 숫자를 ${d.me.n} 평균(에메랄드 이상)과 비교했어요. 점선이 평균이고, 바깥 끝이 평균의 2배예요.`} wide>
       <div className="lab-radar-wrap">
