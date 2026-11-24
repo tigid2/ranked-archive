@@ -197,7 +197,13 @@
    "laneGoldDiff": 0,
    "laneCsDiff": 0,
    "laneXpDiff": 0,
-   "botGoldDiff": 0
+   "botGoldDiff": 0,
+   "roleGoldDiff": {
+    "top": 0,
+    "jg": 0,
+    "mid": 0,
+    "bot": 0
+   }
   },
   {
    "min": 1,
@@ -209,7 +215,13 @@
    "laneGoldDiff": 5,
    "laneCsDiff": 0,
    "laneXpDiff": 0,
-   "botGoldDiff": 0
+   "botGoldDiff": 0,
+   "roleGoldDiff": {
+    "top": 0,
+    "jg": 0,
+    "mid": -20,
+    "bot": 0
+   }
   },
   {
    "min": 2,
@@ -221,7 +233,13 @@
    "laneGoldDiff": 6,
    "laneCsDiff": -1,
    "laneXpDiff": 40,
-   "botGoldDiff": 63
+   "botGoldDiff": 63,
+   "roleGoldDiff": {
+    "top": -88,
+    "jg": -85,
+    "mid": 2,
+    "bot": 63
+   }
   },
   {
    "min": 3,
@@ -233,7 +251,13 @@
    "laneGoldDiff": -12,
    "laneCsDiff": -2,
    "laneXpDiff": -127,
-   "botGoldDiff": -499
+   "botGoldDiff": -499,
+   "roleGoldDiff": {
+    "top": -556,
+    "jg": -109,
+    "mid": 2,
+    "bot": -499
+   }
   },
   {
    "min": 4,
@@ -245,7 +269,13 @@
    "laneGoldDiff": -165,
    "laneCsDiff": -1,
    "laneXpDiff": -153,
-   "botGoldDiff": -778
+   "botGoldDiff": -778,
+   "roleGoldDiff": {
+    "top": -536,
+    "jg": 43,
+    "mid": 11,
+    "bot": -778
+   }
   },
   {
    "min": 5,
@@ -257,7 +287,13 @@
    "laneGoldDiff": -249,
    "laneCsDiff": 0,
    "laneXpDiff": -126,
-   "botGoldDiff": -1021
+   "botGoldDiff": -1021,
+   "roleGoldDiff": {
+    "top": -578,
+    "jg": 54,
+    "mid": 65,
+    "bot": -1021
+   }
   },
   {
    "min": 6,
@@ -269,7 +305,13 @@
    "laneGoldDiff": -330,
    "laneCsDiff": -1,
    "laneXpDiff": -314,
-   "botGoldDiff": -1317
+   "botGoldDiff": -1317,
+   "roleGoldDiff": {
+    "top": -990,
+    "jg": -94,
+    "mid": 108,
+    "bot": -1317
+   }
   },
   {
    "min": 7,
@@ -281,7 +323,13 @@
    "laneGoldDiff": -283,
    "laneCsDiff": -1,
    "laneXpDiff": -367,
-   "botGoldDiff": -1349
+   "botGoldDiff": -1349,
+   "roleGoldDiff": {
+    "top": -843,
+    "jg": -471,
+    "mid": 131,
+    "bot": -1349
+   }
   },
   {
    "min": 8,
@@ -293,7 +341,13 @@
    "laneGoldDiff": -249,
    "laneCsDiff": 1,
    "laneXpDiff": -167,
-   "botGoldDiff": -1371
+   "botGoldDiff": -1371,
+   "roleGoldDiff": {
+    "top": -972,
+    "jg": -470,
+    "mid": 184,
+    "bot": -1371
+   }
   },
   {
    "min": 9,
@@ -305,7 +359,13 @@
    "laneGoldDiff": -270,
    "laneCsDiff": -1,
    "laneXpDiff": -266,
-   "botGoldDiff": -1438
+   "botGoldDiff": -1438,
+   "roleGoldDiff": {
+    "top": -951,
+    "jg": -613,
+    "mid": 195,
+    "bot": -1438
+   }
   },
   {
    "min": 10,
@@ -317,7 +377,13 @@
    "laneGoldDiff": -166,
    "laneCsDiff": 1,
    "laneXpDiff": -337,
-   "botGoldDiff": -1701
+   "botGoldDiff": -1701,
+   "roleGoldDiff": {
+    "top": -965,
+    "jg": -553,
+    "mid": 155,
+    "bot": -1701
+   }
   },
   {
    "min": 11,
@@ -329,7 +395,13 @@
    "laneGoldDiff": -68,
    "laneCsDiff": 3,
    "laneXpDiff": -498,
-   "botGoldDiff": -1738
+   "botGoldDiff": -1738,
+   "roleGoldDiff": {
+    "top": -964,
+    "jg": -534,
+    "mid": 259,
+    "bot": -1738
+   }
   },
   {
    "min": 12,
@@ -341,7 +413,13 @@
    "laneGoldDiff": -68,
    "laneCsDiff": 2,
    "laneXpDiff": -490,
-   "botGoldDiff": -1786
+   "botGoldDiff": -1786,
+   "roleGoldDiff": {
+    "top": -1019,
+    "jg": -425,
+    "mid": 51,
+    "bot": -1786
+   }
   },
   {
    "min": 13,
@@ -353,7 +431,13 @@
    "laneGoldDiff": 22,
    "laneCsDiff": 2,
    "laneXpDiff": -349,
-   "botGoldDiff": -2389
+   "botGoldDiff": -2389,
+   "roleGoldDiff": {
+    "top": -1382,
+    "jg": -312,
+    "mid": 199,
+    "bot": -2389
+   }
   },
   {
    "min": 14,
@@ -365,7 +449,13 @@
    "laneGoldDiff": 431,
    "laneCsDiff": -4,
    "laneXpDiff": -477,
-   "botGoldDiff": -1656
+   "botGoldDiff": -1656,
+   "roleGoldDiff": {
+    "top": -2283,
+    "jg": -188,
+    "mid": 124,
+    "bot": -1656
+   }
   },
   {
    "min": 15,
@@ -377,7 +467,13 @@
    "laneGoldDiff": 371,
    "laneCsDiff": -6,
    "laneXpDiff": -531,
-   "botGoldDiff": -1680
+   "botGoldDiff": -1680,
+   "roleGoldDiff": {
+    "top": -2239,
+    "jg": -251,
+    "mid": 10,
+    "bot": -1680
+   }
   },
   {
    "min": 16,
@@ -389,7 +485,13 @@
    "laneGoldDiff": 125,
    "laneCsDiff": -10,
    "laneXpDiff": -1285,
-   "botGoldDiff": -2450
+   "botGoldDiff": -2450,
+   "roleGoldDiff": {
+    "top": -2139,
+    "jg": -364,
+    "mid": 93,
+    "bot": -2450
+   }
   },
   {
    "min": 17,
@@ -401,7 +503,13 @@
    "laneGoldDiff": 749,
    "laneCsDiff": -8,
    "laneXpDiff": -539,
-   "botGoldDiff": -2256
+   "botGoldDiff": -2256,
+   "roleGoldDiff": {
+    "top": -2470,
+    "jg": 248,
+    "mid": 145,
+    "bot": -2256
+   }
   },
   {
    "min": 18,
@@ -413,7 +521,13 @@
    "laneGoldDiff": 748,
    "laneCsDiff": -8,
    "laneXpDiff": -311,
-   "botGoldDiff": -1982
+   "botGoldDiff": -1982,
+   "roleGoldDiff": {
+    "top": -2571,
+    "jg": 85,
+    "mid": -229,
+    "bot": -1982
+   }
   },
   {
    "min": 19,
@@ -425,7 +539,13 @@
    "laneGoldDiff": 739,
    "laneCsDiff": -14,
    "laneXpDiff": -628,
-   "botGoldDiff": -858
+   "botGoldDiff": -858,
+   "roleGoldDiff": {
+    "top": -2776,
+    "jg": 194,
+    "mid": -500,
+    "bot": -858
+   }
   },
   {
    "min": 20,
@@ -437,7 +557,13 @@
    "laneGoldDiff": 806,
    "laneCsDiff": -15,
    "laneXpDiff": -396,
-   "botGoldDiff": -457
+   "botGoldDiff": -457,
+   "roleGoldDiff": {
+    "top": -2560,
+    "jg": 179,
+    "mid": -532,
+    "bot": -457
+   }
   },
   {
    "min": 21,
@@ -449,7 +575,13 @@
    "laneGoldDiff": 767,
    "laneCsDiff": -20,
    "laneXpDiff": -414,
-   "botGoldDiff": -259
+   "botGoldDiff": -259,
+   "roleGoldDiff": {
+    "top": -2458,
+    "jg": 259,
+    "mid": -392,
+    "bot": -259
+   }
   },
   {
    "min": 22,
@@ -461,7 +593,13 @@
    "laneGoldDiff": 732,
    "laneCsDiff": -20,
    "laneXpDiff": -362,
-   "botGoldDiff": -181
+   "botGoldDiff": -181,
+   "roleGoldDiff": {
+    "top": -2469,
+    "jg": 571,
+    "mid": -433,
+    "bot": -181
+   }
   },
   {
    "min": 23,
@@ -473,7 +611,13 @@
    "laneGoldDiff": 991,
    "laneCsDiff": -19,
    "laneXpDiff": 47,
-   "botGoldDiff": 17
+   "botGoldDiff": 17,
+   "roleGoldDiff": {
+    "top": -2364,
+    "jg": 783,
+    "mid": -258,
+    "bot": 17
+   }
   },
   {
    "min": 24,
@@ -485,7 +629,13 @@
    "laneGoldDiff": 677,
    "laneCsDiff": -20,
    "laneXpDiff": -541,
-   "botGoldDiff": 307
+   "botGoldDiff": 307,
+   "roleGoldDiff": {
+    "top": -2689,
+    "jg": 552,
+    "mid": -949,
+    "bot": 307
+   }
   },
   {
    "min": 25,
@@ -497,7 +647,13 @@
    "laneGoldDiff": 547,
    "laneCsDiff": -28,
    "laneXpDiff": -1086,
-   "botGoldDiff": 292
+   "botGoldDiff": 292,
+   "roleGoldDiff": {
+    "top": -3081,
+    "jg": 621,
+    "mid": -918,
+    "bot": 292
+   }
   },
   {
    "min": 26,
@@ -509,7 +665,13 @@
    "laneGoldDiff": 577,
    "laneCsDiff": -27,
    "laneXpDiff": -916,
-   "botGoldDiff": 136
+   "botGoldDiff": 136,
+   "roleGoldDiff": {
+    "top": -2970,
+    "jg": 667,
+    "mid": -972,
+    "bot": 136
+   }
   },
   {
    "min": 27,
@@ -521,7 +683,13 @@
    "laneGoldDiff": 417,
    "laneCsDiff": -24,
    "laneXpDiff": -547,
-   "botGoldDiff": 145
+   "botGoldDiff": 145,
+   "roleGoldDiff": {
+    "top": -2915,
+    "jg": 535,
+    "mid": -950,
+    "bot": 145
+   }
   },
   {
    "min": 28,
@@ -533,7 +701,13 @@
    "laneGoldDiff": 15,
    "laneCsDiff": -26,
    "laneXpDiff": -1341,
-   "botGoldDiff": 225
+   "botGoldDiff": 225,
+   "roleGoldDiff": {
+    "top": -2292,
+    "jg": 905,
+    "mid": -1330,
+    "bot": 225
+   }
   },
   {
    "min": 29,
@@ -545,7 +719,13 @@
    "laneGoldDiff": 16,
    "laneCsDiff": -26,
    "laneXpDiff": -1511,
-   "botGoldDiff": 165
+   "botGoldDiff": 165,
+   "roleGoldDiff": {
+    "top": -2218,
+    "jg": 960,
+    "mid": -1129,
+    "bot": 165
+   }
   },
   {
    "min": 30,
@@ -557,7 +737,13 @@
    "laneGoldDiff": 61,
    "laneCsDiff": -29,
    "laneXpDiff": -415,
-   "botGoldDiff": 255
+   "botGoldDiff": 255,
+   "roleGoldDiff": {
+    "top": -2110,
+    "jg": 1011,
+    "mid": -1122,
+    "bot": 255
+   }
   },
   {
    "min": 31,
@@ -569,7 +755,13 @@
    "laneGoldDiff": 138,
    "laneCsDiff": -27,
    "laneXpDiff": -266,
-   "botGoldDiff": 222
+   "botGoldDiff": 222,
+   "roleGoldDiff": {
+    "top": -1998,
+    "jg": 1141,
+    "mid": -930,
+    "bot": 222
+   }
   },
   {
    "min": 32,
@@ -581,7 +773,13 @@
    "laneGoldDiff": 223,
    "laneCsDiff": -31,
    "laneXpDiff": -248,
-   "botGoldDiff": 463
+   "botGoldDiff": 463,
+   "roleGoldDiff": {
+    "top": -1324,
+    "jg": 1629,
+    "mid": -847,
+    "bot": 463
+   }
   },
   {
    "min": 33,
@@ -593,7 +791,13 @@
    "laneGoldDiff": 166,
    "laneCsDiff": -32,
    "laneXpDiff": -1109,
-   "botGoldDiff": -382
+   "botGoldDiff": -382,
+   "roleGoldDiff": {
+    "top": -271,
+    "jg": 2102,
+    "mid": -80,
+    "bot": -382
+   }
   },
   {
    "min": 34,
@@ -605,7 +809,13 @@
    "laneGoldDiff": -196,
    "laneCsDiff": -34,
    "laneXpDiff": -1392,
-   "botGoldDiff": -625
+   "botGoldDiff": -625,
+   "roleGoldDiff": {
+    "top": -532,
+    "jg": 2281,
+    "mid": 105,
+    "bot": -625
+   }
   },
   {
    "min": 35,
@@ -617,7 +827,13 @@
    "laneGoldDiff": -172,
    "laneCsDiff": -32,
    "laneXpDiff": -1142,
-   "botGoldDiff": -275
+   "botGoldDiff": -275,
+   "roleGoldDiff": {
+    "top": -609,
+    "jg": 2336,
+    "mid": 609,
+    "bot": -275
+   }
   },
   {
    "min": 36,
@@ -629,7 +845,13 @@
    "laneGoldDiff": 482,
    "laneCsDiff": -32,
    "laneXpDiff": 304,
-   "botGoldDiff": 498
+   "botGoldDiff": 498,
+   "roleGoldDiff": {
+    "top": -213,
+    "jg": 2911,
+    "mid": 1108,
+    "bot": 498
+   }
   },
   {
    "min": 37,
@@ -641,7 +863,13 @@
    "laneGoldDiff": 523,
    "laneCsDiff": -30,
    "laneXpDiff": -23,
-   "botGoldDiff": 751
+   "botGoldDiff": 751,
+   "roleGoldDiff": {
+    "top": 345,
+    "jg": 3067,
+    "mid": 986,
+    "bot": 751
+   }
   },
   {
    "min": 38,
@@ -653,7 +881,13 @@
    "laneGoldDiff": 877,
    "laneCsDiff": -27,
    "laneXpDiff": 843,
-   "botGoldDiff": 2529
+   "botGoldDiff": 2529,
+   "roleGoldDiff": {
+    "top": 1219,
+    "jg": 3466,
+    "mid": 1847,
+    "bot": 2529
+   }
   },
   {
    "min": 39,
@@ -665,7 +899,13 @@
    "laneGoldDiff": 925,
    "laneCsDiff": -24,
    "laneXpDiff": 1337,
-   "botGoldDiff": 2718
+   "botGoldDiff": 2718,
+   "roleGoldDiff": {
+    "top": 1200,
+    "jg": 3466,
+    "mid": 2053,
+    "bot": 2718
+   }
   }
  ],
  "levels": {
