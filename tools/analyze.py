@@ -209,6 +209,15 @@ def analyze(raw, champ_id, live=None, track=None):
         if duo and eduo:
             row["botGoldDiff"] = (a["totalGold"] + pf(k, duo["participantId"])["totalGold"]) - \
                 ((b["totalGold"] if b else 0) + pf(k, eduo["participantId"])["totalGold"])
+        # 라인별 골드 차이(탑, 정글, 미드, 바텀 2명). 합치면 팀 골드 차이가 돼요(11-24, 02 경기 흐름의 "어디서 벌어졌나").
+        roles = {}
+        for key, poss in (("top", ("TOP",)), ("jg", ("JUNGLE",)), ("mid", ("MIDDLE",)), ("bot", ("BOTTOM", "UTILITY"))):
+            ours = [p for p in parts if p["teamId"] == team and p.get("teamPosition") in poss]
+            theirs = [p for p in parts if p["teamId"] == enemy and p.get("teamPosition") in poss]
+            if ours and theirs:
+                roles[key] = sum(pf(k, p["participantId"])["totalGold"] for p in ours) - sum(pf(k, p["participantId"])["totalGold"] for p in theirs)
+        if len(roles) == 4:
+            row["roleGoldDiff"] = roles
         flow.append(row)
     out["flow"] = flow
 

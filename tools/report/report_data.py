@@ -271,7 +271,7 @@ def build(mid, champ_id=None, lab=False):
     peak = max(flow, key=lambda f: f["teamGoldDiff"])
     at = lambda m: flow[min(m, len(flow) - 1)]["teamGoldDiff"]
     flow_out = {
-        "points": [{"min": f["min"], "team": f["teamGoldDiff"], "bot": f["botGoldDiff"]} for f in flow],
+        "points": [{"min": f["min"], "team": f["teamGoldDiff"], "bot": f["botGoldDiff"], **({"roles": f["roleGoldDiff"]} if f.get("roleGoldDiff") else {})} for f in flow],
         "myKills": [e["timestamp"] for e in my_kills_ev], "myDeaths": ts, "objs": objs,
         "gd14": at(14), "gd25": at(25) if dur >= 25 * 60 else None,  # 25분 전에 끝난 판은 비워요
         "gdMin": min(f["teamGoldDiff"] for f in flow), "final": flow[-1]["teamGoldDiff"],

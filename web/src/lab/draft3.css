@@ -1,0 +1,172 @@
+/* 정보 위계 시안(11-24 저녁): 01 요약, 02 경기 흐름, 03 라인전, 04 죽음 머리.
+   부품은 report.css의 디자인 시스템과 draft.css의 벤토(.bento, .cell, .xm)를 그대로 써요. 새 색, 둥근 캡슐, 그림자 없음.
+   점선은 평균선과 마우스 십자선에만 써요(한 모양에 한 뜻). */
+
+/* ---------- 01 ---------- */
+.s3 > .cell:nth-child(2), .s3 > .s3-none { border-right: 0; }
+.s3 > .s3-radar, .s3 > .s3-table, .s3 > .s3-noaxes { border-bottom: 0; }
+.s3-lede { grid-column: span 6; padding: var(--s-6); }
+.s3-lede .lede { padding: 0; border: 0; font-size: 26px; line-height: 1.5; }
+.s3-fixes { grid-column: span 6; padding: 0; display: flex; flex-direction: column; }
+.s3-none { grid-column: 1 / -1; }
+.s3-goal { display: flex; align-items: baseline; gap: var(--s-3); padding: var(--s-5) var(--s-5) var(--s-4); border-bottom: 1px solid var(--line); }
+.s3-goal .chip { flex: none; transform: translateY(-2px); }
+.s3-goal b { font-size: 17px; line-height: 1.5; font-weight: 800; letter-spacing: -0.02em; }
+.s3-fixes .fixes { border-right: 0; flex: 1; display: flex; flex-direction: column; }
+.s3-fixes .fix { padding: var(--s-4) var(--s-5); flex: 1; }
+.s3-fixes .fix h3 { font-size: 18px; }
+.s3-fixes .fix p { font-size: 14px; }
+.s3-radar { grid-column: span 4; display: flex; flex-direction: column; }
+.s3-radar .lab-radar { display: block; width: 100%; max-width: 380px; margin: var(--s-2) auto 0; }
+.s3-radar .rd-axis { font-size: 14px; }
+.s3-key { color: var(--text-2); display: flex; align-items: center; gap: 8px; margin-top: auto; }
+.s3-key-avg { display: inline-block; width: 16px; height: 0; border-top: 1.5px dashed var(--text-3); }
+.s3-table { grid-column: span 8; }
+.s3-noaxes { grid-column: 1 / -1; }
+.s3-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); flex-wrap: wrap; margin-bottom: var(--s-3); }
+.s3-lg { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-2); }
+.s3-lg i { display: inline-block; }
+.s3-lg-me { width: 12px; height: 12px; border-radius: 50%; background: var(--text); margin-left: 4px; }
+.s3-lg-opp { width: 10px; height: 10px; border-radius: 50%; background: var(--opp); margin-left: 8px; }
+.s3-lg .s3-key-avg { margin-left: 8px; }
+.s3-tb { display: grid; }
+.s3-tr { display: grid; grid-template-columns: 150px 1fr 64px 56px 56px; column-gap: var(--s-4); align-items: center; padding: 12px var(--s-2); border-top: 1px solid var(--line-soft); transition: background .2s; }
+.s3-tr > :nth-child(n+3) { text-align: right; }
+.s3-th { border-top: 0; padding-top: 0; }
+.s3-tr.on { background: var(--bg); }
+.s3-k { font-size: 14px; font-weight: 700; }
+.s3-k small { display: block; font-size: 12px; font-weight: 500; color: var(--text-3); }
+.s3-tr b { font-size: 20px; font-weight: 800; }
+.s3-scale { display: grid; grid-template-columns: 1fr 1fr 1fr; color: var(--text-3); }
+.s3-scale span:nth-child(2) { text-align: center; } .s3-scale span:nth-child(3) { text-align: right; }
+.s3-track { position: relative; height: 22px; }
+.s3-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid var(--line); }
+.s3-avg { position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1.5px dashed var(--text-3); }
+.s3-dot { position: absolute; top: 50%; border-radius: 50%; transform: translate(-50%, -50%); }
+.s3-dot.opp { width: 10px; height: 10px; background: var(--opp); }
+.s3-dot.me { width: 14px; height: 14px; border: 2px solid var(--text); }
+.s3-dot.me.good { background: var(--mint); }
+.s3-dot.me.low { background: var(--dark); }
+
+/* ---------- 02 ---------- */
+.f3-main { grid-column: span 8; border-bottom: 0; }
+.f3-side { grid-column: span 4; border-right: 0; border-bottom: 0; }
+.f3-top { display: flex; align-items: baseline; gap: var(--s-5); flex-wrap: wrap; margin-bottom: var(--s-3); }
+.f3-top h3 { font-size: 15px; font-weight: 800; }
+.f3-top .h-final { font-weight: 600; color: var(--text-3); margin-left: 6px; }
+.f3-top .h-final b { font-size: 22px; font-weight: 800; margin-left: 4px; }
+.f3-top .legend { margin-left: auto; }
+.f3-lg-death { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--red); background: var(--panel); }
+.f3-lg-kill { width: 9px; height: 9px; background: var(--mint-ink); transform: rotate(45deg); margin: 0 2px; }
+.f3-lg-lost { width: auto; height: auto; color: var(--text); }
+.f3-lg-lost .gi { width: 14px; height: 14px; }
+.f3-wrap { position: relative; }
+.f3-chart { display: block; width: 100%; height: auto; overflow: visible; }
+.f3-chart .f3-dir { font: 700 12px var(--font-sans); fill: var(--text-3); }
+.f3-chart .f3-kill { fill: var(--mint-ink); stroke: var(--panel); stroke-width: 1.5; }
+.f3-chart .f3-death { cursor: pointer; }
+.f3-chart .f3-death circle { fill: var(--panel); stroke: var(--red); stroke-width: 2; transition: fill .2s; }
+.f3-chart .f3-death text { font: 800 12px var(--font-num); fill: var(--red-ink); pointer-events: none; }
+.f3-chart .f3-death:hover circle, .f3-chart .f3-death:focus-visible circle { stroke-width: 3.5; }
+.f3-chart .f3-death:focus { outline: none; }
+.f3-chart .f3-death-stem { stroke: var(--red); stroke-width: 1; }
+.f3-chart .f3-ob.dim { opacity: .22; }
+.f3-chart .f3-ob.lost .ob-theirs { fill: var(--text); }
+.f3-chart .f3-ph text { font: 700 12px var(--font-sans); fill: var(--text-2); }
+.f3-chart .f3-ph-r { font: 500 11px var(--font-num); fill: var(--text-3); }
+.f3-chart .f3-ob-k { font: 600 11px var(--font-sans); fill: var(--text-3); }
+.f3-chart .f3-ph line { stroke: var(--line); }
+.f3-chart .f3-cross { stroke: var(--text); stroke-width: 1; stroke-dasharray: 3 3; }
+.f3-chart .hov-dot { fill: var(--panel); stroke: var(--text); stroke-width: 2; }
+/* 주석: 그래프 위에 겹쳐 놓아요. 지는 판은 위쪽 빈 곳, 이기는 판은 아래쪽 빈 곳 */
+.f3-notes { position: absolute; inset: 0; pointer-events: none; }
+.f3-note { position: absolute; left: 0; right: 0; height: 0; }
+.f3-br { position: absolute; top: 0; height: 7px; border: 1.5px solid var(--text); border-bottom: 0; }
+.f3-br.down { border-color: var(--text); }
+.f3-br.up { border-color: var(--mint-ink); }
+.f3-note-t { position: absolute; top: 14px; display: flex; flex-direction: column; gap: 2px; font-size: 13px; line-height: 1.5; color: var(--text-2); padding-right: 8px; text-shadow: 0 0 2px var(--panel), 0 0 4px var(--panel), 0 0 6px var(--panel); }
+.f3-note-t b { font-size: 16px; font-weight: 800; color: var(--text); }
+.f3-split { display: flex; flex-direction: column; height: 100%; }
+.f3-split-at { font-size: 13px; font-weight: 700; color: var(--text); }
+.f3-bars { list-style: none; margin: var(--s-3) 0 0; padding: 0; }
+.f3-bars li { display: grid; grid-template-columns: 76px 1fr 92px; column-gap: var(--s-3); align-items: center; padding: 14px 0; border-top: 1px solid var(--line-soft); }
+.f3-bars li:first-child { border-top: 0; }
+.f3-bars li.mine { background: var(--bg); margin: 0 calc(-1 * var(--s-3)); padding-left: var(--s-3); padding-right: var(--s-3); }
+.f3-bars li.mine .f3-bk { color: var(--mint-ink); }
+.f3-bars li.sum { border-top: 2px solid var(--text); margin-top: var(--s-2); }
+.f3-bars li > b { text-align: right; font-size: 20px; font-weight: 800; }
+.f3-bars li.sum > b { font-size: 24px; }
+.f3-bk { font-size: 15px; font-weight: 800; }
+.f3-bk small { display: block; font-size: 11px; font-weight: 500; color: var(--text-3); }
+.f3-bt { position: relative; height: 18px; }
+.f3-b0 { position: absolute; left: 50%; top: -6px; bottom: -6px; border-left: 1px solid var(--text); }
+.f3-bf { position: absolute; top: 0; bottom: 0; transition: width .35s var(--ease); }
+.f3-bf.neg { background: var(--dark); }
+.f3-bf.pos { background: var(--mint); }
+.f3-split-say { margin-top: var(--s-4); font-size: 16px; line-height: 1.55; font-weight: 700; }
+.f3-split-say b { font-weight: 800; }
+.f3-split .small.muted { margin-top: auto; padding-top: var(--s-3); }
+
+/* ---------- 03 ---------- */
+.l3 > .cell:nth-child(2n) { border-right: 0; }
+.l3 > .l3-supcell, .l3 > .l3-refcell { border-bottom: 0; }
+.l3-lede { grid-column: span 7; padding: var(--s-6); }
+.l3-lede-t { font-size: 20px; line-height: 1.6; font-weight: 600; letter-spacing: -0.015em; }
+.l3-numcell { grid-column: span 5; }
+.l3-supcell { grid-column: span 7; }
+.l3-refcell { grid-column: span 5; }
+.l3-nums dl, .l3-refs dl { margin: var(--s-3) 0 0; display: grid; }
+.l3-nums dl > div { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); padding: 9px 0; border-top: 1px solid var(--line-soft); }
+.l3-nums dl > div:first-child { border-top: 0; }
+.l3-nums dt { font-size: 15px; font-weight: 700; }
+.l3-nums dt small { display: block; font-size: 12px; font-weight: 500; color: var(--text-3); }
+.l3-nums dd { margin: 0; white-space: nowrap; }
+.l3-nums dd b { font: 800 34px/1 var(--font-num); font-stretch: 112%; }
+.l3-nums dd i { font-style: normal; color: var(--text-3); margin: 0 6px; font-size: 22px; }
+.l3-sup-big { display: grid; grid-template-columns: 1fr 1fr; margin: var(--s-4) 0 var(--s-4); }
+.l3-sup-col { padding: 0 var(--s-5) 0 0; }
+.l3-sup-col.out { padding-left: var(--s-5); border-left: 1px solid var(--line); }
+.l3-sup-k { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.l3-sup-k::before { content: ""; width: 12px; height: 12px; background: var(--mint); }
+.l3-sup-col.out .l3-sup-k::before { background: var(--bg); outline: 1px solid var(--line); }
+.l3-sup-k small { font: 600 12px var(--font-num); color: var(--text-3); }
+.l3-sup-v { margin-top: 6px; display: flex; align-items: baseline; }
+.l3-sup-v b { font: 800 64px/1 var(--font-num); font-stretch: 112%; }
+.l3-sup-v i { font-style: normal; color: var(--text-3); margin: 0 8px; font-size: 30px; }
+.l3-strip { grid-template-columns: repeat(14, 1fr); }
+.l3-sup-say { margin-top: var(--s-4); font-size: 16px; font-weight: 700; line-height: 1.55; }
+.l3-refs dl > div { display: grid; grid-template-columns: 96px 1fr; gap: var(--s-3); padding: 9px 0; border-top: 1px solid var(--line-soft); font-size: 14px; color: var(--text-2); }
+.l3-refs dl > div:first-child { border-top: 0; }
+.l3-refs dt { color: var(--text-3); font-weight: 600; }
+.l3-refs dd { margin: 0; }
+.l3-refs dd b { color: var(--text); }
+.l3-back-it { display: inline-flex; gap: 2px; vertical-align: middle; margin-left: 8px; }
+
+/* ---------- 04 머리 ---------- */
+.d4h { margin-bottom: var(--s-4); }
+.d4h-n { grid-column: span 3; display: flex; flex-direction: column; gap: var(--s-2); border-bottom: 0; }
+.d4h-mx { grid-column: span 9; border-right: 0; border-bottom: 0; overflow-x: auto; }
+.d4h-big { font: 800 88px/1 var(--font-num); font-stretch: 112%; color: var(--red-ink); }
+.d4h-big small { font: 700 20px var(--font-sans); color: var(--text-3); margin-left: 6px; }
+.d4h-say { font-size: 16px; font-weight: 700; line-height: 1.55; }
+.d4h-pat { margin-top: auto; padding-top: var(--s-4); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+.d4h-pat .chip { align-self: flex-start; }
+.d4h-pat p { font-size: 14px; color: var(--text-2); }
+.d4h-grid { display: grid; align-items: center; gap: 4px; }
+.d4h-col { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 0 var(--s-2); background: none; border: 0; cursor: pointer; font: 600 12px var(--font-num); color: var(--text-3); }
+.d4h-col .dno { width: 28px; height: 28px; font-size: 13px; }
+.d4h-col.on .dno { border-color: var(--red); border-width: 3px; }
+.d4h-col.on > .num { color: var(--text); font-weight: 800; }
+.d4h-sum-h { text-align: right; align-self: end; padding-bottom: var(--s-2); }
+.d4h-k { font-size: 14px; font-weight: 700; padding-right: var(--s-3); }
+.d4h-c { height: 30px; border: 0; padding: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; }
+.d4h-c i { display: block; width: 5px; height: 5px; background: var(--line); }
+.d4h-c.hit i { width: 20px; height: 20px; background: var(--dark); }  /* 빨간 면은 쓰지 않아요(11-22). 아쉬움 = 다크, 단위 칸 하나 = 죽음 하나 */
+.d4h-c.on { background: var(--bg); }
+.d4h-sum { text-align: right; font-size: 22px; font-weight: 800; }
+.d4h-row.pat .d4h-k::after { content: " (반복 실수)"; color: var(--red-ink); font-weight: 600; font-size: 12px; }
+
+@media (max-width: 1100px) {
+  .s3-lede, .s3-fixes, .f3-main, .f3-side, .l3-lede, .l3-numcell, .l3-supcell, .l3-refcell, .d4h-n, .d4h-mx { grid-column: 1 / -1; border-right: 0; }
+  .s3-radar { grid-column: span 12; } .s3-table { grid-column: 1 / -1; }
+}

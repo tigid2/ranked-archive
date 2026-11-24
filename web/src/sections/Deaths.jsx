@@ -707,7 +707,7 @@ function ReplaySide({ X, note, isKey, meC, onPlay }) {
 }
 
 // autoOpen: 죽음이 3번 이하인 판은 첫 죽음(주요 죽음이 있으면 그것) 정보 칸을 처음부터 펼쳐요. 시안(lab/Draft.jsx)만 넘겨요.
-export default function Deaths({ d, fb, autoOpen }) {
+export default function Deaths({ d, fb, autoOpen, head: Head, noStrip }) {
   const D = d.deaths
   const rp = D.replay
   // 죽음마다 상황, 근거, 개선점. 피드백 글이 없는 판은 시안 확인용 예시(demoNotes)만 있어요.
@@ -768,6 +768,13 @@ export default function Deaths({ d, fb, autoOpen }) {
   const isReplay = mode === 'replay' && rp && R
   // 반복 실수 칸에서 죽음을 누르면: 지금 보고 있는 모드(기본/리플레이)에서 목록의 그 죽음을 누른 것과 같게 펼쳐요
   const boxRef = useRef(null)
+  // 02 그래프의 죽음 표시를 누르면 여기서 그 죽음을 열어요(시안에서 head를 넘길 때만).
+  useEffect(() => {
+    if (!Head) return undefined
+    const on = (e) => openDeath(e.detail)
+    addEventListener('open-death', on)
+    return () => removeEventListener('open-death', on)
+  })
   const openDeath = (no) => {
     if (isReplay) goDeath(no)
     else setSel(no)
@@ -783,7 +790,7 @@ export default function Deaths({ d, fb, autoOpen }) {
 
   return (
     <Section no="04">
-      {fb && fb.deathPattern && <Pattern p={fb.deathPattern} list={D.list} keyNos={keyNos} onOpen={openDeath} />}
+      {Head ? <Head D={D} fb={fb} keyNos={keyNos} onOpen={openDeath} /> : fb && fb.deathPattern && <Pattern p={fb.deathPattern} list={D.list} keyNos={keyNos} onOpen={openDeath} />}
       <div ref={boxRef} className={cx('d3', isReplay && 'is-replay', keyNos.size > 0 && 'has-key')}>
         <div className="d3-bar">
           <div className="d3-tabs">
@@ -821,7 +828,7 @@ export default function Deaths({ d, fb, autoOpen }) {
                 </ol>
               </div>
             </div>
-            <div className="d3-strip">{cells.map((c, i) => <div key={i} className={cx(c[2])}><span className="label">{c[0]}</span><div className="d3-v">{c[1]}</div></div>)}</div>
+            {!noStrip && <div className="d3-strip">{cells.map((c, i) => <div key={i} className={cx(c[2])}><span className="label">{c[0]}</span><div className="d3-v">{c[1]}</div></div>)}</div>}
           </>
         )}
       </div>

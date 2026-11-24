@@ -8,6 +8,7 @@ import { Section, Lede, Pending, Gi, signed, num, mmss, fix, cx } from '../ui.js
 import { styleAxes } from '../sections/Extra.jsx'
 import { Radar } from './charts.jsx'
 import { Lane2, Team2, Build2, Check2 } from './DraftRest.jsx'
+import { Summary3, Flow3, Lane3, DeathHead } from './Draft3.jsx'
 import './draft.css'
 
 const Xm = () => <i className="xm" aria-hidden="true" />
@@ -416,5 +417,6 @@ function Flow2({ d, fb }) {
 }
 
 export default function Draft({ data }) {
-  return <Report data={data} over={{ Summary: Summary2, Flow: Flow2, Lane: Lane2, Team: Team2, Build: Build2, Checklist: Check2, deaths: { autoOpen: true } }} />
+  // 11-24 저녁: 정보 위계 탭대로 01~03과 04 머리를 Draft3.jsx로 바꿨어요. 이전 시안(Summary2, Flow2, Lane2)은 비교용으로 남겨 둬요.
+  return <Report data={data} over={{ Summary: Summary3, Flow: Flow3, Lane: Lane3, Team: Team2, Build: Build2, Checklist: Check2, deaths: { autoOpen: true, head: DeathHead, noStrip: true } }} />
 }
