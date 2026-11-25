@@ -686,6 +686,7 @@
     "블리츠크랭크(아군)"
    ],
    "enemiesNear": [
+    "리 신(적)",
     "시비르(적)",
     "알리스타(적)"
    ],
@@ -808,7 +809,9 @@
     "알리스타(적)"
    ],
    "alliesNear": [
-    "가렌(아군)"
+    "가렌(아군)",
+    "비에고(아군)",
+    "블리츠크랭크(아군)"
    ],
    "enemiesNear": [
     "모데카이저(적)",
@@ -820,16 +823,16 @@
     {
      "who": "모데카이저(적)",
      "role": "탑",
-     "minuteMark": "14:00",
+     "minuteMark": "14:05",
      "wasAt": "탑 라인",
-     "distance": 9439
+     "distance": 10053
     },
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "14:00",
+     "minuteMark": "14:05",
      "wasAt": "상대 위쪽 정글",
-     "distance": 6619
+     "distance": 6620
     }
    ],
    "damage": [
@@ -991,16 +994,16 @@
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "15:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 5147
+     "minuteMark": "15:28",
+     "wasAt": "위쪽 강가(바론 쪽)",
+     "distance": 3125
     },
     {
      "who": "모데카이저(적)",
      "role": "탑",
-     "minuteMark": "15:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 5109
+     "minuteMark": "15:28",
+     "wasAt": "탑 라인",
+     "distance": 7394
     }
    ],
    "damage": [
@@ -1150,15 +1153,16 @@
     "블리츠크랭크(아군)"
    ],
    "enemiesNear": [
-    "요네(적)"
+    "요네(적)",
+    "시비르(적)"
    ],
    "roams": [
     {
      "who": "요네(적)",
      "role": "미드",
-     "minuteMark": "19:00",
+     "minuteMark": "18:39",
      "wasAt": "미드 라인",
-     "distance": 483
+     "distance": 3201
     }
    ],
    "damage": [
@@ -1292,22 +1296,20 @@
    "assists": [],
    "alliesNear": [
     "가렌(아군)",
-    "비에고(아군)",
     "야스오(아군)",
     "블리츠크랭크(아군)"
    ],
    "enemiesNear": [
     "모데카이저(적)",
-    "시비르(적)",
     "알리스타(적)"
    ],
    "roams": [
     {
      "who": "모데카이저(적)",
      "role": "탑",
-     "minuteMark": "21:00",
+     "minuteMark": "20:32",
      "wasAt": "우리 본진",
-     "distance": 318
+     "distance": 531
     }
    ],
    "damage": [
@@ -1437,15 +1439,21 @@
    "assists": [
     "알리스타(적)"
    ],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "가렌(아군)"
+   ],
+   "enemiesNear": [
+    "리 신(적)",
+    "요네(적)",
+    "알리스타(적)"
+   ],
    "roams": [
     {
      "who": "리 신(적)",
      "role": "정글",
-     "minuteMark": "23:00",
+     "minuteMark": "23:02",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 5303
+     "distance": 5451
     }
    ],
    "damage": [
@@ -1600,7 +1608,7 @@
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3516
+   "myDistance30sBefore": 3647
   },
   {
    "t": "9:04",
@@ -1628,7 +1636,7 @@
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2022
+   "myDistance30sBefore": null
   },
   {
    "t": "16:45",
@@ -1642,14 +1650,14 @@
    "name": "화학공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 5483
+   "myDistance30sBefore": 7162
   },
   {
    "t": "23:12",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 8915
+   "myDistance30sBefore": 8158
   }
  ],
  "buildings": [
@@ -1971,18 +1979,32 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 0.6,
+   "5~6": 0.63,
+   "6~7": 0.6,
+   "7~8": 0.4,
+   "8~9": 0.52,
+   "9~10": 0.67,
+   "10~11": 1.0,
+   "11~12": 0.68,
+   "12~13": 0.83,
+   "13~14": 0.33
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 50,
-   "opp": 69
+   "me": 69,
+   "opp": 87
   },
   "csWithoutSupport": {
-   "me": 28,
-   "opp": 35
+   "me": 9,
+   "opp": 17
   },
   "supportAwayRanges": [
-   "5~9분"
+   "7~8분",
+   "13~14분"
   ],
   "botAdcKills": {
    "opp": 2,
@@ -2000,7 +2022,7 @@
    "myDeaths": []
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 71,
