@@ -801,19 +801,18 @@
    "zone": "미드 라인",
    "killer": "아리(적)",
    "assists": [],
-   "alliesNear": [
-    "오공(아군)"
-   ],
+   "alliesNear": [],
    "enemiesNear": [
-    "아리(적)"
+    "아리(적)",
+    "파이크(적)"
    ],
    "roams": [
     {
      "who": "아리(적)",
      "role": "미드",
-     "minuteMark": "11:00",
+     "minuteMark": "10:41",
      "wasAt": "미드 라인",
-     "distance": 340
+     "distance": 502
     }
    ],
    "damage": [
@@ -942,14 +941,16 @@
    "alliesNear": [
     "소라카(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "판테온(적)"
+   ],
    "roams": [
     {
      "who": "판테온(적)",
      "role": "정글",
-     "minuteMark": "12:00",
+     "minuteMark": "11:43",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 3777
+     "distance": 4806
     }
    ],
    "damage": [
@@ -1246,7 +1247,7 @@
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 1235
+   "myDistance30sBefore": 1875
   },
   {
    "t": "9:09",
@@ -1274,7 +1275,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3315
+   "myDistance30sBefore": 3313
   }
  ],
  "buildings": [
@@ -1493,20 +1494,30 @@
    "13": true,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.65,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.73,
+   "7~8": 0.95,
+   "8~9": 0.92,
+   "9~10": 0.77,
+   "10~11": 0.85,
+   "11~12": 0.7,
+   "12~13": 0.68,
+   "13~14": 0.65
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 47,
-   "opp": 44
+   "me": 87,
+   "opp": 83
   },
   "csWithoutSupport": {
-   "me": 40,
-   "opp": 39
+   "me": 0,
+   "opp": 0
   },
-  "supportAwayRanges": [
-   "6~12분",
-   "13~14분"
-  ],
+  "supportAwayRanges": [],
   "botAdcKills": {
    "opp": 1,
    "me": 3,
@@ -1532,7 +1543,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 71,
