@@ -1024,10 +1024,11 @@
    "assists": [
     "쓰레쉬(적)"
    ],
-   "alliesNear": [
-    "르블랑(아군)"
+   "alliesNear": [],
+   "enemiesNear": [
+    "직스(적)",
+    "쓰레쉬(적)"
    ],
-   "enemiesNear": [],
    "roams": [],
    "damage": [
     [
@@ -1166,11 +1167,9 @@
     "직스(적)"
    ],
    "alliesNear": [
-    "릴리아(아군)",
     "바드(아군)"
    ],
    "enemiesNear": [
-    "퀸(적)",
     "탈론(적)",
     "직스(적)"
    ],
@@ -1178,9 +1177,9 @@
     {
      "who": "탈론(적)",
      "role": "미드",
-     "minuteMark": "13:00",
-     "wasAt": "레드팀 본진",
-     "distance": 8071
+     "minuteMark": "13:24",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 5728
     }
    ],
    "damage": [
@@ -1322,19 +1321,18 @@
    "killer": "탈론(적)",
    "assists": [],
    "alliesNear": [
-    "바드(아군)"
+    "릴리아(아군)"
    ],
    "enemiesNear": [
-    "탈론(적)",
-    "직스(적)"
+    "탈론(적)"
    ],
    "roams": [
     {
      "who": "탈론(적)",
      "role": "미드",
-     "minuteMark": "17:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 1299
+     "minuteMark": "16:51",
+     "wasAt": "우리 위쪽 정글",
+     "distance": 1431
     }
    ],
    "damage": [
@@ -1468,15 +1466,17 @@
     "바드(아군)"
    ],
    "enemiesNear": [
-    "초가스(적)"
+    "초가스(적)",
+    "탈론(적)",
+    "쓰레쉬(적)"
    ],
    "roams": [
     {
      "who": "탈론(적)",
      "role": "미드",
-     "minuteMark": "26:00",
+     "minuteMark": "25:41",
      "wasAt": "상대 위쪽 정글",
-     "distance": 2912
+     "distance": 2601
     }
    ],
    "damage": [
@@ -1616,38 +1616,35 @@
     "탈론(적)"
    ],
    "alliesNear": [
-    "요네(아군)",
     "릴리아(아군)",
-    "르블랑(아군)",
     "바드(아군)"
    ],
    "enemiesNear": [
     "초가스(적)",
     "퀸(적)",
-    "탈론(적)",
-    "쓰레쉬(적)"
+    "탈론(적)"
    ],
    "roams": [
     {
      "who": "퀸(적)",
      "role": "정글",
-     "minuteMark": "33:00",
+     "minuteMark": "33:11",
      "wasAt": "상대 아래쪽 정글",
      "distance": 8391
     },
     {
      "who": "초가스(적)",
      "role": "탑",
-     "minuteMark": "33:00",
-     "wasAt": "상대 아래쪽 정글",
-     "distance": 8236
+     "minuteMark": "33:11",
+     "wasAt": "레드팀 본진",
+     "distance": 11561
     },
     {
      "who": "탈론(적)",
      "role": "미드",
-     "minuteMark": "33:00",
-     "wasAt": "미드 라인",
-     "distance": 7307
+     "minuteMark": "33:11",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 3518
     }
    ],
    "damage": [
@@ -1806,6 +1803,7 @@
    ],
    "alliesNear": [
     "요네(아군)",
+    "르블랑(아군)",
     "바드(아군)"
    ],
    "enemiesNear": [
@@ -1817,16 +1815,16 @@
     {
      "who": "탈론(적)",
      "role": "미드",
-     "minuteMark": "35:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 3814
+     "minuteMark": "35:26",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 4922
     },
     {
      "who": "초가스(적)",
      "role": "탑",
-     "minuteMark": "35:00",
+     "minuteMark": "35:26",
      "wasAt": "탑 라인",
-     "distance": 12815
+     "distance": 12005
     }
    ],
    "damage": [
@@ -2059,7 +2057,7 @@
    "name": "화학공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 9919
+   "myDistance30sBefore": 3663
   },
   {
    "t": "17:14",
@@ -2073,28 +2071,28 @@
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 4934
+   "myDistance30sBefore": 4290
   },
   {
    "t": "23:27",
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 5416
+   "myDistance30sBefore": 5498
   },
   {
    "t": "29:15",
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2022
+   "myDistance30sBefore": 1653
   },
   {
    "t": "34:02",
    "name": "바론",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 1518
+   "myDistance30sBefore": 558
   }
  ],
  "buildings": [
@@ -2548,7 +2546,7 @@
    "2": false,
    "3": true,
    "4": true,
-   "5": true,
+   "5": false,
    "6": true,
    "7": true,
    "8": true,
@@ -2559,19 +2557,32 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.7,
+   "3~4": 0.52,
+   "4~5": 0.95,
+   "5~6": 0.9,
+   "6~7": 0.28,
+   "7~8": 1.0,
+   "8~9": 0.58,
+   "9~10": 0.02,
+   "10~11": 0.12,
+   "11~12": 0.6,
+   "12~13": 0.48,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 46,
-   "opp": 65
+   "me": 61,
+   "opp": 68
   },
   "csWithoutSupport": {
-   "me": 33,
-   "opp": 49
+   "me": 18,
+   "opp": 46
   },
   "supportAwayRanges": [
-   "2~3분",
-   "8~11분",
+   "6~7분",
+   "9~11분",
    "12~14분"
   ],
   "botAdcKills": {
@@ -2595,7 +2606,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
