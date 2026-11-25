@@ -665,8 +665,13 @@
    "assists": [
     "이즈리얼(적)"
    ],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "라칸(아군)"
+   ],
+   "enemiesNear": [
+    "이즈리얼(적)",
+    "탐 켄치(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -924,7 +929,7 @@
    "name": "대지 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 708
+   "myDistance30sBefore": 3256
   },
   {
    "t": "8:31",
@@ -952,7 +957,7 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3696
+   "myDistance30sBefore": 3304
   },
   {
    "t": "16:28",
@@ -966,14 +971,14 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 710
+   "myDistance30sBefore": 1343
   },
   {
    "t": "23:22",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1055
+   "myDistance30sBefore": 1106
   }
  ],
  "buildings": [
@@ -1321,18 +1326,31 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.6,
+   "7~8": 1.0,
+   "8~9": 0.7,
+   "9~10": 0.0,
+   "10~11": 0.63,
+   "11~12": 1.0,
+   "12~13": 0.72,
+   "13~14": 0.93
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 84,
-   "opp": 75
+   "me": 106,
+   "opp": 87
   },
   "csWithoutSupport": {
-   "me": 32,
-   "opp": 24
+   "me": 10,
+   "opp": 12
   },
   "supportAwayRanges": [
-   "8~11분"
+   "9~10분"
   ],
   "botAdcKills": {
    "opp": 2,
@@ -1350,7 +1368,7 @@
    "myDeaths": []
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
