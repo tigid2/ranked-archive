@@ -974,6 +974,7 @@
     "소라카(아군)"
    ],
    "enemiesNear": [
+    "퀸(적)",
     "진(적)",
     "파이크(적)"
    ],
@@ -981,9 +982,9 @@
     {
      "who": "퀸(적)",
      "role": "정글",
-     "minuteMark": "3:00",
+     "minuteMark": "2:39",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 2739
+     "distance": 3842
     }
    ],
    "damage": [
@@ -1131,7 +1132,10 @@
    "alliesNear": [
     "소라카(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "진(적)",
+    "파이크(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -1264,10 +1268,12 @@
     "파이크(적)"
    ],
    "alliesNear": [
-    "탈론(아군)",
     "소라카(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "진(적)",
+    "파이크(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -1411,11 +1417,8 @@
    "zone": "미드 라인",
    "killer": "르블랑(적)",
    "assists": [],
-   "alliesNear": [
-    "이즈리얼(아군)"
-   ],
+   "alliesNear": [],
    "enemiesNear": [
-    "문도 박사(적)",
     "르블랑(적)",
     "파이크(적)"
    ],
@@ -1423,9 +1426,9 @@
     {
      "who": "르블랑(적)",
      "role": "미드",
-     "minuteMark": "16:00",
+     "minuteMark": "16:20",
      "wasAt": "우리 아래쪽 정글",
-     "distance": 4052
+     "distance": 1126
     }
    ],
    "damage": [
@@ -1551,19 +1554,17 @@
    "zone": "미드 라인",
    "killer": "르블랑(적)",
    "assists": [],
-   "alliesNear": [
-    "이즈리얼(아군)"
-   ],
+   "alliesNear": [],
    "enemiesNear": [
-    "문도 박사(적)"
+    "르블랑(적)"
    ],
    "roams": [
     {
      "who": "르블랑(적)",
      "role": "미드",
-     "minuteMark": "22:00",
-     "wasAt": "우리 위쪽 정글",
-     "distance": 3176
+     "minuteMark": "21:54",
+     "wasAt": "미드 라인",
+     "distance": 3051
     }
    ],
    "damage": [
@@ -1688,9 +1689,7 @@
    "zone": "미드 라인",
    "killer": "르블랑(적)",
    "assists": [],
-   "alliesNear": [
-    "잭스(아군)"
-   ],
+   "alliesNear": [],
    "enemiesNear": [
     "르블랑(적)",
     "파이크(적)"
@@ -1699,9 +1698,9 @@
     {
      "who": "르블랑(적)",
      "role": "미드",
-     "minuteMark": "24:00",
-     "wasAt": "우리 위쪽 정글",
-     "distance": 2242
+     "minuteMark": "23:58",
+     "wasAt": "탑 라인",
+     "distance": 2657
     }
    ],
    "damage": [
@@ -1833,9 +1832,9 @@
     {
      "who": "르블랑(적)",
      "role": "미드",
-     "minuteMark": "28:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 5185
+     "minuteMark": "28:20",
+     "wasAt": "미드 라인",
+     "distance": 7512
     }
    ],
    "damage": [
@@ -2004,7 +2003,7 @@
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 6131
+   "myDistance30sBefore": 7620
   },
   {
    "t": "17:50",
@@ -2018,35 +2017,35 @@
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4790
+   "myDistance30sBefore": 4714
   },
   {
    "t": "22:29",
    "name": "바론",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 5101
+   "myDistance30sBefore": 5282
   },
   {
    "t": "26:07",
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 9906
+   "myDistance30sBefore": 5789
   },
   {
    "t": "29:35",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 5586
+   "myDistance30sBefore": 5585
   },
   {
    "t": "31:31",
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 5833
+   "myDistance30sBefore": 5749
   }
  ],
  "buildings": [
@@ -2468,19 +2467,31 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 1.0,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.6,
+   "7~8": 0.93,
+   "8~9": 0.7,
+   "9~10": 0.6,
+   "10~11": 0.92,
+   "11~12": 0.0,
+   "12~13": 0.0,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 21,
-   "opp": 58
+   "me": 36,
+   "opp": 82
   },
   "csWithoutSupport": {
-   "me": 32,
-   "opp": 55
+   "me": 17,
+   "opp": 31
   },
   "supportAwayRanges": [
-   "6~8분",
-   "10~14분"
+   "11~14분"
   ],
   "botAdcKills": {
    "opp": 0,
@@ -2506,7 +2517,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": false,
   "reason": "이 챔피언의 기준 데이터가 아직 없어요."
