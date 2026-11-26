@@ -595,23 +595,22 @@
    ],
    "alliesNear": [],
    "enemiesNear": [
-    "리븐(적)",
-    "이블린(적)"
+    "리븐(적)"
    ],
    "roams": [
     {
      "who": "리븐(적)",
      "role": "탑",
-     "minuteMark": "11:00",
-     "wasAt": "바텀 라인",
-     "distance": 1172
+     "minuteMark": "10:32",
+     "wasAt": "미드 라인",
+     "distance": 5785
     },
     {
      "who": "이블린(적)",
      "role": "정글",
-     "minuteMark": "11:00",
+     "minuteMark": "10:32",
      "wasAt": "바텀 라인",
-     "distance": 2482
+     "distance": 7125
     }
    ],
    "damage": [
@@ -763,9 +762,9 @@
     {
      "who": "이블린(적)",
      "role": "정글",
-     "minuteMark": "12:00",
+     "minuteMark": "11:42",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 1921
+     "distance": 5372
     }
    ],
    "damage": [
@@ -912,9 +911,9 @@
     {
      "who": "리븐(적)",
      "role": "탑",
-     "minuteMark": "13:00",
+     "minuteMark": "13:26",
      "wasAt": "미드 라인",
-     "distance": 7588
+     "distance": 8242
     }
    ],
    "damage": [
@@ -1102,14 +1101,14 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 2975
+   "myDistance30sBefore": 3997
   },
   {
    "t": "15:02",
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3301
+   "myDistance30sBefore": 5132
   },
   {
    "t": "17:22",
@@ -1399,18 +1398,32 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.82,
+   "3~4": 0.88,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.68,
+   "7~8": 1.0,
+   "8~9": 0.48,
+   "9~10": 1.0,
+   "10~11": 1.0,
+   "11~12": 0.63,
+   "12~13": 0.33,
+   "13~14": 1.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 64,
-   "opp": 60
+   "me": 71,
+   "opp": 66
   },
   "csWithoutSupport": {
-   "me": 12,
-   "opp": 14
+   "me": 5,
+   "opp": 8
   },
   "supportAwayRanges": [
-   "2~4분"
+   "8~9분",
+   "12~13분"
   ],
   "botAdcKills": {
    "opp": 3,
@@ -1445,7 +1458,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": false,
   "reason": "이 챔피언의 기준 데이터가 아직 없어요."
