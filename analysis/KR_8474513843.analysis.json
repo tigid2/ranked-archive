@@ -543,14 +543,18 @@
    "alliesNear": [
     "벨코즈(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "헤카림(적)",
+    "이즈리얼(적)",
+    "샤코(적)"
+   ],
    "roams": [
     {
      "who": "헤카림(적)",
      "role": "정글",
-     "minuteMark": "3:00",
-     "wasAt": "바텀 라인",
-     "distance": 2815
+     "minuteMark": "2:38",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 5650
     }
    ],
    "damage": [
@@ -700,7 +704,6 @@
     "벨코즈(아군)"
    ],
    "enemiesNear": [
-    "헤카림(적)",
     "이즈리얼(적)",
     "샤코(적)"
    ],
@@ -841,10 +844,11 @@
    "zone": "바텀 라인",
    "killer": "이즈리얼(적)",
    "assists": [],
-   "alliesNear": [
-    "벨코즈(아군)"
+   "alliesNear": [],
+   "enemiesNear": [
+    "이즈리얼(적)",
+    "샤코(적)"
    ],
-   "enemiesNear": [],
    "roams": [],
    "damage": [
     [
@@ -995,7 +999,7 @@
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3348
+   "myDistance30sBefore": 3354
   },
   {
    "t": "9:37",
@@ -1250,19 +1254,30 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.68,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 0.7,
+   "7~8": 1.0,
+   "8~9": 0.87,
+   "9~10": 0.63,
+   "10~11": 1.0,
+   "11~12": 0.67,
+   "12~13": 0.72,
+   "13~14": 1.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 83,
-   "opp": 80
+   "me": 95,
+   "opp": 100
   },
   "csWithoutSupport": {
-   "me": 12,
-   "opp": 20
+   "me": 0,
+   "opp": 0
   },
-  "supportAwayRanges": [
-   "8~10분"
-  ],
+  "supportAwayRanges": [],
   "botAdcKills": {
    "opp": 4,
    "me": 3,
@@ -1300,7 +1315,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": false,
   "reason": "이 챔피언의 기준 데이터가 아직 없어요."

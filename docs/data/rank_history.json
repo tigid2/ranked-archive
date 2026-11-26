@@ -548,5 +548,16 @@
    "losses": 290
   },
   "matchId": "KR_8474513843"
+ },
+ {
+  "time": "2026-11-27T02:01:10.648899+09:00",
+  "entry": {
+   "tier": "GOLD",
+   "rank": "III",
+   "leaguePoints": 45,
+   "wins": 280,
+   "losses": 290
+  },
+  "matchId": "KR_8474574339"
  }
 ]
