@@ -606,7 +606,7 @@
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3131
+   "myDistance30sBefore": 2615
   }
  ],
  "buildings": [
@@ -878,19 +878,32 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.87,
+   "3~4": 0.67,
+   "4~5": 1.0,
+   "5~6": 1.0,
+   "6~7": 1.0,
+   "7~8": 0.62,
+   "8~9": 0.8,
+   "9~10": 0.43,
+   "10~11": 0.0,
+   "11~12": 0.6,
+   "12~13": 0.4,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 53,
-   "opp": 36
+   "me": 80,
+   "opp": 56
   },
   "csWithoutSupport": {
-   "me": 67,
-   "opp": 46
+   "me": 40,
+   "opp": 26
   },
   "supportAwayRanges": [
-   "2~4분",
-   "9~14분"
+   "9~11분",
+   "12~14분"
   ],
   "botAdcKills": {
    "opp": 5,
@@ -920,7 +933,7 @@
    "myDeaths": []
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
