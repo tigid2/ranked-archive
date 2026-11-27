@@ -1,0 +1,1300 @@
+{
+ "matchId": "KR_8474797516",
+ "version": "16.23.841.8428",
+ "durationSec": 913,
+ "win": true,
+ "champion": "징크스",
+ "position": "원딜",
+ "opponent": "이즈리얼",
+ "duo": "모르가나",
+ "enemyDuo": "트위치",
+ "basic": {
+  "kda": [
+   6,
+   0,
+   3
+  ],
+  "cs": 136,
+  "csPerMin": 8.9,
+  "gold": 8455,
+  "goldPerMin": 556,
+  "damage": 8340,
+  "damageShare": 17,
+  "damageTaken": 5408,
+  "killParticipation": 39,
+  "vision": 10,
+  "wardsPlaced": 5,
+  "wardsKilled": 1,
+  "controlWards": 0,
+  "turretDamage": 11131,
+  "cs10": 75,
+  "soloKills": 0,
+  "skillshotsHit": 13,
+  "skillshotsDodged": 7,
+  "maxCsAdvantage": 43.20000001788139,
+  "teamDamagePct": 0.1698158398478051
+ },
+ "teams": [
+  {
+   "team": "우리",
+   "pos": "탑",
+   "champ": "트런들",
+   "me": false,
+   "kda": [
+    5,
+    5,
+    5
+   ],
+   "cs": 107,
+   "gold": 8177,
+   "damage": 14825,
+   "vision": 9
+  },
+  {
+   "team": "우리",
+   "pos": "정글",
+   "champ": "이블린",
+   "me": false,
+   "kda": [
+    8,
+    0,
+    3
+   ],
+   "cs": 106,
+   "gold": 7092,
+   "damage": 9295,
+   "vision": 8
+  },
+  {
+   "team": "우리",
+   "pos": "미드",
+   "champ": "사일러스",
+   "me": false,
+   "kda": [
+    1,
+    2,
+    1
+   ],
+   "cs": 114,
+   "gold": 5329,
+   "damage": 10571,
+   "vision": 6
+  },
+  {
+   "team": "우리",
+   "pos": "원딜",
+   "champ": "징크스",
+   "me": true,
+   "kda": [
+    6,
+    0,
+    3
+   ],
+   "cs": 136,
+   "gold": 8455,
+   "damage": 8340,
+   "vision": 10
+  },
+  {
+   "team": "우리",
+   "pos": "서폿",
+   "champ": "모르가나",
+   "me": false,
+   "kda": [
+    3,
+    0,
+    11
+   ],
+   "cs": 16,
+   "gold": 5504,
+   "damage": 6082,
+   "vision": 39
+  },
+  {
+   "team": "상대",
+   "pos": "탑",
+   "champ": "레넥톤",
+   "me": false,
+   "kda": [
+    4,
+    5,
+    1
+   ],
+   "cs": 80,
+   "gold": 5210,
+   "damage": 9132,
+   "vision": 12
+  },
+  {
+   "team": "상대",
+   "pos": "정글",
+   "champ": "말파이트",
+   "me": false,
+   "kda": [
+    3,
+    2,
+    1
+   ],
+   "cs": 92,
+   "gold": 5664,
+   "damage": 4790,
+   "vision": 16
+  },
+  {
+   "team": "상대",
+   "pos": "미드",
+   "champ": "카사딘",
+   "me": false,
+   "kda": [
+    0,
+    1,
+    1
+   ],
+   "cs": 103,
+   "gold": 4534,
+   "damage": 7986,
+   "vision": 9
+  },
+  {
+   "team": "상대",
+   "pos": "원딜",
+   "champ": "이즈리얼",
+   "me": false,
+   "kda": [
+    0,
+    7,
+    1
+   ],
+   "cs": 96,
+   "gold": 4280,
+   "damage": 6557,
+   "vision": 3
+  },
+  {
+   "team": "상대",
+   "pos": "서폿",
+   "champ": "트위치",
+   "me": false,
+   "kda": [
+    0,
+    8,
+    1
+   ],
+   "cs": 16,
+   "gold": 3437,
+   "damage": 5396,
+   "vision": 15
+  }
+ ],
+ "flow": [
+  {
+   "min": 0,
+   "teamGoldDiff": 0,
+   "gold": 500,
+   "cs": 0,
+   "level": 1,
+   "currentGold": 500,
+   "laneGoldDiff": 0,
+   "laneCsDiff": 0,
+   "laneXpDiff": 0,
+   "botGoldDiff": 0,
+   "roleGoldDiff": {
+    "top": 0,
+    "jg": 0,
+    "mid": 0,
+    "bot": 0
+   }
+  },
+  {
+   "min": 1,
+   "teamGoldDiff": 5,
+   "gold": 505,
+   "cs": 0,
+   "level": 1,
+   "currentGold": 5,
+   "laneGoldDiff": 5,
+   "laneCsDiff": 0,
+   "laneXpDiff": 0,
+   "botGoldDiff": 5,
+   "roleGoldDiff": {
+    "top": 0,
+    "jg": 0,
+    "mid": 0,
+    "bot": 5
+   }
+  },
+  {
+   "min": 2,
+   "teamGoldDiff": -70,
+   "gold": 688,
+   "cs": 5,
+   "level": 2,
+   "currentGold": 188,
+   "laneGoldDiff": -81,
+   "laneCsDiff": -4,
+   "laneXpDiff": -116,
+   "botGoldDiff": -87,
+   "roleGoldDiff": {
+    "top": 42,
+    "jg": -47,
+    "mid": 22,
+    "bot": -87
+   }
+  },
+  {
+   "min": 3,
+   "teamGoldDiff": 274,
+   "gold": 1498,
+   "cs": 10,
+   "level": 3,
+   "currentGold": 48,
+   "laneGoldDiff": 559,
+   "laneCsDiff": -2,
+   "laneXpDiff": 151,
+   "botGoldDiff": 811,
+   "roleGoldDiff": {
+    "top": -257,
+    "jg": -438,
+    "mid": 158,
+    "bot": 811
+   }
+  },
+  {
+   "min": 4,
+   "teamGoldDiff": 773,
+   "gold": 1969,
+   "cs": 17,
+   "level": 4,
+   "currentGold": 519,
+   "laneGoldDiff": 720,
+   "laneCsDiff": -4,
+   "laneXpDiff": 136,
+   "botGoldDiff": 1021,
+   "roleGoldDiff": {
+    "top": -63,
+    "jg": -295,
+    "mid": 110,
+    "bot": 1021
+   }
+  },
+  {
+   "min": 5,
+   "teamGoldDiff": 473,
+   "gold": 2235,
+   "cs": 25,
+   "level": 4,
+   "currentGold": 185,
+   "laneGoldDiff": 742,
+   "laneCsDiff": -3,
+   "laneXpDiff": 77,
+   "botGoldDiff": 1033,
+   "roleGoldDiff": {
+    "top": -362,
+    "jg": -300,
+    "mid": 102,
+    "bot": 1033
+   }
+  },
+  {
+   "min": 6,
+   "teamGoldDiff": 676,
+   "gold": 2580,
+   "cs": 37,
+   "level": 5,
+   "currentGold": 530,
+   "laneGoldDiff": 817,
+   "laneCsDiff": 2,
+   "laneXpDiff": 104,
+   "botGoldDiff": 1382,
+   "roleGoldDiff": {
+    "top": -524,
+    "jg": -330,
+    "mid": 148,
+    "bot": 1382
+   }
+  },
+  {
+   "min": 7,
+   "teamGoldDiff": 873,
+   "gold": 2942,
+   "cs": 47,
+   "level": 6,
+   "currentGold": 892,
+   "laneGoldDiff": 988,
+   "laneCsDiff": 8,
+   "laneXpDiff": 386,
+   "botGoldDiff": 1669,
+   "roleGoldDiff": {
+    "top": -615,
+    "jg": -221,
+    "mid": 40,
+    "bot": 1669
+   }
+  },
+  {
+   "min": 8,
+   "teamGoldDiff": 958,
+   "gold": 3438,
+   "cs": 60,
+   "level": 6,
+   "currentGold": 688,
+   "laneGoldDiff": 1200,
+   "laneCsDiff": 12,
+   "laneXpDiff": 458,
+   "botGoldDiff": 2006,
+   "roleGoldDiff": {
+    "top": -1001,
+    "jg": -233,
+    "mid": 186,
+    "bot": 2006
+   }
+  },
+  {
+   "min": 9,
+   "teamGoldDiff": 1951,
+   "gold": 3861,
+   "cs": 70,
+   "level": 7,
+   "currentGold": 1111,
+   "laneGoldDiff": 1304,
+   "laneCsDiff": 13,
+   "laneXpDiff": 400,
+   "botGoldDiff": 2119,
+   "roleGoldDiff": {
+    "top": -511,
+    "jg": 302,
+    "mid": 41,
+    "bot": 2119
+   }
+  },
+  {
+   "min": 10,
+   "teamGoldDiff": 2199,
+   "gold": 4423,
+   "cs": 81,
+   "level": 7,
+   "currentGold": 223,
+   "laneGoldDiff": 1485,
+   "laneCsDiff": 11,
+   "laneXpDiff": 200,
+   "botGoldDiff": 2144,
+   "roleGoldDiff": {
+    "top": -492,
+    "jg": 592,
+    "mid": -45,
+    "bot": 2144
+   }
+  },
+  {
+   "min": 11,
+   "teamGoldDiff": 3589,
+   "gold": 4762,
+   "cs": 93,
+   "level": 8,
+   "currentGold": 562,
+   "laneGoldDiff": 1560,
+   "laneCsDiff": 15,
+   "laneXpDiff": 181,
+   "botGoldDiff": 2558,
+   "roleGoldDiff": {
+    "top": 347,
+    "jg": 556,
+    "mid": 128,
+    "bot": 2558
+   }
+  },
+  {
+   "min": 12,
+   "teamGoldDiff": 6237,
+   "gold": 5939,
+   "cs": 108,
+   "level": 9,
+   "currentGold": 1734,
+   "laneGoldDiff": 2436,
+   "laneCsDiff": 22,
+   "laneXpDiff": 585,
+   "botGoldDiff": 3736,
+   "roleGoldDiff": {
+    "top": 1613,
+    "jg": 663,
+    "mid": 225,
+    "bot": 3736
+   }
+  },
+  {
+   "min": 13,
+   "teamGoldDiff": 7040,
+   "gold": 6763,
+   "cs": 118,
+   "level": 9,
+   "currentGold": 308,
+   "laneGoldDiff": 3027,
+   "laneCsDiff": 28,
+   "laneXpDiff": 674,
+   "botGoldDiff": 4474,
+   "roleGoldDiff": {
+    "top": 1492,
+    "jg": 808,
+    "mid": 266,
+    "bot": 4474
+   }
+  },
+  {
+   "min": 14,
+   "teamGoldDiff": 8690,
+   "gold": 7704,
+   "cs": 125,
+   "level": 10,
+   "currentGold": 1249,
+   "laneGoldDiff": 3661,
+   "laneCsDiff": 34,
+   "laneXpDiff": 882,
+   "botGoldDiff": 5365,
+   "roleGoldDiff": {
+    "top": 2401,
+    "jg": 506,
+    "mid": 418,
+    "bot": 5365
+   }
+  },
+  {
+   "min": 15,
+   "teamGoldDiff": 11270,
+   "gold": 8313,
+   "cs": 130,
+   "level": 10,
+   "currentGold": 1858,
+   "laneGoldDiff": 4094,
+   "laneCsDiff": 36,
+   "laneXpDiff": 1383,
+   "botGoldDiff": 6160,
+   "roleGoldDiff": {
+    "top": 2966,
+    "jg": 1428,
+    "mid": 716,
+    "bot": 6160
+   }
+  },
+  {
+   "min": 16,
+   "teamGoldDiff": 11432,
+   "gold": 8455,
+   "cs": 136,
+   "level": 11,
+   "currentGold": 2000,
+   "laneGoldDiff": 4175,
+   "laneCsDiff": 40,
+   "laneXpDiff": 1632,
+   "botGoldDiff": 6242,
+   "roleGoldDiff": {
+    "top": 2967,
+    "jg": 1428,
+    "mid": 795,
+    "bot": 6242
+   }
+  }
+ ],
+ "levels": {
+  "2": {
+   "me": "1:54",
+   "opp": "1:33"
+  },
+  "3": {
+   "me": "2:36",
+   "opp": "2:13"
+  },
+  "6": {
+   "me": "6:34",
+   "opp": "7:18"
+  },
+  "11": {
+   "me": "15:07",
+   "opp": null
+  }
+ },
+ "deaths": [],
+ "minimap": {
+  "available": true,
+  "fitPoints": 79,
+  "fitErrMedian": 49,
+  "unitsPerPx": 42.2,
+  "iconSize": 18,
+  "msAvg": 113,
+  "droppedDetections": 129
+ },
+ "myKills": [
+  {
+   "t": "2:33",
+   "victim": "트위치(적)",
+   "zone": "바텀 라인",
+   "withAllies": [
+    "모르가나(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "2:36",
+   "victim": "이즈리얼(적)",
+   "zone": "바텀 라인",
+   "withAllies": [
+    "모르가나(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "3:52",
+   "victim": "이즈리얼(적)",
+   "zone": "바텀 라인",
+   "withAllies": [
+    "이블린(아군)",
+    "모르가나(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "7:45",
+   "victim": "이즈리얼(적)",
+   "zone": "바텀 라인",
+   "withAllies": [
+    "모르가나(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "11:55",
+   "victim": "이즈리얼(적)",
+   "zone": "바텀 라인",
+   "withAllies": [
+    "모르가나(아군)"
+   ],
+   "solo": false
+  },
+  {
+   "t": "13:15",
+   "victim": "카사딘(적)",
+   "zone": "미드 라인",
+   "withAllies": [
+    "모르가나(아군)"
+   ],
+   "solo": false
+  }
+ ],
+ "objectives": [
+  {
+   "t": "9:33",
+   "name": "공허 유충",
+   "ours": true,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "9:38",
+   "name": "공허 유충",
+   "ours": true,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "9:47",
+   "name": "공허 유충",
+   "ours": true,
+   "iWasDead": false,
+   "myDistance30sBefore": null
+  },
+  {
+   "t": "10:58",
+   "name": "바람 드래곤",
+   "ours": false,
+   "iWasDead": false,
+   "myDistance30sBefore": 3131
+  }
+ ],
+ "buildings": [
+  {
+   "t": "11:14",
+   "name": "탑 1차 포탑",
+   "ours": true
+  },
+  {
+   "t": "12:18",
+   "name": "바텀 1차 포탑",
+   "ours": true
+  },
+  {
+   "t": "13:31",
+   "name": "탑 2차 포탑",
+   "ours": true
+  },
+  {
+   "t": "13:35",
+   "name": "미드 1차 포탑",
+   "ours": true
+  },
+  {
+   "t": "14:44",
+   "name": "탑 3차 포탑",
+   "ours": true
+  },
+  {
+   "t": "14:49",
+   "name": "탑 억제기",
+   "ours": true
+  }
+ ],
+ "fights": [
+  {
+   "start": "2:22",
+   "kills": "2:1",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": -70
+  },
+  {
+   "start": "3:52",
+   "kills": "1:1",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "바텀 라인",
+   "teamGoldDiffBefore": 274
+  },
+  {
+   "start": "5:33",
+   "kills": "1:1",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "아래쪽 강가(드래곤 쪽)",
+   "teamGoldDiffBefore": 473
+  },
+  {
+   "start": "6:28",
+   "kills": "2:1",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "바텀 라인",
+   "teamGoldDiffBefore": 676
+  },
+  {
+   "start": "8:43",
+   "kills": "2:0",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": 958
+  },
+  {
+   "start": "9:11",
+   "kills": "1:1",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": 1951
+  },
+  {
+   "start": "11:25",
+   "kills": "2:0",
+   "iWasIn": false,
+   "iDied": false,
+   "zone": "상대 아래쪽 정글",
+   "teamGoldDiffBefore": 3589
+  },
+  {
+   "start": "11:55",
+   "kills": "2:0",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "바텀 라인",
+   "teamGoldDiffBefore": 3589
+  },
+  {
+   "start": "13:03",
+   "kills": "3:1",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": 7040
+  },
+  {
+   "start": "13:57",
+   "kills": "4:0",
+   "iWasIn": true,
+   "iDied": false,
+   "zone": "탑 라인",
+   "teamGoldDiffBefore": 7040
+  }
+ ],
+ "items": {
+  "me": [
+   {
+    "t": "9:17",
+    "item": "마법광학 장치 C44",
+    "gold": 2800
+   },
+   {
+    "t": "12:29",
+    "item": "광전사의 군화",
+    "gold": 1100
+   }
+  ],
+  "opp": [],
+  "final": [
+   "도란의 활",
+   "충전형 물약",
+   "열정의 검",
+   "수확의 낫",
+   "단검",
+   "마법광학 장치 C44",
+   "망원형 개조"
+  ]
+ },
+ "bankedGold": [
+  {
+   "min": 12,
+   "currentGold": 1734
+  },
+  {
+   "min": 15,
+   "currentGold": 1858
+  },
+  {
+   "min": 16,
+   "currentGold": 2000
+  }
+ ],
+ "runes": {
+  "primary": "정밀",
+  "secondary": "영감",
+  "picks": [
+   {
+    "rune": "치명적 속도",
+    "vars": [
+     153,
+     153,
+     0
+    ]
+   },
+   {
+    "rune": "침착",
+    "vars": [
+     867,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "전설: 핏빛 길",
+    "vars": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "체력차 극복",
+    "vars": [
+     475,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "환급",
+    "vars": [
+     210,
+     0,
+     0
+    ]
+   },
+   {
+    "rune": "우주적 통찰력",
+    "vars": [
+     0,
+     0,
+     0
+    ]
+   }
+  ],
+  "shards": [
+   "공격 속도",
+   "적응형 능력치",
+   "체력"
+  ]
+ },
+ "spells": [
+  {
+   "name": "방어막",
+   "casts": 3
+  },
+  {
+   "name": "점멸",
+   "casts": 2
+  }
+ ],
+ "skills": {
+  "casts": [
+   136,
+   24,
+   7,
+   5
+  ],
+  "immobilizations": 1,
+  "skillshotsHit": 13,
+  "skillshotsDodged": 7
+ },
+ "pings": {
+  "onMyWayPings": 6,
+  "enemyMissingPings": 8,
+  "getBackPings": 2,
+  "assistMePings": 9,
+  "allInPings": 0,
+  "pushPings": 0,
+  "needVisionPings": 0,
+  "enemyVisionPings": 1,
+  "holdPings": 0,
+  "dangerPings": 0,
+  "retreatPings": 0,
+  "visionClearedPings": 0,
+  "basicPings": 0,
+  "commandPings": 4
+ },
+ "wardTimeline": {
+  "0": 2,
+  "5": 1,
+  "10": 2
+ },
+ "lane": {
+  "supportAtBot": {
+   "2": true,
+   "3": false,
+   "4": true,
+   "5": true,
+   "6": true,
+   "7": true,
+   "8": true,
+   "9": true,
+   "10": false,
+   "11": false,
+   "12": true,
+   "13": false,
+   "14": false
+  },
+  "supportBotShare": null,
+  "supportShareMin": 0.5,
+  "csWithSupport": {
+   "me": 53,
+   "opp": 36
+  },
+  "csWithoutSupport": {
+   "me": 67,
+   "opp": 46
+  },
+  "supportAwayRanges": [
+   "2~4분",
+   "9~14분"
+  ],
+  "botAdcKills": {
+   "opp": 5,
+   "me": 0,
+   "oppDeaths": [
+    {
+     "t": "2:36",
+     "killer": "징크스(나)"
+    },
+    {
+     "t": "3:52",
+     "killer": "징크스(나)"
+    },
+    {
+     "t": "6:28",
+     "killer": "이블린(아군)"
+    },
+    {
+     "t": "7:45",
+     "killer": "징크스(나)"
+    },
+    {
+     "t": "11:55",
+     "killer": "징크스(나)"
+    }
+   ],
+   "myDeaths": []
+  }
+ },
+ "positionSource": "minute",
+ "benchmark": {
+  "available": true,
+  "games": 101,
+  "patches": [
+   "16.22"
+  ],
+  "tiers": [
+   "EMERALD",
+   "DIAMOND"
+  ],
+  "samePatch": false,
+  "metrics": [
+   {
+    "key": "cs10",
+    "label": "10분 CS",
+    "mine": 81,
+    "median": 77.0,
+    "p25": 67.0,
+    "p75": 84.0,
+    "n": 101,
+    "vsMedian": 4.0,
+    "band": "중간 50%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 64
+   },
+   {
+    "key": "gold10",
+    "label": "10분 골드",
+    "mine": 4423,
+    "median": 3758.0,
+    "p25": 3298.0,
+    "p75": 4227.0,
+    "n": 101,
+    "vsMedian": 665.0,
+    "band": "상위 25%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 80
+   },
+   {
+    "key": "xp10",
+    "label": "10분 경험치",
+    "mine": 4054,
+    "median": 3450.0,
+    "p25": 3128.0,
+    "p75": 3662.0,
+    "n": 101,
+    "vsMedian": 604.0,
+    "band": "상위 25%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 96
+   },
+   {
+    "key": "cs15",
+    "label": "15분 CS",
+    "mine": 130,
+    "median": 116.0,
+    "p25": 102.0,
+    "p75": 127.0,
+    "n": 101,
+    "vsMedian": 14.0,
+    "band": "상위 25%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 81
+   },
+   {
+    "key": "gold15",
+    "label": "15분 골드",
+    "mine": 8313,
+    "median": 6210.0,
+    "p25": 5507.0,
+    "p75": 7347.0,
+    "n": 101,
+    "vsMedian": 2103.0,
+    "band": "상위 25%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 94
+   },
+   {
+    "key": "xp15",
+    "label": "15분 경험치",
+    "mine": 7125,
+    "median": 5420.0,
+    "p25": 4952.0,
+    "p75": 5985.0,
+    "n": 101,
+    "vsMedian": 1705.0,
+    "band": "상위 25%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 99
+   },
+   {
+    "key": "goldDiff15",
+    "label": "15분 맞라인 골드 차이",
+    "mine": 4094,
+    "median": -230.0,
+    "p25": -1850.0,
+    "p75": 1123.0,
+    "n": 101,
+    "vsMedian": 4324.0,
+    "band": "상위 25%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 98
+   },
+   {
+    "key": "csDiff15",
+    "label": "15분 맞라인 CS 차이",
+    "mine": 36,
+    "median": -3.0,
+    "p25": -28.0,
+    "p75": 7.0,
+    "n": 101,
+    "vsMedian": 39.0,
+    "band": "상위 25%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 97
+   },
+   {
+    "key": "dmg15",
+    "label": "15분까지 챔피언 피해",
+    "mine": 8340,
+    "median": 6843.0,
+    "p25": 5106.0,
+    "p75": 9128.0,
+    "n": 101,
+    "vsMedian": 1497.0,
+    "band": "중간 50%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 67
+   },
+   {
+    "key": "dpm",
+    "label": "분당 챔피언 피해",
+    "mine": 547.6,
+    "median": 773.9,
+    "p25": 526.9,
+    "p75": 1146.6,
+    "n": 101,
+    "vsMedian": -226.3,
+    "band": "중간 50%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 26
+   },
+   {
+    "key": "vspm",
+    "label": "분당 시야 점수",
+    "mine": 0.68,
+    "median": 0.69,
+    "p25": 0.56,
+    "p75": 0.86,
+    "n": 101,
+    "vsMedian": -0.01,
+    "band": "중간 50%",
+    "lowerIsBetter": false,
+    "dir": 1,
+    "pct": 50
+   },
+   {
+    "key": "core1Time",
+    "label": "첫 코어 완성",
+    "mine": 557,
+    "median": 698.0,
+    "p25": 612.0,
+    "p75": 786.0,
+    "n": 99,
+    "vsMedian": -141.0,
+    "band": "상위 25%",
+    "lowerIsBetter": true,
+    "dir": -1,
+    "pct": 86
+   }
+  ],
+  "missing": [
+   "xpDiff15",
+   "gpm",
+   "kp",
+   "deaths",
+   "d14",
+   "solo",
+   "takenPm",
+   "ccTime",
+   "wardsPm",
+   "wardsKilledPm",
+   "ctrl",
+   "ward1",
+   "wards14",
+   "plates",
+   "botPlates",
+   "back1",
+   "back1Gold"
+  ],
+  "build": {
+   "mine": "마법광학 장치 C44",
+   "rank": null,
+   "top": [
+    {
+     "name": "마법광학 장치 C44 → 루난의 허리케인",
+     "share": 50.5,
+     "winRate": 62.7,
+     "n": 51
+    },
+    {
+     "name": "마법광학 장치 C44 → 유령 무희",
+     "share": 14.9,
+     "winRate": 40.0,
+     "n": 15
+    },
+    {
+     "name": "윤 탈 야생화살 → 루난의 허리케인",
+     "share": 9.9,
+     "winRate": 70.0,
+     "n": 10
+    }
+   ]
+  },
+  "keystone": {
+   "rank": 1,
+   "top": [
+    {
+     "name": "치명적 속도 + 영감",
+     "share": 82.2,
+     "n": 83,
+     "winRate": 57.8
+    },
+    {
+     "name": "치명적 속도 + 마법",
+     "share": 14.9,
+     "n": 15,
+     "winRate": 53.3
+    }
+   ]
+  },
+  "slots": [
+   {
+    "mine": {
+     "name": "마법광학 장치 C44",
+     "id": 2523,
+     "time": 557
+    },
+    "rank": 1,
+    "top": [
+     {
+      "name": "마법광학 장치 C44",
+      "id": 2523,
+      "share": 71.3,
+      "winRate": 54.2,
+      "n": 72,
+      "time": 700.5
+     },
+     {
+      "name": "윤 탈 야생화살",
+      "id": 3032,
+      "share": 14.9,
+      "winRate": 80.0,
+      "n": 15,
+      "time": 664.0
+     }
+    ]
+   },
+   {
+    "mine": null,
+    "rank": null,
+    "top": [
+     {
+      "name": "루난의 허리케인",
+      "id": 3085,
+      "share": 65.3,
+      "winRate": 60.6,
+      "n": 66,
+      "time": 1034.0
+     },
+     {
+      "name": "유령 무희",
+      "id": 3046,
+      "share": 20.8,
+      "winRate": 47.6,
+      "n": 21,
+      "time": 1054.0
+     }
+    ]
+   },
+   {
+    "mine": null,
+    "rank": null,
+    "top": [
+     {
+      "name": "무한의 대검",
+      "id": 3031,
+      "share": 53.5,
+      "winRate": 66.7,
+      "n": 54,
+      "time": 1388.5
+     },
+     {
+      "name": "도미닉 경의 인사",
+      "id": 3036,
+      "share": 11.9,
+      "winRate": 58.3,
+      "n": 12,
+      "time": 1417.5
+     }
+    ]
+   }
+  ],
+  "spells": {
+   "rank": 1,
+   "top": [
+    {
+     "name": "점멸 + 방어막",
+     "share": 55.4,
+     "winRate": 51.8,
+     "n": 56
+    },
+    {
+     "name": "정화 + 점멸",
+     "share": 16.8,
+     "winRate": 47.1,
+     "n": 17
+    },
+    {
+     "name": "탈진 + 점멸",
+     "share": 16.8,
+     "winRate": 76.5,
+     "n": 17
+    }
+   ]
+  },
+  "lengthWin": [
+   {
+    "from": 0,
+    "to": 25,
+    "n": 34,
+    "winRate": 52.9,
+    "here": true
+   },
+   {
+    "from": 25,
+    "to": 30,
+    "n": 33,
+    "winRate": 57.6,
+    "here": false
+   },
+   {
+    "from": 30,
+    "to": 35,
+    "n": 22,
+    "winRate": 63.6,
+    "here": false
+   },
+   {
+    "from": 35,
+    "to": 99,
+    "n": 12,
+    "winRate": 41.7,
+    "here": false
+   }
+  ],
+  "objectives": {},
+  "support": {
+   "mineAtBotShare": 0.42,
+   "medianAtBotShare": 0.5,
+   "mineCsPerMinWith": 10.6,
+   "medianCsPerMinWith": 7.85,
+   "mineCsPerMinWithout": 9.57,
+   "medianCsPerMinWithout": 7.82
+  }
+ }
+}
