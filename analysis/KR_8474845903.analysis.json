@@ -786,9 +786,9 @@
     {
      "who": "신 짜오(적)",
      "role": "정글",
-     "minuteMark": "11:00",
-     "wasAt": "바텀 라인",
-     "distance": 884
+     "minuteMark": "10:36",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 5333
     }
    ],
    "damage": [
@@ -935,8 +935,12 @@
    "zone": "바텀 라인",
    "killer": "케이틀린(적)",
    "assists": [],
-   "alliesNear": [],
-   "enemiesNear": [],
+   "alliesNear": [
+    "바드(아군)"
+   ],
+   "enemiesNear": [
+    "케이틀린(적)"
+   ],
    "roams": [],
    "damage": [
     [
@@ -1059,18 +1063,21 @@
     "스웨인(적)"
    ],
    "alliesNear": [
-    "샤코(아군)"
+    "샤코(아군)",
+    "바드(아군)"
    ],
    "enemiesNear": [
-    "신 짜오(적)"
+    "신 짜오(적)",
+    "케이틀린(적)",
+    "스웨인(적)"
    ],
    "roams": [
     {
      "who": "신 짜오(적)",
      "role": "정글",
-     "minuteMark": "14:00",
+     "minuteMark": "13:54",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 1434
+     "distance": 1718
     }
    ],
    "damage": [
@@ -1221,7 +1228,9 @@
    "zone": "미드 라인",
    "killer": "이즈리얼(적)",
    "assists": [],
-   "alliesNear": [],
+   "alliesNear": [
+    "바드(아군)"
+   ],
    "enemiesNear": [
     "신 짜오(적)",
     "이즈리얼(적)"
@@ -1230,9 +1239,9 @@
     {
      "who": "이즈리얼(적)",
      "role": "미드",
-     "minuteMark": "15:00",
-     "wasAt": "탑 라인",
-     "distance": 4825
+     "minuteMark": "15:21",
+     "wasAt": "미드 라인",
+     "distance": 685
     }
    ],
    "damage": [
@@ -1355,7 +1364,9 @@
     "신 짜오(적)"
    ],
    "alliesNear": [
-    "샤코(아군)"
+    "샤코(아군)",
+    "갈리오(아군)",
+    "바드(아군)"
    ],
    "enemiesNear": [
     "신 짜오(적)",
@@ -1365,7 +1376,7 @@
     {
      "who": "신 짜오(적)",
      "role": "정글",
-     "minuteMark": "18:00",
+     "minuteMark": "18:02",
      "wasAt": "위쪽 강가(바론 쪽)",
      "distance": 3589
     }
@@ -1512,16 +1523,16 @@
     "갈리오(아군)"
    ],
    "enemiesNear": [
-    "케일(적)",
-    "이즈리얼(적)"
+    "이즈리얼(적)",
+    "스웨인(적)"
    ],
    "roams": [
     {
      "who": "이즈리얼(적)",
      "role": "미드",
-     "minuteMark": "24:00",
+     "minuteMark": "24:06",
      "wasAt": "우리 위쪽 정글",
-     "distance": 3052
+     "distance": 3530
     }
    ],
    "damage": [
@@ -1706,7 +1717,7 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1391
+   "myDistance30sBefore": 2697
   },
   {
    "t": "9:10",
@@ -1734,7 +1745,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3221
+   "myDistance30sBefore": 2986
   },
   {
    "t": "19:45",
@@ -1748,21 +1759,21 @@
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3543
+   "myDistance30sBefore": 1672
   },
   {
    "t": "23:34",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4438
+   "myDistance30sBefore": 4245
   },
   {
    "t": "25:53",
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 8102
+   "myDistance30sBefore": 10377
   }
  ],
  "buildings": [
@@ -2163,20 +2174,34 @@
    "13": false,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.32,
+   "3~4": 1.0,
+   "4~5": 1.0,
+   "5~6": 0.25,
+   "6~7": 0.83,
+   "7~8": 0.17,
+   "8~9": 0.82,
+   "9~10": 0.25,
+   "10~11": 0.78,
+   "11~12": 1.0,
+   "12~13": 0.63,
+   "13~14": 0.65
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 41,
-   "opp": 50
+   "me": 56,
+   "opp": 63
   },
   "csWithoutSupport": {
-   "me": 42,
-   "opp": 52
+   "me": 27,
+   "opp": 39
   },
   "supportAwayRanges": [
-   "6~8분",
-   "9~11분",
-   "12~14분"
+   "2~3분",
+   "5~6분",
+   "7~8분",
+   "9~10분"
   ],
   "botAdcKills": {
    "opp": 3,
@@ -2207,7 +2232,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
