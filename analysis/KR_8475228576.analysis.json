@@ -759,14 +759,18 @@
    "alliesNear": [
     "바드(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "제드(적)",
+    "애쉬(적)",
+    "니코(적)"
+   ],
    "roams": [
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "6:00",
+     "minuteMark": "5:55",
      "wasAt": "미드 라인",
-     "distance": 6980
+     "distance": 7224
     }
    ],
    "damage": [
@@ -915,14 +919,17 @@
     "애쉬(적)"
    ],
    "alliesNear": [],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "마스터 이(적)",
+    "애쉬(적)"
+   ],
    "roams": [
     {
      "who": "마스터 이(적)",
      "role": "정글",
-     "minuteMark": "16:00",
+     "minuteMark": "15:48",
      "wasAt": "우리 아래쪽 정글",
-     "distance": 4912
+     "distance": 5177
     }
    ],
    "damage": [
@@ -1060,8 +1067,7 @@
    "killer": "피오라(적)",
    "assists": [],
    "alliesNear": [
-    "오른(아군)",
-    "바드(아군)"
+    "오른(아군)"
    ],
    "enemiesNear": [
     "피오라(적)",
@@ -1071,9 +1077,9 @@
     {
      "who": "피오라(적)",
      "role": "탑",
-     "minuteMark": "20:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 7647
+     "minuteMark": "20:19",
+     "wasAt": "레드팀 본진",
+     "distance": 10094
     }
    ],
    "damage": [
@@ -1244,7 +1250,7 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 833
+   "myDistance30sBefore": 3026
   },
   {
    "t": "9:12",
@@ -1272,7 +1278,7 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3048
+   "myDistance30sBefore": 2736
   },
   {
    "t": "17:57",
@@ -1286,21 +1292,21 @@
    "name": "바다 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3142
+   "myDistance30sBefore": 3143
   },
   {
    "t": "25:50",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4044
+   "myDistance30sBefore": 1370
   },
   {
    "t": "27:10",
    "name": "바다 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 567
+   "myDistance30sBefore": 3223
   }
  ],
  "buildings": [
@@ -1675,19 +1681,30 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.8,
+   "3~4": 0.65,
+   "4~5": 0.87,
+   "5~6": 1.0,
+   "6~7": 0.75,
+   "7~8": 0.82,
+   "8~9": 0.83,
+   "9~10": 1.0,
+   "10~11": 0.67,
+   "11~12": 0.63,
+   "12~13": 0.05,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 34,
-   "opp": 42
+   "me": 84,
+   "opp": 88
   },
   "csWithoutSupport": {
-   "me": 63,
-   "opp": 63
+   "me": 13,
+   "opp": 17
   },
   "supportAwayRanges": [
-   "2~5분",
-   "6~9분",
    "12~14분"
   ],
   "botAdcKills": {
@@ -1707,7 +1724,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
