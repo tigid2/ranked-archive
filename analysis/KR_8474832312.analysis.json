@@ -702,6 +702,7 @@
     "유나라(적)"
    ],
    "alliesNear": [
+    "비에고(아군)",
     "갈리오(아군)"
    ],
    "enemiesNear": [
@@ -851,7 +852,8 @@
     "갈리오(아군)"
    ],
    "enemiesNear": [
-    "유나라(적)"
+    "유나라(적)",
+    "룰루(적)"
    ],
    "roams": [],
    "damage": [
@@ -1134,8 +1136,7 @@
    "killer": "탈리야(적)",
    "assists": [],
    "alliesNear": [
-    "비에고(아군)",
-    "로크(아군)"
+    "갈리오(아군)"
    ],
    "enemiesNear": [
     "탈리야(적)",
@@ -1146,9 +1147,9 @@
     {
      "who": "탈리야(적)",
      "role": "정글",
-     "minuteMark": "13:00",
+     "minuteMark": "13:03",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 6410
+     "distance": 6216
     }
    ],
    "damage": [
@@ -1274,17 +1275,20 @@
     "룰루(적)"
    ],
    "alliesNear": [
+    "로크(아군)",
     "갈리오(아군)"
    ],
    "enemiesNear": [
     "탈리야(적)",
-    "요네(적)"
+    "요네(적)",
+    "유나라(적)",
+    "룰루(적)"
    ],
    "roams": [
     {
      "who": "탈리야(적)",
      "role": "정글",
-     "minuteMark": "14:00",
+     "minuteMark": "14:17",
      "wasAt": "우리 아래쪽 정글",
      "distance": 2614
     }
@@ -1579,7 +1583,6 @@
    ],
    "alliesNear": [
     "비에고(아군)",
-    "로크(아군)",
     "갈리오(아군)"
    ],
    "enemiesNear": [
@@ -1593,16 +1596,16 @@
     {
      "who": "크산테(적)",
      "role": "탑",
-     "minuteMark": "21:00",
-     "wasAt": "우리 위쪽 정글",
-     "distance": 1684
+     "minuteMark": "20:47",
+     "wasAt": "탑 라인",
+     "distance": 3991
     },
     {
      "who": "요네(적)",
      "role": "미드",
-     "minuteMark": "21:00",
-     "wasAt": "우리 본진",
-     "distance": 636
+     "minuteMark": "20:47",
+     "wasAt": "미드 라인",
+     "distance": 2240
     }
    ],
    "damage": [
@@ -1778,16 +1781,16 @@
     {
      "who": "탈리야(적)",
      "role": "정글",
-     "minuteMark": "22:00",
-     "wasAt": "우리 아래쪽 정글",
-     "distance": 4234
+     "minuteMark": "22:26",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 7444
     },
     {
      "who": "크산테(적)",
      "role": "탑",
-     "minuteMark": "22:00",
-     "wasAt": "블루팀 본진",
-     "distance": 11451
+     "minuteMark": "22:26",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 3446
     }
    ],
    "damage": [
@@ -1936,28 +1939,32 @@
     "룰루(적)"
    ],
    "alliesNear": [
+    "이렐리아(아군)",
+    "비에고(아군)",
     "로크(아군)",
     "갈리오(아군)"
    ],
    "enemiesNear": [
     "크산테(적)",
+    "탈리야(적)",
     "요네(적)",
+    "유나라(적)",
     "룰루(적)"
    ],
    "roams": [
     {
      "who": "크산테(적)",
      "role": "탑",
-     "minuteMark": "24:00",
+     "minuteMark": "23:56",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 668
+     "distance": 1412
     },
     {
      "who": "요네(적)",
      "role": "미드",
-     "minuteMark": "24:00",
+     "minuteMark": "23:56",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 1102
+     "distance": 1982
     }
    ],
    "damage": [
@@ -2122,7 +2129,6 @@
     "룰루(적)"
    ],
    "alliesNear": [
-    "이렐리아(아군)",
     "비에고(아군)",
     "로크(아군)",
     "갈리오(아군)"
@@ -2130,7 +2136,6 @@
    "enemiesNear": [
     "크산테(적)",
     "탈리야(적)",
-    "요네(적)",
     "유나라(적)",
     "룰루(적)"
    ],
@@ -2138,9 +2143,9 @@
     {
      "who": "크산테(적)",
      "role": "탑",
-     "minuteMark": "25:00",
+     "minuteMark": "25:02",
      "wasAt": "우리 본진",
-     "distance": 1889
+     "distance": 1503
     }
    ],
    "damage": [
@@ -2347,7 +2352,7 @@
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3590
+   "myDistance30sBefore": 3015
   },
   {
    "t": "9:04",
@@ -2375,7 +2380,7 @@
    "name": "바다 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 3605
+   "myDistance30sBefore": 3855
   },
   {
    "t": "15:23",
@@ -2389,21 +2394,21 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4110
+   "myDistance30sBefore": 4428
   },
   {
    "t": "22:38",
    "name": "바람 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 8012
+   "myDistance30sBefore": 6583
   },
   {
    "t": "24:19",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3609
+   "myDistance30sBefore": 6916
   }
  ],
  "buildings": [
@@ -2744,18 +2749,31 @@
    "13": true,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.7,
+   "3~4": 1.0,
+   "4~5": 0.67,
+   "5~6": 1.0,
+   "6~7": 1.0,
+   "7~8": 0.65,
+   "8~9": 1.0,
+   "9~10": 0.58,
+   "10~11": 1.0,
+   "11~12": 0.37,
+   "12~13": 1.0,
+   "13~14": 0.6
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 92,
+   "me": 87,
    "opp": 120
   },
   "csWithoutSupport": {
-   "me": 4,
+   "me": 9,
    "opp": 12
   },
   "supportAwayRanges": [
-   "13~14분"
+   "11~12분"
   ],
   "botAdcKills": {
    "opp": 1,
@@ -2782,7 +2800,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 71,
