@@ -523,9 +523,11 @@
     "파이크(적)"
    ],
    "alliesNear": [
+    "자르반 4세(아군)",
     "노틸러스(아군)"
    ],
    "enemiesNear": [
+    "탈리야(적)",
     "카이사(적)",
     "파이크(적)"
    ],
@@ -533,9 +535,9 @@
     {
      "who": "탈리야(적)",
      "role": "정글",
-     "minuteMark": "3:00",
+     "minuteMark": "2:42",
      "wasAt": "상대 아래쪽 정글",
-     "distance": 3150
+     "distance": 3408
     }
    ],
    "damage": [
@@ -783,7 +785,7 @@
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 3079
+   "myDistance30sBefore": 2444
   },
   {
    "t": "8:49",
@@ -811,7 +813,7 @@
    "name": "마법공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 4490
+   "myDistance30sBefore": 4318
   }
  ],
  "buildings": [
@@ -1062,19 +1064,31 @@
    "13": false,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.68,
+   "3~4": 1.0,
+   "4~5": 0.67,
+   "5~6": 1.0,
+   "6~7": 0.53,
+   "7~8": 0.8,
+   "8~9": 0.73,
+   "9~10": 0.65,
+   "10~11": 0.83,
+   "11~12": 0.63,
+   "12~13": 0.0,
+   "13~14": 0.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 31,
-   "opp": 53
+   "me": 65,
+   "opp": 79
   },
   "csWithoutSupport": {
-   "me": 55,
-   "opp": 35
+   "me": 21,
+   "opp": 9
   },
   "supportAwayRanges": [
-   "7~9분",
-   "10~14분"
+   "12~14분"
   ],
   "botAdcKills": {
    "opp": 5,
@@ -1109,7 +1123,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": false,
   "reason": "이 챔피언의 기준 데이터가 아직 없어요."
