@@ -1267,15 +1267,17 @@
     "룰루(아군)"
    ],
    "enemiesNear": [
-    "파이크(적)"
+    "나르(적)",
+    "뽀삐(적)",
+    "제드(적)"
    ],
    "roams": [
     {
      "who": "나르(적)",
      "role": "탑",
-     "minuteMark": "16:00",
+     "minuteMark": "16:10",
      "wasAt": "탑 라인",
-     "distance": 8640
+     "distance": 8528
     }
    ],
    "damage": [
@@ -1407,25 +1409,27 @@
    "assists": [
     "뽀삐(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "제이스(아군)"
+   ],
    "enemiesNear": [
-    "징크스(적)",
-    "파이크(적)"
+    "뽀삐(적)",
+    "제드(적)"
    ],
    "roams": [
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "23:00",
+     "minuteMark": "22:51",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 4400
+     "distance": 2818
     },
     {
      "who": "뽀삐(적)",
      "role": "정글",
-     "minuteMark": "23:00",
+     "minuteMark": "22:51",
      "wasAt": "우리 위쪽 정글",
-     "distance": 3839
+     "distance": 3694
     }
    ],
    "damage": [
@@ -1568,8 +1572,6 @@
     "제드(적)"
    ],
    "alliesNear": [
-    "아트록스(아군)",
-    "제이스(아군)",
     "로크(아군)",
     "룰루(아군)"
    ],
@@ -1584,16 +1586,16 @@
     {
      "who": "뽀삐(적)",
      "role": "정글",
-     "minuteMark": "26:00",
+     "minuteMark": "25:33",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 1320
+     "distance": 2206
     },
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "26:00",
+     "minuteMark": "25:33",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 662
+     "distance": 1998
     }
    ],
    "damage": [
@@ -1747,29 +1749,30 @@
    "enemiesNear": [
     "나르(적)",
     "뽀삐(적)",
-    "제드(적)"
+    "제드(적)",
+    "징크스(적)"
    ],
    "roams": [
     {
      "who": "나르(적)",
      "role": "탑",
-     "minuteMark": "31:00",
-     "wasAt": "미드 라인",
-     "distance": 1020
+     "minuteMark": "30:37",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 1969
     },
     {
      "who": "뽀삐(적)",
      "role": "정글",
-     "minuteMark": "31:00",
-     "wasAt": "미드 라인",
-     "distance": 1900
+     "minuteMark": "30:37",
+     "wasAt": "우리 아래쪽 정글",
+     "distance": 2772
     },
     {
      "who": "제드(적)",
      "role": "미드",
-     "minuteMark": "31:00",
+     "minuteMark": "30:37",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 1029
+     "distance": 2839
     }
    ],
    "damage": [
@@ -1941,23 +1944,26 @@
     "룰루(아군)"
    ],
    "enemiesNear": [
+    "나르(적)",
+    "뽀삐(적)",
     "제드(적)",
+    "징크스(적)",
     "파이크(적)"
    ],
    "roams": [
     {
      "who": "나르(적)",
      "role": "탑",
-     "minuteMark": "39:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 3956
+     "minuteMark": "39:09",
+     "wasAt": "상대 위쪽 정글",
+     "distance": 5261
     },
     {
      "who": "뽀삐(적)",
      "role": "정글",
-     "minuteMark": "39:00",
+     "minuteMark": "39:09",
      "wasAt": "상대 위쪽 정글",
-     "distance": 6749
+     "distance": 6747
     }
    ],
    "damage": [
@@ -2286,14 +2292,14 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 4042
+   "myDistance30sBefore": 3448
   },
   {
    "t": "14:36",
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2413
+   "myDistance30sBefore": 3297
   },
   {
    "t": "16:57",
@@ -2307,42 +2313,42 @@
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 1919
+   "myDistance30sBefore": 3213
   },
   {
    "t": "25:32",
    "name": "대지 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2843
+   "myDistance30sBefore": 2205
   },
   {
    "t": "26:46",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 6314
+   "myDistance30sBefore": 6291
   },
   {
    "t": "32:10",
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 8609
+   "myDistance30sBefore": 3218
   },
   {
    "t": "34:18",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 1538
+   "myDistance30sBefore": 2085
   },
   {
    "t": "38:17",
    "name": "대지 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 10637
+   "myDistance30sBefore": 5511
   }
  ],
  "buildings": [
@@ -2775,19 +2781,31 @@
    "13": true,
    "14": true
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.85,
+   "4~5": 0.55,
+   "5~6": 1.0,
+   "6~7": 0.67,
+   "7~8": 1.0,
+   "8~9": 0.72,
+   "9~10": 0.43,
+   "10~11": 0.95,
+   "11~12": 0.65,
+   "12~13": 0.55,
+   "13~14": 1.0
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 60,
-   "opp": 65
+   "me": 90,
+   "opp": 86
   },
   "csWithoutSupport": {
-   "me": 35,
-   "opp": 29
+   "me": 5,
+   "opp": 8
   },
   "supportAwayRanges": [
-   "3~5분",
-   "10~12분"
+   "9~10분"
   ],
   "botAdcKills": {
    "opp": 3,
@@ -2818,7 +2836,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": false,
   "reason": "이 챔피언의 기준 데이터가 아직 없어요."
