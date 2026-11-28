@@ -847,16 +847,15 @@
     "룰루(아군)"
    ],
    "enemiesNear": [
-    "이즈리얼(적)",
-    "자이라(적)"
+    "샤코(적)"
    ],
    "roams": [
     {
      "who": "샤코(적)",
      "role": "정글",
-     "minuteMark": "2:00",
-     "wasAt": "미드 라인",
-     "distance": 7990
+     "minuteMark": "2:12",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 6950
     }
    ],
    "damage": [
@@ -986,7 +985,9 @@
    "assists": [
     "자이라(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "룰루(아군)"
+   ],
    "enemiesNear": [
     "이즈리얼(적)",
     "자이라(적)"
@@ -1124,9 +1125,11 @@
     "자이라(적)"
    ],
    "alliesNear": [
+    "라이즈(아군)",
     "룰루(아군)"
    ],
    "enemiesNear": [
+    "샤코(적)",
     "이즈리얼(적)",
     "자이라(적)"
    ],
@@ -1134,9 +1137,9 @@
     {
      "who": "샤코(적)",
      "role": "정글",
-     "minuteMark": "6:00",
+     "minuteMark": "5:41",
      "wasAt": "우리 아래쪽 정글",
-     "distance": 3385
+     "distance": 5373
     }
    ],
    "damage": [
@@ -1288,10 +1291,9 @@
    "assists": [
     "자이라(적)"
    ],
-   "alliesNear": [
-    "룰루(아군)"
-   ],
+   "alliesNear": [],
    "enemiesNear": [
+    "이즈리얼(적)",
     "자이라(적)"
    ],
    "roams": [],
@@ -1434,17 +1436,22 @@
     "빅토르(적)",
     "자이라(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "리 신(아군)",
+    "룰루(아군)"
+   ],
    "enemiesNear": [
-    "이즈리얼(적)"
+    "빅토르(적)",
+    "이즈리얼(적)",
+    "자이라(적)"
    ],
    "roams": [
     {
      "who": "빅토르(적)",
      "role": "미드",
-     "minuteMark": "11:00",
+     "minuteMark": "11:24",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 4288
+     "distance": 4352
     }
    ],
    "damage": [
@@ -1597,23 +1604,22 @@
    "enemiesNear": [
     "가렌(적)",
     "샤코(적)",
-    "빅토르(적)",
     "자이라(적)"
    ],
    "roams": [
     {
      "who": "가렌(적)",
      "role": "탑",
-     "minuteMark": "18:00",
+     "minuteMark": "18:22",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 1702
+     "distance": 2014
     },
     {
      "who": "샤코(적)",
      "role": "정글",
-     "minuteMark": "18:00",
+     "minuteMark": "18:22",
      "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 1456
+     "distance": 1647
     }
    ],
    "damage": [
@@ -1757,29 +1763,31 @@
     "리 신(아군)"
    ],
    "enemiesNear": [
+    "가렌(적)",
+    "샤코(적)",
     "빅토르(적)"
    ],
    "roams": [
     {
      "who": "샤코(적)",
      "role": "정글",
-     "minuteMark": "26:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 3897
+     "minuteMark": "25:38",
+     "wasAt": "미드 라인",
+     "distance": 5565
     },
     {
      "who": "가렌(적)",
      "role": "탑",
-     "minuteMark": "26:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 3152
+     "minuteMark": "25:46",
+     "wasAt": "레드팀 본진",
+     "distance": 7978
     },
     {
      "who": "빅토르(적)",
      "role": "미드",
-     "minuteMark": "26:00",
+     "minuteMark": "25:38",
      "wasAt": "탑 라인",
-     "distance": 1325
+     "distance": 1249
     }
    ],
    "damage": [
@@ -1924,6 +1932,7 @@
     "빅토르(적)"
    ],
    "alliesNear": [
+    "라이즈(아군)",
     "룰루(아군)"
    ],
    "enemiesNear": [
@@ -1935,16 +1944,16 @@
     {
      "who": "가렌(적)",
      "role": "탑",
-     "minuteMark": "28:00",
+     "minuteMark": "28:11",
      "wasAt": "탑 라인",
-     "distance": 8526
+     "distance": 8518
     },
     {
      "who": "빅토르(적)",
      "role": "미드",
-     "minuteMark": "28:00",
+     "minuteMark": "28:11",
      "wasAt": "탑 라인",
-     "distance": 9382
+     "distance": 9381
     }
    ],
    "damage": [
@@ -2086,9 +2095,14 @@
     "빅토르(적)",
     "자이라(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "리 신(아군)",
+    "라이즈(아군)",
+    "룰루(아군)"
+   ],
    "enemiesNear": [
     "가렌(적)",
+    "샤코(적)",
     "빅토르(적)",
     "이즈리얼(적)",
     "자이라(적)"
@@ -2097,16 +2111,16 @@
     {
      "who": "샤코(적)",
      "role": "정글",
-     "minuteMark": "31:00",
+     "minuteMark": "31:03",
      "wasAt": "미드 라인",
-     "distance": 2731
+     "distance": 2732
     },
     {
      "who": "빅토르(적)",
      "role": "미드",
-     "minuteMark": "31:00",
+     "minuteMark": "31:03",
      "wasAt": "레드팀 본진",
-     "distance": 741
+     "distance": 1004
     }
    ],
    "damage": [
@@ -2409,14 +2423,14 @@
    "name": "화학공학 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2950
+   "myDistance30sBefore": 2996
   },
   {
    "t": "17:11",
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 2180
+   "myDistance30sBefore": 3712
   },
   {
    "t": "19:45",
@@ -2430,21 +2444,21 @@
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4239
+   "myDistance30sBefore": 4062
   },
   {
    "t": "27:58",
    "name": "마법공학 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 7185
+   "myDistance30sBefore": 10257
   },
   {
    "t": "28:03",
    "name": "바론",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 634
+   "myDistance30sBefore": 3439
   }
  ],
  "buildings": [
@@ -2888,20 +2902,32 @@
    "13": true,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 1.0,
+   "3~4": 0.58,
+   "4~5": 0.77,
+   "5~6": 1.0,
+   "6~7": 0.67,
+   "7~8": 0.53,
+   "8~9": 1.0,
+   "9~10": 0.22,
+   "10~11": 1.0,
+   "11~12": 1.0,
+   "12~13": 0.62,
+   "13~14": 0.15
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 36,
-   "opp": 39
+   "me": 66,
+   "opp": 70
   },
   "csWithoutSupport": {
-   "me": 41,
-   "opp": 47
+   "me": 11,
+   "opp": 16
   },
   "supportAwayRanges": [
-   "3~5분",
-   "6~8분",
-   "11~14분"
+   "9~10분",
+   "13~14분"
   ],
   "botAdcKills": {
    "opp": 1,
@@ -2936,7 +2962,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 101,
