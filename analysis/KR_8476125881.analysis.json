@@ -939,14 +939,18 @@
    "alliesNear": [
     "자이라(아군)"
    ],
-   "enemiesNear": [],
+   "enemiesNear": [
+    "카타리나(적)",
+    "진(적)",
+    "탐 켄치(적)"
+   ],
    "roams": [
     {
      "who": "카타리나(적)",
      "role": "미드",
-     "minuteMark": "7:00",
+     "minuteMark": "6:49",
      "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 2997
+     "distance": 4005
     }
    ],
    "damage": [
@@ -1104,15 +1108,16 @@
    ],
    "enemiesNear": [
     "사일러스(적)",
+    "진(적)",
     "탐 켄치(적)"
    ],
    "roams": [
     {
      "who": "사일러스(적)",
      "role": "정글",
-     "minuteMark": "15:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 1722
+     "minuteMark": "15:07",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 1398
     }
    ],
    "damage": [
@@ -1246,12 +1251,12 @@
    "killer": "탐 켄치(적)",
    "assists": [],
    "alliesNear": [
-    "제라스(아군)",
     "자이라(아군)"
    ],
    "enemiesNear": [
     "카타리나(적)",
-    "진(적)"
+    "진(적)",
+    "탐 켄치(적)"
    ],
    "roams": [],
    "damage": [
@@ -1380,9 +1385,11 @@
     "사일러스(적)",
     "탐 켄치(적)"
    ],
-   "alliesNear": [],
+   "alliesNear": [
+    "자이라(아군)"
+   ],
    "enemiesNear": [
-    "신지드(적)",
+    "사일러스(적)",
     "카타리나(적)",
     "진(적)",
     "탐 켄치(적)"
@@ -1391,16 +1398,16 @@
     {
      "who": "카타리나(적)",
      "role": "미드",
-     "minuteMark": "20:00",
+     "minuteMark": "20:22",
      "wasAt": "미드 라인",
-     "distance": 3870
+     "distance": 3189
     },
     {
      "who": "사일러스(적)",
      "role": "정글",
-     "minuteMark": "20:00",
-     "wasAt": "상대 위쪽 정글",
-     "distance": 8316
+     "minuteMark": "20:22",
+     "wasAt": "상대 아래쪽 정글",
+     "distance": 3484
     }
    ],
    "damage": [
@@ -1563,9 +1570,9 @@
     {
      "who": "신지드(적)",
      "role": "탑",
-     "minuteMark": "22:00",
+     "minuteMark": "22:25",
      "wasAt": "탑 라인",
-     "distance": 1118
+     "distance": 8188
     }
    ],
    "damage": [
@@ -1695,7 +1702,9 @@
    "zone": "우리 위쪽 정글",
    "killer": "카타리나(적)",
    "assists": [],
-   "alliesNear": [],
+   "alliesNear": [
+    "자이라(아군)"
+   ],
    "enemiesNear": [
     "카타리나(적)"
    ],
@@ -1703,9 +1712,9 @@
     {
      "who": "카타리나(적)",
      "role": "미드",
-     "minuteMark": "35:00",
-     "wasAt": "위쪽 강가(바론 쪽)",
-     "distance": 1955
+     "minuteMark": "34:33",
+     "wasAt": "아래쪽 강가(드래곤 쪽)",
+     "distance": 7140
     }
    ],
    "damage": [
@@ -1830,19 +1839,21 @@
    ],
    "alliesNear": [
     "제이스(아군)",
-    "제라스(아군)",
-    "자이라(아군)"
+    "제라스(아군)"
    ],
    "enemiesNear": [
-    "신지드(적)"
+    "신지드(적)",
+    "사일러스(적)",
+    "카타리나(적)",
+    "탐 켄치(적)"
    ],
    "roams": [
     {
      "who": "사일러스(적)",
      "role": "정글",
-     "minuteMark": "37:00",
-     "wasAt": "아래쪽 강가(드래곤 쪽)",
-     "distance": 7380
+     "minuteMark": "37:20",
+     "wasAt": "우리 위쪽 정글",
+     "distance": 3712
     }
    ],
    "damage": [
@@ -2109,14 +2120,14 @@
    "name": "바람 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 750
+   "myDistance30sBefore": 2897
   },
   {
    "t": "16:05",
    "name": "화학공학 드래곤",
    "ours": false,
    "iWasDead": true,
-   "myDistance30sBefore": 1265
+   "myDistance30sBefore": 1615
   },
   {
    "t": "19:45",
@@ -2130,28 +2141,28 @@
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4670
+   "myDistance30sBefore": 4798
   },
   {
    "t": "28:58",
    "name": "화염 드래곤",
    "ours": true,
    "iWasDead": false,
-   "myDistance30sBefore": 5289
+   "myDistance30sBefore": 4687
   },
   {
    "t": "29:56",
    "name": "바론",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 6055
+   "myDistance30sBefore": 5367
   },
   {
    "t": "34:32",
    "name": "화염 드래곤",
    "ours": false,
    "iWasDead": false,
-   "myDistance30sBefore": 4224
+   "myDistance30sBefore": 4192
   }
  ],
  "buildings": [
@@ -2536,20 +2547,30 @@
    "13": true,
    "14": false
   },
-  "supportBotShare": null,
+  "supportBotShare": {
+   "2~3": 0.8,
+   "3~4": 0.83,
+   "4~5": 1.0,
+   "5~6": 0.62,
+   "6~7": 1.0,
+   "7~8": 0.62,
+   "8~9": 1.0,
+   "9~10": 1.0,
+   "10~11": 1.0,
+   "11~12": 0.68,
+   "12~13": 1.0,
+   "13~14": 0.82
+  },
   "supportShareMin": 0.5,
   "csWithSupport": {
-   "me": 62,
-   "opp": 73
+   "me": 90,
+   "opp": 101
   },
   "csWithoutSupport": {
-   "me": 28,
-   "opp": 28
+   "me": 0,
+   "opp": 0
   },
-  "supportAwayRanges": [
-   "2~4분",
-   "13~14분"
-  ],
+  "supportAwayRanges": [],
   "botAdcKills": {
    "opp": 2,
    "me": 1,
@@ -2571,7 +2592,7 @@
    ]
   }
  },
- "positionSource": "minute",
+ "positionSource": "replay",
  "benchmark": {
   "available": true,
   "games": 62,
